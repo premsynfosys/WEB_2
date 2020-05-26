@@ -1,0 +1,293 @@
+{{  define "InWardDetails"}}
+{{template "head" .}}
+<div class="page-header">
+    <div class="row align-items-end">
+        <div class="col-lg-8">
+            <div class="page-header-title">
+                <div class="d-inline">
+                    <h5>InWard Details</h5>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="col-lg-4">
+            <a class="float-right  font-weight-bold btn btn-outline-primary btn-rounded" title="Craete Employee"
+                href="/employee/create"><i class="ik ik-plus "></i><span>ADD</span></a>
+        </div> -->
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12"> 
+        <div class="card">
+            <div class="card-block">
+                <div class="dt-responsive">
+                    <table id="tblInWardDetails" class="table table-striped table-bordered nowrap" width="100%">
+                        <thead>
+                            <th>idInWardInWard</th>
+                            <th>Select</th>
+                            <th>Transaction ID</th>
+                            <th>Transfer Status</th>
+                            <th>From Location</th>
+                            <th>Total Items</th>
+                            <th>Sender Name</th>
+                            <th>Sender Mail</th>
+                            
+                            <th>Description</th>
+                           
+                            <th>CreatedOn</th>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div id="tblbtn" class="btn-group dropright float-left ">
+            <button type="button" class="btn btn-info dropdown-toggle btn-sm " data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                Export </button>
+            <div id="tblbtnList" class="dropdown-menu">
+            </div>
+        </div>
+        <div id="tblClmnbtn" class="btn-group dropright float-left mr-1 ">
+            <button type="button" class="btn btn-info dropdown-toggle btn-sm " data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                Fields </button>
+            <div id="tblClmnbtnList" class="dropdown-menu">
+                <div class="form-check form-check-inline dropdown-item">
+                    <input class="form-check-input chkClmn" type="checkbox" checked id="chkAll">
+                    <label class="form-check-label " for="chkAll">Select All</label></div>
+
+                <div class="dropdown-divider"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-md-12">
+        <table id="tblInWardAssetDetails" width="100%" class="table" >
+            <!-- style="border: 1px solid black;overflow-x:scroll; border-collapse: collapse;border-spacing: 0; " -->
+            <thead >              
+                <th>AssetName</th>
+                <th>ITAsset Identification No</th>
+                <th>Asset Price per each</th>
+                <th>Asset Type </th>
+                <th>Quantity</th>
+               
+                <th>Received Quantity</th>
+                <th>Description</th>
+                <th>Transfer Status</th>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+<script>
+
+    $(document).ready(function () {
+
+        var tbl = $('#tblInWardDetails').DataTable({
+            responsive: true,
+            "processing": true,
+            scrollY: $(window).height() - 450,
+            scrollCollapse: true,
+            scrollX: true,
+            destroy: true,
+            dom: 'Bfrt',
+            ajax: {
+                "url": '/GetInWardDetailsByEmp/' + $("#employeeid").val(),
+                "type": "GET",
+                "datatype": "json",
+                "dataSrc": ""//to read data from a plain array rather than an array in an object:
+            },
+            columnDefs: [
+                { orderable: false, targets: 1 },
+                { visible: false, targets: 0 }
+            ],
+            "order": [
+                [0, 'desc']
+            ],
+            // destroy: true,//to over come reintilize prblms
+            "columns": [
+                {
+                    "name": "IDInWardOutWard",
+                    'data': 'IDInWardOutWard'
+                }, {
+                    "name": "Select",
+                    'data': null,
+                    render: function (dt) {
+                        return '<input type="checkbox" class="tblchk"  value=' + dt.IDInWardOutWard + '>';
+                    }
+                }, {
+                    "name": "TransactionID",
+                    'data': null,
+                    render: function (dt) {
+                        return '<a class="font-weight-bold text-info"  href="/IWReceive/'+dt.ReceiverEmployee.IDEmployees+'/'+dt.IDInWardOutWard+'">'+dt.TransactionID+'</a>';
+                    }
+                }, {
+                    "name": "TransferStatus",
+                    'data': 'Status',
+                    render: function (dt) {
+
+                        return '<span class="badge badge-pill badge-success">' + dt.StatusName + '</span>';
+                    }
+                }, {
+                    "name": "FromLocation",
+                    "data": "FromLocation",
+                    render: function (el) {
+                        return el.Name + "\n" + el.Address1 + "\n" + el.Address2 + "\n" + el.Zipcode
+                    }
+                }, {
+                    "name": "TotalItems",
+                    'data': 'TotalItems'
+                }, {
+                    "name": "SenderName",
+                    "data": "SenderEmployee",
+                    render: function (el) {
+                        return el.FirstName + el.LastName
+                    }
+                }, {
+                    "name": "SenderMail",
+                    'data': 'SenderEmployee',
+                    render: function (el) {
+                        return el.Email
+                    }
+                }, {
+                    "name": "Description",
+                    'data': 'Description'
+                }, {
+                    "name": "CreatedOn",
+                    'data': 'CreatedOn',
+                    render: function (dt) {
+                        return jsondate(dt);
+
+                    }
+                }
+            ]
+            , buttons: [
+                {
+                    text: 'PDF',
+                    extend: "pdf",
+                    title: "Inward Details",
+                    className: ' dropdown-item',
+                    exportOptions: {
+                        columns: ':visible'
+                        //columns: ':not(.notexport)'
+                    }
+                },
+                {
+                    text: 'Print',
+                    extend: "print",
+                    title: "Inward Details",
+                    className: ' dropdown-item',
+                    exportOptions: {
+                        columns: ':visible'
+                        // columns: ':not(.notexport)'
+                    }
+                },
+                {
+                    text: 'Excel',
+                    extend: "excel",
+                    className: ' dropdown-item',
+                    title: "Inward  Details",
+                    exportOptions: {
+                        columns: ':visible'
+                        // columns: ':not(.notexport)'
+                    }
+                }
+            ]
+        });
+
+
+
+        $("#tblbtn").prependTo('#tblInWardDetails_filter')
+        tbl.buttons().containers().prependTo('#tblbtnList')
+        $('.dt-button').removeClass('dt-button').addClass(' btn btn-light btn-sm ');
+        $(".buttons-colvis").removeClass('btn-light').addClass('btn-info float-left ml-1').appendTo('#tblInWardDetails_filter')
+        $("#tblClmnbtn").prependTo('#tblInWardDetails_filter')
+        var idx = 0;
+        //show hide clmns
+        tbl.columns().every(function () {
+            if (idx != 0 && idx != 1) {
+                var html = '<div class="form-check form-check-inline dropdown-item">'
+                html += '<input class="form-check-input chkClmn" type="checkbox" checked id="chk' + idx + '" value="' + idx + '">'
+                html += '<label class="form-check-label " for="chk' + idx + '">' + this.header().innerHTML + '</label></div>'
+                $("#tblClmnbtnList").append(html)
+            }
+            idx++;
+
+        });
+
+        $("input.chkClmn").click(function (e) {
+            // Get the column API object
+            if ($(this).attr('id') == "chkAll") { 
+                if ($(this).prop("checked")) {
+                    for (var i = 1; i < tbl.init().columns.length; i++) {
+                        tbl.column(i).visible(true, true)
+                    }
+                    $("input.chkClmn").prop("checked", true)
+                    tbl.columns.adjust().draw();
+                }
+            }
+            else {
+                var column = tbl.column($(this).val());
+                // Toggle the visibility
+                if ($(this).prop("checked"))
+                    column.visible(true);
+                else {
+                    column.visible(false);
+                    $("#chkAll").prop("checked", false)
+                }
+            }
+        })
+
+
+        $("#tblInWardDetails").on("change", ".tblchk", function () {
+           
+            var tbody = $("#tblInWardAssetDetails tbody")
+            tbody.empty();
+            if (this.checked) {
+                $("#tblInWardDetails input[type='checkbox']").not(this).prop("checked",false)
+                var data = getdata("/GetOutWardAssetDetailsByIwOwID/" + this.value)
+
+                data.forEach(element => {
+                    var tr = " <tr>"                 
+                        if (element.AssetType == "itasset") {
+                        tr += "<td>" + element.ITAsset.ITAssetName + "</td>"
+                        tr += "<td>" + element.ITAsset.ITAssetIdentificationNo + "</td>"
+                        tr += "<td>$" + element.ITAsset.ITAssetPrice + "</td>"
+                    }
+                    else if (element.AssetType == "consumable") {
+                        tr += "<td>" + element.Consumable.Consumablemaster.ConsumableName + "</td>"
+                        tr += "<td>" + element.Consumable.IdentificationNo + "</td>"
+                        tr += "<td>$" + element.Consumable.ReOrderStockPrice + "</td>"
+                    }
+                    else if (element.AssetType == "nonitasset") {
+                        tr += "<td>" + element.NonITAsset.NonITAssets_Master.NonITAssets_Name + "</td>"
+                        tr += "<td>" + element.NonITAsset.IdentificationNo + "</td>"
+                        tr += "<td>₹" + element.NonITAsset.ReOrderStockPrice + "</td>"
+                    }
+                    tr += "<td>" + element.AssetType.toUpperCase() + "</td>"
+                    tr += "<td>" + element.Quantity + "</td>"
+
+                    tr += "<td>" + element.ReceivedQuantity + "</td>"
+                    tr += "<td>" + element.Description + "</td>"
+                    tr += "<td>" + element.Status.StatusName + "</td>"
+                    tr += "</tr>"
+                    tbody.append(tr)
+                });
+            } 
+        })
+
+
+
+
+    });
+
+
+</script>
+{{template "footer"}}
+{{end}}

@@ -1,0 +1,359 @@
+{{define "OWApproval"}}
+{{template "head" .}}
+
+
+<form id="frm" method="POST">
+    <div class="row">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="d-block w-100">Approvals <small class="float-right">Status:
+                        <b>{{.Data.IwOw.Status.StatusName}}</b></small></h3>
+            </div>
+            <div class="card-body">
+                <div class="row invoice-info">
+                    <div class="col-sm-4 invoice-col">
+                        From
+                        <address>
+                            <strong>{{.Data.IwOw.SenderEmployee.FirstName}}
+                                {{.Data.IwOw.SenderEmployee.LastName}},</strong><br>
+                            {{.Data.IwOw.FromLocation.Name}}, {{.Data.IwOw.FromLocation.Address1}}
+                            <br>{{.Data.IwOw.FromLocation.Address1}}, {{.Data.IwOw.FromLocation.Zipcode}} <br>Phone:
+                            {{.Data.IwOw.SenderEmployee.Mobile}}<br>Email: {{.Data.IwOw.SenderEmployee.Email}}
+                        </address>
+                    </div>
+                    <div class="col-sm-4 invoice-col">
+                        To
+                        <address>
+                            <strong>{{.Data.IwOw.ReceiverEmployee.FirstName}}
+                                {{.Data.IwOw.ReceiverEmployee.LastName}}</strong><br>{{.Data.IwOw.ToLocation.Name}},
+                            {{.Data.IwOw.ToLocation.Address1}}<br>{{.Data.IwOw.ToLocation.Address1}},
+                            {{.Data.IwOw.ToLocation.Zipcode}}<br>Phone: {{.Data.IwOw.ReceiverEmployee.Mobile}}<br>Email:
+                            {{.Data.IwOw.ReceiverEmployee.Email}}
+                        </address>
+                    </div>
+                    <div class="col-sm-4 invoice-col">
+                        <b>Transaction:</b> #{{.Data.IwOw.TransactionID}}<br>
+                        <b>Total Assets:</b> {{.Data.IwOw.TotalItems}}<br>
+                        <br>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Asset Name</th>
+                                    <th>Asset Type</th>
+                                    <th>Quantity</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{range .Data.IwOw.ListInWardOutWardAsset}}
+                                <tr>
+                                    {{if eq .AssetType "itasset"}}
+                                    <td>{{.ITAsset.ITAssetName}}</td>
+                                    {{end}}
+                                    {{if eq .AssetType "consumable"}}
+                                    <td>{{.Consumable.Consumablemaster.ConsumableName}}</td>
+                                    {{end}}
+                                    {{if eq .AssetType "nonitasset"}}
+                                    <td>{{.NonITAsset.NonITAssets_Master.NonITAssets_Name}}</td>
+                                    {{end}}
+                                    <td>{{.AssetType}}</td>
+                                    <td>{{.Quantity}}</td>
+                                </tr>
+                                {{end}}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="row">
+
+                </div>
+                <div class="row no-print">
+                    <div class="col-12">
+                        <button id="flowmdl" type="button" class="btn btn-info pull-right" style="margin-right: 5px;"><i
+                                class="fa fa-check"></i>Approve/Reject</button>
+                        <button id="print" type="button" class="btn btn-primary pull-right"
+                            style="margin-right: 5px;"><i class="fa fa-download"></i>Print</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<div class="modal fade edit-layout-modal" id="editLayoutItem" tabindex="-1" role="dialog"
+    aria-labelledby="editLayoutItemLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editLayoutItemLabel">Approval flow</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-12">
+                    <div class="card latest-update-card">
+                        <div class="card-block">
+                            <div class="scroll-widget">
+                                <div class="latest-update-box divflow">
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row ddlForward">
+                    <label for="Approver" class="col-md-3 col-form-label ">Forward To:</label>
+                    <div class="col-md-5  ">
+                        <select name="Approver" id="Approver" class="form-control">
+
+                        </select>
+                    </div>
+                </div>
+                <div id="btnApprvRjct">
+
+                    <div class="form-group row">
+                        <label for="ApproverComments" class="col-md-3 col-form-label ">Comments:</label>
+                        <div class="col-md-5  ">
+                            <textarea name="ApproverComments" class="form-control " id="ApproverComments"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group row justify-content-center">
+                        <button id="Approve" value="Approve" type="button" class="btn btn-success "><i
+                                class="fa fa-check"></i>Approve & Forward </button>&nbsp;
+                        <button id="Reject" value="Reject" type="button" class="btn btn-danger "><i
+                                class="fa fa-ban"></i>Reject</button>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+
+        if ("{{.Data.IwOw.Status.StatusName}}" == "Transfer Rejected") {
+            $("#flowmdl").text("View Status")
+
+        }
+
+        $("#print").click(function () {
+            var printContents = $("#frm").not(".no-print").html();
+            var originalContents = document.body.innerHTML;
+
+            document.body.innerHTML = printContents;
+
+            window.print();
+
+            document.body.innerHTML = originalContents;
+           // window.close();
+
+        })
+
+
+        var NextRoleID;
+        var NextGrade;
+        var GDlevel;
+        var EmpGrade;
+        var EmpRole;
+        var EmpApprvlstatus;
+        var IDInwardoutward_Approval;
+        $("#flowmdl").click(function () {
+            $("#editLayoutItem").modal("show")
+            var divflow = $(".divflow")
+            divflow.empty();
+            var data = getdata("/IWOW_ApprovalStatusList/{{.Data.IwOw.IDInWardOutWard }}")
+            var totalGrades = data[0].Grade
+            var leftgrades = totalGrades - data.length
+            for (let i = 0; i < data.length; i++) {
+                var icon = "ik-alert-circle"
+                var color = "yellow"
+                var status = ""
+                if (data[i].StatusName == "Outward Requested") {
+                    //  IDitasset_Req_approvals = data[i].IDitasset_Req_approvals
+                    color = "yellow"
+                    icon = "ik-alert-circle"
+                    status = 'Pending'
+                } else if (data[i].StatusName == "Transfer Rejected") {
+                    color = "red"
+                    icon = "ik-x"
+                    status = 'Rejected'
+
+                } else {
+                    color = "green"
+                    icon = "ik-check"
+                    status = 'Approved'
+                }
+                GDlevel = data[i].Grade
+                if ($("#roleid").val() == data[i].RoleID) {
+                    EmpRole = data[i].RoleID
+                    EmpGrade = data[i].Grade
+                    EmpApprvlstatus = data[i].StatusName
+                }
+                var flowhtml = ' <div class="row flow pb-30"><div class="col-auto text-right update-meta pr-0">'
+                flowhtml += '<i class="ik ' + icon + ' bg-' + color + ' update-icon"></i>'
+                flowhtml += '  </div><div class="col pl-5"><a href="#!"><h6>' + status + '</h6> </a>'
+                flowhtml += '<p class="mb-2">' + data[i].ApproverName + ' - ' + data[i].RoleName + ' </p> '
+                flowhtml += '<p class="text-muted mb-0"></p> ' + data[i].Comments + ' </div> </div>'
+                divflow.append(flowhtml)
+
+            }
+
+            "{{range .Data.ListApprvl}}"
+            if ("{{.MultiLevelApproval_Map.Grade}}" < GDlevel) {
+                if (!NextRoleID) {
+
+                    NextRoleID = "{{.MultiLevelApproval_Map.Role.IDRoles}}"
+                    NextGrade = "{{.MultiLevelApproval_Map.Grade}}"
+                }
+                var flowhtmll = ' <div class="row flow pb-30"><div class="col-auto text-right update-meta pr-0">'
+                flowhtmll += '<i class="ik ' + icon + '  update-icon" style="background-color: gray;"></i>'
+                flowhtmll += '  </div><div class="col pl-5"><a href="#!"><h6>Pending </h6> </a>'
+                flowhtmll += '<p class="text-muted mb-0"> </p>{{.MultiLevelApproval_Map.Role.RoleName}}</div> </div>'
+                divflow.append(flowhtmll)
+            }
+            " {{end}}"
+            debugger;
+            IDInwardoutward_Approval = data[data.length - 1].IDInwardoutward_Approval
+            //  if (data[data.length - 1].StatusName == "Outward Requested") {
+            // $("#btnApprvRjct").show()
+            // if (GDlevel == 1) {
+            //     $(".ddlForward").hide()
+            // } else {
+            //     $(".ddlForward").show()
+            // }
+            if (NextRoleID) {
+                var url = "/GetApprovers/" + parseInt($("#locationid").val()) + "/" + parseInt(NextRoleID)
+
+                var aprvr = getdata(url)
+                $("#Approver").empty().append('<option value="">--select--</option>');
+                $.each(aprvr, function (i, el) {
+                    $("#Approver").append($("<option />", { text: el.Employee.FirstName, value: el.EmployeeID }));
+                });
+            }
+            // } 
+            // else {
+            //     $("#btnApprvRjct").hide()
+            // }
+
+
+            if ("{{.Data.IwOw.Status.StatusName}}" == "Transfer Rejected") {
+                $("#flowmdl").text("View Status")
+                $(".ddlForward").hide()
+                $("#btnApprvRjct").hide()
+            } else {
+                debugger
+                if (EmpApprvlstatus == "Outward Requested") {
+                    if (EmpGrade == 1) {
+                        $(".ddlForward").hide()
+                    }
+                    $("#btnApprvRjct").show()
+                } else {
+                    $(".ddlForward").hide()
+                    $("#btnApprvRjct").hide()
+                }
+            }
+        })
+
+        $("#Approve").click(function () {
+            if ($('#Approver').val() == "") {
+                Toast('warning', "Please select Approver")
+                //alert("Please select Approver.")
+                $('#Approver').focus();
+                return false;
+            }
+            if ($("#ApproverComments").val() == "") {
+                Toast('warning', 'Please enter comments')
+                return false;
+            }
+
+            if (GDlevel == 1) {
+                $.ajax({
+                    url: "/TransferApprovReject/{{.Data.IwOw.IDInWardOutWard }}/Approve?comments=" + $("#ApproverComments").val(),
+                    type: 'POST',
+                    success: function () {
+                        var msg = "Transaction #{{.Data.IwOw.TransactionID}} is Approved.."
+                        WsToast(msg, "Admin", null)
+                        //  alert( "Approved successfully.")
+                        window.location.reload();
+                        // window.location = "http://" + document.location.host + "/ITAssets";
+                    },
+                    error: function () {
+                        alert('Internal Error')
+                    },
+                    complete: function () {
+                    }
+                });
+
+            }
+            else {
+                var obj = new Object()
+                obj.IDinwardoutward = parseInt("{{.Data.IwOw.IDInWardOutWard }}")
+                obj.NextRoleID = parseInt(NextRoleID)
+                obj.NextApproverID = parseInt($('#Approver').val())
+                obj.NextGrade = parseInt(NextGrade)
+                obj.Comments = $("#ApproverComments").val()
+                obj.IDInwardoutward_Approval = parseInt(IDInwardoutward_Approval)
+                $.ajax({
+                    url: "/InwardOutwardReqForward",
+                    type: 'POST',
+                    async: false,
+                    data: JSON.stringify(obj),
+                    success: function () {
+                        var msg = "Transaction #{{.Data.IwOw.TransactionID}} is Approved and forwarded.."
+                        WsToast(msg, "Admin", null)
+                        window.location.reload();
+
+                    },
+                    error: function () {
+                        alert('Internal Error')
+                    },
+                    complete: function () {
+                    }
+                });
+
+            }
+        });
+        $("#Reject").click(function () {
+            if ($("#ApproverComments").val() == "") {
+                Toast('warning', 'Please enter comments')
+                return false;
+            }
+            if ($('#Approver').val() != "") {
+                Toast('warning', "Please Unselect Approver")
+                //alert("Please select Approver.")
+                $('#Approver').focus();
+                return;
+            }
+            var _url = "/TransferApprovReject/{{.Data.IwOw.IDInWardOutWard }}/Reject?comments=" + $("#ApproverComments").val()
+            $.ajax({
+                url: _url,
+                type: 'POST',
+                success: function () {
+                    var msg = "Transaction #{{.Data.IwOw.TransactionID}} is Rejected.."
+                    WsToast(msg, "Admin", null)
+                    //  alert( "Approved successfully.")
+                    window.location.reload();
+                    // window.location = "http://" + document.location.host + "/ITAssets";
+                },
+                error: function () {
+                    alert('Internal Error')
+                },
+                complete: function () {
+                }
+            });
+        })
+
+
+    });
+
+</script>
+
+{{template "footer"}}
+{{end}}

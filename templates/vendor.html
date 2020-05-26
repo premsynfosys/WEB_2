@@ -1,0 +1,88 @@
+{{define "vendorTmpl"}}
+<form id="FormAddVendors" action="/Vendors" method="POST">
+    <div class="container ">
+        <input type="hidden" value="{{.Idvendors}}" name="Idvendors">
+        <div class="form-group row">
+            <label for="Name" class="col-md-3 col-form-label">Name</label>
+            <div class="col-md-9">
+                <input type="text" name="Name" required value="{{.Name}}"  class="form-control" id="Name" placeholder="Name">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="Description" class="col-md-3 col-form-label">Description:</label>
+            <div class="col-md-9">
+                <textarea name="Description" required maxlength="500" class="form-control form-control-sm" id="Description"
+                    placeholder="Description">{{.Description}}</textarea>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="Websites" class="col-md-3 col-form-label">Website:</label>
+            <div class="col-md-9">
+                <input type="text" required name="Websites" value="{{.Websites}}"  class="form-control" id="Websites" placeholder="Website">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="Address" class="col-md-3 col-form-label">Address:</label>
+            <div class="col-md-9">
+                <textarea name="Address" required maxlength="500" class="form-control form-control-sm" id="Address"
+                    placeholder="Address">{{.Address}}</textarea>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="Email" class="col-md-3 col-form-label">Email:</label>
+            <div class="col-md-9">
+                <input type="email" required value="{{.Email}}"  name="Email" class="form-control" id="Email" placeholder="Email">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="ContactPersonName" class="col-md-3 col-form-label">Contact Person Name:</label>
+            <div class="col-md-9">
+                <input type="text" required value="{{.ContactPersonName}}"  name="ContactPersonName" class="form-control" id="ContactPersonName"
+                    placeholder="Contact Person Name">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="Phone" class="col-md-3 col-form-label">Phone:</label>
+            <div class="col-md-9">
+                <input type="text" required value="{{.Phone}}"  name="Phone" class="form-control" id="Phone" placeholder="Phone">
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            {{if .Idvendors}}
+            <input type="submit" class="btn btn-primary  " value="UPDATE" />
+            {{else}}
+            <input type="submit" class="btn btn-primary  " value="ADD" />
+            {{end}}
+        </div>
+    </div>
+</form>
+<script> $(document).ready(function () {
+        $("#FormAddVendors").on("submit", function (event) {
+           
+            event.preventDefault();
+            var form = $(this).serialize();
+            $.ajax({
+                url: "/Vendors",
+                type: 'POST',
+                data: form,
+                // dataType: 'json',
+                async: false,
+                success: function (data) {
+                    if (data != 0) {
+                        if (typeof loadVendors !== 'undefined' && typeof loadVendors === 'function') {
+                            data = getdata('/GetVendors')
+                            loadVendors(data)
+                            $("#closeLoatonmodal").click()
+                        }
+                    }
+                    $("#closeLoatonmodal").click()
+                }
+            });
+
+        });
+
+    });
+
+</script>
+{{end}}

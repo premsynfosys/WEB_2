@@ -1,0 +1,381 @@
+{{  define "ITAssetDetailsTmpl"}}
+{{template "head" .}}
+
+<div class="page-header">
+  <div class="row align-items-end">
+    <div class="col-lg-8">
+      <div class="page-header-title">
+        <div class="d-inline">
+          <h5>ITAsset Details</h5>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 ">
+      <div class=" dropdown float-right ">
+        <button type="button" class="btn dropdown-toggle  font-weight-bold  btn-outline-primary btn-rounded"
+          data-toggle="dropdown">
+          Actions
+        </button>
+        <div class="dropdown-menu ">
+          <!-- <a class="dropdown-item " data-toggle="modal" data-target="#groupmodal" id="BulkEdit">Bulk Edit</a> -->
+          <!-- <a class="dropdown-item " href="#">Bulk Delte</a>
+          <a class="dropdown-item " href="#">Bulk Retire</a> -->
+          <a class="dropdown-item " id="BulkTransfer" href="javascript:void(0)">Mark to Transfer</a>
+        </div>
+      </div>
+      {{if .Auth.AddITAsset}}
+      <a class="float-right font-weight-bold btn btn-outline-primary btn-rounded mr-2" title="Craete ITAsset"
+        href="/ITAssets/create"><i class="ik ik-plus "></i><span>Add</span></a>
+      {{end}}
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-block">
+        <div class="dt-responsive">
+          <table class="table table-striped table-hover  table-bordered nowrap " id="tblITAssets">
+            <thead>
+              <th>ID</th>
+              <th><input type="checkbox" id="chkSelectAll"></th>
+              <th>IT Asset</th>
+              <th>Status</th>
+              <th>Group</th>
+              <th>Model No.</th>
+              <th>Serial No</th>
+              <th>Identification No</th>
+              <th>Description</th>
+              <th>Assignd To</th>
+              <th>Price</th>
+              <th>Warranty </th>
+            </thead>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div id="tblbtn" class="btn-group dropright float-left ">
+      <button type="button" class="btn btn-info dropdown-toggle  " data-toggle="dropdown" aria-haspopup="true"
+        aria-expanded="false">
+        Export </button>
+      <div id="tblbtnList" class="dropdown-menu">
+      </div>
+    </div>
+    <div id="tblClmnbtn" class="btn-group dropright float-left mr-1 ">
+      <button type="button" class="btn btn-info dropdown-toggle btn-sm " data-toggle="dropdown" aria-haspopup="true"
+        aria-expanded="false">
+        Fields </button>
+      <div id="tblClmnbtnList" class="dropdown-menu">
+        <div class="form-check form-check-inline dropdown-item">
+          <input class="form-check-input chkClmn" type="checkbox" checked id="chkAll">
+          <label class="form-check-label " for="chkAll">Select All</label></div>
+
+        <div class="dropdown-divider"></div>
+      </div>
+    </div>
+    <button type="button" id="btnRefresh" title="Refresh" class="btn btn-info btn-sm  float-left  ml-1 "><i
+        class="ik ik-refresh-ccw"></i>
+    </button>
+
+  </div>
+</div>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="groupmodal" tabindex="-1" role="dialog" aria-labelledby="groupmodalTitle"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="groupmodalTitle">Edit Items</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body " id="modalbody">
+
+      </div>
+
+    </div>
+  </div>
+</div>
+<script>
+  $(document).ready(function () {
+    var url;
+    if ("{{.Auth.Accesstoalllocations}}")
+      url = '/GetITAssets'
+    else
+      url = '/GetITAssets?LocID=' + $("#locationid").val()
+    var tbl = $('#tblITAssets').DataTable({
+      responsive: true,
+      "processing": true,
+      scrollY: $(window).height() - 350,
+      scrollCollapse: true,
+      scrollX: true,
+      destroy: true,
+      dom: 'Bfrtip',
+      ajax: {
+        "url": url,
+        "type": "GET",
+        "datatype": "json",
+        "dataSrc": ""//to read data from a plain array rather than an array in an object:
+      },
+      columnDefs: [
+        { orderable: false, targets: 1 },
+        { visible: false, targets: 0 }
+      ],
+      order: [[0, 'desc']],
+      // destroy: true,//to over come reintilize prblms
+      "columns": [
+        {
+          "name": "IDITAssets",
+          'data': 'IDITAssets'
+        },
+        {
+          "name": "Select",
+          'data': null,
+          render: function (dt) {
+            return '<input type="checkbox" class="tblchk" data-name=' + dt.ITAssetName + ' value=' + dt.IDITAssets + '>';
+          }
+        }, {
+          "name": "ITAssetName",
+          'data': null,
+          render: function (dt) {
+            return '<a  href="/ITAssets/view/' + dt.IDITAssets + '" class="text-warning font-weight-bold">' + dt.ITAssetName + '</a> ';
+          }
+        }, {
+          "name": "Statusname",
+          'data': "Statusname",
+          render: function (dt) {
+            var res;
+            if (dt == "Available")
+              res = '<span class="badge badge-pill badge-success">' + dt + '</span>'
+            else if (dt == "Assigned")
+              res = '<span class="badge badge-pill badge-warning">' + dt + '</span>'
+            else
+              res = '<span class="badge badge-pill badge-info">' + dt + '</span>'
+            return res;
+          }
+        }, {
+          "name": "Itassetgroupname",
+          'data': 'Itassetgroupname'
+        }, {
+          "name": "ITAssetModel",
+          "data": "ITAssetModel"
+        }, {
+          "name": "ITAssetSerialNo",
+          'data': 'ITAssetSerialNo'
+        }, {
+          "name": "ITAssetIdentificationNo",
+          "data": "ITAssetIdentificationNo"
+        }, {
+          "name": "ITAssetDescription",
+          'data': 'ITAssetDescription'
+        }, {
+          "name": "Name",
+          "data": "Employees",
+          render: function (dt) {
+
+            if (dt.FirstName == null || dt.FirstName == undefined)
+              return null
+            else
+              return dt.FirstName;
+          }
+        }, {
+          "name": "ITAssetPrice",
+          'data': 'ITAssetPrice',
+          render: function (dt) { return "₹ " + dt }
+        }, {
+          "name": "ITAssetWarranty",
+          'data': 'ITAssetWarranty',
+          render: function (dt) {
+            return jsondate(dt);
+          }
+        }
+      ],
+
+      buttons: [
+
+        {
+          text: 'PDF',
+          extend: "pdf",
+          title: "ITAsset Details",
+          className: ' dropdown-item',
+          exportOptions: {
+            columns: ':visible'
+            //columns: ':not(.notexport)'
+          }
+        },
+        {
+          text: 'Print',
+          extend: "print",
+          title: "ITAsset Details",
+          className: ' dropdown-item',
+          exportOptions: {
+            columns: ':visible'
+            // columns: ':not(.notexport)'
+          }
+        },
+        {
+          text: 'Excel',
+          extend: "excel",
+          className: ' dropdown-item',
+          title: "ITAsset Details",
+          exportOptions: {
+            columns: ':visible'
+            // columns: ':not(.notexport)'
+          }
+        }
+      ]
+    });
+
+
+
+    $("#tblbtn").prependTo('#tblITAssets_filter')
+    tbl.buttons().containers().prependTo('#tblbtnList')
+    $('.dt-button').removeClass('dt-button').addClass(' btn btn-light btn-sm ');
+    $(".buttons-colvis").removeClass('btn-light').addClass('btn-info float-left ml-1').appendTo('#tblITAssets_filter')
+    $("#btnRefresh").appendTo('#tblITAssets_filter')
+    //columns hide /show
+    $("#tblClmnbtn").prependTo('#tblITAssets_filter')
+
+    var idx = 0;
+    //show hide clmns
+    tbl.columns().every(function () {
+      if (idx != 0 && idx != 1) {
+        var html = '<div class="form-check form-check-inline dropdown-item">'
+        html += '<input class="form-check-input chkClmn" type="checkbox" checked id="chk' + idx + '" value="' + idx + '">'
+        html += '<label class="form-check-label " for="chk' + idx + '">' + this.header().innerHTML + '</label></div>'
+        $("#tblClmnbtnList").append(html)
+      }
+      idx++;
+
+    });
+
+    $("input.chkClmn").click(function (e) {
+
+      // Get the column API object
+      if ($(this).attr('id') == "chkAll") {
+        if ($(this).prop("checked")) {
+          for (var i = 1; i < tbl.init().columns.length; i++) {
+            tbl.column(i).visible(true, true)
+          }
+          $("input.chkClmn").prop("checked", true)
+          tbl.columns.adjust().draw();
+        }
+      }
+      else {
+        var column = tbl.column($(this).val());
+        // Toggle the visibility
+        if ($(this).prop("checked"))
+          column.visible(true);
+        else {
+          column.visible(false);
+          $("#chkAll").prop("checked", false)
+        }
+      }
+
+    })
+    $("#btnRefresh").click(function () {
+      tbl.search("").draw();
+      for (var i = 1; i < tbl.init().columns.length; i++) {
+        tbl.column(i).visible(true, true)
+      }
+      $("input.chkClmn").prop("checked", true)
+      tbl.columns.adjust().draw();
+      // tbl.ajax.reload()
+    })
+
+
+    $("#BulkEdit").click(function (e) {
+
+      var SelectedIds = new Object();
+      tbl = $('#tblITAssets').DataTable()
+      $("input:checked", tbl.rows().nodes()).each(function () {
+        SelectedIds[$(this).val()] = $(this).attr("data-name")
+
+      });
+
+      var url = "/ITAssets/BulkEdit"
+      $.ajax({
+        url: url,
+        type: 'GET',
+        data: { SelectedIds: JSON.stringify(SelectedIds) },
+        dataType: 'HTML',
+        async: false,
+        success: function (data) {
+
+          $("#modalbody").html(data);
+        }
+      });
+    })
+
+
+
+
+
+
+
+    $("#chkSelectAll").click(function () {
+
+      if ($("#chkSelectAll").prop('checked'))
+        $(".tblchk").prop('checked', true);
+      else
+        $(".tblchk").prop('checked', false);
+    })
+
+
+    //transfer
+    $("#BulkTransfer").click(function () {
+      var ok = true
+      if ($("#tblITAssets td input[type='checkbox']:checked").length <= 0) {
+        Toast("warning", "Please select atleast one 'Available' Asset(s).")
+        return false;
+      }
+      var ary = new Array()
+      var empid = parseInt($("#employeeid").val())
+      $("#tblITAssets td input[type='checkbox']:checked").each(function () {
+        var rowdata = tbl.row($(this).parents('tr')).data()
+        if (rowdata.ITAssetStatus != 1) {
+          Toast("info", "Please select only 'Available' Assets")
+          array = null;
+          ok = false
+          return false;
+
+        }
+        else {
+          var obj = new Object();
+          obj.AssetID = rowdata.IDITAssets
+          obj.AssetName = rowdata.ITAssetName
+          obj.AssetType = "itasset"
+          obj.SenderEmpID = empid
+          ary.push(obj)
+        }
+      });
+
+      if (ok)
+        $.ajax({
+          url: "/CreateOutWardCart",
+          type: 'POST',
+          data: JSON.stringify(ary),
+          dataType: 'json',
+          async: false,
+          success: function (data) {
+
+            Toast("success", "ITAssets are ready for request.")
+          }
+        });
+    })
+
+
+  });
+
+</script>
+<!-- //transfer -->
+
+
+
+{{template "footer"}}
+{{end}}

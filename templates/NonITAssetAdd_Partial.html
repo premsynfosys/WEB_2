@@ -1,0 +1,98 @@
+{{define "NonITAssetAdd_Partial"}}
+<form id="mstrForm">
+    <div class="form-group row ">
+        <label for="NonITAssets_Name" class="col-md-3 col-form-label ">Asset Name:</label>
+        <div class="col-md-9">
+            <input type="text" required maxlength="45" name="NonITAssets_Name" class="form-control " id="NonITAssets_Name"
+                placeholder="Asset Name">
+        </div>
+    </div>
+    <div class=" row">
+        <label for="NonITAssets_GroupID" class="col-md-3 col-form-label ">Group Name</label>
+        <div class="col-md-9">
+            <div class="input-group">
+                <select name="NonITAssets_GroupID" id="NonITAssets_GroupID" class="form-control">
+                </select>
+            </div>
+        </div>
+    </div>
+   <div class="row justify-content-center mb-2">(or)</div>
+    <div class=" row">
+        <label for="NonITAssets_GroupName" class="col-md-3 col-form-label "></label>
+        <div class="col-md-9">
+            <input type="text" maxlength="45" name="NonITAssets_GroupName" class="form-control " id="NonITAssets_GroupName"
+                placeholder="Enter new GroupName">
+        </div>
+    </div>
+    <div class="form-group mt-3 row justify-content-center">
+        <input type="submit" id="createCosnumablemaster" class="btn btn-primary btn-sm" value="Create" />
+    </div>
+</form>
+<script>
+    $(document).ready(function () {
+        var data = getdata('/GetNonITAssetGroups')
+        loadLocations(data)
+        function loadLocations(data) {
+            $("#NonITAssets_GroupID").empty().append('<option value="0">--select--</option>');
+            $.each(data, function (i, el) {
+                $("#NonITAssets_GroupID").append($("<option />", { text: el.NonITAssets_GroupName, value: el.IDNonITAssets_Groups }));
+            });
+        }
+        $("#NonITAssets_GroupID").change(function () {
+            if ($("#NonITAssets_GroupID").val() != 0) {
+                $("#NonITAssets_GroupName").val("")
+            }
+        })
+        $("#NonITAssets_GroupName").change(function () {
+            if ($("#NonITAssets_GroupName").length > 0) {
+                $("#NonITAssets_GroupID").val("0")
+            }
+        })
+
+        $("#NonITAssets_Name").blur(function () {
+            if ($("#NonITAssets_Name").val() != "")
+                $.ajax({
+                    url: "/Check_Unique_NonITAsset/" + $("#NonITAssets_Name").val(),
+                    dataType: 'json',
+                    async: false,
+                    success: function (data) {
+                        if (data.toLowerCase() == $("#NonITAssets_Name").val().toLowerCase()) {
+                            Toast("danger", "Asset already existed with this name")
+                            $("#NonITAssets_Name").val("")
+                        }
+                    }, error: function () {
+                        alert('Internal error')
+                    }
+                });
+        })
+        $("#mstrForm").submit(function (e) {
+            e.preventDefault()
+
+            if ($("#NonITAssets_GroupID").val() == 0 && $("#NonITAssets_GroupName").val() == "") {
+                Toast('warning', 'Please select Group name or Enter new Group Name')
+                return false
+            }
+
+
+            var fd = new FormData(this);
+
+            $.ajax({
+                url: "/NonITAssetemasterInsert",
+                data: fd,
+                type: "POST",
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    Toast("success", "Asset Name added successfully.")
+                    debugger;
+                   window.location.reload()
+                }, error: function () {
+                    alert('Internal error')
+                }
+            });
+
+        })
+
+    })
+</script>
+{{end}}

@@ -1,0 +1,332 @@
+{{  define "Transfer"}}
+{{template "head" .}}
+<div class="page-header">
+    <div class="row align-items-end">
+        <div class="col-lg-8">
+            <div class="page-header-title">
+                <div class="d-inline">
+                    <h5>Assets marked to transfer</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 ">
+            <!-- <button id="btnAssetReq" class="float-right font-weight-bold btn btn-outline-primary btn-rounded mr-2">
+                <i class="ik ik-wind "></i><span>Request for transfer</span></button> -->
+            <button id="btnAssetReqDelet" class="float-right font-weight-bold btn btn-outline-primary btn-rounded mr-2">
+                <i class="ik ik-trash "></i><span>Delete</span></button>
+
+        </div>
+    </div>
+</div>
+<form id="frm">
+    <input type="hidden" name="EmpID" id="EmpID" value="{{.User.IDEmployees}}">
+    <input type="hidden" name="EmpLocation" id="EmpLocation" value="{{.User.LocationID}}">
+    <input type="hidden" name="Grade" id="Grade" value="{{.Data.Grade}}">
+    <input type="hidden" name="ApprvrRoleID" id="ApprvrRoleID" value="{{.Data.RoleID}}">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-block">
+                    <div class="dt-responsive">
+                        <table id="tblTransfer" class="table table-striped  nowrap">
+                            <thead>
+                                <th>ID</th>
+                                <th><input type="checkbox" id="chkSelectAll"></th>
+                                <th>AssetName</th>
+                                <th>AssetType</th>
+                                <th>Quantity</th>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="justify-content-center col-md-6">
+        <div class="form-group row ">
+            <label for="Locations" class="col-md-3 col-form-label ">Locations:</label>
+            <div class="col-md-9">
+                <select name="Locations" required id="Locations" class="form-control float-left">
+                </select>
+            </div>
+        </div>
+        <div class="form-group row ">
+            <label for="Receiver" class="col-md-3 col-form-label ">Receiver:</label>
+            <div class="col-md-9">
+                <select name="Receiver" required id="Receiver" class="form-control float-left">
+                </select>
+            </div>
+        </div>
+        <div class="form-group row ">
+            <label for="Approver" class="col-md-3 col-form-label ">Approver:</label>
+            <div class="col-md-9">
+                <select name="Approver" required id="Approver" class="form-control float-left">
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="Description" class="col-md-3 col-form-label ">Comments:</label>
+            <div class="col-md-9">
+                <textarea name="Description" required maxlength="500" class="form-control form-control-sm"
+                    id="Description" placeholder="Description"></textarea>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <input type="submit" required class="btn btn-primary btn-sm " value="Request" />
+
+        </div>
+
+    </div>
+</form>
+
+
+
+
+<script>
+    $(document).ready(function () {
+        var tbl = $('#tblTransfer').DataTable({
+            responsive: true,
+            "processing": true,
+            scrollY: $(window).height() - 350,
+            scrollCollapse: true,
+            scrollX: true,
+            destroy: true,
+            dom: 't',
+            ajax: {
+                "url": '/GetOutWardCart/' + $("#employeeid").val(),
+                "type": "GET",
+                "datatype": "json",
+                "dataSrc": ""//to read data from a plain array rather than an array in an object:
+            },
+            columnDefs: [
+                { orderable: false, targets: 1 },
+                { visible: false, targets: 0 }
+            ],
+            "order": [
+                [0, 'desc']
+            ],
+            // destroy: true,//to over come reintilize prblms
+            "columns": [
+                {
+                    "name": "IDOutWardCart",
+                    'data': 'IDOutWardCart'
+                }, {
+                    "name": "Select",
+                    'data': null,
+                    render: function (dt) {
+                        return '<input type="checkbox" class="tblchk" data-type=' + dt.AssetType + ' value=' + dt.AssetID + '>';
+                    }
+                }, {
+                    "name": "AssetName",
+                    'data': null,
+                    render: function (dt) {
+                        if (dt.AssetType == "itasset")
+                            return '<a class="text-info font-weight-bold"  href="/ITAssets/view/' + dt.AssetID + '">' + dt.AssetName + '</a> ';
+                        else if (dt.AssetType == "consumable")
+                            return '<a class="text-info font-weight-bold" href="/Consumables/ConsumableView/' + dt.AssetID + '">' + dt.AssetName + '</a> ';
+                        else
+                            return '<a class="text-info font-weight-bold" href="/NonITAsset/AssetID/' + dt.AssetID + '">' + dt.AssetName + '</a> ';
+
+                    }
+                }, {
+                    "name": "AssetType",
+                    'data': "AssetType",
+                    render: function (dt) {
+                        if (dt == "itasset")
+                            return "ITAsset";
+                        else if (dt == "consumable")
+                            return "Consumable";
+                            else
+                            return "NonITAssets";
+
+                    }
+                }, {
+                    "name": "Quantity",
+                    'data': null,
+                    render: function (dt) {
+                        if (dt.AssetType == "itasset")
+                            return "<input type='number' value='1' readonly class='Quantity' />";
+                        else
+                            return "<input type='number' min='1' class='Quantity' />";
+                    }
+                }
+            ]
+        });
+        $("input.chkClmn").click(function (e) {
+            // Get the column API object
+            if ($(this).attr('id') == "chkAll") {
+                if ($(this).prop("checked")) {
+                    for (var i = 0; i < tbl.init().columns.length; i++) {
+                        tbl.column(i).visible(true, true)
+                    }
+                    $("input.chkClmn").prop("checked", true)
+                    tbl.columns.adjust().draw();
+                }
+            }
+            else {
+                var column = tbl.column($(this).val());
+                // Toggle the visibility
+                if ($(this).prop("checked"))
+                    column.visible(true);
+                else {
+                    column.visible(false);
+                    $("#chkAll").prop("checked", false)
+                }
+            }
+        })
+        $("#chkSelectAll").click(function () {
+            if ($("#chkSelectAll").prop('checked'))
+                $(".tblchk").prop('checked', true);
+            else
+                $(".tblchk").prop('checked', false);
+        })
+
+        $("#Receiver").empty().append('<option selected="selected" value="">--select--</option>');
+        $("#Approver").empty().append('<option selected="selected" value="">--select--</option>');
+        $("#Locations").append('<option selected="selected" value="">--select--</option>');
+        // if ("{{.Auth.Accesstoalllocations}}") {
+        //     LoadUsers(getdata("/GetEmployeesList"))
+        // }
+        // else {
+        //     LoadUsers(getdata("/GetEmployeesList?LocID=" + $("#locationid").val()))
+
+        // }
+
+
+
+        $("#frm").submit(function (e) {
+            e.preventDefault();
+            if ($("#tblTransfer td input[type='checkbox']:checked").length <= 0) {
+                alert("Please check atleast one item")
+                return false
+            }
+
+            if (getUnavailableAssets()) {
+                Toast("danger", "Some Assets are not availble to request.")
+                return false
+            }
+
+
+            var fd = new FormData(this);
+            var data = getselectedassets()
+            fd.append('ListInWardOutWardAsset', JSON.stringify(data));
+            $.ajax({
+                url: "/CreateInWardOutWard",
+                type: 'POST',
+                data: fd,
+                dataType: 'json',
+                contentType: false,
+                processData: false,
+                async: false,
+                success: function (data) {
+
+                    location.reload();
+                },
+                error: function (jqXHR, textStatus, errorThrown) { alert('Invalid exception'); }
+            });
+        })
+
+        $("#btnAssetReqDelet").click(function () {
+            if ($("#tblTransfer td input[type='checkbox']:checked").length <= 0) {
+                alert("Please check atleast one item")
+                return false
+            }
+            var data = getselectedassets()
+            var fd = new FormData();
+            fd.append('ListInWardOutWardAsset', JSON.stringify(data));
+            fd.append('EmpID', $("#EmpID").val());
+            $.ajax({
+                url: "/DeleteOutWardCart",
+                type: 'POST',
+                data: fd,
+                // dataType: 'json',
+                contentType: false,
+                processData: false,
+                async: false,
+                success: function (data) {
+                    location.reload();
+                }
+            });
+        })
+
+        loadLocations(getdata('/GetLocations'))
+        function loadLocations(data) {
+            $("#Location").empty().append('<option  value="0">--select--</option>');
+            $.each(data, function (i, el) {
+                $("#Locations").append($("<option />", { text: el.Name + "\n" + el.Address1 + "\n" + el.Address2 + "\n" + el.Countryname + "\n" + el.Statename + "\n" + el.Zipcode, value: el.IDLocations }));
+            });
+
+            $('#Locations option[value="' + $("#locationid").val() + '"]').prop('disabled', true);
+        }
+        LoadReceivers(getdata("/GetApprovers/0/2"))
+        function LoadReceivers(data) {
+            $.each(data, function (i, el) {
+                if (el.Employee.Location != $("#locationid").val()) {
+                    $("#Receiver").append($("<option />", { text: el.Employee.FirstName, value: el.Employee.IDEmployees }));
+                }
+                //$("#Approver").append($("<option />", { text: el.FirstName, value: el.IDEmployees }));
+            });
+        };
+        LoadApprover(getdata("/GetApprovers/" + $("#locationid").val() + "/{{.Data.RoleID}}"))
+        function LoadApprover(data) {
+            debugger;
+            $.each(data, function (i, el) {
+                $("#Approver").append($("<option />", { text: el.Employee.FirstName, value: el.Employee.IDEmployees }));
+            });
+        };
+        function getselectedassets() {
+            var ary = new Array()
+            $("#tblTransfer td input[type='checkbox']:checked").each(function () {
+                var rowdata = tbl.row($(this).parents('tr')).data()
+                var obj = new Object();
+                obj.AssetID = rowdata.AssetID
+                // obj.AssetName = rowdata.AssetName
+                obj.AssetType = rowdata.AssetType
+                obj.Quantity = parseInt($(this).parents('tr').find('.Quantity').val())
+                obj.TransferStatus = 9 //outwardrequested
+                ary.push(obj)
+
+            });
+            return ary
+        }
+        function getUnavailableAssets() {
+            var arry = new Array()
+            $("#tblTransfer td input[type='checkbox']:checked").each(function () {
+                var rowdata = tbl.row($(this).parents('tr')).data()
+                var obj = new Object();
+                obj.AssetID = parseInt(rowdata.AssetID)
+                obj.AssetType = rowdata.AssetType
+                obj.Quantity = parseInt($(this).parents('tr').find('.Quantity').val())
+                arry.push(obj)
+            });
+
+            var bool = false;
+            $.ajax({
+                url: "/GetAssetdIDsNotEligbleForTransfer",
+                type: 'POST',
+                data: JSON.stringify(arry),
+                dataType: 'json',
+                async: false,
+                success: function (data) {
+
+                    $("#tblTransfer td input[type='checkbox']:checked").each(function () {
+                        var rowdata = tbl.row($(this).parents('tr')).data()
+                        var qnty = parseInt($(this).parents('tr').find('.Quantity').val())
+                        if (data.find(el => el.AssetID == rowdata.AssetID && el.AssetType == rowdata.AssetType && el.Quantity <= qnty)) {
+                            $(this).parents('tr').addClass('text-warning')
+                            bool = true
+                        }
+                    });
+                }
+            });
+
+            return bool;
+        }
+
+    });
+
+
+</script>
+{{template "footer"}}
+{{end}}

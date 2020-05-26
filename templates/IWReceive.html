@@ -1,0 +1,197 @@
+{{define "IWReceive"}}
+{{template "head" .}}
+
+
+<form id="frm" method="POST">
+    <div class="row">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="d-block w-100">In-ward <small class="float-right">Status:
+                        <b>{{.Data.Status.StatusName}}</b></small></h3>
+            </div>
+            <div class="card-body">
+                <div class="row invoice-info">
+                    <div class="col-sm-4 invoice-col">
+                        From
+                        <address>
+                            <strong>{{.Data.SenderEmployee.FirstName}} {{.Data.SenderEmployee.LastName}},</strong><br>
+                            {{.Data.FromLocation.Name}}, {{.Data.FromLocation.Address1}}
+                            <br>{{.Data.FromLocation.Address1}}, {{.Data.FromLocation.Zipcode}} <br>Phone:
+                            {{.Data.SenderEmployee.Mobile}}<br>Email: {{.Data.SenderEmployee.Email}}
+                        </address>
+                    </div>
+                    <div class="col-sm-4 invoice-col">
+                        To
+                        <address>
+                            <strong>{{.Data.ReceiverEmployee.FirstName}}
+                                {{.Data.ReceiverEmployee.LastName}}</strong><br>{{.Data.ToLocation.Name}},
+                            {{.Data.ToLocation.Address1}}<br>{{.Data.ToLocation.Address1}},
+                            {{.Data.ToLocation.Zipcode}}<br>Phone: {{.Data.ReceiverEmployee.Mobile}}<br>Email:
+                            {{.Data.ReceiverEmployee.Email}}
+                        </address>
+                    </div>
+                    <div class="col-sm-4 invoice-col">
+                        <b>Transaction:</b> #{{.Data.TransactionID}}<br>
+                        <b>Total Assets:</b> {{.Data.TotalItems}}<br>
+                        <!-- <br>
+                        <b>Approver:</b> {{.Data.ApproverEmployee.FirstName}} {{.Data.ApproverEmployee.LastName}}<br>
+                        <b>Email:</b> {{.Data.ApproverEmployee.Email}}<br>
+                        <b>Phone:</b> {{.Data.ApproverEmployee.Mobile}} -->
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 table-responsive">
+                        <table id="tblIWAssets" class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="display:none">idinwardoutwardAssets</th>
+                                    <th>Asset Name</th>
+                                    <th>Asset Type</th>
+                                    <th>Sent Quantity</th>
+                                    <th>Received Quantity</th>
+                                    <th>Comments</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{range .Data.ListInWardOutWardAsset}}
+                                <tr>
+                                    <td class="IDinwardoutwardAssets" style="display:none">{{.IDinwardoutwardAssets}}
+                                        <input class="AssetID" type="hidden" value="{{.AssetID}}" />
+                                    </td>
+                                    {{if  .ITAsset.ITAssetName}}
+                                    <td>{{.ITAsset.ITAssetName}}</td>
+                                    {{else if .Consumable.Consumablemaster.ConsumableName}}
+                                    <td>{{.Consumable.Consumablemaster.ConsumableName}}</td>
+                                    {{else}}
+                                    <td>{{.NonITAsset.NonITAssets_Master.NonITAssets_Name}}</td>
+                                    {{end}}
+                                    <td class="AssetType">{{.AssetType}}</td>
+                                    <td class="qnty">{{.Quantity}}</td>
+                                    <td>
+                                        {{if eq .TransferStatus 11 }}
+                                        <input type="number" min="0" class="RcvdQuantity w-25" value="{{.Quantity}}">
+                                        {{else}}
+                                        {{.ReceivedQuantity}}
+                                        {{end}}
+                                    </td>
+                                    <td>
+                                        {{if eq .TransferStatus 11 }}
+                                        <textarea class="Comments" maxlength="500"
+                                            placeholder="Comments">Received</textarea>
+                                        {{else}}
+                                        {{.Description}}
+                                        {{end}}
+
+                                    </td>
+                                    <td>
+                                        {{if eq .TransferStatus 11 }}
+                                        <select class="Status">
+                                            <option value="12">Received</option>
+                                            <option value="13">Partially Received</option>
+                                            <option value="15">Not Received</option>
+                                        </select>
+                                        {{else}}
+                                        {{.Status.StatusName}}
+                                        {{end}}
+                                    </td>
+                                </tr>
+                                {{end}}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="row">
+
+                </div>
+                <div class="row no-print">
+                    <div class="col-12">
+                        {{if eq .Data.TransferStatus 11 }}
+                        <button id="Received" value="Received" type="button" class="btn btn-success pull-right"><i
+                                class="fa fa-check"></i>Received</button>
+                        {{end}}
+                        <button id="print" type="button" class="btn btn-primary pull-right"
+                            style="margin-right: 5px;"><i class="fa fa-download"></i>Print</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+    $(document).ready(function () {
+        function tabledata() { 
+            var InWardOutWard = new Object();
+            var ListInWardOutWardAsset = new Array();
+            $("#tblIWAssets tbody tr").each(function (i, e) {
+                var obj = new Object();
+                obj.IDinwardoutwardAssets = parseInt($(this).find(".IDinwardoutwardAssets").text().trim())
+                obj.AssetID = parseInt($(this).find(".AssetID").val().trim())
+                obj.Description = $(this).find(".Comments").val().trim()
+                obj.AssetType = $(this).find(".AssetType").text().trim()
+                obj.TransferStatus = parseInt($(this).find(".Status").val().trim())
+                obj.ReceivedQuantity = parseInt($(this).find(".RcvdQuantity").val().trim())
+                ListInWardOutWardAsset.push(obj)
+            })
+            InWardOutWard.ListInWardOutWardAsset = ListInWardOutWardAsset;
+            InWardOutWard.IDInWardOutWard = parseInt("{{.Data.IDInWardOutWard}}")
+            InWardOutWard.ToLocationID = parseInt("{{.Data.ToLocationID}}")
+            InWardOutWard.FromLocationID = parseInt("{{.Data.FromLocationID}}")
+          
+            InWardOutWard.SenderEmpID = parseInt("{{.Data.SenderEmpID}}")
+            InWardOutWard.TransactionID = "{{.Data.TransactionID}}"
+            return InWardOutWard;
+        }
+
+        $("#Received").click(function () {
+
+            var Data = tabledata();
+
+            $.ajax({
+                url: "/ReceiveIWAssets",
+                type: 'POST',
+                data: JSON.stringify(Data),
+                dataType: 'json',
+                success: function () {
+                    alert('Received Successfully')
+                    window.location.reload();
+                    // var msg = "Transaction #{{.Data.TransactionID}} is approved.."
+                    // WsToast(msg, "Admin", null)
+                    // window.location = "http://" + document.location.host + "/ITAssets";
+                },
+                error: function () {
+                    alert('Internal Error')
+                },
+                complete: function () {
+                }
+            });
+        })
+
+        $("#print").click(function () {
+            var printContents = $("#frm").not(".no-print").html();
+            var originalContents = document.body.innerHTML;
+
+            document.body.innerHTML = printContents;
+
+            window.print();
+
+            document.body.innerHTML = originalContents;
+            window.close();
+
+        })
+
+        $("#tblIWAssets tbody tr").change(".RcvdQuantity", function () {
+            if (parseInt($(this).find(".qnty").text()) < parseInt($(this).find(".RcvdQuantity").val().trim())) {
+                $(this).find(".RcvdQuantity").val(parseInt($(this).find(".qnty").text()))
+            }
+
+        })
+
+    });
+
+</script>
+
+{{template "footer"}}
+{{end}}

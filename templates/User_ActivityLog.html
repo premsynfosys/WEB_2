@@ -1,0 +1,226 @@
+{{  define "User_ActivityLog"}}
+{{template "head" .}}
+<div class="page-header">
+    <div class="row align-items-end">
+        <div class="col-lg-6 col-md-6">
+            <div class="page-header-title">
+                <div class="d-inline">
+                    <h5>Activity Log - {{.Data.name}}</h5>
+                </div>
+            </div>
+        </div>
+        <div class="container col-lg-6 col-md-6">
+            <div class=" row ">
+                <div class="col-sm-auto col-lg-auto">
+                    <input type="text" name="FromDate" class="form-control datetimepicker-input w-auto"
+                        data-toggle="datetimepicker" autocomplete="off" data-target="#FromDate" id="FromDate">
+                </div>
+                <div class="col-sm-auto col-lg-auto align-self-center">
+                    To
+                </div>
+                <div class="col-sm-auto col-lg-auto">
+                    <input type="text" name="ToDate" class="form-control datetimepicker-input w-auto"
+                        data-toggle="datetimepicker" autocomplete="off" data-target="#ToDate" id="ToDate">
+                </div>
+                <div class="col-sm-auto col-lg-auto">
+                    <button id="dateGo" class="btn btn-info btn-sm">Go</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <input type="hidden" id="EmpID" value="{{.Data.id}}">
+        <div class="card">
+            <div class="card-block">
+                <div class="dt-responsive">
+                    <table id="tblEmployee" class="table table-striped table-bordered " width="100%">
+                        <thead>
+                            <th>IDHistory</th>
+                            <th>IDMaintable</th>
+                            <th>Name</th>
+                            <th>Action Performed</th>
+                            <th>Action Performed On</th>
+                            <th>Module</th>
+
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div id="tblbtn" class="btn-group dropright float-left ">
+            <button type="button" class="btn btn-info dropdown-toggle btn-sm " data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                Export </button>
+            <div id="tblbtnList" class="dropdown-menu">
+            </div>
+        </div>
+        <div id="tblClmnbtn" class="btn-group dropright float-left mr-1 ">
+            <button type="button" class="btn btn-info dropdown-toggle btn-sm " data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                Fields </button>
+            <div id="tblClmnbtnList" class="dropdown-menu">
+                <div class="form-check form-check-inline dropdown-item">
+                    <input class="form-check-input chkClmn" type="checkbox" checked id="chkAll">
+                    <label class="form-check-label " for="chkAll">Select All</label></div>
+
+                <div class="dropdown-divider"></div>
+            </div>
+        </div>
+        <button type="button" id="btnRefresh" title="Refresh" class="btn btn-info btn-sm  float-left  ml-1 "><i
+                class="ik ik-refresh-ccw"></i>
+        </button>
+    </div>
+</div>
+
+
+
+<script>
+
+    $(document).ready(function () {
+        var dateNow = new Date();
+        $('#FromDate').datetimepicker({
+            format: 'YYYY-MM-DD',
+            defaultDate: moment().subtract(10, 'days').hours(0).minutes(0).seconds(0).milliseconds(0),
+
+        });
+        $('#ToDate').datetimepicker({
+            format: 'YYYY-MM-DD',
+            defaultDate: moment(dateNow).hours(0).minutes(0).seconds(0).milliseconds(0)
+        });
+        // var url;
+        // function data() {
+        //     var data = new Object();
+        //     data.FromDate = $('#FromDate').val()
+        //     data.ToDate = $('#ToDate').val()
+        //     return data
+        // }
+
+        var tbl = $('#tblEmployee').DataTable({
+            responsive: true,
+            "processing": true,
+            scrollY: $(window).height() - 350,
+            scrollCollapse: true,
+            scrollX: true,
+            destroy: true,
+            dom: 'Bfrtip',
+            ajax: {
+                "url": '/Activivty_Log_List/' + $("#EmpID").val() + '?FromDate=' + $('#FromDate').val() + ' 00:00:00 &ToDate=' + $('#ToDate').val()+' 23:59:59',
+                // "data": data(),
+                "type": "POST",
+                "datatype": "json",
+                "dataSrc": ""//to read data from a plain array rather than an array in an object:
+            },
+            columnDefs: [
+             
+                { visible: false, targets: 0 },
+                { visible: false, targets: 1 }
+
+            ],
+           
+
+            "columns": [
+                {
+                    "name": "IDHistory",
+                    'data': 'IDHistory'
+                },
+                {
+                    "name": "IDMaintable",
+                    'data': 'IDMaintable'
+                },
+                {
+                    "name": "Name",
+                    'data': "Name"
+                }, {
+                    "name": "ActionPerformed",
+                    'data': 'ActionPerformed'
+                }, {
+                    "name": "ActionPerformedOn",
+                    'data': "CreatedOn"
+
+                }, {
+                    "name": "Module",
+                    "data": "Module"
+                }
+            ], buttons: [
+
+                {
+                    text: 'Excel',
+                    extend: "excel",
+                    className: ' dropdown-item',
+                    title: "Activity Log Details",
+                    exportOptions: {
+                        columns: ':visible'
+                        // columns: ':not(.notexport)'
+                    }
+                }
+            ]
+        });
+
+
+
+        $("#tblbtn").prependTo('#tblEmployee_filter')
+        tbl.buttons().containers().prependTo('#tblbtnList')
+        $('.dt-button').removeClass('dt-button').addClass(' btn btn-light btn-sm ');
+        $(".buttons-colvis").removeClass('btn-light').addClass('btn-info float-left ml-1').appendTo('#tblEmployee_filter')
+        $("#tblClmnbtn").prependTo('#tblEmployee_filter')
+        $("#btnRefresh").appendTo('#tblEmployee_filter')
+        var idx = 0;
+        //show hide clmns
+        tbl.columns().every(function () {
+            if (idx != 0 && idx != 1) {
+                var html = '<div class="form-check form-check-inline dropdown-item">'
+                html += '<input class="form-check-input chkClmn" type="checkbox" checked id="chk' + idx + '" value="' + idx + '">'
+                html += '<label class="form-check-label " for="chk' + idx + '">' + this.header().innerHTML + '</label></div>'
+                $("#tblClmnbtnList").append(html)
+            }
+            idx++;
+
+        });
+
+        $("input.chkClmn").click(function (e) {
+
+            // Get the column API object
+            if ($(this).attr('id') == "chkAll") {
+                if ($(this).prop("checked")) {
+                    for (var i = 1; i < tbl.init().columns.length; i++) {
+                        tbl.column(i).visible(true, true)
+                    }
+                    $("input.chkClmn").prop("checked", true)
+                    tbl.columns.adjust().draw();
+                }
+            }
+            else {
+                var column = tbl.column($(this).val());
+                // Toggle the visibility
+                if ($(this).prop("checked"))
+                    column.visible(true);
+                else {
+                    column.visible(false);
+                    $("#chkAll").prop("checked", false)
+                }
+            }
+        })
+
+        $("#dateGo").click(function () {
+            tbl.ajax.url('/Activivty_Log_List/' + $("#EmpID").val() + '?FromDate=' + $('#FromDate').val() + ' 00:00:00 &ToDate=' + $('#ToDate').val()+' 23:59:59').load()
+        })
+
+
+        $("#btnRefresh").click(function () {
+            tbl.search("").draw();
+            for (var i = 2; i < tbl.init().columns.length; i++) {
+                tbl.column(i).visible(true, true)
+            }
+            $("input.chkClmn").prop("checked", true)
+            tbl.columns.adjust().draw();
+            // tbl.ajax.reload()
+        })
+    });
+
+
+</script>
+{{template "footer"}}
+{{end}}

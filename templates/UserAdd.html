@@ -1,0 +1,73 @@
+{{define "UserAdd"}}
+<html lang="en">
+
+<head>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="/static/node_modules/@fortawesome/fontawesome-free/js/all.js"></script>
+    <link href="/static/node_modules/@fortawesome/fontawesome-free/css/all.css" rel="stylesheet">
+
+
+
+
+
+</head>
+
+<body>
+    <!-- Default form login -->
+    <div class="container col-md-6 col-sm-10  col-lg-4 ">
+        <form class="text-center border border p-5" action="/UserCreate" method="POST">
+            <p class="h4 mb-4">Hi {{.FirstName}}</p>
+            <!-- Email -->
+            <input type="hidden" name="IDUsers" value="{{.User.IDUsers}}">
+            <input type="text" required autocomplete="off" id="UserName" name="UserName" class="form-control mb-4"
+                placeholder="User Name">
+            <input type="password" required name="Password" id="Password" class="form-control mb-4"
+                placeholder="Password">
+            <input type="password" required name="ConfirmPassword" id="ConfirmPassword" class="form-control mb-4"
+                placeholder="Confirm Password">
+            <button class="btn btn-info btn-block my-4" type="submit">Create</button>
+            <script>
+                var password = document.getElementById("Password")
+                var confirm_password = document.getElementById("ConfirmPassword");
+                function validatePassword() {
+                    if (password.value != confirm_password.value) {
+                        confirm_password.setCustomValidity("Passwords Don't Match");
+                    } else {
+                        confirm_password.setCustomValidity('');
+                    }
+
+                }
+                password.onchange = validatePassword;
+                confirm_password.onkeyup = validatePassword;
+
+
+                $("#UserName").blur(function (e) {
+                  
+                    if (this.value != "")
+                        $.ajax({
+                            url: '/Check_Unique_UserName/'+$("#UserName").val(),
+                            type: 'POST',
+                            success: function (dt) {
+                                if (dt == $("#UserName").val()) {
+                                    alert('UserName already exist')
+                                    $("#UserName").val('')
+                                    $("#UserName").focus()
+                                }
+                            }, error: function () {
+                                alert('Internal error')
+                            }
+                        });
+                })
+
+            </script>
+        </form>
+    </div>
+</body>
+
+
+
+</html>
+{{end}}

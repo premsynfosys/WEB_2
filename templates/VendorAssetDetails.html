@@ -1,0 +1,499 @@
+{{  define "VendorAssetDetails"}}
+{{template "head" .}}
+<div class="page-header">
+  <div class="row align-items-end">
+    <div class="col-lg-8">
+      <div class="page-header-title">
+        <div class="d-inline">
+          <h5>Vendor's Assets List</h5>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="col-lg-4">
+      <a class="float-right  font-weight-bold btn btn-outline-primary btn-rounded ml-1" title="History"
+        href="/EmployeesHistory"><i class="ik ik-list  "></i><span>History</span></a>
+    </div> -->
+  </div>
+</div>
+<div class=" row">
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <label for="Vendor" class="col-sm-3 col-form-label ">Vendor:</label>
+        <div class="col-sm-9 ">
+          <div class="input-group">
+            <select name="Vendor" id="Vendor" class="form-control">
+            </select>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="row">
+          <label class="col-sm-3 col-form-label ">Vendor Address:</label>
+          <div class="col-sm-9 ">
+            <div class="input-group">
+              <text id="VendorAddress" class="col-sm-3 col-form-label "></text>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="row">
+        <label for="ConsumableNames" class="col-sm-3 col-form-label ">Consumables:</label>
+        <div class="col-sm-9 ">
+          <div class="input-group">
+            <select name="ConsumableNames" id="ConsumableNames" class="form-control">
+            </select>
+            <span class="input-group-append ">
+              <label class="input-group-text bg-info"> <a href="#" id="btnmdlConsumable"
+                  title="Craete Consumable">Add</a></label>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <label class="col-sm-3 col-form-label">Price per each:</label>
+        <div class="col-sm-3 ">
+          <div class="input-group">
+            <input type="number" title="Asset Price" min="0" id="AssetPriceEach" name="AssetPriceEach"
+              class="form-control">
+            <span class="input-group-append">
+              <label class="input-group-text">&#8377;</label>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <label class="col-sm-3 col-form-label">Asset Type:</label>
+        <div class="col-sm-3 ">
+          <div class="input-group">
+            <input type="text" title="Asset Type" id="AssetType" name="AssetType" class="form-control">
+            <span class="text-muted v-bottom"> &nbsp; -- In Weights/Liters </span>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <label class="col-sm-3 col-form-label">Vendor referred Asset Name:</label>
+        <div class="col-sm-3 ">
+          <div class="input-group">
+            <input type="text" name="VendorRfrdAssetName" id="VendorRfrdAssetName" class="form-control">
+          </div>
+        </div>
+      </div>
+      <div class="form-group row justify-content-center">
+        <input type="button" id="mapVendorAsset" class="btn btn-primary btn-sm" value="Add" />&nbsp;
+        <input type="button" id="RemapVendorAsset" class="btn btn-primary btn-sm" value="Upadte" />
+        &nbsp;
+        <input type="button" id="VendorAssetClear" class="btn btn-primary btn-sm" value="Clear" />
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-block">
+          <label>
+            <h6 id="tbltitle">Asset Details</h6>
+          </label>
+          <div class="dt-responsive">
+            <table id="tblVendorAsset" class="table table-striped table-bordered " width="100%">
+              <thead>
+                <th>IDVendors_ConsumableMaster_Map</th>
+                <th>Select</th>
+                <th>Vendor Name</th>
+                <th>Asset Name</th>
+                <th>Asset Group</th>
+                <th>Asset Description</th>
+                <th>Price/Unit</th>
+                <th>Item Type</th>
+                <th>Created On</th>
+                <th>Created By</th>
+              </thead>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div id="tblbtn" class="btn-group dropright float-left ">
+        <button type="button" class="btn btn-info dropdown-toggle btn-sm " data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          Export </button>
+        <div id="tblbtnList" class="dropdown-menu">
+        </div>
+      </div>
+      <div id="tblClmnbtn" class="btn-group dropright float-left mr-1 ">
+        <button type="button" class="btn btn-info dropdown-toggle btn-sm " data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          Fields </button>
+        <div id="tblClmnbtnList" class="dropdown-menu">
+          <div class="form-check form-check-inline dropdown-item">
+            <input class="form-check-input chkClmn" type="checkbox" checked id="chkAll">
+            <label class="form-check-label " for="chkAll">Select All</label></div>
+
+          <div class="dropdown-divider"></div>
+        </div>
+      </div>
+      <!-- <button type="button" id="btnRefresh" title="Refresh" class="btn btn-info btn-sm  float-left  ml-1 "><i
+          class="ik ik-refresh-ccw"></i>
+      </button> -->
+    </div>
+  </div>
+</div>
+
+
+<!-- view -->
+
+
+<div class="modal fade bd-example-modal-lg ConsumableView" tabindex="-1" role="dialog"
+  aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content ">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ConsumableBodyLabel">
+          Add Consumable </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body ConsumableBody">
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+
+  $(document).ready(function () {
+    data = getdata('/GetVendors')
+    loadVendors(data)
+    function loadVendors(data) {
+      $("#Vendor").empty().append('<option value="0">--select--</option>');
+      $.each(data, function (i, el) {
+        $("#Vendor").append($("<option />", { 'data-Address': el.Address, 'data-Email': el.Email, 'data-ContactPersonName': el.ContactPersonName, 'data-Phone': el.Phone, text: el.Name, value: el.Idvendors }));
+      });
+    }
+    function loadConsumableNames(data) {
+      $("#ConsumableNames").empty().append('<option selected="selected" value="">--select--</option>');
+      $.each(data, function (i, el) {
+        $("#ConsumableNames").append($("<option />", { text: el.ConsumableName, value: el.IDconsumableMaster, 'data-subtext': el.Description, 'data-groupid': el.GroupID, 'data-tokens': el.GroupName + " " + el.ConsumableName }));
+      });
+    }
+
+
+    var data = getdata('/Consumables/GetConsumableMasterList')
+    loadConsumableNames(data)
+
+
+
+    var tbl = $('#tblVendorAsset').DataTable({
+      responsive: true,
+      "processing": true,
+      scrollY: $(window).height() - 350,
+      scrollCollapse: true,
+      scrollX: true,
+      destroy: true,
+      dom: 'Bfrtip',
+      ajax: {
+        "url": '/GetVendorsAssetDetails/' + $("#Vendor").val(),
+        "type": "GET",
+        "datatype": "json",
+        "dataSrc": ""//to read data from a plain array rather than an array in an object:
+      },
+      columnDefs: [
+        { orderable: false, targets: 1 },
+        { visible: false, targets: 0 }
+      ],
+      "order": [
+        [0, 'desc']
+      ],
+      // destroy: true,//to over come reintilize prblms
+      "columns": [
+        {
+          "name": "IDVendors_ConsumableMaster_Map",
+          'data': 'Vendors_consumablemaster_map.IDVendors_ConsumableMaster_Map'
+        },
+        {
+          "name": "Select",
+          'data': null,
+          render: function (dt) {
+            return "<button  title='Edit Vendor'  data-value='" + dt.Vendors_consumablemaster_map.IDVendors_ConsumableMaster_Map + "'  class=' VendmapEdit btn btn-link text-warning '><i class='ik ik-edit btn-xs '></i></button>"
+
+          }
+        }, {
+          "name": "VendorName",
+          'data': "Vendors",
+          render: function (dt) {
+            return dt.Name;
+          }
+        }, {
+          "name": "AssetName",
+          'data': "Consumablemaster",
+          render: function (dt) {
+
+            return dt.ConsumableName;
+          }
+        }, {
+          "name": "AssetGroup",
+          'data': 'Consumablegroups.ConsumableGroupName'
+        }, {
+          "name": "AssetDescription",
+          'data': 'Consumablemaster.Description'
+        }, {
+          "name": "PriceperUnit",
+          "data": "Vendors_consumablemaster_map.PriceperUnit",
+          render: function (dt) {
+            return dt + "&nbsp;₹"
+          }
+        }, {
+          "name": "ItemType",
+          'data': 'Vendors_consumablemaster_map.ItemType'
+        }, {
+          "name": "CreatedOn",
+          'data': "Vendors_consumablemaster_map",
+          render: function (dt) {
+            return jsondate(dt.CreatedOn);
+          }
+        }, {
+          "name": "CreatedBy",
+          'data': 'CreatedBy'
+        }
+      ], buttons: [
+        {
+          text: 'Excel',
+          extend: "excel",
+          className: ' dropdown-item',
+          title: "Vendor Asset Details",
+          exportOptions: {
+            columns: ':visible'
+            // columns: ':not(.notexport)'
+          }
+        }
+      ]
+    });
+    $("#tblbtn").prependTo('#tblVendorAsset_filter')
+    tbl.buttons().containers().prependTo('#tblbtnList')
+    $('.dt-button').removeClass('dt-button').addClass(' btn btn-light btn-sm ');
+    $(".buttons-colvis").removeClass('btn-light').addClass('btn-info float-left ml-1').appendTo('#tblVendorAsset_filter')
+    $("#tblClmnbtn").prependTo('#tblVendorAsset_filter')
+    // $("#btnRefresh").appendTo('#tblVendorAsset_filter')
+    var idx = 0;
+    //show hide clmns
+    tbl.columns().every(function () {
+      if (idx != 0 && idx != 1) {
+        var html = '<div class="form-check form-check-inline dropdown-item">'
+        html += '<input class="form-check-input chkClmn" type="checkbox" checked id="chk' + idx + '" value="' + idx + '">'
+        html += '<label class="form-check-label " for="chk' + idx + '">' + this.header().innerHTML + '</label></div>'
+        $("#tblClmnbtnList").append(html)
+      }
+      idx++;
+
+    });
+
+    $("input.chkClmn").click(function (e) {
+
+      // Get the column API object
+      if ($(this).attr('id') == "chkAll") {
+        if ($(this).prop("checked")) {
+          for (var i = 1; i < tbl.init().columns.length; i++) {
+            tbl.column(i).visible(true, true)
+          }
+          $("input.chkClmn").prop("checked", true)
+          tbl.columns.adjust().draw();
+        }
+      }
+      else {
+        var column = tbl.column($(this).val());
+        // Toggle the visibility
+        if ($(this).prop("checked"))
+          column.visible(true);
+        else {
+          column.visible(false);
+          $("#chkAll").prop("checked", false)
+        }
+      }
+    })
+
+
+    $("#chkSelectAll").click(function () {
+
+      if ($("#chkSelectAll").prop('checked'))
+        $(".tblchk").prop('checked', true);
+      else
+        $(".tblchk").prop('checked', false);
+    })
+
+    // $("#btnRefresh").click(function () {
+    //   tbl.search("").draw();
+    //   for (var i = 1; i < tbl.init().columns.length; i++) {
+    //     tbl.column(i).visible(true, true)
+    //   }
+    //   $("input.chkClmn").prop("checked", true)
+    //   tbl.columns.adjust().draw();
+    //   // tbl.ajax.reload()
+    // })
+
+    $("#Vendor").change(function () {
+
+      var id;
+      var column = tbl.column(2);
+      if ($(this).val() == "0") {
+        $("#tbltitle").text("Asset Deatils")
+        id = 0
+        column.visible(true)
+        $("#VendorAddress").text("")
+        tbl.ajax.url('/GetVendorsAssetDetails/0').load()
+
+        $("#VendorAddress").text("")
+      }
+      else {
+        var optn = $('#Vendor option:selected')
+        $("#tbltitle").text(optn.text() + " - " + "Asset Deatils")
+        id = $(this).val()
+        column.visible(false)
+        //  'data-Address': el.Address, 'data-Email': el.Email, 'data-ContactPersonName': el.ContactPersonName, 'data-Phone': el.Phone, 
+
+        $("#VendorAddress").text(optn.attr('data-Address') + optn.attr('data-Phone'))
+        var lnk = '/GetVendorsAssetDetails/' + id;
+
+        tbl.ajax.url(lnk).load()
+      }
+
+      // tbl.columns.adjust().draw();
+    })
+    RemapVendorAsset
+    $("#mapVendorAsset").click(function () {
+      if ($("#Vendor").val() == "0") {
+        Toast("warning", "Please select Vendor")
+        $("#Vendor").focus()
+        return false;
+      }
+      else if ($("#ConsumableNames").val() == "") {
+        Toast("warning", "Please select Consumable")
+        $("#ConsumableNames").focus(); return false;
+      }
+      else if ($("#AssetPriceEach").val() == "") {
+        Toast("warning", "Please select Price for each")
+        $("#AssetPriceEach").focus(); return false;
+      }
+      var obj = new Object()
+      obj.VendorsID = parseInt($("#Vendor").val())
+      obj.ConsumableMasterID = parseInt($("#ConsumableNames").val())
+      obj.PriceperUnit = parseFloat($("#AssetPriceEach").val())
+      obj.ItemType = $("#AssetType").val()
+      obj.VendorRfrdAssetName = $("#VendorRfrdAssetName").val()
+      obj.CreatedBy = parseFloat($("#employeeid").val());
+      var iselgible = true;
+      tbl.rows().every(function (rowIdx, tableLoop, rowLoop) {
+        var data = this.data();
+        if (data.Vendors.Idvendors == obj.VendorsID && data.Consumablemaster.IDconsumableMaster == obj.ConsumableMasterID) {
+          iselgible = false;
+        }
+      });
+      if (iselgible) {
+
+        $.ajax({
+          url: "/VednorsAssetMapInsert",
+          type: "POST",
+          dataType: 'json',
+          data: JSON.stringify(obj),
+          async: false,
+          success: function (data) {
+            Toast("success", "Successful..")
+            $("#VendorAssetClear").click();
+
+          }, error: function () {
+            alert('Internal error')
+          }
+        });
+      } else {
+        Toast('danger', 'Record existed with these deatils.Please Update.')
+      }
+    })
+
+    $("#RemapVendorAsset").click(function () {
+      if ($("#Vendor").val() == "0") {
+        Toast("warning", "Please select Vendor")
+        $("#Vendor").focus()
+        return false;
+      }
+      else if ($("#ConsumableNames").val() == "") {
+        Toast("warning", "Please select Consumable")
+        $("#ConsumableNames").focus(); return false;
+      }
+      else if ($("#AssetPriceEach").val() == "") {
+        Toast("warning", "Please select Price for each")
+        $("#AssetPriceEach").focus(); return false;
+      }
+      var obj = new Object()
+      // obj.IDVendors_ConsumableMaster_Map = parseInt($("#IDVendors_ConsumableMaster_Map").val())
+      obj.VendorsID = parseInt($("#Vendor").val())
+      obj.ConsumableMasterID = parseInt($("#ConsumableNames").val())
+      obj.PriceperUnit = parseFloat($("#AssetPriceEach").val())
+      obj.ItemType = $("#AssetType").val()
+      obj.VendorRfrdAssetName = $("#VendorRfrdAssetName").val()
+      obj.CreatedBy = parseFloat($("#employeeid").val());
+      var iselgible = true;
+      tbl.rows().every(function (rowIdx, tableLoop, rowLoop) {
+        var data = this.data();
+        if (data.Vendors.Idvendors == obj.VendorsID && data.Consumablemaster.IDconsumableMaster == obj.ConsumableMasterID) {
+          iselgible = false;
+        }
+      });
+      if (!iselgible) {
+        $.ajax({
+          url: "/VednorsAssetMapUpdate",
+          type: "POST",
+          dataType: 'json',
+          data: JSON.stringify(obj),
+          async: false,
+          success: function (data) {
+            Toast("success", "Updated Successfully..")
+            $("#VendorAssetClear").click();
+
+
+          }, error: function () {
+            alert('Internal error')
+          }
+        });
+      } else {
+        Toast('danger', 'Record not existed with these deatils.Please Add.')
+      }
+    })
+    $("#tblVendorAsset").on("click", ".VendmapEdit", function () {
+      var tr = $(this).parents('tr')
+      var rwdata = tbl.row(tr).data()
+
+      $("#Vendor").val(rwdata.Vendors.Idvendors)
+      $("#ConsumableNames").val(rwdata.Consumablemaster.IDconsumableMaster)
+      $("#AssetPriceEach").val(rwdata.Vendors_consumablemaster_map.PriceperUnit)
+      $("#AssetType").val(rwdata.Vendors_consumablemaster_map.ItemType)
+      $("#VendorRfrdAssetName").val(rwdata.Vendors_consumablemaster_map.VendorRfrdAssetName)
+      $("#Vendor").trigger("change")
+      $("#Vendor").focus()
+    })
+    $("#VendorAssetClear").click(function () {
+      $("#Vendor").val("0")
+      $("#ConsumableNames").val("")
+      $("#AssetPriceEach").val("")
+      $("#AssetType").val("")
+      $("#VendorRfrdAssetName").val("")
+      $("#Vendor").trigger("change")
+      $("#Vendor").focus()
+    })
+
+
+    $("#btnmdlConsumable").click(function () {
+      $(".ConsumableView").modal('show')
+      $(".ConsumableBody").load('/AddConsumable_Partial')
+    })
+    $('.ConsumableView').on('hidden.bs.modal', function () {
+      var data = getdata('/Consumables/GetConsumableMasterList')
+      loadConsumableNames(data)
+    })
+
+  });
+
+
+</script>
+{{template "footer"}}
+{{end}}

@@ -1,0 +1,505 @@
+{{  define "ITAssetViewTmpl"}}
+{{template "head" .}}
+<div class="page-header">
+    <div class="row align-items-end">
+        <div class="col-lg-8">
+            <div class="page-header-title">
+                <div class="d-inline">
+                    <input type="hidden" value="{{.Data.IDITAssets}}" id="AssetID">
+                    <h5>{{.Data.ITAssetName}} - ITAsset</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="btn-group dropleft float-right">
+                <a class=" float-right  font-weight-bold btn btn-outline-primary btn-rounded dropdown-toggle"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Craete Employee"
+                    href="javascript:void(0)"><span>Actions</span></a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="/ITAssets/edit/{{.Data.IDITAssets}}">
+                        <i class="ik ik-edit" aria-hidden="true"></i><span> Edit</span>
+                    </a>
+                    <!-- <a class="dropdown-item" href="/ITAssets/create?mode=clone&&id={{.Data.IDITAssets}}">
+                        <i class="fa fa-clone" aria-hidden="true"></i><span> Clone</span>
+                    </a> -->
+                    <a class="dropdown-item" href="#"> <i class="ik ik-trash " aria-hidden="true"></i>
+                        <span> Delete</span>
+                    </a>
+
+                </div>
+            </div>
+            <a class="float-right  font-weight-bold btn btn-outline-primary btn-rounded mr-1" title="List of History"
+                href="/ITAssetHistory/{{.Data.IDITAssets}}"><i class="ik ik-list  "></i><span>History</span></a>
+        </div>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body min-vh-100  ">
+        <ul class="nav nav-tabs nav-pills nav-justified " id="AssetTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link  active" href="#AssetDetails" role="tab" data-toggle="tab" aria-selected="true">Asset
+                    Details</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#Maintenance" role="tab" data-toggle="tab">Maintenance</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#Files" role="tab" data-toggle="tab">Files</a>
+            </li>
+
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="tab-content  ">
+            <div role="tabpanel" class="tab-pane fade show active  " id="AssetDetails">
+                <div class=" mt-2 row">
+                    <div class="col-md-5">
+                        <div class="form-group  row ">
+                            <div class="col text-info">Asset Name:</div>
+                            <div class="col">{{.Data.ITAssetName}} </div>
+                        </div>
+                        <div class="form-group  row ">
+                            <div class=" col text-info ">Model:</div>
+                            <div class=" col">{{.Data.ITAssetModel}} </div>
+                        </div>
+                        <div class="form-group  row ">
+                            <div class=" col text-info ">Group:</div>
+                            <div class=" col ">{{.Data.Itassetgroupname}} </div>
+                        </div>
+                        <div class="form-group  row ">
+                            <div class=" col text-info ">Serial No.:</div>
+                            <div class=" col ">{{.Data.ITAssetSerialNo}} </div>
+                        </div>
+                        <div class="form-group  row ">
+                            <div class=" col text-info ">Identification No:</div>
+                            <div class=" col ">{{.Data.ITAssetIdentificationNo}} </div>
+                        </div>
+                        <hr />
+                        <div class="form-group row">
+                            <div class="col">Status:</div>
+                            {{if eq .Data.Statusname "Available"}}
+                            <div class="col"> <span class="badge  badge-success">{{.Data.Statusname}}</span></div>
+
+                            {{else if eq .Data.Statusname "Assigned"}}
+                            <div class="col"> <span class="badge  badge-info">{{.Data.Statusname}}</span></div>
+
+                            {{ else if eq .Data.Statusname "In maintenance"}}
+                            <div class="col"> <span class="badge  badge-danger">{{.Data.Statusname}}</span></div>
+                            {{ else }}
+                            <div class="col"> <span class="badge  badge-danger">{{.Data.Statusname}}</span></div>
+                            {{end}}
+                        </div>
+                        <div class="form-group row">
+                            <div class="col">Assigned To:</div>
+                            <div class="col"> <span class="badge  badge-success">{{.Data.Employees.FirstName}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4  ">
+                        <img id="profile-img" class="img-thumbnail img-fluid mx-auto d-block" width="auto" height="auto"
+                            src="/AppFiles/Images/ITAssets/{{.Data.ITAssetImg}}" alt="Not Found" />
+                    </div>
+                    <div class="col-md-3 btn-group  btn-group-vertical align-self-start    ">
+                        {{if .Auth.ITAssetCheckOut}}
+                        {{if eq .Data.Statusname "Available"}}
+                        <a href="/ITAssets/{{.Data.IDITAssets}}/checkout" class="btn btn-info m-1 ">Check-Out</a>
+                        {{end}}
+                        {{end}}
+                        {{if  or (eq .User.RoleName "Admin") (eq .User.RoleName "Super Admin") }}
+                        {{if eq .Data.Statusname "Assigned"}}
+                        <button data-toggle="modal" data-target="#groupmodal"
+                            class="btn btn-info m-1 ">Check-In</button>
+                        {{end}}
+                        {{end}}
+                        {{if .Auth.Retire}}
+                        <button data-toggle="modal" data-target="#retiremodal" class="btn btn-info m-1 ">Retire</button>
+                        {{end}}
+
+                        <!-- <button class="btn btn-info m-1">
+                            <i class="fa fa-paperclip" aria-hidden="true"></i>
+                            <span class="">Upload Files</span>
+                        </button> -->
+                        {{if  or (eq .User.RoleName "Admin") (eq .User.RoleName "Super Admin")}}
+                        <button data-toggle="modal" data-target="#modal" class="btn btn-info m-1 ">
+                            <i class="fa fa-print" aria-hidden="true"></i>
+                            <span class="">Print QR</span>
+                        </button>
+                        {{end}}
+                        {{if eq .Data.Statusname "Assigned"}}
+                        <button data-toggle="modal" id="ServiceRequest" class="btn btn-info m-1 ">
+                            <i class="ik ik-alert-triangle" aria-hidden="true"></i>
+                            <span class="">Request for Service</span>
+                        </button>
+                        {{end}}
+                        {{if  or (eq .User.RoleName "Admin") (eq .User.RoleName "Super Admin")}}
+                        <div class="btn-group m-1 dropleft">
+                            <button type="button" class="btn btn-info dropdown-toggle  " data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-wrench" aria-hidden="true"></i><span>Service</span>
+                            </button>
+                            <div class="dropdown-menu">
+
+                                <button class="dropdown-item" id="ServiceSchedule">Schedule</button>
+                                <a class="dropdown-item" id="ServiceStart" href="#">Start</a>
+                                <!-- <div class="dropdown-divider"></div>
+
+                                <a class="dropdown-item" href="#">Extend</a>
+                                <a class="dropdown-item" href="#">Complete</a> -->
+
+                            </div>
+                        </div>
+                        {{end}}
+                    </div>
+                </div>
+                <div class=" mt-2 row">
+
+                    <div class="col-md-6">
+                        <hr />
+                        <div class="form-group  row ">
+                            <div class="col text-info">Description:</div>
+                            <div class="col">{{.Data.ITAssetDescription}} </div>
+                        </div>
+                        <div class="form-group  row ">
+                            <div class=" col text-info ">Price:</div>
+                            <div class=" col">&#8377; {{.Data.ITAssetPrice}} </div>
+                        </div>
+                        <div class="form-group  row ">
+                            <div class=" col text-info ">Warranty:</div>
+                            <div class=" col ">{{.Data.ITAssetWarranty}} </div>
+                        </div>
+                        <div class="form-group  row ">
+                            <div class=" col text-info ">depreciation:</div>
+                            <div class=" col ">--</div>
+                        </div>
+                        <div class="form-group  row ">
+                            <div class=" col text-info ">Vendor:</div>
+                            <div class=" col ">{{.Data.VendorData.Name}} <br />{{.Data.VendorData.Address}}
+                                <br />{{.Data.VendorData.Phone}} </div>
+                        </div>
+                        <div class="form-group  row ">
+                            <div class=" col text-info ">Location:</div>
+                            <div class=" col ">{{.Data.LocationData.Name}} <br />{{.Data.LocationData.Address1}}
+                                <br />{{.Data.VendorData.Phone}}</div>
+                        </div>
+
+
+                    </div>
+                    <div class="col-md-6">
+                        <hr />
+                        <div class="form-group  row ">
+                            {{if ne .Data.CustomFields1Type "" }}
+                            <div class="col text-info">{{.Data.CustomFields1}}:</div>
+                            <div class="col">{{.Data.CustomFields1Value}} </div>
+                            {{end}}
+                        </div>
+                        <div class="form-group  row ">
+                            {{if ne .Data.CustomFields2Type "" }}
+                            <div class="col text-info">{{.Data.CustomFields2}}:</div>
+                            <div class="col">{{.Data.CustomFields2Value}} </div>
+                            {{end}}
+                        </div>
+                        <div class="form-group  row ">
+                            {{if ne .Data.CustomFields3Type "" }}
+                            <div class="col text-info">{{.Data.CustomFields3}}:</div>
+                            <div class="col">{{.Data.CustomFields3Value}} </div>
+                            {{end}}
+                        </div>
+                        <div class="form-group  row ">
+                            {{if ne .Data.CustomFields4Type "" }}
+                            <div class="col text-info">{{.Data.CustomFields4}}:</div>
+                            <div class="col">{{.Data.CustomFields4Value}} </div>
+                            {{end}}
+                        </div>
+                        <div class="form-group  row ">
+                            {{if ne .Data.CustomFields5Type "" }}
+                            <div class="col text-info">{{.Data.CustomFields5}}:</div>
+                            <div class="col">{{.Data.CustomFields5Value}} </div>
+                            {{end}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="Maintenance">
+
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="Files">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Check in Modal -->
+<div class="modal fade" id="groupmodal" tabindex="-1" role="dialog" aria-labelledby="groupmodalTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="groupmodalTitle">Check-In Asset</h5>
+                <button type="button" id="closecheckinmodal" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="frmCreateITAssetsCheckIn" >
+                    <input type="hidden" name="IDITAssetCheckOutCheckIN"
+                        value="{{.Data.ITassetCheckout.IDITAssetCheckOutCheckIN}}">
+                    <div class="form-group row">
+                        <label for="CheckOutDate" class="col-md-4 col-form-label ">CheckOut
+                            Date:</label>
+                        <div class="col-md-8">
+
+                            <input type="text" name="CheckOutDate" readonly
+                                value="{{.Data.ITassetCheckout.CheckedOutDate}}"
+                                class="date form-control form-control-sm w-auto" id="CheckOutDate">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="CheckInDate" class="col-md-4 col-form-label ">CheckIn Date:</label>
+                        <div class="col-sm-8 form-inline">
+                            <input type="text" name="CheckInDate" class="form-control datetimepicker-input"
+                                data-toggle="datetimepicker" autocomplete="off" data-target="#CheckInDate"
+                                id="CheckInDate">
+                        </div>
+
+                    </div>
+                    <div class="form-group row">
+                        <label for="CheckInComments" class="col-md-4 col-form-label ">Comments:</label>
+                        <div class="col-md-8">
+                            <textarea name="CheckInComments" maxlength="500" class="form-control form-control-sm"
+                                id="CheckInComments" placeholder="Comments"></textarea>
+
+                        </div>
+                    </div>
+                    <div class="form-group row justify-content-center">
+                        <input type="submit" class="btn btn-primary btn-sm" value="Check In" />
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!--retire Modal -->
+<div class="modal fade" id="retiremodal" tabindex="-1" role="dialog" aria-labelledby="retiremodalTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="retiremodalTitle">Retire Asset</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="/itassets/ITAssetRetire" id="frmRetire" method="POST">
+
+                    <input type="hidden" id="AssetID" name="AssetID" value="{{.Data.IDITAssets}}">
+                    <div class="form-group row">
+                        <label for="Reason" class="col-md-3 col-form-label ">Reason:</label>
+                        <div class="col-md-9">
+                            <select name="Reason" id="Reason" class="form-control float-left">
+                                <option value="5">Damaged</option>
+                                <option value="6">Expired</option>
+                                <option value="7">Lost</option>
+                                <option value="8">Sold</option>
+                                <option value="9">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="RetireDate" class="col-sm-3 col-form-label ">Retire Date:</label>
+                        <div class="col-sm-9 form-inline">
+                            <input type="text" name="RetireDate" class="form-control datetimepicker-input"
+                                data-toggle="datetimepicker" autocomplete="off" data-target="#RetireDate"
+                                id="RetireDate">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="Commnets" class="col-md-3 col-form-label">Comments:</label>
+                        <div class="col-md-9">
+                            <textarea name="Commnets" maxlength="500" class="form-control form-control-sm"
+                                id="RetireComments" placeholder="Comments"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group row justify-content-center">
+                        <input type="submit" class="btn btn-primary btn-sm" value="Retire" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!--QR Modal -->
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="emodalTitle">QR Generator</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div id="modalbody" class="modal-body">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="modalService" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="classInfo"
+    aria-hidden="true">
+    <div class="modal-dialog mdl-cstm modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalServiceLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-tblbody modal-body">
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        //tabs
+
+        $('#RetireDate').datetimepicker({
+            format: 'YYYY-MM-DD'
+        });
+        $('#CheckInDate').datetimepicker({
+            format: 'YYYY-MM-DD',
+           
+        });
+
+
+        $('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
+            var assetid = $("#AssetID").val()
+            localStorage.setItem('activeTab', $(e.target).attr('href'));
+            if ($(e.target).attr('href') == "#Files") {
+                $("#Files").load('/ITAssets/ITAssetView_Files/' + assetid + '', function () {
+                });
+
+            } if ($(e.target).attr('href') == "#Maintenance") {
+                $("#Maintenance").load('/ITAssetView_Maintenance/' + assetid + '', function () {
+                });
+
+            }
+        });
+        var activeTab = localStorage.getItem('activeTab');
+        if (activeTab) {
+            $('#AssetTab a[href="' + activeTab + '"]').tab('show');
+        }
+        //end tabs
+
+        //to show the name of file on file upload
+        $(".custom-file-input").on("change", function () {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        });
+        $("#ITAssetWarranty").on("change", function () {
+
+            var selected_date = $(this).val()
+            var d = new Date(selected_date)
+            var today = new Date()
+            if (d < today) {
+                $("#txtITAssetWarranty").text("Product expired")
+                $("#txtITAssetWarranty").removeClass("text-success")
+                $("#txtITAssetWarranty").addClass("text-danger")
+            }
+            else {
+
+                var diff = Math.floor(d.getTime() - today.getTime());
+                var day = 1000 * 60 * 60 * 24;
+                var days = Math.floor(diff / day);
+                var months = Math.floor(days / 31);
+                var years = Math.floor(months / 12);
+                var message = days + " days " + months + " months " + years + " years"
+                $("#txtITAssetWarranty").text(message)
+                $("#txtITAssetWarranty").removeClass("text-danger")
+                $("#txtITAssetWarranty").addClass("text-success")
+            }
+
+        });
+
+
+        $("#frmCreateITAssetsCheckIn").on("submit", function (event) {
+
+            event.preventDefault();
+            var form = $(this).serialize();
+            $.ajax({
+                url: "/CreateITAssetsCheckIn",
+                type: 'POST',
+                data: form,
+                // dataType: 'json',
+                async: false,
+                success: function (data) {
+                    $("#closecheckinmodal").click()
+                    window.location.reload()
+                }
+            });
+
+        });
+        $("#modalbody").load("/QrGenerator", "{{.Data.IDITAssets}}", function () {
+
+        })
+
+
+
+        $("#ServiceSchedule").click(function () {
+            $("#modalService").modal("show")
+            $("#modalService .modal-title").text("Schedule Service")
+            $("#modalService .modal-body").load("/ITAsset_Service/" + $("#AssetID").val() + "?mode=schedule")
+        })
+        $("#ServiceStart").click(function () {
+            $("#modalService").modal("show")
+            $("#modalService .modal-title").text("Start Service")
+            $("#modalService .modal-body").load("/ITAsset_Service/" + $("#AssetID").val() + "?mode=start")
+        })
+
+
+        $("#ServiceRequest").click(function () {
+            $("#modalService").modal("show")
+            $("#modalService .modal-title").text("Request Service")
+            $("#modalService .modal-body").load("/ITAsset_Service_Request/" + $("#AssetID").val())
+        })
+    });
+
+
+    $("#frmRetire").on("submit", function (event) {
+        event.preventDefault();
+        var obj = new Object();
+        obj.AssetID = parseInt($("#frmRetire #AssetID").val())
+        obj.Reason = parseInt($("#frmRetire #Reason").val())
+        obj.RetireDate = $("#frmRetire #RetireDate").val()
+        obj.Commnets = $("#frmRetire #RetireComments").val()
+        obj.RetiredBy = $("#employeeid").val()
+
+        $.ajax({
+            url: "/itassets/ITAssetRetire",
+            type: 'POST',
+            data: obj,
+            dataType: 'json',
+            async: false,
+            success: function (data) {
+                window.location = "http://" + document.location.host + "/ITAssets";
+            }
+        });
+
+    });
+
+    function PrintQr() {
+        var url = window.location.href;
+        window.open("/PrintQr?url=" + url + "")
+    }
+
+</script>
+{{template "footer"}}
+{{end}}

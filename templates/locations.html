@@ -1,0 +1,135 @@
+{{define "locationsTmpl"}}
+<form id="FormAddLocation" action="/Location" method="POST">
+    <div class="container ">
+        <input type="hidden" value="{{.Data.IDLocations}}" name="IDLocations">
+        <div class="form-group row">
+            <label for="Name" class="col-md-3 col-form-label">Name</label>
+            <div class="col-md-9">
+                <input type="text" maxlength="45" name="Name" required value="{{.Data.Name}}" class="form-control" id="Name" placeholder="Name">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="Address1" class="col-md-3 col-form-label">Address 1:</label>
+            <div class="col-md-9">
+                <input type="text" maxlength="500" name="Address1" required value="{{.Data.Address1}}" class="form-control" id="Address1"
+                    placeholder="Address 1">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="Address2" class="col-md-3 col-form-label">Address 2:</label>
+            <div class="col-md-9">
+                <input type="text" maxlength="500" name="Address2" required value="{{.Data.Address2}}" class="form-control" id="Address2"
+                    placeholder="Address 2">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="Country" class="col-md-3 col-form-label">Country:</label>
+            <div class="col-md-9">
+                <select name="Country" id="Country" required  class="custom-select  float-left">
+                    <option value="">--select--</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="State" class="col-md-3 col-form-label">State:</label>
+            <div class="col-md-9">
+                <select name="State" id="State" required class="custom-select  float-left">
+                    <option value="">--select--</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="city" class="col-md-3 col-form-label">City:</label>
+            <div class="col-md-9">
+                <input type="text"  maxlength="45" name="City" required value="{{.Data.City}}" class="form-control" id="City" placeholder="City">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="zipcode" class="col-md-3 col-form-label">Zip Code:</label>
+            <div class="col-md-9">
+                <input type="text" maxlength="6" name="Zipcode" required value="{{.Data.Zipcode}}" class="form-control" id="Zipcode"
+                    placeholder="Zipcode"> 
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="Description" class="col-md-3 col-form-label">Description:</label>
+            <div class="col-md-9">
+                <textarea name="Description" required maxlength="500" 
+                    class="form-control form-control-sm" id="Description" placeholder="Description">{{.Data.Description}}</textarea>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            {{if .Data.IDLocations}}
+            <input type="submit" class="btn btn-primary  " value="UPDATE" />
+            {{else}}
+            <input type="submit" class="btn btn-primary  " value="ADD" />
+            {{end}}
+        </div>
+    </div>
+</form>
+<script> $(document).ready(function () {
+
+        var data = getdata("/GetCountries")
+        LoadCountry(data)
+
+        $("#Country").on("change", function () {
+         
+            var id = $(this).val()
+            if (id == "0") {
+                $("#State").empty().append('<option selected="selected" value="">--select--</option>');
+            }
+            else {
+                $("#State").val("")
+                var data = getdata("/GetStatesByCountry/" + id + "")
+                LoadStates(data)
+                if ("{{.Data.State}}") {
+                    $("#State").val("{{.Data.State}}")
+                }
+            }
+        });
+        $("#FormAddLocation").on("submit", function (event) {
+            event.preventDefault();
+            var form = $(this).serialize();
+
+            $.ajax({
+                url: "/Location",
+                type: 'POST',
+                data: form,
+                // dataType: 'json',
+                async: false,
+                success: function (data) {
+                   
+                    if (data != 0) {
+                        if (typeof loadLocations !== 'undefined' && typeof loadLocations === 'function') {
+                            var data = getdata('/GetLocations')
+                            loadLocations(data)
+                            $("#closeLoatonmodal").click()
+                        }
+                    }
+                    $("#closeLoatonmodal").click()
+                }
+            });
+
+        });
+        if ("{{.Data.Country}}") {
+            $("#Country").val("{{.Data.Country}}")
+        }
+        $("#Country").trigger("change")
+
+
+
+
+    });
+    function LoadCountry(data) {
+        $.each(data, function (i, el) {
+            $("#Country").append($("<option />", { text: el.Name, value: el.ID }));
+        });
+    };
+    function LoadStates(data) {
+        $.each(data, function (i, el) {
+            $("#State").append($("<option />", { text: el.Name, value: el.ID }));
+        });
+    };
+
+</script>
+{{end}}

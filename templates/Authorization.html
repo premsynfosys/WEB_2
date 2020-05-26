@@ -1,0 +1,324 @@
+{{define "Authorization"}}
+{{template "head" .}}
+
+<div class="page-header">
+    <div class="row align-items-end">
+        <div class="col-lg-8">
+            <div class="page-header-title">
+                <div class="d-inline">
+                    <h5>Authorization</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<form id="frmAuthorization">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group row ml-5">
+                        <label for="Role" class=" col-form-label">Role:</label>
+                        <div class="col-sm-3 ">
+                            <div class="input-group">
+                                <select name="Role" required id="Role" class="form-control w-auto">
+                                    <option value="">--select--</option>
+                                    {{range .Data.Role}}
+                                    <option value="{{.IDRoles}}">{{.RoleName}}</option>
+                                    {{end}}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-12 col-xl-12 mb-30">
+                            <h4 class="sub-title">
+                                <div class=" checkbox-fade fade-in-warning">
+                                    <label>
+                                        <input id="chkEmployee" type="checkbox">
+                                        <span class="cr">
+                                            <i class="cr-icon ik ik-check txt-warning"></i>
+                                        </span>
+                                        <span>Employee</span>
+                                    </label>
+                                </div>
+                            </h4>
+                            <div id="divEmployee">
+                                {{ range $element :=  .Data.Features}}
+                                {{if eq  $element.Module "Employee"}}
+                                <div class=" checkbox-fade fade-in-primary">
+                                    <label>
+                                        <input id="{{$element.IDFeatures_list}}" value="{{$element.IDFeatures_list}}"
+                                            type="checkbox">
+                                        <span class="cr">
+                                            <i class="cr-icon ik ik-check txt-primary"></i>
+                                        </span>
+                                        <span>{{$element.Feature_Name}}</span>
+                                    </label>
+                                </div>
+                                {{end}}
+                                {{end}}
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-12 col-xl-12 mb-30">
+                            <h4 class="sub-title">
+                                <div class=" checkbox-fade fade-in-warning">
+                                    <label>
+                                        <input id="chkUser" type="checkbox">
+                                        <span class="cr">
+                                            <i class="cr-icon ik ik-check txt-warning"></i>
+                                        </span>
+                                        <span>User</span>
+                                    </label>
+                                </div>
+                            </h4>
+                            <div id="divUser">
+                                {{ range $element :=  .Data.Features}}
+                                {{if eq  $element.Module "User"}}
+                                {{if ne  $element.IDFeatures_list 16}}
+
+                                <div class=" checkbox-fade fade-in-primary">
+                                    <label>
+                                        <input id="{{$element.IDFeatures_list}}" value="{{$element.IDFeatures_list}}"
+                                            type="checkbox">
+                                        <span class="cr">
+                                            <i class="cr-icon ik ik-check txt-primary"></i>
+                                        </span>
+                                        <span>{{$element.Feature_Name}}</span>
+                                    </label>
+                                </div> 
+                                {{end}}
+                                {{end}}
+                                {{end}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-12 col-xl-12 mb-30">
+                            <h4 class="sub-title">
+                                <div class=" checkbox-fade fade-in-warning">
+                                    <label>
+                                        <input id="chkITAsset" type="checkbox">
+                                        <span class="cr">
+                                            <i class="cr-icon ik ik-check txt-warning"></i>
+                                        </span>
+                                        <span>IT Asset</span>
+                                    </label>
+                                </div>
+                            </h4>
+                            <div id="divITAsset">
+                                {{ range $element :=  .Data.Features}}
+                                {{if eq  $element.Module "IT Assets"}}
+                                <div class="checkbox-fade fade-in-primary">
+                                    <label>
+                                        <input id="{{$element.IDFeatures_list}}" value="{{$element.IDFeatures_list}}"
+                                            type="checkbox">
+                                        <span class="cr">
+                                            <i class="cr-icon ik ik-check txt-primary"></i>
+                                        </span>
+                                        <span>{{$element.Feature_Name}}</span>
+                                    </label>
+                                </div>
+
+                                {{end}}
+                                {{end}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-12 col-xl-12 mb-30">
+                            <h4 class="sub-title">
+                                <div class=" checkbox-fade fade-in-warning">
+                                    <label>
+                                        <input id="chkNonITAsset" type="checkbox">
+                                        <span class="cr">
+                                            <i class="cr-icon ik ik-check txt-warning"></i>
+                                        </span>
+                                        <span>Non ITAsset</span>
+                                    </label>
+                                </div>
+                            </h4>
+                            <div id="divNonITAsset">
+                                {{ range $element :=  .Data.Features}}
+                                {{if eq  $element.Module "NonIT Assets"}}
+                                <div class="checkbox-fade fade-in-primary">
+                                    <label>
+                                        <input id="{{$element.Feature_Name}}" value="{{$element.IDFeatures_list}}"
+                                            type="checkbox">
+                                        <span class="cr">
+                                            <i class="cr-icon ik ik-check txt-primary"></i>
+                                        </span>
+                                        <span>{{$element.Feature_Name}}</span>
+                                    </label>
+                                </div>
+                                {{end}}
+                                {{end}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-12 col-xl-12 mb-30">
+                            <h4 class="sub-title">
+                                <div class=" checkbox-fade fade-in-warning">
+                                    <label>
+                                        <input id="chkConsumables" type="checkbox">
+                                        <span class="cr">
+                                            <i class="cr-icon ik ik-check txt-warning"></i>
+                                        </span>
+                                        <span>Consumables</span>
+                                    </label>
+                                </div>
+                            </h4>
+                            <div id="divConsumables">
+                                {{ range $element :=  .Data.Features}}
+                                {{if eq  $element.Module "Consumables"}}
+                                <div class="checkbox-fade fade-in-primary">
+                                    <label>
+                                        <input id="{{$element.IDFeatures_list}}" value="{{$element.IDFeatures_list}}"
+                                            type="checkbox">
+                                        <span class="cr">
+                                            <i class="cr-icon ik ik-check txt-primary"></i>
+                                        </span>
+                                        <span>{{$element.Feature_Name}}</span>
+                                    </label>
+                                </div>
+                                {{end}}
+                                {{end}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-12 col-xl-12 mb-30">
+                            <h4 class="sub-title">
+                                <div class=" checkbox-fade fade-in-warning">
+                                    <label>
+                                        <input id="chkInWard" type="checkbox">
+                                        <span class="cr">
+                                            <i class="cr-icon ik ik-check txt-warning"></i>
+                                        </span>
+                                        <span>InWard - OutWard</span>
+                                    </label>
+                                </div>
+                            </h4>
+                            <div id="divInWard">
+                                {{ range $element :=  .Data.Features}}
+                                {{if eq  $element.Module "InWard-OutWard"}}
+                                <div class="checkbox-fade fade-in-primary">
+                                    <label>
+                                        <input id="{{$element.IDFeatures_list}}" value="{{$element.IDFeatures_list}}"
+                                            type="checkbox">
+                                        <span class="cr">
+                                            <i class="cr-icon ik ik-check txt-primary"></i>
+                                        </span>
+                                        <span>{{$element.Feature_Name}}</span>
+                                    </label>
+                                </div>
+                                {{end}}
+                                {{end}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <input type="submit" class="btn btn-primary  btn-sm" value="Configure" />
+    </div>
+</form>
+<script>
+    $(document).ready(function () {
+        $("#Role").change(function () {
+            $("#frmAuthorization").find("input[type='checkbox']").prop('checked', false)
+            if ($(this).val() != "") {
+                $.ajax({
+                    url: "/GetAuthorizationList_ByRole/" + $(this).val(),
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+
+                        data.forEach(itm => {
+                            $('#' + itm.Features_List.IDFeatures_list + '').prop('checked', true)
+                        });
+
+                    }
+                });
+            }
+        })
+
+        $("#frmAuthorization").submit(function (e) {
+            e.preventDefault();
+            var obj = new Object();
+            obj.RoleID = parseInt($("#Role").val())
+            obj.CreatedBy = parseInt($("#userid").val())
+            var Features_List_IDss = new Array()
+            $(this).find("input[type='checkbox']:checked").each(function () {
+                Features_List_IDss.push(parseInt(this.value))
+            })
+            obj.Features_List_ID = Features_List_IDss;
+
+            $.ajax({
+                url: "/Authorization_Create",
+                type: 'POST',
+                data: JSON.stringify(obj),
+                dataType: 'json',
+                async: false,
+                success: function (data) {
+                    Toast('success', 'Role Authorizations configured successfully.')
+
+                }
+            });
+        });
+
+        $("#chkEmployee").change(function () {
+            if ($(this).prop('checked')) {
+                $("#divEmployee").find('input[type="checkbox"]').prop('checked', true);
+            } else {
+                $("#divEmployee").find('input[type="checkbox"]').prop('checked', false);
+            }
+        });
+        $("#chkUser").change(function () {
+            if ($(this).prop('checked')) {
+                $("#divUser").find('input[type="checkbox"]').prop('checked', true);
+            } else {
+                $("#divUser").find('input[type="checkbox"]').prop('checked', false);
+            }
+        });
+
+        $("#chkITAsset").change(function () {
+            if ($(this).prop('checked')) {
+                $("#divITAsset").find('input[type="checkbox"]').prop('checked', true);
+            } else {
+                $("#divITAsset").find('input[type="checkbox"]').prop('checked', false);
+            }
+        });
+        $("#chkNonITAsset").change(function () {
+            if ($(this).prop('checked')) {
+                $("#divNonITAsset").find('input[type="checkbox"]').prop('checked', true);
+            } else {
+                $("#divNonITAsset").find('input[type="checkbox"]').prop('checked', false);
+            }
+        });
+        $("#chkConsumables").change(function () {
+            if ($(this).prop('checked')) {
+                $("#divConsumables").find('input[type="checkbox"]').prop('checked', true);
+            } else {
+                $("#divConsumables").find('input[type="checkbox"]').prop('checked', false);
+            }
+        });
+        $("#chkInWard").change(function () {
+            if ($(this).prop('checked')) {
+                $("#divInWard").find('input[type="checkbox"]').prop('checked', true);
+            } else {
+                $("#divInWard").find('input[type="checkbox"]').prop('checked', false);
+            }
+        });
+
+    });
+</script>
+
+{{template "footer"}}
+{{end}}

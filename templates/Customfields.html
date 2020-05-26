@@ -1,0 +1,155 @@
+{{  define "Customfields"}}
+
+
+<div class="container  m-2 ">
+    <div class="form-group row">
+        <label for="FieldName" class="col-md-3 col-form-label ">Field Name:</label>
+        <div class="col-md-9 ">
+            <input type="text"  maxlength="45" name="FieldName" class="form-control form-control-sm" id="FieldName">
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="FieldType" class="col-md-3 col-form-label ">Field Type:</label>
+        <div class="col-md-9 ">
+            <select name="FieldType" id="FieldType" class="form-control">
+                <option value="0">--select--</option>
+                <option value="text">Text Box</option>
+                <option value="textarea">Comment Box</option>
+                <!-- <option value="checkbox">Check Box</option> -->
+                <option value="date">Date</option>
+                <option value="number">Number</option>
+                <!-- <option value="select">Drop Down</option> -->
+            </select>
+        </div>
+    </div>
+    <div class="form-group row justify-content-center">
+        <input type="button" id="btnAddCustm" class="btn btn-info btn-sm  mt-2" value="Add Field">
+
+    </div>
+
+    <hr />
+
+    <div id="divCustm">
+
+        <!-- <div class="form-group row">
+            <label for="ITAssetWarranty" class="col-md-3 col-form-label col-form-label-sm">Warranty:</label>
+            <div class="col-md-9 form-inline">
+                <input type="date" name="ITAssetWarranty" class="form-control form-control-sm" id="ITAssetWarranty">
+                <span><text id="txtITAssetWarranty" class="form-control-sm"></text></span>
+            </div>
+        </div> -->
+
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                url: "/GetCustomFields",
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                   
+                    if (data["CustomFields1Type"] != "") {
+                        $("#FieldName").val(data["CustomFields1"])
+                        $("#FieldType").val(data["CustomFields1Type"])
+                        $("#btnAddCustm").click();
+                        //$("#CustomFields1").val(data["CustomFields1Value"])
+                    }
+                  
+                    if (data["CustomFields2Type"] != "") {
+                        $("#FieldName").val(data["CustomFields2"])
+                        $("#FieldType").val(data["CustomFields2Type"])
+                        $("#btnAddCustm").click();
+                      
+                    }
+                   
+                    if (data["CustomFields3Type"] != "") {
+                        $("#FieldName").val(data["CustomFields3"])
+                        $("#FieldType").val(data["CustomFields3Type"])
+                        $("#btnAddCustm").click();
+                      
+                    }
+                   
+                    if (data["CustomFields4Type"] != "") {
+                        $("#FieldName").val(data["CustomFields4"])
+                        $("#FieldType").val(data["CustomFields4Type"])
+                        $("#btnAddCustm").click();
+                       
+                    }
+                    if (data["CustomFields5Type"] != "") {
+                        $("#FieldName").val(data["CustomFields5"])
+                        $("#FieldType").val(data["CustomFields5Type"])
+                        $("#btnAddCustm").click();
+                       
+                    }
+                }
+            });
+        })
+
+        $("#divCustm").on("click", "button", function () {
+            $(this).parents(".count").remove();
+        });
+
+
+        $("#btnAddCustm").click(function () {
+
+            var id = $("#divCustm .count").length + 1
+            if (id > 6) {
+                alert('you can add max 5 fields')
+                return;
+            }
+            var html = "";
+            if ($("#FieldName").val() == "") {
+                $("#FieldName").focus();
+                alert('Please select Field Name');
+                return;
+            }
+            if ($("#FieldType").val() == 0) {
+                $("#FieldType").focus();
+                alert('Please select Field Type');
+                return;
+            }
+
+            switch ($("#FieldType").val()) {
+                case "text":
+                    html += '<div class="form-group row count ">'
+                    html += '<label for="CustomFields' + id + '" class="col-md-3 col-form-label col-form-label-sm">' + $("#FieldName").val().trim() + ' :</label>'
+                    html += '<div class="col form-inline ">'
+                    html += '<input type="text"  maxlength="45" data-type="text" name="CustomFields' + id + '" data-FieldName=' + $("#FieldName").val().trim() + ' class="form-control cstm form-control-sm" id="CustomFields' + id + '">'
+                    html += '<button type="button"  class="btn btn-sm  btn-danger ml-3"><span >&times;</span></button>'
+                    html += '</div></div>'
+                    break;
+
+                case "textarea":
+                    html += '<div class="form-group row count">'
+                    html += '<label for="CustomFields' + id + '" class="col-md-3 col-form-label col-form-label-sm">' + $("#FieldName").val().trim() + ' :</label> '
+                    html += '<div class="col  form-inline ">'
+                    html += ' <textarea  maxlength="45"  name="CustomFields' + id + '" data-type="textarea" data-FieldName=' + $("#FieldName").val().trim() + '  class="form-control cstm form-control-sm" id="CustomFields' + id + '"></textarea> '
+                    html += '<button type="button"  class="btn btn-sm  btn-danger ml-3"><span >&times;</span></button>'
+                    html += '</div></div>'
+                    break;
+
+                case "number":
+                    html += '<div class="form-group row count ">'
+                    html += '<label for="CustomFields' + id + '" class="col-md-3 col-form-label col-form-label-sm">' + $("#FieldName").val().trim() + ' :</label>'
+                    html += '<div class="col  form-inline ">'
+                    html += '<input type="number" data-type="number" name="CustomFields' + id + '" data-FieldName=' + $("#FieldName").val().trim() + ' class="form-control cstm form-control-sm" id="CustomFields' + id + '">'
+                    html += '<button type="button"  class="btn btn-sm  btn-danger ml-3"><span >&times;</span></button>'
+                    html += '</div></div>'
+                    break;
+                case "date":
+                    html += '<div class="form-group row count ">'
+                    html += '<label for="CustomFields' + id + '" class="col-md-3 col-form-label col-form-label-sm">' + $("#FieldName").val().trim() + ' :</label>'
+                    html += '<div class="col  form-inline ">'
+                    html += '<input type="date" data-type="date" name="CustomFields' + id + '" data-FieldName=' + $("#FieldName").val().trim() + ' class="form-control form-control-sm cstm" id="CustomFields' + id + '">'
+                    html += '<button type="button"  class="btn btn-sm  btn-danger ml-3"><span >&times;</span></button>'
+                    html += '</div></div>'
+                    break;
+            }
+            $("#divCustm").append(html)
+            $("#FieldType").val(0)
+            $("#FieldName").val("")
+        })
+    </script>
+
+    {{end}}

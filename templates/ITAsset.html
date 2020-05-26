@@ -1,0 +1,392 @@
+{{  define "ITAssetTmpl"}}
+{{template "head" .}}
+<div class="page-header">
+  <div class="row align-items-end">
+    <div class="col-lg-8 col-md-8 col-sm-8  col-xs-8">
+      <div class="page-header-title">
+        <div class="d-inline">
+          <h5>Add ITAssets</h5>
+        </div>
+      </div>
+    </div>
+    {{if .Auth.ITAssetList}}
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+      <a class="add float-right  font-weight-bold btn btn-outline-primary btn-rounded" title="Craete Employee"
+        href="/ITAssets"><i class="ik ik-list "></i><span>List</span></a>
+    </div>
+    {{end}}
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-10 col-md-10">
+    <form method="POST" id="frm_ITAsset" action="/ITAssets/create" enctype="multipart/form-data">
+      <div class="card">
+        <div class="card-body ">
+          <div class="form-group row">
+            <label for="Name" class="col-sm-3 col-form-label">ITAsset Name:</label>
+            <div class="col-sm-9">
+              <input type="text" maxlength="45" name="ITAssetName" required class="form-control " id="ITAssetName"
+                placeholder="ITAsset Name">
+            </div>
+          </div>
+          <div class="row">
+            <label for="ITAssetGroup" class="col-sm-3  col-form-label">Group Name:</label>
+            <div class="col-sm-9 ">
+              <div class="input-group">
+                <select name="ITAssetGroup" required id="ITAssetGroup" class="form-control">
+                  <option value="">--select--</option>
+                  {{ range .Data.ITAssetGroupList}}
+                  <option value="{{.IDITAssetgroups}}"> {{.ITAssetgroupName}}</option>
+                  {{end}}
+                </select>
+                <span class="input-group-append ">
+                  <label class="input-group-text bg-info"><a href="#" data-toggle="modal" data-target="#groupmodal"
+                      title="Create Group">Create</a></label>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group row ">
+            <label for="ITAssetModel" class="col-sm-3 col-form-label ">Model:</label>
+            <div class="col-sm-9">
+              <input type="text" maxlength="45" name="ITAssetModel" class="form-control " id="ITAssetModel"
+                placeholder="Model">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="ITAssetSerialNo" class="col-md-3 col-form-label ">Serial No:</label>
+            <div class="col-sm-9">
+              <input type="text" maxlength="45" name="ITAssetSerialNo" class="form-control " id="ITAssetSerialNo"
+                placeholder="Serial No.">
+            </div>
+          </div>
+          <!-- <div class="form-group row">
+            <label for="ITAssetIdentificationNo" class="col-sm-3 col-form-label ">Identification
+              No:</label>
+            <div class="col-sm-9 ">
+              <input type="text" readonly name="ITAssetIdentificationNo" class="form-control  mb-1"
+                id="ITAssetIdentificationNo" placeholder="Identification No">
+            </div>
+          </div> -->
+          <div class="form-group row">
+            <label for="ITAssetDescription" class="col-sm-3 col-form-label ">Description:</label>
+            <div class="col-sm-9">
+              <textarea name="ITAssetDescription" maxlength="500" placeholder="Decription" title="Decription"
+                class="form-control " id="ITAssetDescription"></textarea>
+
+            </div>
+          </div>
+
+          <div class="row">
+            <label class="col-sm-3 col-form-label">Price:</label>
+            <div class="col-sm-3 ">
+              <div class="input-group">
+                <input type="number" title="Asset Price" min="0" name="ITAssetPrice" class="form-control">
+                <span class="input-group-append">
+                  <label class="input-group-text">&#8377;</label>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="ITAssetWarranty" class="col-sm-3 col-form-label ">Warranty:</label>
+            <div class="col-sm-9 form-inline">
+              <input type="text" name="ITAssetWarranty" class="form-control datetimepicker-input"
+                data-toggle="datetimepicker" autocomplete="off" data-target="#ITAssetWarranty" id="ITAssetWarranty">
+              <span><text id="txtITAssetWarranty" class=""></text></span>
+            </div>
+          </div>
+          <div class="row">
+            <label for="Vendor" class="col-sm-3 col-form-label ">Vendor:</label>
+            <div class="col-sm-9 ">
+              <div class="input-group">
+                <select name="Vendor" id="Vendor" class="form-control">
+                  <option value="">--select--</option>
+                </select>
+                <span class="input-group-append ">
+                  <label class="input-group-text bg-info"><a href="#" id="btnVendor" data-toggle="modal"
+                      data-target="#locationmodal" title="Add Vendor">Add</a></label>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <label for="Location" class="col-sm-3 col-form-label ">Location:</label>
+            <div class="col-sm-9 ">
+              <div class="input-group">
+                <select name="Location" id="Location" class="form-control">
+                  <option value="">--select--</option>
+                </select>
+                {{if .Auth.Accesstoalllocations}}
+                <span class="input-group-append ">
+                  <label class="input-group-text bg-info"> <a href="#" id="btnlocation" data-toggle="modal"
+                      data-target="#locationmodal" title="Add Location">Add</a></label>
+                </span>
+                {{end}}
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="ITAssetStatus" class="col-sm-3 col-form-label ">Status:</label>
+            <div class="col-sm-9">
+              <select name="ITAssetStatus" required id="ITAssetStatus" class="form-control">
+                <option value="">--select--</option>
+                {{ range .Data.ITAssetStatusList}}
+                <option value="{{.IDStatus}}">{{.StatusName}}</option>
+                {{end}}
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="ITAssetImg" class="col-sm-3 col-form-label ">Upload Image:</label>
+            <div class="col-sm-9">
+              <input type="file" id="ITAssetImg" name="ITAssetImg" accept="image/x-png,image/gif,image/jpeg"
+                class="file-upload-default">
+              <div class="input-group col-xs-12">
+                <input type="text" class="form-control file-upload-info" disabled="" placeholder="Upload Image">
+                <span class="input-group-append">
+                  <button class="file-upload-browse btn btn-info" type="button">Upload</button>
+                </span>
+              </div>
+            </div>
+          </div>
+          <hr />
+          <h5>Custom Fields</h5>
+          <div class=" row border border-dark m-3" id="custm">
+          </div>
+          <div class="form-group row justify-content-center">
+            <input type="submit" class="btn btn-primary btn-sm" value="Create ITAsset" />
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="col-lg-2 col-md-2 ">
+    <div class="btn-group  btn-group-vertical  ">
+      <button data-toggle="modal" data-target="#locationmodal" id="ReadExcel" class="btn btn-info btn-sm">Upload
+        Excel</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="groupmodal" tabindex="-1" role="dialog" aria-labelledby="groupmodalTitle"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="groupmodalTitle">Add Group</h5>
+        <button type="button" id="modalclose" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="frmgroup">
+          <input type="hidden" name="CreatedBy" id="CreatedBy" value="{{.User.EmployeeID}}">
+          <div class="form-group row">
+            <label for="ITAssetDescription" class="col-md-3 col-form-label ">Group Name:</label>
+            <div class="col-md-9">
+              <input type="text" maxlength="45" name="ITAssetgroupName" class="form-control " id="ITAssetgroupName"
+                placeholder="Group Name">
+
+            </div>
+          </div>
+          <!-- <div class="form-group row">
+          <label for="GroupDesc" class="col-md-3 col-form-label ">Description:</label>
+          <div class="col-md-9">
+            <textarea name="GroupDesc"  maxlength="500" maxlength="500" class="form-control " id="GroupDesc"
+              placeholder="Description"></textarea>
+
+          </div>
+        </div> -->
+
+          <div class="form-group row justify-content-center">
+            <input type="submit" id="creategroup" class="btn btn-primary btn-sm" value="Create Group" />
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- location Modal -->
+<div class="modal fade bd-example-modal-lg" id="locationmodal" tabindex="-1" role="dialog"
+  aria-labelledby="locationmodalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog modal-lg modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="locationmodalTitle">Add Location</h5>
+        <button type="button" id="closeLoatonmodal" class="close" data-dismiss="modal" data-target="#locationmodal"
+          aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body " id="divLocation">
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  $(document).ready(function () {
+    $('#ITAssetWarranty').datetimepicker({
+      format: 'YYYY-MM-DD'
+    });
+    // const url = "/GenerateUniqueID/itassets"
+    // var id = getdata(url)
+    // $("#ITAssetIdentificationNo").val(id)
+
+    var data = getdata('/GetLocations')
+    loadLocations(data)
+    data = getdata('/GetVendors')
+    loadVendors(data)
+    $("#custm").load("/Customfields")
+    //events
+    // $(".custom-file-input").on("change", function () {
+    //   var fileName = $(this).val().split("\\").pop();
+    //   $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+    // });
+    $("#ITAssetWarranty").blur(function () {
+
+      var selected_date = $(this).val()
+      var d = new Date(selected_date)
+      var today = new Date()
+      if (d < today) {
+        $("#txtITAssetWarranty").text("Product expired")
+        $("#txtITAssetWarranty").removeClass("text-success")
+        $("#txtITAssetWarranty").addClass("text-danger")
+      }
+      else {
+
+        var diff = Math.floor(d.getTime() - today.getTime());
+        var day = 1000 * 60 * 60 * 24;
+        var days = Math.floor(diff / day);
+        var months = Math.floor(days / 31);
+        var years = Math.floor(months / 12);
+        var message = days + " days " + months + " months " + years + " years"
+        $("#txtITAssetWarranty").text(message)
+        $("#txtITAssetWarranty").removeClass("text-danger")
+        $("#txtITAssetWarranty").addClass("text-success")
+      }
+
+    });
+
+
+    $("#btnlocation").click(function () {
+      $("#locationmodalTitle").html("Add Location")
+      $("#divLocation").load("/Location", null, function () {
+      });
+    })
+    $("#btnVendor").click(function () {
+
+      $("#locationmodalTitle").html("Add Vendor")
+      $("#divLocation").load("/Vendors", null, function () {
+      });
+    })
+    $("#ReadExcel").click(function () {
+
+      $("#locationmodalTitle").html("Upload Excel Sheet")
+      $("#divLocation").load("/ITAssets/ReadExcel", null, function () {
+      });
+
+
+    })
+
+
+    if ("{{.Auth.Accesstoalllocations}}") {
+
+    }
+    else {
+      $("#Location").val($("#locationid").val())
+      $('#Location option:not(:selected)').prop('disabled', true);
+    }
+
+    function loadLocations(data) {
+      $("#Location").empty().append('<option >--select--</option>');
+      $.each(data, function (i, el) {
+        $("#Location").append($("<option />", { text: el.Name + "\n" + el.Address1 + "\n" + el.Address2 + "\n" + el.Countryname + "\n" + el.Statename + "\n" + el.Zipcode, value: el.IDLocations }));
+      });
+    }
+    function loadVendors(data) {
+      $("#Vendor").empty().append('<option>--select--</option>');
+      $.each(data, function (i, el) {
+        $("#Vendor").append($("<option />", { text: el.Name + "\n" + el.Address + "\n" + el.Email + "\n" + el.ContactPersonName + "\n" + el.Phone + "\n", value: el.Idvendors }));
+      });
+    }
+
+    function loadgroups(data) {
+      $("#ITAssetGroup").empty().append('<option >--select--</option>');
+      $.each(data, function (i, el) {
+        $("#ITAssetGroup").append($("<option />", { text: el.ITAssetgroupName, value: el.IDITAssetgroups }));
+      });
+    }
+
+    $("#frm_ITAsset").on("submit", function (event) {
+      event.preventDefault();
+
+      var fd = new FormData(this);
+      var cstm = new Object();
+
+
+      $.each($("#divCustm .count"), function () {
+
+        //$(this).find('input').attr('data-val') //field_name
+        var arry = new Array();
+
+        arry.push($(this).find('.cstm').attr('data-FieldName')) //passing ield_name
+        arry.push($(this).find('.cstm').attr('data-type')) //passing type
+
+
+        cstm[$(this).find('.cstm').attr('name')] = arry //passing //field_name
+
+      })
+
+      fd.append('customfields', JSON.stringify(cstm));
+
+      $.ajax({
+        url: "/ITAssets/create",
+        type: 'POST',
+        data: fd,
+        // dataType: 'json',
+        contentType: false,
+        processData: false,
+        success: function (data) {
+          //  $('#frm_ITAsset')[0].reset();       
+          window.location = "http://" + document.location.host + "/ITAssets";
+        }
+      });
+
+    });
+
+    $("#frmgroup").submit(function (e) {
+      e.preventDefault()
+
+      var fd = new FormData(this);
+
+      $.ajax({
+        url: "/ITAssetGroups_Create",
+        type: 'POST',
+        data: fd,
+        // dataType: 'json',
+        contentType: false,
+        processData: false,
+        success: function (data) {
+          $("#modalclose").click()
+          var data = getdata('/GetITAssetGroups')
+          loadgroups(data)
+        }
+      });
+    })
+
+  });
+
+</script>
+{{template "footer"}}
+{{end}}

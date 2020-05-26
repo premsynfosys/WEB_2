@@ -1,0 +1,478 @@
+{{define "head"}}
+<!doctype html>
+<html class="no-js" lang="en">
+
+<head>
+      <meta charset="utf-8">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      <title>Asset Management System</title>
+      <meta name="description" content="">
+      <meta name="keywords" content="">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link rel="icon" href="/static/favicon.ico" type="image/x-icon" />
+
+      <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,600,700,800" rel="stylesheet">
+      <link rel="stylesheet" href="/static/plugins/bootstrap/dist/css/bootstrap.min.css">
+      <link rel="stylesheet" href="/static/plugins/fontawesome-free/css/all.min.css">
+      <link rel="stylesheet" href="/static/plugins/ionicons/dist/css/ionicons.min.css">
+      <link rel="stylesheet" href="/static/plugins/icon-kit/dist/css/iconkit.min.css">
+      <link rel="stylesheet" href="/static/plugins/perfect-scrollbar/css/perfect-scrollbar.css">
+      <link rel="stylesheet" href="/static/dist/css/theme.min.css">
+      <link rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.min.css" />
+      <link rel="stylesheet" href="/static/plugins/datedropper/datedropper.min.css">
+      <link rel="stylesheet"
+            href="/static/plugins/tempusdominus-bootstrap-4/build/css/tempusdominus-bootstrap-4.min.css">
+      <link rel="stylesheet" href="/static/plugins/jquery-toast-plugin/dist/jquery.toast.min.css">
+      <link href="https://cdn.datatables.net/buttons/1.6.1/css/buttons.dataTables.min.css" rel="stylesheet">
+      <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+      <link href=" https://cdn.datatables.net/buttons/1.6.0/css/buttons.dataTables.min.css" rel="stylesheet">
+
+      <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+      <script>window.jQuery || document.write('<script src="/static/src/js/vendor/jquery-3.3.1.min.js"><\/script>')</script>
+      <script src="/static/src/js/vendor/modernizr-2.8.3.min.js"></script>
+      <script src="/static/plugins/popper.js/dist/umd/popper.min.js"></script>
+      <script src="/static/plugins/moment/moment.js"></script>
+      <script src="/static/plugins/bootstrap/dist/js/bootstrap.min.js"></script>
+      <script src="/static/plugins/screenfull/dist/screenfull.js"></script>
+      <script src="/static/plugins/perfect-scrollbar/dist/perfect-scrollbar.min.js"></script>
+      <script src="/static/dist/js/theme.min.js"></script>
+      <script src="/static/js/form-components.js"></script>
+
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+      <script src="/static/plugins/tempusdominus-bootstrap-4/build/js/tempusdominus-bootstrap-4.min.js"></script>
+      <script src="/static/plugins/jquery-toast-plugin/dist/jquery.toast.min.js"></script>
+      <script src="/static/plugins/datedropper/datedropper.min.js"></script>
+      <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+      <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
+      <script src=" https://cdn.datatables.net/buttons/1.6.0/js/dataTables.buttons.min.js"></script>
+      <script src="https://cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script>
+      <script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.flash.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+      <script src=" https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+      <script src=" https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+      <script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.html5.min.js"></script>
+      <script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.print.min.js"></script>
+      <script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.colVis.min.js"></script>
+      <script src="/static/plugins/sweetalert/dist/sweetalert.min.js"></script>
+
+
+
+      <script>
+            if (window["WebSocket"]) {
+                  WSConn = new WebSocket("ws://" + document.location.host + "/echo");
+                  WSConn.onopen = function (evt) {
+                        console.log("Connection open")
+                  }
+                  WSConn.onclose = function (evt) {
+                        console.log("Connection closed")
+
+                  };
+                  WSConn.onmessage = function (evt) {
+                        var msg = JSON.parse(evt.data)
+                        Toast('info', msg.Message)
+                  };
+            } else {
+                  console.log("Your browser does not support WebSockets")
+            };
+
+            function WsToast(msg, role, UserID) {
+                  var WsData = new Object();
+                  //UserID to send notification to particuler user
+                  WsData.Message = msg
+                  WsData.Role = role
+                  if (UserID != null)
+                        WsData.UserID = parseInt(UserID)
+                  WSConn.send(JSON.stringify(WsData))
+            }
+
+            function jsondate(date) {
+
+                  if (date != null && date != "" && date != "0000-00-00 00:00:00" && date != "0000-00-00") {
+                        var currentTime = new Date(date);
+                        var month = ("0" + (currentTime.getDate())).slice(-2);
+                        var day = ("0" + (currentTime.getMonth() + 1)).slice(-2);
+                        var year = currentTime.getFullYear();
+                        var date1 = month + '/' + day + '/' + year;
+                        return date1;
+                  } else {
+                        return "";
+                  }
+            }
+
+            function getdata(_url) {
+                  var jsondata;
+                  $.ajax({
+                        url: _url,
+                        type: 'GET',
+                        // dataType: 'json',
+                        async: false,
+                        success: function (data) {
+                              jsondata = data
+                        }
+                  });
+                  return jsondata;
+            };
+
+            Toast = function (AlertType, msg) {
+                  var icon, heading, loaderBg;
+                  if (AlertType == 'success') {
+                        icon = 'success'
+                        heading = 'Success'
+                        loaderBg: '#f96868'
+                  }
+                  else if (AlertType == 'info') {
+                        icon = 'info'
+                        heading = 'Info'
+                        loaderBg: '#46c35f'
+                  }
+                  else if (AlertType == 'warning') {
+                        icon = 'warning'
+                        heading = 'Warning'
+                        loaderBg: '#57c7d4'
+                  }
+                  else if (AlertType == 'danger') {
+                        icon = 'error'
+                        heading = 'Warning'
+                        loaderBg: '#f2a654'
+                  }
+                  'use strict';
+                  resetToastPosition();
+                  $.toast({
+                        heading: heading,
+                        text: msg,
+                        showHideTransition: 'slide',
+                        icon: icon,
+                        loaderBg: loaderBg,
+                        position: 'top-right',
+                        hideAfter: 5000
+
+                  })
+            };
+            resetToastPosition = function () {
+                  $('.jq-toast-wrap').removeClass('bottom-left bottom-right top-left top-right mid-center'); // to remove previous position class
+                  $(".jq-toast-wrap").css({
+                        "top": "",
+                        "left": "",
+                        "bottom": "",
+                        "right": ""
+                  }); //to remove previous position style
+            };
+      </script>
+      <script>
+            $(document).ready(function () {
+                  $(".mobile").keydown(function (evt) {
+                        var charCode = (evt.which) ? evt.which : event.keyCode
+                        if (charCode > 31 && (charCode < 48 || charCode > 57))
+                              return false;
+                        return true
+                  })
+                  $("input,textarea").not("input[type='email']").keyup(function (e) {
+
+                        var str = this.value
+                        var patt = new RegExp(/^[\w-_. ]*$/);
+                        //  ^ Start of string
+                        // [...] Match characters inside
+                        // \w Any word character so 0-9 a-z A-Z
+                        // -_. Match - and _ and .
+                        // * Zero or more of pattern or unlimited
+                        // $ End of string
+                        var res = patt.test(str);
+                        if (!res) {
+                              alert('Some special characters not allowed')
+                              this.value = str.slice(0, -1)
+                              return false
+                        }
+
+                  })
+
+            })
+
+      </script>
+      <script>
+            $(document).ready(function () {
+                  $(".nav-item a").each(function () {
+                        var url = $(this).attr('href');
+                        href = url.replace('#', '@@@');
+                        if (window.location.pathname == url) {
+                              $(this).parents('.nav-item').addClass('active');
+                              // $(this).parents('ul').removeClass('collapse');
+                              $(this).parents('.nav-item.has-sub').addClass('open');
+                              if ($(this).parents('.nav-item.has-sub')) {
+                                    $(this).addClass('active')
+                              }
+                        }
+                  });
+            })
+      </script>
+      <script>
+            $(document).ready(function () {
+                  function UpdateNotifications() {
+                        var Ntfctn;
+
+                        Ntfctn = getdata('/GetNotifications')
+                        if (localStorage["Ntfctn"] != '') {
+                              //  Ntfctn = JSON.parse(localStorage["Ntfctn"])
+                              $(".notificationsBadge").append('<span class="badge bg-danger ">' + Ntfctn.length + '</span>')
+                        }
+
+                        for (let i in Ntfctn) {
+
+                              var html = '<a href="#" class="media"><span class="d-flex"><i class="ik ik-check"></i></span><span class="media-body">' +
+                                    '<span class="heading-font-family media-heading">' + Ntfctn[i].Name + '</span>' +
+                                    '<span class="media-content">' + Ntfctn[i].Message + '</span></span></a>'
+
+                              $(".notifications-wrap").append(html)
+
+                        }
+                  }
+
+                  UpdateNotifications()
+            })
+      </script>
+</head>
+
+<body>
+      <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+      <div class="wrapper">
+            <header class="header-top" header-theme="dark">
+                  <div class="container-fluid">
+                        <div class="d-flex justify-content-between">
+                              <div class="top-menu d-flex align-items-center">
+                                    <button type="button"
+                                          class="btn-icon mobile-nav-toggle d-lg-none"><span></span></button>
+                                    <div class="header-search">
+                                          <div class="input-group">
+                                                <span class="input-group-addon search-close"><i
+                                                            class="ik ik-x"></i></span>
+                                                <input type="text" class="form-control">
+                                                <span class="input-group-addon search-btn"><i
+                                                            class="ik ik-search"></i></span>
+                                          </div>
+                                    </div>
+                                    <button type="button" id="navbar-fullscreen" class="nav-link"><i
+                                                class="ik ik-maximize"></i></button>
+                              </div>
+                              <div class="top-menu d-flex align-items-center">
+                                    <div class="dropdown">
+                                          <a class="nav-link dropdown-toggle notificationsBadge" href="#"
+                                                id="notiDropdown" role="button" data-toggle="dropdown"
+                                                aria-haspopup="true" aria-expanded="false"><i
+                                                      class="ik ik-bell"></i></a>
+                                          <div class="dropdown-menu dropdown-menu-right notification-dropdown"
+                                                aria-labelledby="notiDropdown">
+                                                <h4 class="header">Notifications</h4>
+                                                <div class="notifications-wrap">
+                                                </div>
+                                                <div class="footer"><a href="javascript:void(0);">See all activity</a>
+                                                </div>
+                                          </div>
+                                    </div>
+
+
+                                    <div class="dropdown">
+                                          <a class="dropdown-toggle" href="#" id="userDropdown" role="button"
+                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img
+                                                      class="avatar" src="/AppFiles/Images/Employees/{{.User.Image}}"
+                                                      alt=""></a>
+                                          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                                                <div class="row justify-content-center">
+                                                      <div class="text-center">
+                                                            <img src="/AppFiles/Images/Employees/{{.User.Image}}"
+                                                                  class="rounded-circle" width="100" />
+
+                                                            <h5 class="card-title mt-10 ">{{.User.FirstName}}
+                                                                  {{.User.LastName}}</h5>
+
+                                                      </div>
+                                                      <hr class="mb-0">
+                                                </div>
+                                                <div class="">
+                                                      </br>
+                                                      <small class="text-muted d-block">User Name</small>
+                                                      <p>{{.User.UserName}}</p>
+                                                      <small class="text-muted d-block">Role</small>
+                                                      <p>{{.User.RoleName}}</p>
+                                                      <small class="text-muted d-block">Email address</small>
+                                                      <p class="small">{{.User.Email}}</p>
+                                                      <input type="hidden" id="employeeid"
+                                                            value="{{.User.IDEmployees}}">
+                                                      <input type="hidden" id="rolename" value="{{.User.RoleName}}">
+                                                      <input type="hidden" id="roleid" value="{{.User.RoleID}}">
+                                                      <input type="hidden" id="locationid" value="{{.User.LocationID}}">
+                                                      <input type="hidden" id="userid" value="{{.User.IDUsers}}">
+                                                </div>
+                                                <a class="dropdown-item" href="/logout"><i
+                                                            class="ik ik-power dropdown-icon"></i> Logout</a>
+                                          </div>
+                                    </div>
+                              </div>
+                        </div>
+                  </div>
+            </header>
+
+            <div class="page-wrap">
+                  <div class="app-sidebar colored">
+                        <div class="sidebar-header">
+                              <a class="header-brand" href="/dashboard">
+                                    <div class="logo-img">
+                                          <img src="/AppFiles/Images/LOGO/AMS-color.png" width="80" height="auto"
+                                                class="header-brand-img" alt="lavalite">
+                                    </div>
+                              </a>
+                              <button type="button" class="nav-toggle"><i data-toggle="expanded"
+                                          class="ik ik-toggle-right toggle-icon"></i></button>
+                              <button id="sidebarClose" class="nav-close"><i class="ik ik-x"></i></button>
+                        </div>
+                        <div class="sidebar-content">
+                              <div class="nav-container">
+                                    <nav id="main-menu-navigation" class="navigation-main">
+                                          <div class="nav-lavel">MENU</div>
+                                          <div class="nav-item">
+                                                <a href="/dashboard"><i
+                                                            class="ik ik-bar-chart-2"></i><span>Dashboard</span></a>
+                                                <a href="/MyDetails/{{.User.IDEmployees}}"><i
+                                                            class="ik ik-user"></i><span>My Details</span></a>
+                                          </div>
+                                          <div class="nav-lavel">Modules</div>
+                                          <div class="nav-item has-sub">
+                                                <a href="#"><i class="ik ik-users"></i><span>User</span></a>
+                                                <div class="submenu-content">
+                                                      {{if .Auth.EmployeeList  }}
+                                                      <a href="/UsersList" class="menu-item"><i
+                                                                  class="ik ik-list"></i><span>List</span></a>
+                                                      {{end}}
+                                                </div>
+                                          </div>
+                                          <div class="nav-item has-sub">
+                                                <a href="#"><i class="ik ik-gitlab"></i><span>Employees</span>
+                                                </a>
+                                                <div class="submenu-content">
+                                                      {{if .Auth.EmployeeList  }}
+                                                      <a href="/employees" class="menu-item"><i
+                                                                  class="ik ik-list"></i><span>List</span></a>
+                                                      {{end}}
+                                                      {{if .Auth.AddEmployee}}
+                                                      <a href="/employee/create" class="menu-item"><i
+                                                                  class="ik ik-user-plus"></i><span>Create</span></a>
+                                                      {{end}}
+                                                </div>
+                                          </div>
+                                          <div class="nav-item has-sub">
+                                                <a href="#"><i class="ik ik-monitor"></i><span>ITAssets</span>
+                                                </a>
+                                                <div class="submenu-content">
+
+                                                      {{if .Auth.ITAssetList}}
+                                                      <a href="/ITAssets" class="menu-item"><i
+                                                                  class="ik ik-list"></i><span>List</span></a>
+                                                      {{end}}
+                                                      {{if .Auth.AddITAsset}}
+                                                      <a href="/ITAssets/create" class="menu-item"><i
+                                                                  class="ik ik-folder-plus"></i><span>Create</span></a>
+                                                      {{end}}
+                                                      {{if .Auth.ITAssetRequest}}
+                                                      <a href="/ITAssets/Request?LocID={{.User.LocationID}}"
+                                                            class="menu-item"><i
+                                                                  class="ik ik-arrow-up-right"></i><span>Asset
+                                                                  Request</span></a>
+                                                      {{end}}
+                                                      <a href="/ITAssetRetiredList" class="menu-item"><i
+                                                                  class="ik ik-list"></i><span>Retired
+                                                                  ITAssets</span></a>
+                                                </div>
+                                          </div>
+                                          <div class="nav-item has-sub">
+                                                <a href="#"><i class="ik ik-airplay"></i><span>Non ITAssets</span>
+                                                </a>
+                                                <div class="submenu-content">
+                                                      <a href="/NonITAsset/List" class="menu-item"><i
+                                                                  class="ik ik-list"></i><span>List</span></a>
+                                                      <a href="/NonITAsset/Create" class="menu-item"><i
+                                                                  class="ik ik-folder-plus"></i><span>Create</span></a>
+
+                                                      <a href="/NonITAssetRequest?LocID={{.User.LocationID}}"
+                                                            class="menu-item"><i
+                                                                  class="ik ik-arrow-up-right"></i><span>Asset
+                                                                  Request</span></a>
+
+                                                </div>
+                                          </div>
+                                          <div class="nav-item has-sub">
+                                                <a href="#"><i class="fas fa-tint"></i><span>Consumables</span>
+                                                </a>
+                                                <div class="submenu-content">
+                                                      {{if .Auth.ConsumableList }}
+                                                      <a href="/Consumables/ConsumableList" class="menu-item"><i
+                                                                  class="ik ik-list"></i><span>List</span></a>
+                                                      {{end}}
+                                                      {{if .Auth.AddConsumable}}
+                                                      <a href="/Consumables/Consumables" class="menu-item"><i
+                                                                  class="ik ik-folder-plus"></i><span>Create</span></a>
+                                                      {{end}}
+
+                                                </div>
+                                          </div>
+                                          <div class="nav-lavel">Extra</div>
+                                          <div class="nav-item has-sub">
+                                                <a href="#"><i class="ik ik-edit"></i><span>Requests</span></a>
+                                                <div class="submenu-content">
+                                                      <a href="/ITAssets/RequestList" class="menu-item">ITAssets</a>
+                                                      <a href="/ITAsset_Service_Request_List" class="menu-item">ITAsset
+                                                            Services</a>
+                                                      <a href="/NonITAssetRequestList" class="menu-item">Non ITAssets</a>
+                                                </div>
+                                          </div>
+                                          <div class="nav-item has-sub">
+                                                <a href="#"><i class="ik ik-edit"></i><span>InWard / OutWard</span></a>
+                                                <div class="submenu-content">
+                                                      {{if .Auth.OutWardRequest}}
+                                                      <a href="/Transfer" class="menu-item">Transfer</a>
+                                                      {{end}}
+                                                      {{if .Auth.InWardList}}
+                                                      <a href="/InWardDetails" class="menu-item">InWard List</a>
+                                                      {{end}}
+                                                      {{if .Auth.OutWardList }}
+                                                      <a href="/OutWardDetails" class="menu-item">OutWard List</a>
+                                                      {{end}}
+                                                      {{if .Auth.ApprovalList}}
+                                                      <a href="/OWApprovalDeatils" class="menu-item">Approval List</a>
+                                                      {{end}} </div>
+                                          </div>
+
+                                          <div class="nav-item has-sub">
+                                                <a href="#"><i class="ik ik-settings"></i><span>Settings</span></a>
+                                                <div class="submenu-content">
+                                                      <a href="/LocationsDetails" class="menu-item"><i
+                                                                  class="ik ik-map-pin"></i><span>Locations</span></a>
+                                                </div>
+                                                <div class="submenu-content">
+                                                      <a href="/VendorsDetails" class="menu-item"><i
+                                                                  class="ik ik-briefcase"></i><span>Vendors</span></a>
+                                                </div>
+                                                <div class="submenu-content">
+                                                      <a href="/Authorization" class="menu-item"><i
+                                                                  class="ik ik-lock"></i><span>Authorization</span></a>
+                                                </div>
+                                                <div class="submenu-content">
+                                                      <a href="/NonITAssetMasterAdd" class="menu-item"><i
+                                                                  class="ik ik-lock"></i><span>NonITAsset
+                                                                  Names</span></a>
+                                                </div>
+                                                <div class="submenu-content">
+                                                      <a href="/MultiApproval" class="menu-item"><i
+                                                                  class="ik ik-user-check"></i><span>Multi Level
+                                                                  Approval</span></a>
+                                                </div>
+                                          </div>
+
+                                    </nav>
+                              </div>
+                        </div>
+                  </div>
+                  <div class="main-content">
+                        <div class="container-fluid">
+                              {{end}}

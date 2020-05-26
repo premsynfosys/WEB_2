@@ -1,0 +1,98 @@
+{{define "ConsumableAdd_Partial"}}
+<form id="mstrForm">
+    <div class="form-group row ">
+        <label for="consumableName" class="col-md-3 col-form-label ">Consumable Name:</label>
+        <div class="col-md-9">
+            <input type="text" required maxlength="45" name="consumableName" class="form-control " id="consumableName"
+                placeholder="Consumable Name">
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="ITAssetSerialNo" class="col-md-3 col-form-label ">Group Name</label>
+        <div class="col-md-9">
+            <div class="input-group">
+                <select name="GroupID" id="GroupID" class="form-control">
+                </select>
+            </div>
+        </div>
+    </div>
+    <span class="justify-content-center">(or)</span>
+    <div class="form-group row">
+        <label for="ITAssetSerialNo" class="col-md-3 col-form-label "></label>
+        <div class="col-md-9">
+            <input type="text" maxlength="45" name="GroupName" class="form-control " id="GroupName"
+                placeholder="Enter new GroupName">
+        </div>
+    </div>
+    <div class="form-group row justify-content-center">
+        <input type="submit" id="createCosnumablemaster" class="btn btn-primary btn-sm" value="Create" />
+    </div>
+</form>
+<script>
+    $(document).ready(function () {
+        var data = getdata('/GetConsumableGroups')
+        loadLocations(data)
+        function loadLocations(data) {
+            $("#GroupID").empty().append('<option value="0">--select--</option>');
+            $.each(data, function (i, el) {
+                $("#GroupID").append($("<option />", { text: el.ConsumableGroupName, value: el.IDconsumablegroups }));
+            });
+        }
+        $("#GroupID").change(function () {
+            if ($("#GroupID").val() != 0) {
+                $("#GroupName").val("")
+            }
+        })
+        $("#GroupName").change(function () {
+            if ($("#GroupName").length > 0) {
+                $("#GroupID").val("0")
+            }
+        })
+
+        $("#consumableName").blur(function () {
+            if ($("#consumableName").val() != "")
+                $.ajax({
+                    url: "/Check_Unique_Consumable/" + $("#consumableName").val(),
+                    dataType: 'json',
+                    async: false,
+                    success: function (data) {
+                        if (data.toLowerCase() == $("#consumableName").val().toLowerCase()) {
+                            Toast("danger", "Consumable already existed with this name")
+                            $("#consumableName").val("")
+                        }
+                    }, error: function () {
+                        alert('Internal error')
+                    }
+                });
+        })
+        $("#mstrForm").submit(function (e) {
+            e.preventDefault()
+
+            if ($("#GroupID").val() == 0 && $("#GroupName").val() == "") {
+                Toast('warning', 'Please select Group name or Enter new Group Name')
+                return false
+            }
+
+
+            var fd = new FormData(this);
+
+            $.ajax({
+                url: "/ConsumablemasterInsert",
+                data: fd,
+                type: "POST",
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    Toast("success", "Consumable added successfully.")
+                    debugger;
+                    $("#mstrForm").parents(".modal").find(".close").click()
+                }, error: function () {
+                    alert('Internal error')
+                }
+            });
+
+        })
+
+    })
+</script>
+{{end}}

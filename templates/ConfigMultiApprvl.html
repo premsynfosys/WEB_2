@@ -1,0 +1,148 @@
+{{define "ConfigMultiApprvl"}}
+{{template "head" .}}
+
+<div class="page-header">
+    <div class="row align-items-end">
+        <div class="col-lg-8">
+            <div class="page-header-title">
+                <div class="d-inline">
+                    <h5>Multi Level Approval</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<form id="frmAuthorization">
+    {{range .Data}}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="module" data-id="{{.IDMultiLevelApproval_Main}}">
+                        <div class="form-group row ml-5">
+                            <h6 class="mt-2">{{.FeatureName}} -</h6>
+                            <span class="text mt-2 ml-5">Approval Levels</span>
+                            <input type="number" min="1" data-id="{{.IDMultiLevelApproval_Main}}"
+                                class="form-control ml-3 levels form-control-sm w-10 " value="{{.Levels}}">
+                        </div>
+                        <hr>
+                        <div class="divApprovers">
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{end}}
+
+    <div class="row justify-content-center">
+        <input type="submit" class="btn btn-primary  btn-sm" value="Configure" />
+    </div>
+</form>
+<script>
+    $(document).ready(function () {
+        var options = ""
+        var data = getdata("/GetRoles")
+        options += "<option value=''>--select--</option>";
+        $.each(data, function (i, el) {
+            if ("{{.User.RoleName}}" != "Super Admin" && el.RoleName == "Super Admin") {
+            } else {
+                options += "<option value='" + el.IDRoles + "'> " + el.RoleName + " </option>";
+            }
+        });
+
+        $(".levels").change(function () {
+            var divApprovers = $(this).parents(".module").find(".divApprovers")
+            if ((data.length - 1) < $(this).val()) {
+                Toast('warning', "Aprovals count can't be more than Roles count")
+                $(this).val(data.length - 1)
+                return
+            }
+            divApprovers.empty()
+            var count = $(this).val()
+            var html = "";
+            for (i = 1; i <= count; i++) {
+                html += ' <div class="form-group row ml-5"><label class="col-md-3 mt-1" for="Role">Approver ' + i + ':</label>'
+                html += '<select class="form-control col-md-3 Role ">' + options + '  </select>  </div>'
+            }
+            divApprovers.append(html)
+        })
+
+
+        $("#frmAuthorization").submit(function (e) {
+            e.preventDefault()
+            //var obj = new Object();
+            var mainArry = new Array();
+            $(".module").each(function () {
+                debugger;
+                var main = new Object()
+                main.CreatedBy = parseInt($("#employeeid").val())
+                main.Levels = parseInt($(this).find(".levels").val())
+                main.IDMultiLevelApproval_Main = parseInt($(this).find(".levels").attr('data-id'))
+                var mapArry = new Array();
+                $(this).find(".Role").each(function () {
+                    var map = new Object();
+                    map.CreatedBy = parseInt($("#employeeid").val())
+                    map.MultiLevelApproval_Main_ID = main.IDMultiLevelApproval_Main
+                    map.RoleID = parseInt($(this).val())
+                    mapArry.push(map)
+                })
+                main.MultiLevelApproval_Map_List = mapArry
+                mainArry.push(main)
+            })
+
+            $.ajax({
+                url: "/MultiLevelApproval_config",
+                type: 'POST',
+                data: JSON.stringify(mainArry),
+                dataType: 'json',
+                async: false,
+                success: function (data) {
+                    Toast('success', 'Multi Level approvals configured')
+                }, error: function () {
+                    alert('Internal error')
+                }
+            });
+
+        })
+
+
+        $.ajax({
+            url: "/GetMultiLevelApproval_Map",
+            dataType: 'json',
+            async: false,
+            success: function (data) {
+                fill(data)
+
+            }, error: function () {
+                alert('Internal error')
+            }
+        });
+
+
+
+        function fill(dt) {
+            $(".levels").trigger("change")
+            $(".module").each(function () {
+              
+                var mainid = parseInt($(this).attr("data-id"))
+                let filter = dt.filter(function (e) {
+                    return e.IDMultiLevelApproval_Main == mainid;
+                });
+              
+                for (i = 0; i < filter.length; i++) {
+                    $(this).find('.Role:eq(' + i + ')').val(filter[i].MultiLevelApproval_Map.RoleID)
+                }
+
+
+            })
+
+
+        }
+    });
+</script>
+
+{{template "footer"}}
+{{end}}

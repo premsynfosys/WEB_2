@@ -1,0 +1,268 @@
+{{define "NonITAsset_CheckOut"}}
+{{template "head" .}}
+<div class="page-header">
+    <div class="row align-items-end">
+        <div class="col-lg-8">
+            <div class="page-header-title">
+                <div class="d-inline">
+                    <h5>Check-Out NonITAsset - {{.Data.Mdl.NonITAssets_Master.NonITAssets_Name}}</h5>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<form id="frm" action="/NonITAssets/Checkout/{{.Data.Mdl.IDNonITAsset}}" method="POST">
+
+    <input type="hidden" name="Grade" id="Grade" value="{{.Data.Grade}}">
+    <input type="hidden" name="ApprvrRoleID" id="ApprvrRoleID" value="{{.Data.RoleID}}">
+    <input type="hidden" name="EmpID" id="EmpiID" value="{{.User.IDEmployees}}">
+    <div class="card">
+        <div class="card-body">
+            <div class="form-group row">
+                <label for="Name" class="col-md-3 col-form-label ">Asset Name:</label>
+                <div class="col-md-9">
+                    <input type="text" readonly name="Name" class="form-control form-control-sm  w-auto"
+                        value="{{.Data.Mdl.NonITAssets_Master.NonITAssets_Name}}" id="Name">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="Model" class="col-md-3 col-form-label ">Model:</label>
+                <div class="col-md-9">
+                    <input type="text" readonly name="Model" class="form-control form-control-sm w-auto"
+                        value="{{.Data.Mdl.ModelNo}}" id="Model">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="Model" class="col-md-3 col-form-label ">Identification No:</label>
+                <div class="col-md-9">
+                    <input type="text" readonly name="IdentificationNo" class="form-control form-control-sm w-auto"
+                        value="{{.Data.Mdl.IdentificationNo}}" id="IdentificationNo">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="AssignTo" class="col-md-3 col-form-label ">Check-out
+                    To:</label>
+                <div class="col-md-9">
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-light btn-sm ">
+                            <input type="radio" name="AssignTo" value="User" id="rdUser">
+                            User
+                        </label>
+                        <label class="btn btn-light btn-sm">
+                            <input type="radio" name="AssignTo" id="rdLocation" value="Place">
+                            Same Location
+                        </label>
+                        <label class="btn btn-light btn-sm">
+                            <input type="radio" name="AssignTo" id="rdLocation" value="Location">
+                            Other Location
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="Model" class="col-md-3 col-form-label ">CheckOut Quantity:</label>
+                <div class="col-md-9">
+                    <input type="number" min="1" name="CheckOut_Qnty" class="form-control form-control-sm w-auto"
+                        id="CheckOut_Qnty">
+                </div>
+            </div>
+            <div class="form-group row collapse" id="divUsers">
+                <label for="Users" class="col-md-3 col-form-label ">Users:</label>
+                <div class="col-md-6">
+                    <select name="Users" id="Users" class="form-control float-left">
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row collapse" id="divPlace">
+                <label for="Assets" class="col-md-3 col-form-label ">Place Name:</label>
+                <div class="col-md-6">
+                    <input type="text" class="form-control form-control-sm " name="CheckedOutPlace"
+                        id="CheckedOutPlace">
+                </div>
+            </div>
+
+            <div class="collapse" id="divLocations">
+                <span class="text-danger">Note: Outward request generate automatically for this option.</span>
+                <input type="hidden" name="AssetLocation" id="AssetLocation" value="{{.Data.Mdl.LocationID}}">
+                <div class="form-group row ">
+                    <label for="Locations" class="col-md-3 col-form-label ">Locations:</label>
+                    <div class="col-md-6">
+                        <select name="Locations" id="Locations" class="form-control float-left ">
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row ">
+                    <label for="Receiver" class="col-md-3 col-form-label ">Receiver:</label>
+                    <div class="col-md-6">
+                        <select name="Receiver" id="Receiver" class="form-control float-left ">
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row ">
+                    <label for="Approver" class="col-md-3 col-form-label ">Approver:</label>
+                    <div class="col-md-6">
+                        <select name="Approver" id="Approver" class="form-control float-left ">
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div id="divdates">
+                <div class="form-group row">
+                    <label for="CheckOutDate" class="col-sm-3 col-form-label ">Check-out
+                        Date:</label>
+                    <div class="col-sm-9 form-inline">
+                        <input type="text" name="CheckOutDate" class="form-control datetimepicker-input"
+                            data-toggle="datetimepicker" autocomplete="off" data-target="#CheckOutDate"
+                            id="CheckOutDate">
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="form-group row">
+                <label for="CheckOut_Comments" class="col-md-3 col-form-label ">Comments:</label>
+                <div class="col-md-9">
+                    <textarea name="CheckOut_Comments" required maxlength="500"
+                        class="form-control form-control-sm w-auto" id="CheckOut_Comments"
+                        placeholder="CheckOut_Comments"></textarea>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <input type="submit" class="btn btn-primary btn-sm " value="Check Out" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+
+
+    $(document).ready(function () {
+
+        function LoadUsers(data) {
+            $.each(data, function (i, el) {
+                $("#Users").append($("<option />", { text: el.FirstName, value: el.IDEmployees }));
+            });
+        };
+
+        function loadLocations(data) {
+            $("#Location").empty().append('<option selected="selected" >--select--</option>');
+            $.each(data, function (i, el) {
+                $("#Locations").append($("<option />", { text: el.Name + "\n" + el.Address1 + "\n" + el.Address2 + "\n" + el.Countryname + "\n" + el.Statename + "\n" + el.Zipcode, value: el.IDLocations }));
+            });
+        }
+
+        $('#CheckOutDate').datetimepicker({
+            format: 'YYYY-MM-DD'
+        });
+
+
+
+        $("#Locations").change(function () {
+
+            if ($(this).val() == $("#AssetLocation").val()) {
+                Toast('warning', "you can't checkout to same location.")
+                $(this).val("0")
+            }
+        })
+        $("#frm").submit(function () {
+            if ($("input[name='AssignTo']:checked").length == 0) {
+                $("#rdUser").focus();
+                alert('Choose check-out type.');
+                return false;
+            }
+            else if ($("input[name='AssignTo']:checked").val() == 'User' && ($("#Users").val() == '0' || $("#CheckOut_Qnty").val() == '')) {
+                alert('Please select user');
+                $("#Users").focus()
+                return false;
+            }
+            else if ($("input[name='AssignTo']:checked").val() == 'Place' && ($("#CheckedOutPlace").val() == '' || $("#CheckOut_Qnty").val() == '')) {
+                alert('Please Enter Place Name');
+                $("#CheckedOutPlace").focus()
+                return false;
+            }
+
+            else if ($("input[name='AssignTo']:checked").val() == 'Location' && ($("#Locations").val() == '0' || $("#Receiver").val() == '0' || $("#Approver").val() == '0')) {
+                alert('Please select Location');
+                $("#Locations").focus()
+                return false;
+            }
+            return true;
+        }) 
+
+        $("input[name='AssignTo']").change(function () {
+            $("#divdates").removeClass("collapse")
+            // $("#divdates").find('input').attr('required')
+            if (this.value == 'User') {
+                $("#divUsers").removeClass("collapse")
+                $("#divPlace,#divLocations").addClass("collapse")
+                $("#Users,#Locations").empty();
+                $("#Users").append('<option selected="selected" value="0">--select--</option>');
+                var data;
+                if ("{{.Auth.Accesstoalllocations}}") {
+                    data = getdata("/GetEmployeesList")
+                }
+                else {
+                    data = getdata("/GetEmployeesList?LocID=" + $("#locationid").val())
+
+                }
+
+
+                LoadUsers(data)
+            }
+            if (this.value == 'Place') {
+                $("#divPlace").removeClass("collapse")
+                $("#divUsers,#divLocations").addClass("collapse")
+                $("#Users,#Locations").empty();
+                // $("#divPlace").find('input').attr('required')
+            }
+            if (this.value == 'Location') {
+                $("#divLocations").removeClass("collapse")
+                $("#divUsers,#divPlace").addClass("collapse")
+                $("#Users,#Locations").empty();
+                $("#Locations").append('<option selected="selected" >--select--</option>');
+                var data = getdata('/GetLocations')
+                loadLocations(data)
+                $("#Receiver").empty().append('<option selected="selected" >--select--</option>');
+                $("#Approver").empty().append('<option selected="selected" >--select--</option>');
+                // if ("{{.Auth.Accesstoalllocations}}") {
+                //     data = getdata("/GetEmployeesList")
+                // }
+                // else {
+                //     data = getdata("/GetEmployeesList?LocID=" + $("#locationid").val())
+
+                // }
+
+                // $.each(data, function (i, el) {
+                //     $("#Receiver").append($("<option />", { text: el.FirstName, value: el.IDEmployees }));
+                //     $("#Approver").append($("<option />", { text: el.FirstName, value: el.IDEmployees }));
+                // });
+                var dat = getdata("/GetApprovers/" + $("#locationid").val() + "/{{.Data.RoleID}}")
+                $.each(dat, function (i, el) {
+                    //  $("#Receiver").append($("<option />", { text: el.FirstName, value: el.IDEmployees }));
+                    $("#Approver").append($("<option />", { text: el.Employee.FirstName, value: el.Employee.IDEmployees }));
+                });
+                LoadReceivers(getdata("/GetApprovers/0/2"))
+                function LoadReceivers(data) {
+                    $.each(data, function (i, el) {
+                        if (el.Employee.Location != $("#locationid").val()) {
+                            $("#Receiver").append($("<option />", { text: el.Employee.FirstName, value: el.Employee.IDEmployees }));
+                        }
+                        //$("#Approver").append($("<option />", { text: el.FirstName, value: el.IDEmployees }));
+                    });
+                };
+
+                $("#divdates").addClass("collapse")
+                // $("#divdates").find('input').removeAttr('required')
+            }
+        })
+
+
+    });
+</script>
+
+{{template "footer"}}
+{{end}}

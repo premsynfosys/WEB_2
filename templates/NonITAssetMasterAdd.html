@@ -1,0 +1,33 @@
+{{  define "NonITAssetMasterAdd"}}
+{{template "head" .}}
+<div class="page-header">
+    <div class="row align-items-end">
+        <div class="col-lg-8 col-md-8 col-sm-8  col-xs-8">
+            <div class="page-header-title">
+                <div class="d-inline">
+                    <h5>Add NonITAssets Names </h5>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="card">
+        <div class="card-body">
+            <div id="Prtl">
+
+            </div>
+        </div>
+    </div>
+  
+</div>
+
+<script>
+     $(document).ready(function () {
+   
+        $("#Prtl").load("/NonITAssetAdd_Partial")
+    })
+</script>
+
+{{template "footer"}}
+{{end}}

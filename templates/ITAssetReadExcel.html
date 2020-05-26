@@ -1,0 +1,161 @@
+{{  define "ITAssetReadExcelTmpl"}}
+
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/jszip.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/xlsx.js"></script> -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.13.5/xlsx.full.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.13.5/jszip.js"></script>
+
+<div>
+    <form id="frm" action="/ITAssets/ReadExcel" method="POST" enctype="multipart/form-data">
+        
+        <div class="form-group row">
+            <label for="ITAssetfile" class="col-md-3 col-form-label ">Upload file:</label>
+            <div class="input-group col-md-9">
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input " id="ITAssetfile" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
+                    <label class="custom-file-label " for="ITAssetfile">Choose file</label>
+                </div>
+
+            </div>
+        </div>
+        <div id="divMap" class="container bg-light col-8 col-md-6 col-sm-8 justify-content-center">
+
+        </div>
+        <div class="form-group row justify-content-center">
+            <input type="button" id="btn" class="btn btn-primary btn-sm" value="Insert" />
+        </div>
+    </form>
+</div>
+
+<script>
+    $(".custom-file-input").on("change", function () {
+       
+        var fileName = $(this).val().split("\\").pop();
+        $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+    });
+
+    document.getElementById('ITAssetfile').addEventListener('change', getHeaders, false);
+    // Object.keys(XL_row_object[0])
+
+    function ProcessExcel(data) {     
+        //Read the Excel File data.
+        var workbook = XLSX.read(data, {
+            type: 'binary'
+        });
+        var jsonData = "";       
+        workbook.SheetNames.forEach(function (sheetName) {
+            // Here is your object
+            var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);          
+            var json_object = JSON.stringify(XL_row_object);
+            jsonData += json_object
+        })
+        var exceldata= JSON.parse(jsonData);
+
+        var map = __getMapdata();
+       
+        // var res= new Object();
+        // res.exceldata=exceldata;
+        // res.map=map;
+        //
+         $.ajax({
+            url: "/ITAssets/ReadExcel",
+            type: 'POST',
+            data: {map:JSON.stringify(map),exceldata:JSON.stringify(exceldata)},
+            dataType: 'json',
+            async: false,
+            success: function (data) {
+
+            }
+        });
+    };
+
+
+
+    function getJsonData() {
+        var file = document.getElementById('ITAssetfile');
+        var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.xls|.xlsx)$/;
+        if (regex.test(file.value.toLowerCase())) {
+            if (typeof (FileReader) != "undefined") {
+                var reader = new FileReader();
+                //For Browsers other than IE.
+                if (reader.readAsBinaryString) {
+                    reader.onload = function (e) {
+                        return ProcessExcel(e.target.result);
+                    };
+                    reader.readAsBinaryString(file.files[0]);
+                } else {
+                    //For IE Browser.
+                    reader.onload = function (e) {
+                        var data = "";
+                        var bytes = new Uint8Array(e.target.result);
+                        for (var i = 0; i < bytes.byteLength; i++) {
+                            data += String.fromCharCode(bytes[i]);
+                        }
+                        return ProcessExcel(data);
+                    };
+                    reader.readAsArrayBuffer(file.files[0]);
+                }
+            } else {
+                alert("This browser does not support HTML5.");
+            }
+        } else {
+            alert("Please upload a valid Excel file.");
+        }
+    };
+
+
+    function getHeaders(evt) {
+       
+        var files = evt.target.files;
+        var reader = new FileReader();
+        reader.readAsBinaryString(files[0]);
+        reader.onload = function (e) {
+            var data = e.target.result;
+            var workbook = XLSX.read(data, {
+                type: 'binary'
+            });
+            const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+            const column = [];
+
+            for (let z in worksheet) {
+
+                if (z.toString().length == 2 && z.toString()[1] == 1) {
+                    column.push(worksheet[z].v);
+                }
+            }
+
+            for (let s in column) {
+                var html = ' <div  class="form-group row "><label for="ddlMap' + s + '" class="col-md-3 col-form-label ">' + column[s] + '</label>'
+                html += ' <div class="col-md-9"><select data-column="' + column[s] + '" name="ddlMap' + s + '" id="ddlMap' + s + '" class="custom-select ddlMap ">'
+                html += '   <option value="0">--select-- </option><option value="ITAssetName">ITAsset Name </option>'
+                html += '  <option value="ITAssetModel">ITAsset Model</option><option value="ITAssetSerialNo">SerialNo</option>'
+                html += '  <option value="ITAssetDescription">ITAsset Description</option><option value="ITAssetPrice">ITAsset Price</option>'
+                html += '  </select></div></div>'
+                $("#divMap").append(html)
+            }
+
+        };
+        reader.onerror = function (ex) {
+            console.log(ex);
+        };
+    }
+
+
+    function __getMapdata() {
+       
+        var obj = new Object();
+        $(".ddlMap").each(function () {
+            if ($(this).val() != 0 && $(this).val() != undefined) {
+                obj[$(this).val()] = $(this).attr('data-column')
+            }
+        });
+
+        return obj;
+    };
+
+    $("#btn").click(function () {
+         getJsonData();       
+    });
+</script>
+
+{{end}}

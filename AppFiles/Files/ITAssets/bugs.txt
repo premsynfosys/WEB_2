@@ -1,0 +1,14 @@
+image fixed sizes ==
+active inactive button  ====
+activity log
+unique email, mobile ====
+unique username ====
+delete employee along with user ==
+bulk send activaion link ====
+
+excel sheet with dropdowns
+sample excel sheet 
+or condtion while upload
+
+gey color in table buttns  ===
+delete button ===

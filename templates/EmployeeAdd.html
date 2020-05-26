@@ -1,0 +1,404 @@
+{{define "addemployee"}}
+{{template "head" .}}
+<div class="page-header">
+    <div class="row align-items-end">
+        <div class="col-lg-8">
+            <div class="page-header-title">
+                <div class="d-inline">
+                    <h5>Add Employee</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            {{if .Auth.EmployeeList}}
+            <a class="add float-right  font-weight-bold btn btn-outline-primary btn-rounded " title="Employee List"
+                href="/employees"><i class="ik ik-list  "></i><span>List</span></a>
+            {{end}}
+            <a data-toggle="modal" data-target="#locationmodal" id="ReadExcel"
+                class="float-right  font-weight-bold btn btn-outline-primary btn-rounded mr-2" title="Bulk Import"
+                href="#"><i class="ik ik-plus "></i><span>Bulk Import</span></a>
+        </div>
+    </div>
+</div>
+<form method="POST" name="frmEmp" action="/employee/create" onsubmit="return validate(this);"
+    enctype="multipart/form-data">
+    <div class="row">
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="FirstName">First Name</label>
+                                <input type="text" maxlength="44" name="FirstName" required class="form-control"
+                                    id="FirstName" placeholder="First Name">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="LastName">Last Name</label>
+                                <input type="text" maxlength="44" name="LastName" required class="form-control"
+                                    id="LastName" placeholder="Last Name">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="DOB">Date of Birth:</label>
+                        <input type="text" maxlength="44" required class="form-control datetimepicker-input" name="DOB"
+                            id="DOB" data-toggle="datetimepicker" autocomplete="off" data-target="#DOB"
+                            placeholder="Date of Birth">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="Email">Email:</label>
+                                <input type="email" autocomplete="off" name="Email" required class="form-control"
+                                    id="Email" placeholder="Email">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="Gender">Gender</label>
+                                <select class="form-control" id="Gender" name="Gender">
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                        <label for="Mobile">Mobile:</label>
+                        <input type="text" maxlength="10" autocomplete="off" required name="Mobile"
+                            class="form-control mobile" id="Mobile" placeholder="Mobile">
+
+                    </div>
+                    <div class="form-group">
+                        <label for="PrmntAddress">Permanent Address:</label>
+                        <textarea type="text" maxlength="500" required multiple name="PrmntAddress"
+                            class="form-control " id="PrmntAddress" placeholder="Permanent Address"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="Address">Address for Correspondence:</label>
+                        <textarea type="text" maxlength="500" required multiple name="Address" class="form-control "
+                            id="Address" placeholder="Address for Correspondence"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="EmployeeImg">Image upload</label>
+                        <input type="file" id="EmployeeImg" name="EmployeeImg" onchange="Filevalidation();"
+                            accept="image/x-png,image/gif,image/jpeg" class="file-upload-default">
+                        <div class="input-group col-xs-12">
+                            <input type="text" class="form-control file-upload-info" disabled=""
+                                placeholder="Upload Image">
+                            <span class="input-group-append">
+                                <button class="file-upload-browse btn btn-info" type="button">Upload</button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+
+                    <div class="form-group">
+                        <label for="EmpCode">Employee Code</label>
+                        <input type="text" maxlength="44" name="EmpCode" required class="form-control" id="EmpCode"
+                            placeholder="Employee code">
+
+                    </div>
+                    <div class="form-group ">
+                        <label for="Education">Education:</label>
+                        <select name="Education" required class="form-control" id="Education">
+                        </select>
+                    </div>
+                    <div class="form-group ">
+                        <label for="Experience">Work Experience:</label>
+                        <div class="row">
+                            <select name="ExperienceYear" id="ExperienceYear"
+                                class="form-control ml-3 mr-3 col "></select>
+                            </select>
+                            <select name="ExperienceMonth" id="ExperienceMonth" class="form-control ml-3 mr-3 col">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                        <label for="DOJ">Date of Joining:</label>
+                        <input type="text" required id="DOJ" name="DOJ" class="form-control datetimepicker-input"
+                            data-toggle="datetimepicker" autocomplete="off" data-target="#DOJ" placeholder="Joining">
+                    </div>
+                    <div class="form-group">
+                        <label for="Designation">Designation:</label>
+                        <select required name="Designation" id="Designation" class="form-control">
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="Location" class="">Location:</label>
+                        <div class="input-group col-xs-12">
+
+                            <select name="Location" required id="Location" class="form-control">
+                            </select>
+                            {{if .Auth.Accesstoalllocations}}
+                            <span class="input-group-append">
+                                <button id="btnlocation" data-toggle="modal" data-target="#locationmodal"
+                                    title="Add Location" class=" btn btn-info" type="button">Add</button>
+                            </span>
+
+                            {{end}}
+                        </div>
+                    </div>
+                    {{if .Auth.CreateUser}}
+                    <div class="border-checkbox-group border-checkbox-group-info">
+                        <input class="border-checkbox" type="checkbox" name="Islogin" id="AllowToLogin" value="true">
+                        <label class="border-checkbox-label" for="Islogin">Allow to Login</label>
+                    </div>
+                    <hr />
+                    <div id="divuser" style="display: none;">
+                        <div class="form-group ">
+                            <label for="Role">Role:</label>
+                            <select name="Role" id="Role" class="form-control">
+                            </select>
+                        </div>
+                        <div class="form-group ">
+                            <label for="UserStatus">Status:</label>
+                            <select name="UserStatus" id="UserStatus" class="form-control">
+                                <option value="">-- select --</option>
+                                <option value="Active">Active</option>
+                                <option value="InActive">InActive</option>
+                                <!-- <option value="Suspend">Suspend</option> -->
+                            </select>
+
+                        </div>
+
+                    </div>
+                    {{end}}
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row justify-content-center">
+        <input type="submit" class="btn btn-primary  btn-sm" value="Add" />
+    </div>
+
+
+    <!-- location Modal -->
+    <div class="modal fade bd-example-modal-lg" id="locationmodal" tabindex="-1" role="dialog"
+        aria-labelledby="locationmodalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog modal-lg modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="locationmodalTitle">Add Location</h5>
+                    <button type="button" id="closeLoatonmodal" class="close" data-dismiss="modal"
+                        data-target="#locationmodal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body " id="divLocation">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function validate(frm) {
+            if ($("#Location").val() == "") {
+                Toast("warning", "Please select Location")
+                //  alert('Please select Location')
+                $("#Location").focus()
+                return false;
+            }
+
+            if (frm.Islogin.checked) {
+                var selectBox = frm.Role;
+                if (selectBox.selectedIndex == 0) {
+                    alert('Please select Role')
+                    selectBox.focus()
+                    return false;
+                }
+                var selectBox = frm.UserStatus;
+                if (selectBox.selectedIndex == 0) {
+                    alert('Please select Status')
+                    selectBox.focus()
+                    return false;
+                }
+                return (true);
+            }
+            return (true);
+        }
+
+
+    </script>
+</form>
+
+
+<script>
+    $(document).ready(function () {
+        //experience
+        for (i = 0; i <= 100; i++) {
+            $("#ExperienceYear").append('<option value=' + i + '  >' + i + ' yr(s)</option>')
+            if (i < 12)
+                $("#ExperienceMonth").append('<option value=' + i + '  >' + i + ' mnt(s)</option>')
+
+        }
+        var data = getdata("/GetRoles")
+        $("#Role").append($("<option />", { text: '-- select --', value: "" }));
+        $.each(data, function (i, el) {
+            if ("{{.User.RoleName}}" != "Super Admin" && el.RoleName == "Super Admin") {
+                
+            } else {
+                $("#Role").append($("<option />", { text: el.RoleName, value: el.IDRoles }));
+            }
+        });
+        var data = getdata('/GetLocations')
+        loadLocations(data)
+        function loadLocations(data) {
+            $("#Location").empty().append('<option value="" >-- select --</option>');
+            $.each(data, function (i, el) {
+                $("#Location").append($("<option />", { text: el.Name + "\n" + el.Address1 + "\n" + el.Address2 + "\n" + el.Countryname + "\n" + el.Statename + "\n" + el.Zipcode, value: el.IDLocations }));
+            });
+            if ("{{.Auth.Accesstoalllocations}}") {
+
+            }
+            else {
+                $("#Location").val($("#locationid").val())
+                $('#Location option:not(:selected)').prop('disabled', true);
+            }
+
+        }
+
+        var data = getdata('/GetDesignations')
+        loadDesignation(data)
+        function loadDesignation(data) {
+            $("#Designation").empty().append('<option value="" selected="selected" >-- select --</option>');
+            $.each(data, function (i, el) {
+                $("#Designation").append($("<option />", { text: el.DesignationName, value: el.IDDesignation }));
+            });
+        }
+        var data = getdata('/GetEducations')
+        loadEducation(data)
+        function loadEducation(data) {
+            $("#Education").empty().append('<option value="" selected="selected" >-- select --</option>');
+            $.each(data, function (i, el) {
+                $("#Education").append($("<option />", { text: el.Name, value: el.IDEducations }));
+            });
+        }
+
+
+        $("#btnlocation").click(function () {
+            $("#locationmodalTitle").html("Add Location")
+            $("#divLocation").load("/Location", null, function () {
+            });
+        })
+        $("#AllowToLogin").change(function () {
+            if ($(this).prop('checked')) {
+                $("#divuser").css("display", "block")
+            }
+            else {
+                $("#divuser").css("display", "none")
+                $("#divuser").find('input').val('');
+                $("#divuser").find('select').val('');
+            }
+        })
+
+        $('#DOB').datetimepicker({
+            format: 'YYYY-MM-DD',
+            maxDate: new Date()
+        });
+        $('#DOJ').datetimepicker({
+            format: 'YYYY-MM-DD',
+            maxDate: new Date()
+        });
+
+        $("#ReadExcel").click(function () {
+            $("#locationmodalTitle").html("Upload Excel Sheet")
+            $("#divLocation").load("/employee/ReadExcel", null, function () {
+            });
+        });
+
+    })
+
+    $(document).ready(function () {
+        $("#FirstName").change(function (e) {
+            var str = this.value
+            var patt = new RegExp(/^[0-9]*$/gm);//check all are numbers
+            var res = patt.test(str);
+            if (res) {
+                Toast("warning", 'Only digits are not allowed.')
+
+                this.value = ""
+            }
+
+        })
+        $("#Email").blur(function (e) {
+            var Data = new Object()
+            Data.Email = $("#Email").val()
+            Data.IDEmployees = 0
+            if (e.target.checkValidity())
+                $.ajax({
+                    url: '/Check_Unique_Email_Mobile',
+                    type: 'POST',
+                    data: JSON.stringify(Data),
+                    dataType: 'json',
+                    success: function (dt) {
+
+                        if (dt.Email == $("#Email").val()) {
+                            Toast("warning", 'Email already exist')
+
+                            $("#Email").val('')
+                            $("#Email").focus()
+                        }
+
+                    }, error: function () {
+                        alert('Internal error')
+                    }
+                });
+        })
+        $("#Mobile").blur(function (e) {
+            var Data = new Object()
+            Data.Mobile = $("#Mobile").val()
+            Data.IDEmployees = 0
+            if (this.value != "")
+                $.ajax({
+                    url: '/Check_Unique_Email_Mobile',
+                    type: 'POST',
+                    data: JSON.stringify(Data),
+                    dataType: 'json',
+                    success: function (dt) {
+                        if (dt.Mobile == $("#Mobile").val()) {
+                            Toast("warning", "Mobile number already exis")
+
+                            $("#Mobile").val('')
+                            $("#Mobile").focus()
+                        }
+                    }, error: function () {
+                        alert('Internal error')
+                    }
+                });
+        })
+
+
+        Filevalidation = () => {
+
+            var fi = document.getElementById('EmployeeImg');
+            if (fi.files.length > 0) {
+                for (var i = 0; i <= fi.files.length - 1; i++) {
+                    const fsize = fi.files.item(i).size;
+                    const file = Math.round((fsize / 1024));
+                    if (file >= 150) {
+                        alert('Please upload below 150kb image'); fi.value = ""
+                    } else if (file < 25) {
+                        alert("image too small, please upload above 50kb and below 150kb");
+                        fi.value = ""
+                    }
+                }
+            }
+        }
+
+    })
+</script>
+
+{{template "footer"}}
+{{end}}

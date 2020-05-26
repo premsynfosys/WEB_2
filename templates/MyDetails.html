@@ -1,0 +1,198 @@
+{{define "MyDetails"}}
+{{template "head" .}}
+<div class="page-header">
+    <div class="row align-items-end">
+        <div class="col-lg-8">
+            <div class="page-header-title">
+                <div class="d-inline">
+                    <input type="hidden" value="{{.Data.IDEmployees}}" id="IDEmployees">
+                    <h5>{{.Data.FirstName}} {{.Data.LastName}} - Employee</h5>
+                </div>
+            </div>
+        </div>
+       
+    </div>
+</div>
+<div class="row">
+    <div class="card">
+        <div class="card-body min-vh-100 shadow">
+            <ul class="nav nav-tabs  nav-pills nav-justified " id="AssetTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link  active" href="#EmployeeDetails" role="tab" data-toggle="tab"
+                        aria-selected="true">Info</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#tabEmployeeItassets" role="tab" data-toggle="tab">IT Assets</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#tabEmployeeNonItassets" role="tab" data-toggle="tab">Non ITAssets</a>
+                </li>
+
+
+            </ul>
+
+            <!-- Tab panes -->
+            <div class="tab-content  ">
+                <div role="tabpanel" class="tab-pane fade show active  " id="EmployeeDetails">
+                    <div class="container">
+                        <div class="row mt-3">
+                            <div class="col-md-5">
+                                <div class="form-group  ">
+                                    <div class="text-info">Name:</div>
+                                    {{.Data.FirstName}} {{.Data.LastName}}
+                                </div>
+                                <div class="form-group   ">
+                                    <div class="  text-info ">Email:</div>
+                                    <div class=" ">{{.Data.Email}} </div>
+                                </div>
+                                <div class="form-group   ">
+                                    <div class="  text-info ">Mobile:</div>
+                                    <div class="  ">{{.Data.Mobile}}</div>
+                                </div>
+                                <div class="form-group   ">
+                                    <div class="  text-info ">Permanent Address:</div>
+                                    <div class="  ">{{.Data.PrmntAddress}}</div>
+                                </div>
+                                <div class="form-group   ">
+                                    <div class="  text-info ">Address for Correspondence:</div>
+                                    <div class="  ">{{.Data.Address}}
+                                    </div>
+                                </div>
+                                <div class="form-group   ">
+                                    <div class="  text-info ">Date of birth:</div>
+                                    <div class="  ">{{.Data.DOB}}</div>
+                                </div>
+                                <div class="form-group  ">
+                                    <div class="text-info">Education:</div>
+                                    {{.Data.EducationData.Name}}
+                                </div>
+
+
+
+
+
+                            </div>
+                            <div class="col-md-5">
+
+                                <div class="form-group  ">
+                                    <div class="text-info">Employee Code:</div>
+                                    {{.Data.EmpCode}}
+                                </div>
+                                <div class="form-group   ">
+                                    <div class="  text-info ">User Name:</div>
+                                    <div class="  ">{{.Data.User.UserName}}</div>
+                                </div>
+                                <div class="form-group   ">
+                                    <div class="  text-info ">Role:</div>
+                                    <div class="  ">{{.User.RoleName}}</div>
+                                </div>
+                                <div class="form-group   ">
+                                    <div class="  text-info ">Designation:</div>
+                                    <div class="  ">{{.Data.DesignationData.DesignationName}}</div>
+                                </div>
+                                <div class="form-group   ">
+                                    <div class="  text-info ">Date of Joining::</div>
+                                    <div class=" ">{{.Data.DOJ}} </div>
+                                </div>
+                                <div class="form-group   ">
+                                    <div class="  text-info ">Experience:</div>
+                                    <div class="  ">{{.Data.ExperienceYear}} yr(s) {{.Data.ExperienceMonth}} mnt(s)
+                                    </div>
+                                </div>
+
+
+
+                                <hr />
+                                <div class="form-group row">
+                                    <div class="col">Status:</div>
+                                    {{if eq .Data.Status "Active"}}
+                                    <div class="col"> <span class="badge  badge-success">{{.Data.Status}}</span></div>
+                                    {{end}}
+                                    {{if eq .Data.Status "InActive"}}
+                                    <div class="col"> <span class="badge  badge-info">{{.Data.Status}}</span></div>
+                                    {{end}}
+                                    {{ if eq .Data.Status "Activation Pending"}}
+                                    <div class="col"> <span class="badge  badge-danger">{{.Data.Status}}</span></div>
+                                    {{ end}}
+                                </div>
+                            </div>
+
+                            <div class="col-md-2  ">
+                                <img id="profile-img" class="img-thumbnail img-fluid mx-auto d-block"
+                                    src="/AppFiles/Images/Employees/{{.Data.Image}}" alt="Not Found" width="auto"
+                                    height="auto" />
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="tabEmployeeItassets">
+                    <div class="  mt-2 row " id="divtabEmployeeItassets">
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="tabEmployeeNonItassets">
+                    <div class="  mt-2 row ">
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    $(document).ready(function () {
+        var data = getdata("/GetRoles")
+        $.each(data, function (i, el) {
+            $("#Role").append($("<option />", { text: el.RoleName, value: el.RoleName }));
+        });
+        //tabs
+
+        $('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
+            localStorage.setItem('activeTab', $(e.target).attr('href'));
+            if ($(e.target).attr('href') == "#tabEmployeeItassets") {
+                var assetid = $("#IDEmployees").val()
+                var url = '/employee/' + assetid + '/ITassets'
+                $("#divtabEmployeeItassets").load(url);
+
+            }
+        });
+        var activeTab = localStorage.getItem('activeTab');
+        if (activeTab) {
+            $('#AssetTab a[href="' + activeTab + '"]').tab('show');
+        }
+        //end tabs
+        // document.getElementById('CheckInDate').valueAsDate = new Date();
+        //to show the name of file on file upload
+        $(".custom-file-input").on("change", function () {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        });
+    });
+
+
+
+
+    function data(_url) {
+        var jsondata;
+        $.ajax({
+            url: _url,
+            type: 'GET',
+            dataType: 'json',
+            async: false,
+            success: function (data) {
+                jsondata = data
+            }
+        });
+        return jsondata;
+    };
+
+
+</script>
+{{template "footer"}}
+{{end}}

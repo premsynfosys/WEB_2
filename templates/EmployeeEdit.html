@@ -1,0 +1,461 @@
+{{define "employeeEdit"}}
+{{template "head" .}}
+<div class="page-header">
+    <div class="row align-items-end">
+        <div class="col-lg-8">
+            <div class="page-header-title">
+                <div class="d-inline">
+                    <h5>Update Employee - {{.Data.FirstName}}</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <a class="add float-right  font-weight-bold btn btn-outline-primary btn-rounded" title="Employee List"
+                href="/employees"><i class="ik ik-list "></i><span>List</span></a>
+        </div>
+    </div>
+</div>
+<form method="POST" action="/employee/{{.Data.IDEmployees}}/mode/edit" onsubmit="return validate(this);"
+    enctype="multipart/form-data">
+    <input type="hidden" name="IDEmployees" id="IDEmployees" value="{{.Data.IDEmployees}}">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="FirstName">First Name</label>
+                                <input type="text" maxlength="44" name="FirstName" required class="form-control "
+                                    id="FirstName" placeholder="First Name" value="{{.Data.FirstName}}">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="LastName">Last Name</label>
+                                <input type="text" maxlength="44" name="LastName" required value="{{.Data.LastName}}"
+                                    class="form-control " id="LastName" placeholder="Last Name">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="DOB">Date of birth:</label>
+                        <input type="text" autocomplete="off" name="DOB" class="form-control datetimepicker-input"
+                            id="DOB" data-toggle="datetimepicker" data-target="#DOB">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="Email">Email:</label>
+                                {{if .Data.User.LinkGeneratedOn}}
+                                <input type="email" name="Email" autocomplete="off" required value="{{.Data.Email}}"
+                                    class="form-control " id="Email" placeholder="Email">
+                                {{else}}
+                                <input type="email" name="Email" autocomplete="off" readonly required
+                                    value="{{.Data.Email}}" class="form-control " id="Email" placeholder="Email">
+                                {{end}}
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="Gender">Gender</label>
+                                <select class="form-control" id="Gender" name="Gender">
+                                    <option>Male</option>
+                                    <option>Female</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="Mobile">Mobile:</label>
+                        <input type="text" maxlength="10" autocomplete="off" pattern="[1-9]{1}[0-9]{9}" required
+                            name="Mobile" value="{{.Data.Mobile}}" class="form-control mobile " id="Mobile"
+                            placeholder="Mobile">
+                    </div>
+                    <div class="form-group">
+                        <label for="Address">Address for Correspondence::</label>
+                        <textarea type="text" maxlength="500" required name="Address" class="form-control " id="Address"
+                            placeholder="Address for Correspondence:">{{.Data.Address}}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="PrmntAddress">Permanent Address:</label>
+                        <textarea type="text" maxlength="500" required multiple name="PrmntAddress"
+                            class="form-control " id="PrmntAddress"
+                            placeholder="Permanent Address">{{.Data.PrmntAddress}}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="EmployeeImg">Upload Imge</label>
+
+                        <input type="file" id="EmployeeImg" name="EmployeeImg" accept="image/x-png,image/gif,image/jpeg"
+                            value="{{.Data.Image}}" class="file-upload-default" onchange="Filevalidation();">
+                        <div class="input-group col-xs-12">
+                            <input type="text" value="{{.Data.Image}}" name="IsEmployeeImgExist"
+                                class="form-control file-upload-info" readonly placeholder="Upload Image">
+                            <span class="input-group-append">
+                                <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                            </span>
+                        </div>
+
+                        <div class="col-sm-4 ">
+                            <img height="70px" id="viewimg" width="70px"
+                                src="/AppFiles/Images/Employees/{{.Data.Image}}">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+
+                    <div class="form-group">
+                        <label for="EmpCode">Employee Code</label>
+                        <input type="text" maxlength="44" value="{{.Data.EmpCode}}" name="EmpCode" required
+                            class="form-control" id="EmpCode" placeholder="Employee code">
+
+                    </div>
+                    <div class="form-group">
+                        <label for="Education">Education:</label>
+                        <select name="Education" required id="Education" class="form-control">
+                        </select>
+                    </div>
+                    <div class="form-group ">
+                        <label for="Experience">Work Experience:</label>
+                        <div class="row">
+                            <select name="ExperienceYear" id="ExperienceYear"
+                                class="form-control ml-3 mr-3 col "></select>
+                            </select>
+                            <select name="ExperienceMonth" id="ExperienceMonth" class="form-control ml-3 mr-3 col">
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="DOJ">Date of Joining:</label>
+                        <input type="text" autocomplete="off" name="DOJ" class="form-control datetimepicker-input"
+                            id="DOJ" data-toggle="datetimepicker" data-target="#DOJ">
+
+                    </div>
+                    <div class="form-group">
+                        <label for="Designation">Designation:</label>
+                        <select name="Designation" required id="Designation" class="form-control">
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="Location" class="">Location:</label>
+
+                        <div class="input-group col-xs-12">
+                            <select name="Location" required id="Location" class="form-control">
+                            </select>
+                            {{if .Auth.Accesstoalllocations}}
+                            <span class="input-group-append">
+                                <button id="btnlocation" data-toggle="modal" data-target="#locationmodal"
+                                    title="Add Location" class=" btn btn-info" type="button">Add</button>
+                            </span>
+                            {{end}}
+                        </div>
+                    </div>
+
+                    {{if .Auth.EditUser}}
+                    <div class="border-checkbox-group border-checkbox-group-info">
+                        <input class="border-checkbox" type="checkbox" name="Islogin" id="AllowToLogin" value="true">
+                        <label class="border-checkbox-label" for="Islogin">Allow to Login</label>
+                    </div>
+
+                    <hr />
+                    <div id="divuser" style="display: none;">
+
+                        <input type="hidden" name="idUsers" id="idUsers" value="{{.Data.User.IDUsers}}">
+                        <div class="form-group UserName">
+                            <label for="UserName">UserName</label>
+
+                            <input type="text" maxlength="44" autocomplete="off" name="UserName" class="form-control "
+                                id="UserName" readonly value="{{.Data.User.UserName}}" placeholder="User Name">
+
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Role">Role:</label>
+
+                            <select name="Role" id="Role" class="form-control">
+                            </select>
+
+                        </div>
+                        <div class="form-group">
+                            <label for="UserStatus">Status:</label>
+
+                            <select name="UserStatus" id="UserStatus" class="form-control ">
+                                <option value="">--select--</option>
+                                <option value="Active">Active</option>
+                                <option value="InActive">InActive</option>
+                                <!-- <option value="Suspend">Suspend</option> -->
+                            </select>
+
+                        </div>
+                    </div>
+                    {{end}}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <input type="submit" class="btn btn-primary  btn-sm" value="Update" />
+    </div>
+    <!-- location Modal -->
+    <div class="modal fade bd-example-modal-lg" id="locationmodal" tabindex="-1" role="dialog"
+        aria-labelledby="locationmodalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog modal-lg modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="locationmodalTitle">Add Location</h5>
+                    <button type="button" id="closeLoatonmodal" class="close" data-dismiss="modal"
+                        data-target="#locationmodal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body " id="divLocation">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function validate(frm) {
+
+            if (frm.Islogin.checked) {
+                var selectBox = frm.Role;
+                if (selectBox.selectedIndex == 0) {
+                    alert('Please select Role')
+                    selectBox.focus()
+                    return false;
+                }
+                var selectBox = frm.UserStatus;
+                if (selectBox.selectedIndex == 0) {
+                    alert('Please select Status')
+                    selectBox.focus()
+                    return false;
+                }
+                return (true);
+            }
+            return (true);
+        }
+    </script>
+</form>
+<script>
+
+    $(document).ready(function () {
+        var data = getdata('/GetLocations')
+        loadLocations(data)
+        function loadLocations(data) {
+            $("#Location").empty().append('<option  >--select--</option>');
+            $.each(data, function (i, el) {
+                $("#Location").append($("<option />", { text: el.Name + "\n" + el.Address1 + "\n" + el.Address2 + "\n" + el.Countryname + "\n" + el.Statename + "\n" + el.Zipcode, value: el.IDLocations }));
+            });
+
+        }
+        var data = getdata('/GetDesignations')
+        loadDesignation(data)
+        function loadDesignation(data) {
+            $("#Designation").empty().append('<option value="" selected="selected" >-- select --</option>');
+            $.each(data, function (i, el) {
+                $("#Designation").append($("<option />", { text: el.DesignationName, value: el.IDDesignation }));
+            });
+        }
+        var data = getdata('/GetEducations')
+        loadEducation(data)
+        function loadEducation(data) {
+            $("#Education").empty().append('<option value="" selected="selected" >-- select --</option>');
+            $.each(data, function (i, el) {
+                $("#Education").append($("<option />", { text: el.Name, value: el.IDEducations }));
+            });
+        }
+
+        $("#btnlocation").click(function () {
+            $("#locationmodalTitle").html("Add Location")
+            $("#divLocation").load("/Location", null, function () {
+            });
+        })
+        $('#DOB').datetimepicker({
+            format: 'YYYY-MM-DD'
+        });
+        $('#DOJ').datetimepicker({
+            format: 'YYYY-MM-DD'
+        });
+        $('#DOB').val("{{.Data.DOB}}")
+        $('#DOJ').val("{{.Data.DOJ}}")
+        for (i = 0; i <= 100; i++) {
+            $("#ExperienceYear").append('<option value=' + i + '  >' + i + ' yr(s)</option>')
+            if (i < 12)
+                $("#ExperienceMonth").append('<option value=' + i + '  >' + i + ' mnt(s)</option>')
+
+        }
+
+        var data = getdata("/GetRoles")
+        $("#Role").append($("<option />", { text: '-- select --', value: "" }));
+        $.each(data, function (i, el) {
+            if ("{{.User.RoleName}}" != "Super Admin" && el.RoleName == "Super Admin") {
+
+            } else {
+                $("#Role").append($("<option />", { text: el.RoleName, value: el.IDRoles }));
+            }
+        });
+
+        if ("{{.Data.Designation}}") {
+            $('#Designation').val("{{.Data.Designation}}");
+        }
+        if ("{{.Data.Education}}") {
+            $('#Education').val("{{.Data.Education}}");
+        }
+
+        if ("{{.Data.Gender}}") {
+            $('#Gender').val("{{.Data.Gender}}");
+        }
+        if ("{{.Data.Location}}") {
+            if ("{{.Auth.Accesstoalllocations}}") {
+                $('#Location').val("{{.Data.Location}}");
+            }
+            else {
+                $('#Location').val("{{.Data.Location}}");
+                $('#Location option:not(:selected)').prop('disabled', true);
+            }
+
+        }
+
+        if ("{{.Data.ExperienceYear}}") {
+            $('#ExperienceYear').val("{{.Data.ExperienceYear}}");
+        }
+        if ("{{.Data.ExperienceMonth}}") {
+            $('#ExperienceMonth').val("{{.Data.ExperienceMonth}}");
+        }
+
+        if ("{{.Data.User.IDUsers}}" != "0") {
+            $('#AllowToLogin').prop('checked', true);
+            $('#AllowToLogin').prop('disabled', true);
+            $("#divuser").css("display", "block")
+            if ("{{.Data.User.Status}}") {
+                if ("{{.Data.User.Status}}" == "Activation Pending")
+                    $('#UserStatus').val("Active");
+                else
+                    $('#UserStatus').val("{{.Data.User.Status}}");
+            }
+            if ("{{.Data.User.RoleID}}") {
+                $('#Role').val("{{.Data.User.RoleID}}");
+            }
+            if ("{{.Data.User.UserName}}") {
+                $(".UserName").show()
+
+
+            } else {
+                $(".UserName").hide()
+
+            }
+        }
+
+
+        $("#AllowToLogin").change(function () {
+            if ($(this).prop('checked')) {
+                $("#divuser").css("display", "block")
+                $(".UserName").hide()
+
+            }
+            else {
+                $("#divuser").css("display", "none")
+                $("#divuser").find('input').val('');
+                $("#divuser").find('select').val('');
+
+            }
+        })
+
+        $("#EmployeeImg").on("change", function () {
+
+            var input = document.getElementById("EmployeeImg")
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#viewimg').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+
+
+        })
+
+
+        $("#FirstName").change(function (e) {
+            var str = this.value
+            var patt = new RegExp(/^[0-9]*$/gm);//check all are numbers
+            var res = patt.test(str);
+            if (res) {
+                alert("warning", 'Only digits are not allowed.')
+                this.value = ""
+            }
+        })
+        $("#Email").blur(function (e) {
+            var Data = new Object()
+            Data.Email = $("#Email").val()
+            Data.IDEmployees = parseInt($("#IDEmployees").val())
+            if (e.target.checkValidity())
+                $.ajax({
+                    url: '/Check_Unique_Email_Mobile',
+                    type: 'POST',
+                    data: JSON.stringify(Data),
+                    dataType: 'json',
+                    success: function (dt) {
+
+                        if (dt.Email == $("#Email").val()) {
+                            Toast("warning", "Email already exist")
+
+                            $("#Email").val('')
+                            $("#Email").focus()
+                        }
+
+                    }, error: function () {
+                        alert('Internal error')
+                    }
+                });
+        })
+        $("#Mobile").blur(function (e) {
+            var Data = new Object()
+            Data.Mobile = $("#Mobile").val()
+            Data.IDEmployees = parseInt($("#IDEmployees").val())
+            if (this.value != "")
+                $.ajax({
+                    url: '/Check_Unique_Email_Mobile',
+                    type: 'POST',
+                    data: JSON.stringify(Data),
+                    dataType: 'json',
+                    success: function (dt) {
+                        if (dt.Mobile == $("#Mobile").val()) {
+                            Toast("Mobile number already exis")
+                            $("#Mobile").val('')
+                            $("#Mobile").focus()
+                        }
+                    }, error: function () {
+                        alert('Internal error')
+                    }
+                });
+        })
+        Filevalidation = () => {
+
+            var fi = document.getElementById('EmployeeImg');
+            if (fi.files.length > 0) {
+                for (var i = 0; i <= fi.files.length - 1; i++) {
+                    const fsize = fi.files.item(i).size;
+                    const file = Math.round((fsize / 1024));
+                    if (file >= 150) {
+                        alert('Please upload below 150kb image'); fi.value = ""
+                    } else if (file < 25) {
+                        alert("image too small, please upload above 50kb and below 150kb");
+                        fi.value = ""
+                    }
+                }
+            }
+        }
+
+    });
+</script>
+{{end}}

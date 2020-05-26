@@ -1,0 +1,235 @@
+{{  define "NonITAsset_Edit"}}
+{{template "head" .}}
+<div class="page-header">
+    <div class="row align-items-end">
+        <div class="col-lg-8 col-md-8 col-sm-8  col-xs-8">
+            <div class="page-header-title">
+                <div class="d-inline">
+                    <h5>Update Asset</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+            <a class="add float-right  font-weight-bold btn btn-outline-primary btn-rounded" title="NonITAsset List"
+                href="/NonITAsset/List"><i class="ik ik-list "></i><span>List</span></a>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-10 col-md-10">
+        <form method="POST" id="frm_NonITAsset" action="/NonITAsset/Edit/{{.Data.IDNonITAsset}}"
+            enctype="multipart/form-data">
+            <div class="card">
+                <div class="card-body ">
+                    <div class="form-group row">
+                        <label for="IDNonITAssets_Master" class="col-sm-3 col-form-label">Asset Name:</label>
+                        <div class="col-sm-9">
+                            <select class=" selectpicker" required data-live-search="true" name="NonITAssets_Master_ID"
+                                data-size="5" id="IDNonITAssets_Master" tabindex="-98">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="NonITAssets_GroupID" class="col-sm-3  col-form-label">Group Name:</label>
+                        <div class="col-sm-9 ">
+                            <div class="input-group">
+                                <input type="text" readonly name="NonITAssets_GroupID" id="NonITAssets_GroupID"
+                                    class="form-control">
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row ">
+                        <label for="ModelNo" class="col-sm-3 col-form-label ">Model No:</label>
+                        <div class="col-sm-9">
+                            <input type="text" maxlength="45" required name="ModelNo" value="{{.Data.ModelNo}}" class="form-control "
+                                id="ModelNo" placeholder="Model No">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="IdentificationNo" class="col-sm-3 col-form-label ">Identification
+                            No:</label>
+                        <div class="col-sm-9 ">
+                            <input type="text" readonly name="IdentificationNo" value="{{.Data.IdentificationNo}}"
+                                class="form-control  mb-1" id="IdentificationNo" placeholder="Identification No">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="Description" class="col-sm-3 col-form-label ">Description:</label>
+                        <div class="col-sm-9">
+                            <textarea name="Description" maxlength="500" required placeholder="Description" title="Description"
+                                class="form-control " id="Description">{{.Data.Description}}</textarea>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="Img" class="col-sm-3 col-form-label ">Upload Image:</label>
+                        <div class="col-sm-6">
+                            <input type="file" id="Img" name="Img" accept="image/x-png,image/gif,image/jpeg"
+                                class="file-upload-default">
+                            <div class="input-group col-xs-12">
+                                <input type="text" class="form-control file-upload-info" disabled=""
+                                    placeholder="Upload Image">
+                                <span class="input-group-append">
+                                    <button class="file-upload-browse btn btn-info" type="button">Upload</button>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-sm-3 ">
+                            <input type="hidden" name="Img1" value="{{.Data.Img}}">
+                            <img height="70px" id="viewimg" width="70px"
+                                src="/AppFiles/Images/NonITAsset/{{.Data.Img}}">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-3 col-form-label">Threshold Quantity:</label>
+                        <div class="col-sm-3 ">
+                            <div class="input-group">
+                                <input type="number" value="{{.Data.ThresholdQnty}}" required id="ThresholdQnty"
+                                    title="Minimum quantity to get alert" min="1" name="ThresholdQnty"
+                                    class="form-control">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <label class="col-sm-3 col-form-label">ReOrder Stock Price:</label>
+                        <div class="col-sm-3 ">
+                            <div class="input-group">
+                                <input type="number" value="{{.Data.ReOrderStockPrice}}" required id="ReOrderStockPrice"
+                                    min="1" name="ReOrderStockPrice" class="form-control">
+                                    <span class="input-group-append">
+                                        <label class="input-group-text">₹</label>
+                                      </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-3 col-form-label">Reorder Stock Quantity:</label>
+                        <div class="col-sm-3 ">
+                            <div class="input-group">
+                                <input type="number" value="{{.Data.ReOrderQuantity}}" required id="ReOrderQuantity"
+                                    min="1" name="ReOrderQuantity" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="LocationID" class="col-sm-3 col-form-label ">Location:</label>
+                        <div class="col-sm-9 ">
+                            <div class="input-group">
+                                <select name="LocationID" id="LocationID" class="form-control">
+
+                                </select>
+                                <span class="input-group-append ">
+                                    <label class="input-group-text bg-info"> <a href="#" id="btnlocation"
+                                            data-toggle="modal" data-target="#divmodal"
+                                            title="Add Location">Add</a></label>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+                <div class="form-group row justify-content-center">
+                    <input type="submit" class="btn btn-primary btn-sm" value="Update Asset" />
+                </div>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+
+
+
+
+<div class="modal fade bd-example-modal-lg" id="divmodal" tabindex="-1" role="dialog"
+    aria-labelledby="locationmodalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog modal-lg modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="divmodalTitle"></h5>
+                <button type="button" id="divclosemodal" class="close" data-dismiss="modal" data-target="#divmodal"
+                    aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body " id="divmodalBody">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    $(document).ready(function () {
+        //const url = "/GenerateUniqueID/consumable"
+        // var id = getdata(url)
+        // $("#IdentificationNo").val(id)
+        var data = getdata('/GetLocations')
+        loadLocations(data)
+        data = getdata('/GetVendors')
+        loadVendors(data)
+        $("#custm").load("/Customfields")
+
+        function loadLocations(data) {
+            $("#LocationID").empty().append('<option selected="selected" value="0">--select--</option>');
+            $.each(data, function (i, el) {
+                $("#LocationID").append($("<option />", { text: el.Name + "\n" + el.Address1 + "\n" + el.Address2 + "\n" + el.Countryname + "\n" + el.Statename + "\n" + el.Zipcode, value: el.IDLocations }));
+            });
+        }
+        function loadVendors(data) {
+            $("#Vendor").empty().append('<option selected="selected" value="0">--select--</option>');
+            $.each(data, function (i, el) {
+                $("#VendorID").append($("<option />", { text: el.Name + "\n" + el.Address + "\n" + el.Email + "\n" + el.ContactPersonName + "\n" + el.Phone + "\n", value: el.Idvendors }));
+            });
+        }
+        var data = getdata('/GetNonITAssetMasterList')
+        GetNonITAssetMasterList(data)
+        function GetNonITAssetMasterList(data) {
+            $("#IDNonITAssets_Master").empty().append('<option selected="selected" value="0">--select--</option>');
+            $.each(data, function (i, el) {
+                $("#IDNonITAssets_Master").append($("<option />", { text: el.NonITAssets_Name, value: el.IDNonITAssets_Master, 'data-subtext': el.Description, 'data-groupid': el.NonITAssets_Groups.NonITAssets_GroupName, 'data-tokens': el.NonITAssets_Groups.NonITAssets_GroupName + " " + el.NonITAssets_Name }));
+            });
+        }
+
+     
+        $("#LocationID").val("{{.Data.LocationID}}")
+        $("#IDNonITAssets_Master").val("{{.Data.NonITAssets_Master.IDNonITAssets_Master}}")
+        $("#NonITAssets_GroupID").val($('#IDNonITAssets_Master option:selected').attr('data-groupid'))
+
+    });
+
+
+    $(document).ready(function () {
+        $("#Img").on("change", function () {
+            var input = document.getElementById("Img")
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#viewimg').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        })
+   
+        $("#btnlocation").click(function () {
+            $("#locationmodalTitle").html("Add Location")
+            $("#divLocation").load("/Location", null, function () {
+            });
+        })
+        $("#IDNonITAssets_Master").change(function () {
+            var id = $('#IDNonITAssets_Master option:selected').attr('data-groupid')
+            $("#NonITAssets_GroupID").val(id)
+        })
+       
+    });
+
+</script>
+{{template "footer"}}
+{{end}}

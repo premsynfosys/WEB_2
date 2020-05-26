@@ -1,0 +1,310 @@
+{{define "ITAssetCheckoutTmpl"}}
+{{template "head" .}}
+<div class="page-header">
+    <div class="row align-items-end">
+        <div class="col-lg-8">
+            <div class="page-header-title">
+                <div class="d-inline">
+                    <h5>Check-Out ITAsset - {{.Data.Mdl.ITAssetName}}</h5>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<form id="frm" action="/ITAssets/{{.Data.Mdl.IDITAssets}}/checkout" method="POST">
+    <input type="hidden" name="EmpID" id="EmpiID" value="{{.User.IDEmployees}}">
+    <input type="hidden" name="Grade" id="Grade" value="{{.Data.Grade}}">
+    <input type="hidden" name="ApprvrRoleID" id="ApprvrRoleID" value="{{.Data.RoleID}}">
+    <div class="row">
+        <div class="col-md-7">
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group row">
+                        <label for="Name" class="col-md-3 col-form-label ">Asset Name:</label>
+                        <div class="col-md-9">
+                            <input type="text" readonly name="Name" class="form-control form-control-sm  w-auto"
+                                value="{{.Data.Mdl.ITAssetName}}" id="Name">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="Model" class="col-md-3 col-form-label ">Model:</label>
+                        <div class="col-md-9">
+                            <input type="text" readonly name="Model" class="form-control form-control-sm w-auto"
+                                value="{{.Data.Mdl.ITAssetModel}}" id="Model">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="Identification" class="col-md-3 col-form-label ">Identification No:</label>
+                        <div class="col-md-9">
+                            <input type="text" readonly name="Identification"
+                                class="form-control form-control-sm w-auto"
+                                value="{{.Data.Mdl.ITAssetIdentificationNo}}" id="Identification">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="AssignTo" class="col-md-3 col-form-label ">Check-out
+                            To:</label>
+                        <div class="col-md-9">
+                            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                <label class="btn btn-light btn-sm ">
+                                    <input type="radio" name="AssignTo" value="User" id="rdUser">
+                                    User
+                                </label>
+                                <label class="btn btn-light btn-sm">
+                                    <input type="radio" name="AssignTo" id="rdAsset" value="Asset">
+                                    Asset
+                                </label>
+                                <label class="btn btn-light btn-sm">
+                                    <input type="radio" name="AssignTo" id="rdLocation" value="Location">
+                                    Location
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row collapse" id="divUsers">
+                        <label for="Users" class="col-md-3 col-form-label ">Users:</label>
+                        <div class="col-md-9">
+                            <select name="Users" id="Users" class="form-control float-left">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row collapse" id="divAssets">
+
+                        <label for="Assets" class="col-md-3 col-form-label ">Assets:</label>
+                        <div class="col-md-9">
+                            <select name="Assets" id="Assets" class="form-control float-left">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="collapse" id="divLocations">
+                        <span class="text-danger">Note: Outward request generate automatically for this option.</span>
+
+                        <input type="hidden" name="AssetLocation" id="AssetLocation" value="{{.Data.Mdl.Location}}">
+                        <div class="form-group row ">
+                            <label for="Locations" class="col-md-3 col-form-label ">Locations:</label>
+                            <div class="col-md-9">
+                                <select name="Locations" id="Locations" class="form-control float-left">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row ">
+                            <label for="Receiver" class="col-md-3 col-form-label ">Receiver:</label>
+                            <div class="col-md-9">
+                                <select name="Receiver" id="Receiver" class="form-control float-left">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row ">
+                            <label for="Approver" class="col-md-3 col-form-label ">Approver:</label>
+                            <div class="col-md-9">
+                                <select name="Approver" id="Approver" class="form-control float-left">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="divdates">
+                        <div class="form-group row">
+                            <label for="CheckOutDate" class="col-sm-3 col-form-label ">Check-out
+                                Date:</label>
+                            <div class="col-sm-9 form-inline">
+                                <input type="text" name="CheckOutDate" required
+                                    class="form-control datetimepicker-input" data-toggle="datetimepicker"
+                                    autocomplete="off" data-target="#CheckOutDate" id="CheckOutDate">
+
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="ExpectedCheckInDate" class="col-sm-3 col-form-label ">Expected Check-in
+                                Date:</label>
+                            <div class="col-sm-9 form-inline">
+                                <input type="text" required name="ExpectedCheckInDate"
+                                    class="form-control datetimepicker-input" data-toggle="datetimepicker"
+                                    autocomplete="off" data-target="#ExpectedCheckInDate" id="ExpectedCheckInDate">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="Description" class="col-md-3 col-form-label ">Comments:</label>
+                        <div class="col-md-9">
+                            <textarea name="Description" required maxlength="500" class="form-control form-control-sm"
+                                id="Description" placeholder="Description"></textarea>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center">
+                        <input type="submit" class="btn btn-primary btn-sm " value="Check Out" />
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div id="divUserAssets" class="row">
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</form>
+
+<script>
+    $(document).ready(function () {
+        function LoadUsers(data) {
+
+            $.each(data, function (i, el) {
+                $("#Users").append($("<option />", { text: el.FirstName, value: el.IDEmployees }));
+            });
+        };
+        function LoadAssets(data) {
+            $.each(data, function (i, el) {
+                $("#Assets").append($("<option />", { text: el.ITAssetName, value: el.IDITAssets }));
+            });
+        };
+        function loadLocations(data) {
+            $("#Location").empty().append('<option selected="selected" value="0">--select--</option>');
+            $.each(data, function (i, el) {
+                $("#Locations").append($("<option />", { text: el.Name + "\n" + el.Address1 + "\n" + el.Address2 + "\n" + el.Countryname + "\n" + el.Statename + "\n" + el.Zipcode, value: el.IDLocations }));
+            });
+            //$('#Location option[value="{{.Data.Mdl.Location}}"]').prop('disabled', true);
+        }
+        $('#CheckOutDate').datetimepicker({
+            format: 'YYYY-MM-DD',
+            maxDate: new Date()
+        });
+        $('#ExpectedCheckInDate').datetimepicker({
+            format: 'YYYY-MM-DD',
+            minDate: new Date()
+        });
+
+        $("input[name='AssignTo']").change(function () {
+            $("#divdates").show();
+            $("#divdates").find('input').attr('required')
+            if (this.value == 'User') {
+                $("#divUsers").removeClass("collapse")
+                $("#divAssets,#divLocations").addClass("collapse")
+                $("#Users,#Locations,#Assets").empty();
+                $("#Users").append('<option selected="selected" value="0">--select--</option>');
+                var data
+                if ("{{.Auth.Accesstoalllocations}}") {
+                    data = getdata("/GetEmployeesList")
+                    LoadUsers(data)
+                }
+                else {
+                    data = getdata("/GetEmployeesList?LocID=" + $("#locationid").val())
+                    LoadUsers(data)
+                }
+
+
+            }
+            if (this.value == 'Asset') {
+                $("#divAssets").removeClass("collapse")
+                $("#divUsers,#divLocations").addClass("collapse")
+                $("#Users,#Locations,#Assets").empty();
+                $("#Assets").append('<option selected="selected" value="0">--select--</option>');
+                var data
+                if ("{{.Auth.Accesstoalllocations}}") {
+                    data = getdata("/GetEmployeesList")
+                    LoadUsers(data)
+                }
+                else {
+                    data = getdata("/GetEmployeesList?LocID=" + $("#locationid").val())
+                    LoadUsers(data)
+                }
+
+            }
+            if (this.value == 'Location') {
+                $("#divLocations").removeClass("collapse")
+                $("#divUsers,#divAssets").addClass("collapse")
+                $("#Users,#Locations,#Assets").empty();
+                $("#Locations").append('<option selected="selected" value="0">--select--</option>');
+                var data = getdata('/GetLocations')
+                loadLocations(data)
+                $("#Receiver").empty().append('<option selected="selected" value="0">--select--</option>');
+                $("#Approver").empty().append('<option selected="selected" value="0">--select--</option>');
+
+                // if ("{{.Auth.Accesstoalllocations}}") {
+                //     data = getdata("/GetEmployeesList")
+
+                // }
+                // else {
+                //     data = getdata("/GetEmployeesList?LocID=" + $("#locationid").val())
+
+                // }
+                var dat = getdata("/GetApprovers/" + $("#locationid").val() + "/{{.Data.RoleID}}")
+                $.each(dat, function (i, el) {
+                    //  $("#Receiver").append($("<option />", { text: el.FirstName, value: el.IDEmployees }));
+                    $("#Approver").append($("<option />", { text: el.Employee.FirstName, value: el.Employee.IDEmployees }));
+                });
+                LoadReceivers(getdata("/GetApprovers/0/2"))
+                function LoadReceivers(data) {
+                    $.each(data, function (i, el) {
+                        if (el.Employee.Location != $("#locationid").val()) {
+                            $("#Receiver").append($("<option />", { text: el.Employee.FirstName, value: el.Employee.IDEmployees }));
+                        }
+                        //$("#Approver").append($("<option />", { text: el.FirstName, value: el.IDEmployees }));
+                    });
+                };
+
+                $("#divdates").hide();
+                $("#divdates").find('input').removeAttr('required')
+            }
+        })
+
+    });
+
+
+    $("#Users").change(function () {
+        $("#divUserAssets").empty();
+        var data = getdata("/employee/" + $(this).val() + "/GetEmployeeITAssetsByID")
+        var div = document.getElementById("divUserAssets")
+        for (let i in data) {
+
+            var html = '<a href="" class=" col-lg-6 col-xl-6 col-6"><div class="widget"><div class="widget-body"><div class="d-flex justify-content-between align-items-center">'
+            html += ' <h6 title="Asset Name">' + data[i].ITAssetName + '</h6>'
+            html += ' <img  onerror="this.src=' + "'/AppFiles/Images/Logo/imagenotfound.png'" + '" class="avatar" height="50" width="50" src="/AppFiles/Images/ITAssets/' + data[i].ITAssetImg + '" alt="">'
+            html += ' </div><small class=" d-block">' + data[i].ITAssetModel + '</small><small class=" d-block">Due date is ' + data[i].ITAssetWarranty + '</small></div></div></a>'
+            //div.appendChild(html)
+            $("#divUserAssets").append(html)
+        }
+    })
+    $("#Locations").change(function () {
+
+        if ($(this).val() == $("#AssetLocation").val()) {
+            Toast('warning', "you can't checkout to same location.")
+            $(this).val("0")
+        }
+    })
+    $("#frm").submit(function () {
+        if ($("input[name='AssignTo']:checked").length == 0) {
+            $("#rdUser").focus();
+            alert('Please check it');
+            return false;
+        }
+        if ($("input[name='AssignTo']:checked").val() == 'User' && $("#Users").val() == '0') {
+            alert('Please select user');
+            $("#Users").focus()
+            return false;
+        }
+        if ($("input[name='AssignTo']:checked").val() == 'Asset' && $("#Assets").val() == '0') {
+            alert('Please select Assets');
+            $("#Assets").focus()
+            return false;
+        }
+        if ($("input[name='AssignTo']:checked").val() == 'Location' && ($("#Locations").val() == '0' || $("#Receiver").val() == '0' || $("#Approver").val() == '0')) {
+            alert('Please select user');
+            $("#Locations").focus()
+            return false;
+        }
+        return true;
+    })
+
+</script>
+
+{{template "footer"}}
+{{end}}

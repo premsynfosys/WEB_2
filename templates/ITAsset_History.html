@@ -1,0 +1,120 @@
+{{  define "ITAsset_History"}}
+{{template "head" .}}
+<div class="page-header">
+  <div class="row align-items-end">
+    <div class="col-lg-8">
+      <div class="page-header-title">
+        <div class="d-inline">
+          <h5>ITAsset History Details</h5>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <input type="hidden" id="AssetID" value="{{.Data}}">
+    <div class="card">
+      <div class="card-block">
+        <div class="dt-responsive">
+          <table id="tblEmployeeHistory" class="table table-striped table-bordered " width="100%">
+            <thead>
+              <th>ITAsset Name</th>
+              <th>ITAssetIdentification No</th>
+              <th>Action On</th>
+              <th>Action Performed</th>
+              <th>Action By</th>
+            </thead>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div id="tblbtn" class="btn-group dropright float-left ">
+      <button type="button" class="btn btn-info dropdown-toggle btn-sm " data-toggle="dropdown" aria-haspopup="true"
+        aria-expanded="false">
+        Export </button>
+      <div id="tblbtnList" class="dropdown-menu">
+      </div>
+    </div>
+    <div id="tblClmnbtn" class="btn-group dropright float-left mr-1 ">
+      <button type="button" class="btn btn-info dropdown-toggle btn-sm " data-toggle="dropdown" aria-haspopup="true"
+        aria-expanded="false">
+        Fields </button>
+      <div id="tblClmnbtnList" class="dropdown-menu">
+        <div class="form-check form-check-inline dropdown-item">
+          <input class="form-check-input chkClmn" type="checkbox" checked id="chkAll">
+          <label class="form-check-label " for="chkAll">Select All</label></div>
+
+        <div class="dropdown-divider"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+
+  $(document).ready(function () {
+    var tbl = $('#tblEmployeeHistory').DataTable({
+      responsive: true,
+      "processing": true,
+      scrollY: $(window).height() - 350,
+      scrollCollapse: true,
+      scrollX: true,
+      destroy: true,
+      dom: 'Bfrtip',
+      ajax: {
+        "url": '/GetITAsset_History_ByAssetID/' + $("#AssetID").val(),
+        "type": "GET",
+        "datatype": "json",
+        "dataSrc": ""//to read data from a plain array rather than an array in an object:
+      },
+      "columns": [
+        {
+          "name": "ITAssetName",
+          'data': "ITAssetName"
+        }, {
+          "name": "ITAssetIdentificationNo",
+          'data': "ITAssetIdentificationNo"
+        }, {
+          "name": "CreatedOn",
+          'data': "CreatedOn"
+        }, {
+          "name": "ActionePerformed",
+          'data': "ActionePerformed"
+        }, {
+          "name": "Action By",
+          "data": "Employees",
+          render: function (dt) {
+            return dt.FirstName + " " + dt.LastName
+          }
+        }
+      ]
+      ,
+
+      buttons: [
+        {
+          text: 'Excel',
+          extend: "excel",
+          className: ' dropdown-item',
+          title: "Employee History Details",
+          exportOptions: {
+            columns: ':visible'
+            // columns: ':not(.notexport)'
+          }
+        }
+      ]
+    });
+
+    $("#tblbtn").prependTo('#tblEmployeeHistory_filter')
+    tbl.buttons().containers().prependTo('#tblbtnList')
+    $('.dt-button').removeClass('dt-button').addClass(' btn btn-light btn-sm ');
+    $(".buttons-colvis").removeClass('btn-light').addClass('btn-info float-left ml-1').appendTo('#tblEmployeeHistory_filter')
+    $("#tblClmnbtn").prependTo('#tblEmployeeHistory_filter')
+
+  });
+
+
+</script>
+{{template "footer"}}
+{{end}}

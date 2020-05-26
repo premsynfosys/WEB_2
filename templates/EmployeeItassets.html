@@ -1,0 +1,197 @@
+{{  define "EmployeeItassets"}}
+<input type="hidden" id="EmpID" value="{{.}}">
+<div class="container">
+    <div class="dt-responsive">
+        <table class="table table-striped table-bordered" id="tblITAssetFiles">
+            <thead>
+                <th>Select</th>
+                <th>ITAsset Name</th>
+                <th>Checked-Out Date</th>
+                <th>Expected Check-In Date</th>
+                <th>Check-In Date</th>
+                <th>ITAsset Group</th>
+                <th>ITAsset Model</th>
+                <th>ITAsset SerialNo</th>
+                <th>ITAsset IdentificationNo</th>
+                <th>ITAsset Description</th>
+                <th>ITAsset Price</th>
+                <th>ITAsset Warranty</th>
+                <th>Comments</th>
+            </thead>
+        </table>
+        <div id="tblbtn" class="btn-group dropright float-left ">
+            <button type="button" class="btn btn-info dropdown-toggle  " data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">
+                Export </button>
+            <div id="tblbtnList" class="dropdown-menu">
+            </div>
+        </div>
+        <div id="tblClmnbtn" class="btn-group dropright float-left mr-1 ">
+            <button type="button" class="btn btn-info dropdown-toggle btn-sm " data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                Fields </button>
+            <div id="tblClmnbtnList" class="dropdown-menu">
+                <div class="form-check form-check-inline dropdown-item">
+                    <input class="form-check-input chkClmn" type="checkbox" checked id="chkAll">
+                    <label class="form-check-label " for="chkAll">Select All</label></div>
+
+                <div class="dropdown-divider"></div>
+            </div>
+        </div>
+        <button type="button" id="btnHistory" title="Refresh" class="btn btn-info btn-sm  float-left  ml-1 ">Last used Assets</button>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        var EmpID = $("#EmpID").val()
+        var _url = '/GetEmployeeITAssetsByID?EmpID=' + EmpID + '&isCheckin=0'
+        var tbl = $('#tblITAssetFiles').DataTable({
+            responsive: true,
+            "processing": true,
+            //scrollY: $(window).height() - 350,
+         //   scrollCollapse: true,
+           // scrollX: true,
+            destroy: true,
+            dom: 'Bfrtip',
+            ajax: {
+                "url": _url,
+                "type": "GET",
+                "datatype": "json",
+                "dataSrc": ""//to read data from a plain array rather than an array in an object:
+            },
+            columnDefs: [{
+                orderable: false,
+                targets: 0
+            }],
+            order: [[1, 'asc']],
+            "columns": [
+                {
+                    "name": "Select",
+                    'data': null,
+                    render: function (dt) {
+                        return '<input type="checkbox" value=' + dt.IDITAssets + '>';
+                    }
+                }, {
+                    "name": "ITAssetName",
+                    'data': null,
+                    render: function (dt) {
+                        if (dt.CheckinDate == "") {
+                            return '<a  href="/ITAssets/view/' + dt.IDITAssets + '" class="text-warning font-weight-bold">' + dt.ITAssetName + '</a> ';
+                        } else {
+                            return dt.ITAssetName
+                        }
+                    }
+                }, {
+                    "name": "CheckedOutDate",
+                    "data": "ITassetCheckout",
+                    render: function (dt) {
+                        return jsondate(dt.CheckedOutDate);
+                    }
+                },
+                {
+                    "name": "ExpectedCheckInDate",
+                    "data": "ITassetCheckout",
+                    render: function (dt) {
+                        return jsondate(dt.ExpectedCheckInDate);
+                    }
+                }, {
+                    "name": "CheckinDate",
+                    "data": "ITassetCheckout",
+                    render: function (dt) {
+                        return jsondate(dt.CheckinDate);
+                    }
+                }, {
+                    "name": "Itassetgroupname",
+                    'data': 'Itassetgroupname'
+                }, {
+                    "name": "ITAssetModel",
+                    'data': 'ITAssetModel'
+                }, {
+                    "name": "ITAssetSerialNo",
+                    'data': 'ITAssetSerialNo'
+                }, {
+                    "name": "ITAssetIdentificationNo",
+                    'data': 'ITAssetIdentificationNo'
+                }, {
+                    "name": "ITAssetDescription",
+                    'data': 'ITAssetDescription'
+                }, {
+                    "name": "ITAssetPrice",
+                    'data': 'ITAssetPrice'
+                }, {
+                    "name": "ITAssetWarranty",
+                    'data': 'ITAssetWarranty',
+                    render: function (dt) {
+                        return jsondate(dt);
+                    }
+                }, {
+                    "name": "Comments",
+                    "data": "ITassetCheckout",
+                    render: function (dt) {
+                        return dt.Comments;
+                    }
+                }
+            ]
+        });
+        $("#tblbtn").prependTo('#tblITAssetFiles_filter')
+        tbl.buttons().containers().prependTo('#tblbtnList')
+        $('.dt-button').removeClass('dt-button').addClass(' btn btn-light btn-sm ');
+        $(".buttons-colvis").removeClass('btn-light').addClass('btn-info float-left ml-1').appendTo('#tblITAssetFiles_filter')
+
+        //columns hide /show
+        $("#tblClmnbtn").prependTo('#tblITAssetFiles_filter')
+        $("#btnHistory").appendTo('#tblITAssetFiles_filter')
+
+        var idx = 0;
+        //show hide clmns
+        tbl.columns().every(function () {
+            if (idx != 0) {
+                var html = '<div class="form-check form-check-inline dropdown-item">'
+                html += '<input class="form-check-input chkClmn" type="checkbox" checked id="chk' + idx + '" value="' + idx + '">'
+                html += '<label class="form-check-label " for="chk' + idx + '">' + this.header().innerHTML + '</label></div>'
+                $("#tblClmnbtnList").append(html)
+            }
+            idx++;
+
+        });
+
+        $("input.chkClmn").click(function (e) {
+            // Get the column API object
+            if ($(this).attr('id') == "chkAll") {
+                if ($(this).prop("checked")) {
+                    for (var i = 0; i < tbl.init().columns.length; i++) {
+                        tbl.column(i).visible(true, true)
+                    }
+                    $("input.chkClmn").prop("checked", true)
+                    tbl.columns.adjust().draw();
+                }
+            }
+            else {
+                var column = tbl.column($(this).val());
+                // Toggle the visibility
+                if ($(this).prop("checked"))
+                    column.visible(true);
+                else {
+                    column.visible(false);
+                    $("#chkAll").prop("checked", false)
+                }
+            }
+
+        })
+
+        $("#btnHistory").click(function () {
+           
+            if ($(this).text() == "Last used Assets") {
+                tbl.ajax.url('/GetEmployeeITAssetsByID?EmpID=' + EmpID + '&isCheckin=1').load()
+                $(this).text("Allocated Assets")
+            } else if ($(this).text() == "Allocated Assets") {
+                tbl.ajax.url('/GetEmployeeITAssetsByID?EmpID=' + EmpID + '&isCheckin=0').load()
+                $(this).text("Last used Assets")
+            }
+        })
+
+    });
+</script>
+
+{{end}}

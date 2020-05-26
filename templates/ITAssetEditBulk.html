@@ -1,0 +1,156 @@
+{{  define "ITAssetEditTmplBulk"}}
+
+<form id="frm" method="POST" action="/ITAssets/BulkEdit">
+    <div class="container ">
+        <div class="form-group text-warning">{{len .}} items selected to update
+            <!-- <a class="float-right font-weight-bolder">view</a> -->
+        </div>
+        <div class="form-group row" style="height: 200px; overflow-y: scroll;">
+            <table class="table table-bordered">
+                <thead>
+                    <th>Name</th>
+                </thead>
+                <tbody>
+
+                    {{ range $element :=  .}}
+
+                    <tr>
+                        <td> {{$element}}</td>
+
+                    </tr>
+                    {{end}}
+                </tbody>
+            </table>
+
+        </div>
+        <div class="form-group row">
+            <label for="ITAssetDescription" class="col-md-3 col-form-label col-form-label-sm">Description:</label>
+            <div class="col-md-9">
+                <textarea name="ITAssetDescription" class="form-control form-control-sm" id="ITAssetDescription"
+                    placeholder="ITAsset Description"> </textarea>
+
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="ITAssetWarranty" class="col-md-3 col-form-label col-form-label-sm">Warranty:</label>
+            <div class="col-md-9 form-inline">
+                <input type="text" name="ITAssetWarranty" autocomplete="off" class="form-control datetimepicker-input"
+                data-toggle="datetimepicker" data-target="#ITAssetWarranty" id="ITAssetWarranty">               
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="Vendor" class="col-md-3 col-form-label col-form-label-sm">Vendor:</label>
+            <div class="col-md-9  ">
+                <select name="Vendor" id="Vendor" class="form-control">
+                </select>
+                
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="Location" class="col-md-3 col-form-label col-form-label-sm">Location:</label>
+            <div class="col-md-9  ">
+                <select name="Location" id="Location" class="form-control">
+                </select>
+               
+            </div>
+        </div>
+
+        <div class="form-group row justify-content-center">
+            <button id="btn1" class="btn btn-primary btn-sm">UPDATE</button>
+        </div>
+    </div>
+
+
+</form>
+
+
+
+
+<script>
+    $(document).ready(function () {
+        $('#ITAssetWarranty').datetimepicker({
+             format: 'YYYY-MM-DD'
+        });
+        var data = getdata('/GetLocations')
+        loadLocations(data)
+        data = getdata('/GetVendors')
+        loadVendors(data)
+        //events
+
+
+
+
+        // $("#btnlocation").click(function () {
+        //     $("#locationmodalTitle").html("Add Location")
+        //     $("#divLocation").load("/Location", null, function () {
+        //     });
+        // })
+        // $("#btnVendor").click(function () {
+           
+        //     $("#locationmodalTitle").html("Add Vendor")
+        //     $("#divLocation").load("/Vendors", null, function () {
+        //     });
+        // })
+
+
+
+        $("#btn1").click(function (e) {
+
+            var obj = new Object()
+           
+            // '{{ range $id, $element :=  .}}'
+            // ids['{{$id}}'] = '{{$element}}'
+
+            // '{{end}}'
+            obj['ITAssetDescription'] = $("#ITAssetDescription").val()
+            obj['ITAssetWarranty'] = $("#ITAssetWarranty").val()
+            obj['Vendor'] = $("#Vendor").val()
+            obj['Location'] = $("#Location").val()
+
+            var ids = ""
+            "{{range $id, $element := .}}"
+            ids += "{{$id}},"
+            "{{end}}"
+
+            obj['IDS'] = ids
+           
+            $.ajax({
+                url: "/ITAssets/BulkEdit",
+                type: 'POST',
+                data: { data: JSON.stringify(obj) },
+                dataType: 'json',
+                async: false,
+                success: function (data) {
+
+
+                }
+            });
+        });
+
+
+    })
+
+
+
+    function loadLocations(data) {
+        $("#Location").empty().append('<option selected="selected" value="0">--select--</option>');
+        $.each(data, function (i, el) {
+            $("#Location").append($("<option />", { text: el.Name + "\n" + el.Address1 + "\n" + el.Address2 + "\n" + el.Countryname + "\n" + el.Statename + "\n" + el.Zipcode, value: el.IDLocations }));
+        });
+
+
+    }
+    function loadVendors(data) {
+        $("#Vendor").empty().append('<option selected="selected" value="0">--select--</option>');
+        $.each(data, function (i, el) {
+            $("#Vendor").append($("<option />", { text: el.Name + "\n" + el.Address + "\n" + el.Email + "\n" + el.ContactPersonName + "\n" + el.Phone + "\n", value: el.Idvendors }));
+        });
+
+    }
+
+
+</script>
+
+{{end}}

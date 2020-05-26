@@ -1,0 +1,655 @@
+{{  define "OutWardDetails"}}
+{{template "head" .}}
+<div class="page-header">
+    <div class="row align-items-end">
+        <div class="col-lg-8">
+            <div class="page-header-title">
+                <div class="d-inline">
+                    <h5>OutWard Details</h5>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="col-lg-4">
+            <a class="float-right  font-weight-bold btn btn-outline-primary btn-rounded" title="Craete Employee"
+                href="/employee/create"><i class="ik ik-plus "></i><span>ADD</span></a>
+        </div> -->
+    </div>
+</div>
+<input type="text" style="display: none;" class="form-control datetimepicker-input" data-toggle="datetimepicker"
+    autocomplete="off" data-target="#todaydate" id="todaydate">
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-block">
+                <div class="dt-responsive">
+                    <table id="tblOutWardDetails" class="table table-striped table-bordered nowrap" width="100%">
+                        <thead>
+                            <th>idInWardOutWard</th>
+                            <th>Select</th>
+                            <th>Transaction ID</th>
+                            <th>Transfer Status</th>
+                            <th>Transfer To</th>
+                            <th>Total Items</th>
+                            <th>Receiver Name</th>
+                            <th>Receiver Mail</th>
+
+                            <th>Description</th>
+                            <th>Created On</th>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div id="tblbtn" class="btn-group dropright float-left ">
+            <button type="button" class="btn btn-info dropdown-toggle btn-sm " data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                Export </button>
+            <div id="tblbtnList" class="dropdown-menu">
+            </div>
+        </div>
+        <div id="tblClmnbtn" class="btn-group dropright float-left mr-1 ">
+            <button type="button" class="btn btn-info dropdown-toggle btn-sm " data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                Fields </button>
+            <div id="tblClmnbtnList" class="dropdown-menu">
+                <div class="form-check form-check-inline dropdown-item">
+                    <input class="form-check-input chkClmn" type="checkbox" checked id="chkAll">
+                    <label class="form-check-label " for="chkAll">Select All</label>
+                </div>
+                <div class="dropdown-divider">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="modal-tblbody">
+            <table id="tblOutWardAssetDetails" width="100%" class="table">
+                <!-- style="border: 1px solid black;overflow-x:scroll; border-collapse: collapse;border-spacing: 0; " -->
+                <thead>
+                    <th>AssetName</th>
+                    <th>Identification No</th>
+                    <th>Asset Price per each</th>
+                    <th>Asset Type </th>
+                    <th>Sent Quantity</th>
+                    <th>Received Quantity</th>
+                    <th>Description</th>
+                    <th>Transfer Status</th>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalTransfer" tabindex="-1" role="dialog" aria-labelledby="modalTransferLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTransferLabel">Transfer</h5>
+                <button type="button" id="btntrnsfrmdlclose" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <span>If Assets are ready to Transfer.Please click 'Transfer' to delivery. </span>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button id="btnTransfer" value="Transfer" type="button" class="btn btn-success pull-right"><i
+                        class="fa fa-check"></i>Transfer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div id="classModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="classInfo"
+    aria-hidden="true">
+    <div class="modal-dialog mdl-cstm modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTransferLabel">Retire Missing Stocks</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-tblbody modal-body">
+                <table id="tblOutWardMsngAssetDetails" class="table table-striped">
+                    <thead>
+                        <th style="display:none">idinwardoutwardAssets</th>
+                        <th style="display:none">inwardoutwardid</th>
+                        <th style="display:none">assetid</th>
+                        <th>AssetName</th>
+                        <th>Identification No</th>
+                        <th>Asset Price per each</th>
+                        <th>Asset Type </th>
+                        <th>Sent Quantity</th>
+                        <th>Received Quantity</th>
+                        <th>Missing Quantity</th>
+                        <th>Description</th>
+                        <th>Transfer Status</th>
+                        <th>Retire</th>
+
+                        <th>Comments</th>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" id="MsngRetire" class="btn btn-success pull-right"><i
+                        class="fa fa-check"></i>Retire</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade edit-layout-modal" id="editLayoutItem" tabindex="-1" role="dialog"
+    aria-labelledby="editLayoutItemLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editLayoutItemLabel">Approval flow</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-12">
+                    <div class="card latest-update-card">
+                        <div class="card-block">
+                            <div class="scroll-widget">
+                                <div class="latest-update-box divflow">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+        var dateNow = new Date();
+        $('#todaydate').datetimepicker({
+            format: 'YYYY-MM-DD',
+            defaultDate: moment(dateNow).hours(0).minutes(0).seconds(0).milliseconds(0)
+        });
+
+
+        var tbl = $('#tblOutWardDetails').DataTable({
+            responsive: true,
+            "processing": true,
+            scrollY: $(window).height() - 450,
+            scrollCollapse: true,
+            scrollX: true,
+            destroy: true,
+            dom: 'Bfrt',
+            ajax: {
+                "url": '/GetOutWardDetailsByEmp/' + $("#employeeid").val(),
+                "type": "GET",
+                "datatype": "json",
+                "dataSrc": ""//to read data from a plain array rather than an array in an object:
+            },
+            columnDefs: [
+                { orderable: false, targets: 1 },
+                { visible: false, targets: 0 }
+            ],
+            "order": [
+                [0, 'desc']
+            ],
+            // destroy: true,//to over come reintilize prblms
+            "columns": [
+                {
+                    "name": "IDInWardOutWard",
+                    'data': 'IDInWardOutWard'
+                }, {
+                    "name": "Select",
+                    'data': null,
+                    render: function (dt) {
+                        return '<input type="checkbox" class="tblchk"  value=' + dt.IDInWardOutWard + '>';
+                    }
+                }, {
+                    "name": "TransactionID",
+                    'data': null,
+                    render: function (dt) {
+
+                        if (dt.TransferStatus == 10)//trnsfer apprvd
+                            return '<a class="font-weight-bold text-info transfer" data-value=' + dt.IDInWardOutWard + '  data-toggle="modal" data-target="#modalTransfer"  href="#">' + dt.TransactionID + '</a>';
+                        else if ((dt.TransferStatus == 13 || dt.TransferStatus == 15) && dt.IsMsngStcksRslvdMain == null) { //13= prtly rcvd, 15=not rcvd
+                            return dt.TransactionID + '</br><a class="font-weight-bold text-danger mdlMsngStcks" data-value=' + dt.IDInWardOutWard + '  data-toggle="modal" data-target="#classModal"  href="#">Retire Missing Stocks</a>'
+                        } else {
+                            return dt.TransactionID
+                        }
+                    }
+                }, {
+                    "name": "TransferStatus",
+                    'data': null,
+                    render: function (dt) {
+                        var res = '<a class="font-weight-bold text-info flowmdl" data-value=' + dt.IDInWardOutWard + '  '
+                        res += '  href="#">' + dt.Status.StatusName + '</a>'
+                        return res;
+                    }
+                }, {
+                    "name": "ToLocation",
+                    "data": "ToLocation",
+                    render: function (el) {
+                        return el.Name + "\n" + el.Address1 + "\n" + el.Address2 + "\n" + el.Zipcode
+                    }
+                }, {
+                    "name": "TotalItems",
+                    'data': 'TotalItems'
+                }, {
+                    "name": "ReceiverName",
+                    "data": "ReceiverEmployee",
+                    render: function (el) {
+                        return el.FirstName + el.LastName
+                    }
+                }, {
+                    "name": "ReceiverMail",
+                    'data': 'ReceiverEmployee',
+                    render: function (el) {
+                        return el.Email
+                    }
+                }, {
+                    "name": "Description",
+                    'data': 'Description'
+                }, {
+                    "name": "CreatedOn",
+                    'data': 'CreatedOn',
+                    render: function (dt) {
+                        return jsondate(dt);
+
+                    }
+                }
+            ]
+            , buttons: [
+                {
+                    text: 'PDF',
+                    extend: "pdf",
+                    title: "ITAsset Details",
+                    className: ' dropdown-item',
+                    exportOptions: {
+                        columns: ':visible'
+                        //columns: ':not(.notexport)'
+                    }
+                },
+                {
+                    text: 'Print',
+                    extend: "print",
+                    title: "ITAsset Details",
+                    className: ' dropdown-item',
+                    exportOptions: {
+                        columns: ':visible'
+                        // columns: ':not(.notexport)'
+                    }
+                },
+                {
+                    text: 'Excel',
+                    extend: "excel",
+                    className: ' dropdown-item',
+                    title: "ITAsset Details",
+                    exportOptions: {
+                        columns: ':visible'
+                        // columns: ':not(.notexport)'
+                    }
+                }
+            ]
+        });
+
+
+
+        $("#tblbtn").prependTo('#tblOutWardDetails_filter')
+        tbl.buttons().containers().prependTo('#tblbtnList')
+        $('.dt-button').removeClass('dt-button').addClass(' btn btn-light btn-sm ');
+        $(".buttons-colvis").removeClass('btn-light').addClass('btn-info float-left ml-1').appendTo('#tblOutWardDetails_filter')
+        $("#tblClmnbtn").prependTo('#tblOutWardDetails_filter')
+        var idx = 0;
+        //show hide clmns
+        tbl.columns().every(function () {
+            if (idx != 0 && idx != 1) {
+                var html = '<div class="form-check form-check-inline dropdown-item">'
+                html += '<input class="form-check-input chkClmn" type="checkbox" checked id="chk' + idx + '" value="' + idx + '">'
+                html += '<label class="form-check-label " for="chk' + idx + '">' + this.header().innerHTML + '</label></div>'
+                $("#tblClmnbtnList").append(html)
+            }
+            idx++;
+
+        });
+
+        $("input.chkClmn").click(function (e) {
+            // Get the column API object
+            if ($(this).attr('id') == "chkAll") {
+                if ($(this).prop("checked")) {
+                    for (var i = 1; i < tbl.init().columns.length; i++) {
+                        tbl.column(i).visible(true, true)
+                    }
+                    $("input.chkClmn").prop("checked", true)
+                    tbl.columns.adjust().draw();
+                }
+            }
+            else {
+                var column = tbl.column($(this).val());
+                // Toggle the visibility
+                if ($(this).prop("checked"))
+                    column.visible(true);
+                else {
+                    column.visible(false);
+                    $("#chkAll").prop("checked", false)
+                }
+            }
+        })
+
+
+        $("#tblOutWardDetails").on("change", ".tblchk", function () {
+
+            var tbody = $("#tblOutWardAssetDetails tbody")
+            tbody.empty();
+            if (this.checked) {
+                $("#tblOutWardDetails input[type='checkbox']").not(this).prop("checked", false)
+                var data = getdata("/GetOutWardAssetDetailsByIwOwID/" + this.value)
+
+                data.forEach(element => {
+                    var tr = " <tr>"
+                    if (element.AssetType == "itasset") {
+                        tr += "<td>" + element.ITAsset.ITAssetName + "</td>"
+                        tr += "<td>" + element.ITAsset.ITAssetIdentificationNo + "</td>"
+                        tr += "<td>₹" + element.ITAsset.ITAssetPrice + "</td>"
+                    }
+                    else if (element.AssetType == "consumable") {
+                        tr += "<td>" + element.Consumable.Consumablemaster.ConsumableName + "</td>"
+                        tr += "<td>" + element.Consumable.IdentificationNo + "</td>"
+                        tr += "<td>₹" + element.Consumable.ReOrderStockPrice + "</td>"
+                    }
+                    else if (element.AssetType == "nonitasset") {
+                        tr += "<td>" + element.NonITAsset.NonITAssets_Master.NonITAssets_Name + "</td>"
+                        tr += "<td>" + element.NonITAsset.IdentificationNo + "</td>"
+                        tr += "<td>₹" + element.NonITAsset.ReOrderStockPrice + "</td>"
+                    }
+                    tr += "<td>" + element.AssetType.toUpperCase() + "</td>"
+                    tr += "<td>" + element.Quantity + "</td>"
+
+                    tr += "<td>" + element.ReceivedQuantity + "</td>"
+                    tr += "<td>" + element.Description + "</td>"
+                    tr += "<td>" + element.Status.StatusName + "</td>"
+                    tr += "</tr>"
+                    tbody.append(tr)
+                });
+            }
+        })
+
+        $("#btnTransfer").click(function () {
+            $.ajax({
+                url: "/OwStatusChange/" + $(this).val() + "/11",
+                type: 'POST',
+                success: function () {
+                    alert("Transfered successfully.")
+                    tbl.ajax.reload();
+                    $("#btntrnsfrmdlclose").click();
+                    // window.location = "http://" + document.location.host + "/ITAssets";
+                },
+                error: function () {
+                    alert('Internal Error')
+                },
+                complete: function () {
+                }
+            });
+
+        });
+
+        $("#tblOutWardDetails").on("click", ".transfer", function () {
+            $("#btnTransfer").val($(this).attr("data-value"))
+        })
+
+
+
+
+        $("#tblOutWardDetails").on("click", ".mdlMsngStcks", function () {
+
+            var tbody = $("#tblOutWardMsngAssetDetails tbody")
+            tbody.empty();
+            var id = $(this).attr('data-value')
+            var data = getdata("/GetOutWardAssetDetailsByIwOwID/" + id)
+
+            data.forEach(element => {
+                var tr = " <tr>"
+                tr += " <td class='IDinwardoutwardAssets' style='display:none'>" + element.IDinwardoutwardAssets + "</td>"
+                tr += " <td class='Inwardoutwardid' style='display:none'>" + element.Inwardoutwardid + "</td>"
+                if (element.AssetType == "itasset") {
+                    tr += " <td class='AssetID' style='display:none'>" + element.AssetID + "</td>"
+                    tr += " <td >" + element.ITAsset.ITAssetName + "</td>"
+                    tr += "<td>" + element.ITAsset.ITAssetIdentificationNo + "</td>"
+                    tr += "<td>₹" + element.ITAsset.ITAssetPrice + "</td>"
+                }
+                else if (element.AssetType == "consumable") {
+                    tr += "<td class='AssetID' style='display:none'>" + element.AssetID + "</td>"
+                    tr += "<td>" + element.Consumable.Consumablemaster.ConsumableName + "</td>"
+
+                    tr += "<td>" + element.Consumable.IdentificationNo + "</td>"
+                    tr += "<td>₹" + element.Consumable.ReOrderStockPrice + "</td>"
+                }
+                else if (element.AssetType == "nonitasset") {
+                    tr += "<td class='AssetID' style='display:none'>" + element.AssetID + "</td>"
+                    tr += "<td>" + element.NonITAsset.NonITAssets_Master.NonITAssets_Name + "</td>"
+                    tr += "<td>" + element.NonITAsset.IdentificationNo + "</td>"
+                    tr += "<td>₹" + element.NonITAsset.ReOrderStockPrice + "</td>"
+                }
+                tr += "<td class='AssetType'>" + element.AssetType.toUpperCase() + "</td>"
+                tr += "<td>" + element.Quantity + "</td>"
+
+                var MsngQnty = element.Quantity - element.ReceivedQuantity
+                tr += "<td>" + element.ReceivedQuantity + "</td>"
+
+                tr += "<td class='Quantity'>" + MsngQnty + "</td>"
+                tr += "<td>" + element.Description + "</td>"
+                tr += "<td>" + element.Status.StatusName + "</td>"
+
+                if (element.TransferStatus != 12)//recvd
+                {
+                    tr += '<td> <select class="IDStatus" >'
+                    tr += '<option value="0">--select--</option><option value="19">Damaged</option>'
+                    tr += '<option value="20">Lost</option> <option value="24">Other</option></select></td>'
+
+                    // tr += '<td> <input type="text" class="form-control datetimepicker-input" name="MsngStckDt" id="MsngStckDt"'
+                    // tr += ' data-toggle="datetimepicker" autocomplete="off" data-target="#MsngStckDt"></td>'
+
+
+                    tr += '<td><textarea  class="Description" maxlength="500"  class="form-control " '
+                    tr += ' placeholder="Comments"></textarea></td>'
+                    tr += "</tr>"
+                }
+                else {
+                    tr += "<td> </td>"
+                    tr += "<td></td>"
+                }
+                tbody.append(tr)
+            });
+
+        });
+
+
+
+
+        $("#MsngRetire").click(function () {
+            var RetireAsset = new Array();
+            var ListInWardOutWardCnsmbl = new Array();
+            var isNotElgbl
+            $("#tblOutWardMsngAssetDetails tbody tr").each(function (i, e) {
+
+                if ($(this).find(".IDStatus").length != 0)
+                    if (parseInt($(this).find(".IDStatus").val().trim()) == 0) {
+                        alert('Please select Reason')
+                        $(this).find(".IDStatus").focus()
+                        isNotElgbl = true
+                        return false;
+                    }
+                if ($(this).find(".Description").length != 0)
+                    if ($(this).find(".Description").val().trim() == "") {
+                        alert('Please enter comments')
+                        $(this).find(".Description").focus()
+                        isNotElgbl = true
+                        return false;
+                    }
+                if ($(this).find(".AssetType").text().trim() == "CONSUMABLE" && $(this).find(".IDStatus").length != 0) {
+                    var obj = new Object();
+                    var Status = new Object();
+                    obj.IDinwardoutwardAssets = parseInt($(this).find(".IDinwardoutwardAssets").text().trim())
+                    obj.Inwardoutwardid = parseInt($(this).find(".Inwardoutwardid").text().trim())
+                    obj.AssetID = parseInt($(this).find(".AssetID").text())
+                    // obj.AssetType = $(this).find(".AssetType").text().trim()
+                    obj.Description = $(this).find(".Description").val().trim()
+                    Status.IDStatus = parseInt($(this).find(".IDStatus").val().trim())
+                    obj.Quantity = parseInt($(this).find(".Quantity").text())
+                    obj.Status = Status
+                    ListInWardOutWardCnsmbl.push(obj)
+
+                } else if ($(this).find(".AssetType").text().trim() == "ITASSET" && $(this).find(".IDStatus").length != 0) {
+                    var obj = new Object();
+                    obj.AssetID = parseInt($(this).find(".AssetID").text())
+                    obj.Reason = parseInt($(this).find(".IDStatus").val().trim())
+                    obj.RetireDate = $('#todaydate').val();
+                    obj.Commnets = $(this).find(".Description").val().trim()
+                    RetireAsset.push(obj)
+                }
+
+            });
+            if (!isNotElgbl) {
+                $.ajax({
+                    url: "/Consumables/CnsmblRetire",
+                    type: 'POST',
+                    data: JSON.stringify(ListInWardOutWardCnsmbl),
+                    dataType: 'json',
+                    success: function () {
+                        tbl.ajax.reload()
+                    },
+                    error: function () {
+                        alert('Internal Error')
+                    },
+                    complete: function () {
+                    }
+                });
+                $.ajax({
+                    url: "/UpdateIsMsngStcksRslvdMain/" + ListInWardOutWardCnsmbl[0].Inwardoutwardid,
+                    type: 'POST',
+                    success: function () {
+                    },
+                    error: function () {
+                        alert('Internal Error')
+                    },
+                    complete: function () {
+                    }
+                });
+
+                RetireAsset.forEach(element => {
+                    var fd = new FormData();
+                    fd.append('AssetID', element.AssetID);
+                    fd.append('Reason', element.Reason);
+                    fd.append('RetireDate', element.RetireDate);
+                    fd.append('Commnets', element.Commnets);
+                    $.ajax({
+                        url: "itassets/ITAssetRetire",
+                        type: 'POST',
+                        data: fd,
+                        contentType: false,
+                        processData: false,
+                        success: function () {
+                        },
+                        error: function () {
+                            alert('Internal Error')
+                        },
+                        complete: function () {
+                        }
+                    });
+
+                });
+                $('#classModal').modal('toggle');
+
+            }
+
+        });
+
+
+        $("#tblOutWardDetails").on('click', ".flowmdl", function () {
+            $('#editLayoutItem').modal('show')
+            var divflow = $(".divflow")
+            divflow.empty();
+            var data = getdata("/IWOW_ApprovalStatusList/" + $(this).attr('data-value'))
+            debugger;
+            var totalGrades = data[0].Grade
+            var leftgrades = totalGrades - data.length
+            for (let i = 0; i < data.length; i++) {
+                var icon = "ik-alert-circle"
+                var color = "yellow"
+                var status = ""
+                if (data[i].StatusName == "Outward Requested") {
+                    //  IDitasset_Req_approvals = data[i].IDitasset_Req_approvals
+                    color = "yellow"
+                    icon = "ik-alert-circle"
+                    status = 'Pending'
+                } else if (data[i].StatusName == "Rejected") {
+                    color = "red"
+                    icon = "ik-x"
+                    status = 'Rejected'
+
+                } else {
+                    color = "green"
+                    icon = "ik-check"
+                    status = 'Approved'
+                }
+                var GDlevel = data[i].Grade
+                var flowhtml = ' <div class="row flow pb-30"><div class="col-auto text-right update-meta pr-0">'
+                flowhtml += '<i class="ik ' + icon + ' bg-' + color + ' update-icon"></i>'
+                flowhtml += '  </div><div class="col pl-5"><a href="#!"><h6>' + status + '</h6> </a>'
+                flowhtml += '<p class="mb-2">' + data[i].ApproverName + ' - ' + data[i].RoleName + ' </p> '
+                flowhtml += '<p class="text-muted mb-0"></p> ' + data[i].Comments + ' </div> </div>'
+                divflow.append(flowhtml)
+
+            }
+
+            "{{range .Data}}"
+            if ("{{.MultiLevelApproval_Map.Grade}}" < GDlevel) {
+                var flowhtmll = ' <div class="row flow pb-30"><div class="col-auto text-right update-meta pr-0">'
+                flowhtmll += '<i class="ik ' + icon + '  update-icon" style="background-color: gray;"></i>'
+                flowhtmll += '  </div><div class="col pl-5"><a href="#!"><h6>Pending </h6> </a>'
+                flowhtmll += '<p class="text-muted mb-0"> </p>{{.MultiLevelApproval_Map.Role.RoleName}}</div> </div>'
+                divflow.append(flowhtmll)
+            }
+
+            " {{end}}"
+
+
+        })
+
+
+
+
+    });
+
+
+
+
+</script>
+<style>
+    .modal-tblbody {
+        overflow-x: auto;
+    }
+
+    .mdl-cstm {
+        max-width: 100%;
+        width: auto !important;
+        display: inline-block;
+    }
+
+    .modal {
+        text-align: center;
+    }
+</style>
+{{template "footer"}}
+{{end}}

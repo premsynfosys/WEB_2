@@ -1,0 +1,45 @@
+{{define "ITAsset_Service_Request"}}
+<div class="container">
+    <form id="frm_service">
+        <input type="hidden" id="ITAssetID" name="ITAssetID" value="{{.Data}}">
+        <div class="form-group row">
+            <label for="Issue_Description" class="col-sm-3 col-form-label ">Issue Description:</label>
+            <div class="col-sm-9">
+                <textarea required name="Issue_Description" maxlength="500" title="Description" class="form-control "
+                    id="Issue_Description"></textarea>
+            </div>
+        </div>
+        <div class="form-group row justify-content-center">
+            <input id="service_submit" type="submit" class="btn btn-primary btn-sm" value="Create Issue" />
+        </div>
+    </form>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#frm_service").submit(function (e) {
+            e.preventDefault();
+            var obj = new Object()
+            obj.ITAssetID = parseInt($("#ITAssetID").val())
+            obj.Issue_Description = $("#Issue_Description").val()
+            obj.Emp_EmpID = parseInt($("#employeeid").val())
+            obj.LocationID = parseInt($("#locationid").val())
+            //get location admin in api
+            $.ajax({
+                url: "/ITAsset_Service_Request/" + obj.ITAssetID,
+                type: 'POST',
+                data: JSON.stringify(obj),
+                dataType: 'json',
+                async: false,
+                success: function (data) {
+                    $(".modal").modal('hide')
+                    Toast("success", "Issue raised.")
+                }, error: function (data) {
+                    alert('Internal Error')
+                }
+            });
+        })
+    });
+
+</script>
+
+{{end}}

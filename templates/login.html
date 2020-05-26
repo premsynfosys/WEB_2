@@ -1,0 +1,77 @@
+{{define "login"}}
+<html lang="en">
+
+<head>
+    <!-- <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+   -->
+    
+   <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,600,700,800" rel="stylesheet">
+    <link rel="stylesheet" href="/static//plugins/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="/static/plugins/ionicons/dist/css/ionicons.min.css">
+    <link rel="stylesheet" href="/static/plugins/icon-kit/dist/css/iconkit.min.css">
+    
+
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script>window.jQuery || document.write('<script src="../src/js/vendor/jquery-3.3.1.min.js"><\/script>')</script>
+    <script src="/static/plugins/popper.js/dist/umd/popper.min.js"></script>
+    <script src="/static/plugins/bootstrap/dist/js/bootstrap.min.js"></script>
+    
+   
+    <!------ Include the above in your HEAD tag ---------->
+</head>
+
+<body>
+    <div class="container col-md-6 col-sm-10  col-lg-4 ">
+      
+        <form class="text-center border border p-5" method="POST" action="/">
+            <p class="h4 mb-4">Sign in</p>
+            <!-- Email -->
+            <input type="text" id="UserName" name="UserName" required autofocus class="form-control mb-4"
+                placeholder="UserName">
+            <!-- Password -->
+            <input type="password" name="Password" id="Password" class="form-control mb-4" placeholder="Password">
+            <div class="d-flex justify-content-around">
+                <div>
+                    <!-- Remember me -->
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="defaultLoginFormRemember">
+                        <label class="custom-control-label" for="defaultLoginFormRemember">Remember me</label>
+                    </div>
+                </div>
+                <!-- <div>
+                   
+                    <a href="">Forgot password?</a>
+                </div> -->
+            </div>
+
+            <!-- Sign in button -->
+            <button class="btn btn-info btn-block my-4" type="submit">Sign in</button>
+
+            <!-- Register -->
+            <!-- <p>Not a member?
+                <a href="">Register</a>
+            </p> -->
+
+            <!-- Social login -->
+            <!-- <p>or sign in with:</p>
+
+            <a href="#" class="mx-2" role="button"><i class="fab fa-facebook-f light-blue-text"></i></a>
+            <a href="#" class="mx-2" role="button"><i class="fab fa-twitter light-blue-text"></i></a>
+            <a href="#" class="mx-2" role="button"><i class="fab fa-linkedin-in light-blue-text"></i></a>
+            <a href="#" class="mx-2" role="button"><i class="fab fa-github light-blue-text"></i></a> -->
+
+        </form>
+        {{if .err}}
+        <span class="text-danger">Please enter correct details.</span>
+        {{end}}
+    </div>
+</body>
+
+</html>
+{{end}}

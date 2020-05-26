@@ -1,0 +1,223 @@
+{{define "ITAsset_Service"}}
+<div class="container">
+    <form id="frm_service">
+        <input type="hidden" id="ITAssetID" name="ITAssetID" value="{{.ITAssetID}}">
+        <input type="hidden" id="IDITAsset_Services" name="IDITAsset_Services" value="{{.IDITAsset_Services}}">
+
+        {{if eq .mode "schedule"}}
+        <div class="form-group row ">
+            <label for="Expected_Start_Date" class="col-sm-3 col-form-label ">Expected Start Date Time:</label>
+            <div class="col-sm-4">
+                <input type="text" autocomplete="off" class="form-control datetimepicker-input" id="Expected_Start_Date"
+                    data-toggle="datetimepicker" data-target="#Expected_Start_Date">
+            </div>
+            <!-- <div class="col-sm-3">
+                <input type="text" class="form-control datetimepicker-input" id="Expected_Start_Time"
+                    data-toggle="datetimepicker" data-target="#Expected_Start_Time">
+            </div> -->
+
+        </div>
+        {{end}}
+        <div class="form-group row ">
+            <label for="Expected_End_Date" class="col-sm-3 col-form-label ">Expected End Date Time:</label>
+            <div class="col-sm-4">
+                <input type="text" autocomplete="off" class="form-control datetimepicker-input" id="Expected_End_Date"
+                    data-toggle="datetimepicker" data-target="#Expected_End_Date">
+            </div>
+            <!-- <div class="col-sm-3">
+            <input type="text" class="form-control datetimepicker-input" id="Expected_End_Time"
+                data-toggle="datetimepicker" data-target="#Expected_End_Time">
+        </div> -->
+        </div>
+        <div class=" form-group row">
+            <div class="checkbox-fade fade-in-info ">
+                <label>
+                    <input type="checkbox" checked name="Is_Asset_UnAvailable" value="1" id="Is_Asset_UnAvailable">
+                    <span class="cr">
+                        <i class="cr-icon ik ik-check txt-info"></i>
+                    </span>
+                    <span>Make Asset UnAvailable after service start date (Maintenance)</span>
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group  row">
+            <label for="Service_Type" class="col-sm-3 col-form-label ">Service Type:</label>
+            <div class="col-sm-9 ">
+                <div class="input-group">
+                    <select name="Service_Type" required id="Service_Type" class="form-control">
+                        <option value="">--select--</option>
+                        <option value="1">Repair</option>
+                        <option value="2">Standard</option>
+                        <option value="3">Warranty</option>
+                        <option value="4">Other</option>
+                    </select>
+
+                </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="ServiceBy_Type" class="col-sm-3 col-form-label">Service By:</label>
+            <div class="form-radio col-sm-4">
+                <div class="radio radiofill radio-info radio-inline">
+                    <label>
+                        <input type="radio" checked required value="Vendor" name="ServiceBy_Type">
+                        <i class="helper"></i>Vendor
+                    </label>
+                </div>
+                <div class="radio radiofill radio-info radio-inline">
+                    <label>
+                        <input type="radio" required value="Person" name="ServiceBy_Type">
+                        <i class="helper"></i>Person
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group  row divVendor ">
+            <label for="ServiceBy_VendorID" class="col-sm-3 col-form-label ">Vendor:</label>
+            <div class="col-sm-9 ">
+                <div class="input-group">
+                    <select name="ServiceBy_VendorID" id="ServiceBy_VendorID" class="form-control">
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group  row divPerson">
+            <label for="ServiceBy_EmpID" class="col-sm-3 col-form-label ">Person:</label>
+            <div class="col-sm-9 ">
+                <div class="input-group">
+                    <select name="ServiceBy_EmpID" id="ServiceBy_EmpID" class="form-control">
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="Description" class="col-sm-3 col-form-label ">Description:</label>
+            <div class="col-sm-9">
+                <textarea required name="Description" maxlength="500" placeholder="Description" title="Description"
+                    class="form-control " id="Description"></textarea>
+
+            </div>
+        </div>
+
+        <div class="form-group row justify-content-center">
+
+            <input id="service_submit" type="submit" class="btn btn-primary btn-sm" value="Create Service" />
+        </div>
+    </form>
+
+</div>
+<script>
+    $(document).ready(function () {
+
+        $(".divPerson").addClass("collapse")
+        $('#Expected_Start_Date').datetimepicker({
+            format: 'YYYY-MM-DD HH:mm',
+            autclose: true,
+            minDate: new Date()
+        });
+        // $('#Expected_Start_Time').datetimepicker({
+        //     format: 'LT'
+        // });
+        $('#Expected_End_Date').datetimepicker({
+            format: 'YYYY-MM-DD HH:mm',
+            autclose: true,
+            minDate: new Date()
+        });
+        // $('#Expected_End_Time').datetimepicker({
+        //     format: 'LT'
+        // });
+        var data = getdata('/GetVendors')
+        loadVendors(data)
+        function loadVendors(data) {
+            $("#ServiceBy_VendorID").empty().append('<option selected="selected" value="">--select--</option>');
+            $.each(data, function (i, el) {
+                $("#ServiceBy_VendorID").append($("<option />", { text: el.Name + "\n" + el.Address + "\n" + el.Email + "\n" + el.ContactPersonName + "\n" + el.Phone + "\n", value: el.Idvendors }));
+            });
+        }
+        if ("{{.Auth.Accesstoalllocations}}") {
+            var data = getdata("/GetEmployeesList")
+            loadPersons(data)
+        } else {
+            var data = getdata("/GetEmployeesList?LocID=" + $("#locationid").val())
+            loadPersons(data)
+        }
+       
+        function loadPersons(data) {
+            $("#ServiceBy_EmpID").empty().append('<option selected="selected" value="">--select--</option>');
+            $.each(data, function (i, el) {
+                $("#ServiceBy_EmpID").append($("<option />", { text: el.FirstName, value: el.IDEmployees }));
+            });
+        }
+    })
+    $(document).ready(function () {
+
+
+        $("input[name=ServiceBy_Type]").change(function () {
+
+            if (this.value == "Person") {
+                $(".divPerson").removeClass("collapse")
+                $(".divVendor").addClass("collapse")
+            } else if (this.value == "Vendor") {
+                $(".divPerson").addClass("collapse")
+                $(".divVendor").removeClass("collapse")
+            }
+        })
+
+        $("#frm_service").submit(function (e) {
+            e.preventDefault()
+            var obj = new Object();
+
+            obj.IDITAsset_Services = parseInt($("#IDITAsset_Services").val())
+            obj.ITAssetID = parseInt($("#ITAssetID").val())
+
+            '{{if eq .mode "schedule"}}'
+            obj.Expected_Start_Date = $("#Expected_Start_Date").val()
+            if ($("#Expected_Start_Date").val() == "") {
+                alert('Please enter Expected start date')
+
+                return false;
+            }
+            ' {{end}}'
+            obj.Expected_End_Date = $("#Expected_End_Date").val()
+            if ($("#Expected_End_Date").val() == "") {
+                alert('Please enter Expected end date')
+                return false;
+            }
+            obj.Is_Asset_UnAvailable = parseInt($("#Is_Asset_UnAvailable:checked").val())
+            obj.ServiceBy_Type = $("input[name=ServiceBy_Type]:checked").val()
+            obj.ServiceBy_EmpID = parseInt($("#ServiceBy_EmpID").val())
+            obj.ServiceBy_VendorID = parseInt($("#ServiceBy_VendorID").val())
+
+            obj.Service_Type = parseInt($("#Service_Type").val())
+            // obj.Status = 2 //yet to start
+            obj.Description = $("#Description").val()
+            obj.CreatedBy = parseInt($("#userid").val())
+
+            var _url = "/ITasset_services_Insert";
+
+            $.ajax({
+                url: _url,
+                type: 'POST',
+                data: JSON.stringify(obj),
+                dataType: 'json',
+                async: false,
+                success: function (data) {
+
+                    '{{if eq .mode "schedule"}}'
+                    Toast("success", "Service Scheduled.")
+                    '{{else}}'
+                    Toast("success", "Service started.")
+                    ' {{end}}'
+                    window.location.reload()
+                }, error: function (data) {
+                    alert('Internal Error')
+                }
+            });
+
+        })
+    })
+</script>
+
+{{end}}

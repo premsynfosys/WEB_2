@@ -1,0 +1,31 @@
+{{  define "NonITAssetCheckinDetails"}}
+{{template "head" .}}
+
+<div class="page-header">
+    <div class="row align-items-end">
+        <div class="col-lg-8">
+            <div class="page-header-title">
+                <div class="d-inline">
+                    <h5>NonITAsset CheckIn Details</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 ">
+            <a class="float-right font-weight-bold btn btn-outline-primary btn-rounded ml-2" title="Asset List"
+                href="/NonITAsset/List"><i class="ik ik-plus "></i><span>List</span></a>
+        </div>
+    </div>
+</div>
+<div class="div">
+
+</div>
+<!-- //transfer -->
+
+<script>
+    $(document).ready(function () {
+        $(".div").load("/NonITAssetCheckinDetails_Partial?mode=all&ID=0")
+    })
+</script>
+
+{{template "footer"}}
+{{end}}

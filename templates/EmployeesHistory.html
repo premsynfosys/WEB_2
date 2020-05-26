@@ -1,0 +1,193 @@
+{{  define "EmployeesHistory"}}
+{{template "head" .}}
+<div class="page-header">
+  <div class="row align-items-end">
+    <div class="col-lg-8">
+      <div class="page-header-title">
+        <div class="d-inline">
+          <h5>Employee History Details</h5>
+        </div>
+      </div>
+    </div>
+  
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-block">
+        <div class="dt-responsive">
+          <table id="tblEmployeeHistory" class="table table-striped table-bordered " width="100%">
+            <thead>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Date Of Birth</th>
+              <th>Email</th>
+              <th>Employee Code</th>
+              <th>Mobile</th>
+              <th>Correspondence Address</th>
+              <th>Permanent Address</th>
+              <th>Status</th>
+              <th>Education</th>
+              <th>Experience</th>
+              <th>Designation</th>
+              <th>Date Of Joining</th>
+              <th>CreatedOn</th>
+              <th>Action By</th>
+              <th>Action Performed</th>
+
+            </thead>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div id="tblbtn" class="btn-group dropright float-left ">
+      <button type="button" class="btn btn-info dropdown-toggle btn-sm " data-toggle="dropdown" aria-haspopup="true"
+        aria-expanded="false">
+        Export </button>
+      <div id="tblbtnList" class="dropdown-menu">
+      </div>
+    </div>
+    <div id="tblClmnbtn" class="btn-group dropright float-left mr-1 ">
+      <button type="button" class="btn btn-info dropdown-toggle btn-sm " data-toggle="dropdown" aria-haspopup="true"
+        aria-expanded="false">
+        Fields </button>
+      <div id="tblClmnbtnList" class="dropdown-menu">
+        <div class="form-check form-check-inline dropdown-item">
+          <input class="form-check-input chkClmn" type="checkbox" checked id="chkAll">
+          <label class="form-check-label " for="chkAll">Select All</label></div>
+
+        <div class="dropdown-divider"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+
+  $(document).ready(function () {
+
+    var tbl = $('#tblEmployeeHistory').DataTable({
+      responsive: true,
+      "processing": true,
+      scrollY: $(window).height() - 350,
+      scrollCollapse: true,
+      scrollX: true,
+      destroy: true,
+      dom: 'Bfrtip',
+      ajax: {
+        "url": '/GetEmployee_History_ByEmpID/0',
+        "type": "GET",
+        "datatype": "json",
+        "dataSrc": ""//to read data from a plain array rather than an array in an object:
+      },
+      "columns": [
+        {
+          "name": "FirstName",
+          'data': "FirstName"
+        }, {
+          "name": "LastName",
+          'data': "LastName"
+        }, {
+          "name": "Date Of Birth",
+          'data': "DOB",
+          render: function (dt) {
+            return jsondate(dt);
+          }
+        }, {
+          "name": "Email",
+          'data': 'Email'
+        }, {
+          "name": "EmpCode",
+          'data': 'EmpCode'
+        }, {
+          "name": "Mobile",
+          "data": "Mobile"
+        }, {
+          "name": "Address",
+          'data': 'Address'
+        }, {
+          "name": "PrmntAddress",
+          'data': 'PrmntAddress'
+        }, {
+          "name": "Status",
+          "data": "Status"
+        }, {
+          "name": "Education",
+          'data': 'EducationData',
+          render: function (dt) {
+            return dt.Name
+          }
+        }, {
+          "name": "Experience",
+          "data": null,
+          render: function (dt) {
+            var res;
+            if (dt.ExperienceYear == 0) {
+              res = dt.ExperienceMonth + ' mnt(s)'
+            } else {
+              if (dt.ExperienceMonth == 0)
+                res = dt.ExperienceYear + ' yr(s)'
+              else
+                res = dt.ExperienceYear + ' yr(s)  ' + dt.ExperienceMonth + ' mnt(s)'
+            }
+            return res
+          }
+        }, {
+          "name": "Designation",
+          'data': 'DesignationData',
+          render: function (dt) {
+            return dt.DesignationName
+          }
+
+        }, {
+          "name": "Date Of Joining",
+          'data': 'DOJ',
+          render: function (dt) {
+            return jsondate(dt);
+          }
+        }, {
+          "name": "CreatedOn",
+          'data': 'CreatedOn',
+          render: function (dt) {
+            return jsondate(dt);
+          }
+        }, {
+          "name": "Created By",
+          'data': 'CreatedByData',
+          render: function (dt) {
+            return dt.FirstName + " " + dt.LastName
+          }
+        }, {
+          "name": "ActionPerformed",
+          'data': 'ActionPerformed'
+        }
+      ]
+      ,
+
+      buttons: [
+        {
+          text: 'Excel',
+          extend: "excel",
+          className: ' dropdown-item',
+          title: "Employee History Details",
+          exportOptions: {
+            columns: ':visible'
+            // columns: ':not(.notexport)'
+          }
+        }
+      ]
+    });
+
+    $("#tblbtn").prependTo('#tblEmployeeHistory_filter')
+    tbl.buttons().containers().prependTo('#tblbtnList')
+    $('.dt-button').removeClass('dt-button').addClass(' btn btn-light btn-sm ');
+    $(".buttons-colvis").removeClass('btn-light').addClass('btn-info float-left ml-1').appendTo('#tblEmployeeHistory_filter')
+    $("#tblClmnbtn").prependTo('#tblEmployeeHistory_filter')
+
+  });
+
+
+</script>
+{{template "footer"}}
+{{end}}

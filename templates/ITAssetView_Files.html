@@ -1,0 +1,247 @@
+{{  define "ITAssetView_FilesTmpl"}}
+<div class="row  m-2">
+  <input type="hidden" id="AssetID" value="{{.}}">
+  <div class="col-md-12">
+    <div class="dt-responsive">
+      <table class="table table-striped table-bordered table-hover" id="tblITAssetFiles" width="100%">
+        <thead>
+          <th>Select</th>
+          <th>Name</th>
+          <th>Description</th>
+          <th>File</th>
+          <!-- <th>File Type</th> -->
+          <th>Size</th>
+          <th>Uploaded On </th>
+        </thead>
+      </table>
+    </div>
+    <div id="tblbtn" class="btn-group dropright float-left ">
+      <button type="button" class="btn btn-info dropdown-toggle  " data-toggle="dropdown" aria-haspopup="true"
+        aria-expanded="false">
+        Export </button>
+      <div id="tblbtnList" class="dropdown-menu">
+      </div>
+    </div>
+    <button type="button" id="btnUpload" title="Upload" data-toggle="modal" data-target="#uploadFileModal"
+      class="btn btn-info btn-sm  float-left  ml-1 "><i class="ik ik-upload"></i>
+    </button>
+    <div id="tblClmnbtn" class="btn-group dropright float-left mr-1 ">
+      <button type="button" class="btn btn-info dropdown-toggle btn-sm " data-toggle="dropdown" aria-haspopup="true"
+        aria-expanded="false">
+        Fields </button>
+      <div id="tblClmnbtnList" class="dropdown-menu">
+        <div class="form-check form-check-inline dropdown-item">
+          <input class="form-check-input chkClmn" type="checkbox" checked id="chkAll">
+          <label class="form-check-label " for="chkAll">Select All</label></div>
+
+        <div class="dropdown-divider"></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Upload in Modal -->
+<div class="modal fade" id="uploadFileModal" tabindex="-1" role="dialog" aria-labelledby="groupmodalTitle"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <form id="frmUpload" action="/ITAssets/UploadFile" method="POST" enctype="multipart/form-data">
+      <input class=" text" type="hidden" name="AssetID" value="{{.}}">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="groupmodalTitle">Upload File</h5>
+          <button type="button" id="closecheckinmodal" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group row">
+            <label for="ITAssetImg" class="col-md-3 col-form-label col-form-label-sm">Upload File:</label>
+            <div class="input-group col-md-9">
+              <div class=" custom-file">
+                <input type="file" required class="custom-file-input " id="ITAssetFile" name="ITAssetFile" />
+                <label class="custom-file-label col-form-label-sm" for="ITAssetFile">Choose file</label>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="Description" class="col-md-3 col-form-label col-form-label-sm">Description:</label>
+            <div class="col-md-9">
+              <textarea name="Description" required maxlength="500" class="form-control form-control-sm" id="Description"
+                placeholder="Description"></textarea>
+            </div>
+          </div>
+          <div class="form-group row justify-content-center">
+            <input type="submit" id="btnupload" class="btn btn-info btn-sm " value="Upload">
+          </div>
+        </div>
+
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function () {
+    var AssetID = $("#AssetID").val()
+    var _url = '/ITAssets/GetITAssetView_Files/' + AssetID + ''
+    var tbl = $('#tblITAssetFiles').DataTable({
+      responsive: true,
+      "processing": true,
+      scrollY: $(window).height() - 350,
+      scrollCollapse: true,
+      scrollX: true,
+      destroy: true,
+      dom: 'Bfrtip',
+      ajax: {
+        "url": _url,
+        "type": "GET",
+        "datatype": "json",
+        "dataSrc": ""//to read data from a plain array rather than an array in an object:
+      },
+      columnDefs: [
+        { orderable: false, targets: 1 },
+        { visible: false, targets: 0 }
+      ],
+      "order": [
+        [0, 'desc']
+      ],
+      "columns": [
+        {
+          "name": "Select",
+          'data': null,
+          render: function (dt) {
+            return '<input type="checkbox" value=' + dt.IDITAssetsFiles + '>';
+          }
+        }, {
+          "name": "Name",
+          'data': null,
+          render: function (dt) {
+            return '<a href="/AppFiles/Files/ITAssets/'+ dt.Name +'">' + dt.Name + '</a>';
+          }
+        }, {
+          "name": "Descrption",
+          'data': 'Descrption'
+        }, {
+          "name": "File",
+          "data": null,
+          render: function (dt) {
+            if (dt.FileType == "jpeg" || dt.FileType == "jpg" || dt.FileType == "png" || dt.FileType == "svg")
+              return '<img  height="75px" width="75px" alt="' + dt.Path + '" src="/' + dt.Path + '">';
+            else
+              return dt.FileType.toUpperCase();
+          }
+        }, {
+          "name": "Size",
+          "data": "Size"
+        }, {
+          "name": "UploadedOn",
+          'data': 'UploadedOn',
+          render: function (dt) {
+            return jsondate(dt);
+          }
+        }
+      ],
+
+      buttons: [
+        {
+          text: 'PDF',
+          extend: "pdf",
+          title: "ITAsset File Details",
+          className: ' dropdown-item',
+          exportOptions: {
+            columns: ':visible'
+            //columns: ':not(.notexport)'
+          }
+        },
+        {
+          text: 'Print',
+          extend: "print",
+          title: "ITAsset File Details",
+          className: ' dropdown-item',
+          exportOptions: {
+            columns: ':visible'
+            // columns: ':not(.notexport)'
+          }
+        },
+        {
+          text: 'Excel',
+          extend: "excel",
+          className: ' dropdown-item',
+          title: "ITAsset File Details",
+          exportOptions: {
+            columns: ':visible'
+            // columns: ':not(.notexport)'
+          }
+        }
+      ],
+
+    });
+
+    $("#tblbtn").prependTo('#tblITAssetFiles_filter')
+    tbl.buttons().containers().prependTo('#tblbtnList')
+    $('.dt-button').removeClass('dt-button').addClass(' btn btn-light btn-sm ');
+    $(".buttons-colvis").removeClass('btn-light').addClass('btn-info float-left ml-1').appendTo('#tblITAssetFiles_filter')
+    $("#btnUpload").appendTo('#tblITAssetFiles_filter')
+
+    //columns hide /show
+    $("#tblClmnbtn").prependTo('#tblITAssetFiles_filter')
+    var idx = 0;
+    //show hide clmns
+    tbl.columns().every(function () {
+      if (idx != 0 && idx != 1) {
+        var html = '<div class="form-check form-check-inline dropdown-item">'
+        html += '<input class="form-check-input chkClmn" type="checkbox" checked id="chk' + idx + '" value="' + idx + '">'
+        html += '<label class="form-check-label " for="chk' + idx + '">' + this.header().innerHTML + '</label></div>'
+        $("#tblClmnbtnList").append(html)
+      }
+      idx++;
+
+    });
+    $("input.chkClmn").click(function (e) {
+
+      // Get the column API object
+      if ($(this).attr('id') == "chkAll") {
+        if ($(this).prop("checked")) {
+          for (var i = 1; i < tbl.init().columns.length; i++) {
+            tbl.column(i).visible(true, true)
+          }
+          $("input.chkClmn").prop("checked", true)
+          tbl.columns.adjust().draw();
+        }
+      }
+      else {
+        var column = tbl.column($(this).val());
+        // Toggle the visibility
+        if ($(this).prop("checked"))
+          column.visible(true);
+        else {
+          column.visible(false);
+          $("#chkAll").prop("checked", false)
+        }
+      }
+
+    })
+
+    $(".custom-file-input").on("change", function () {
+      var fileName = $(this).val().split("\\").pop();
+      $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+    })
+  });
+
+  // function jsondate(date) {
+  //   if (date != null) {
+  //     var currentTime = new Date(date);
+  //     var month = ("0" + (currentTime.getMonth() + 1)).slice(-2);
+  //     var day = ("0" + currentTime.getDate()).slice(-2);
+  //     var year = currentTime.getFullYear();
+  //     var date1 = month + '/' + day + '/' + year;
+  //     return date1;
+  //   }
+  //   else {
+  //     return "";
+  //   }
+ // }
+</script>
+
+{{end}}

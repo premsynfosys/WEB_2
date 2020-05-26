@@ -1,0 +1,146 @@
+{{  define "ConsumablesBulkEdit"}}
+
+<form id="frm">
+    <div class="container ">
+        <div class="form-group text-warning">{{len .Data.SelectedIds}} items selected to update
+        </div>
+        <div class="form-group row" style="height: 200px; overflow-y: scroll;">
+            <table class="table table-bordered">
+                <thead>
+                    <th>Name</th>
+                </thead>
+                <tbody>
+
+                    {{ range $element :=  .Data.SelectedIds}}
+
+                    <tr>
+                        <td> {{$element}}</td>
+
+                    </tr>
+                    {{end}}
+                </tbody>
+            </table>
+
+        </div>
+        <div class="row">
+            <label for="GroupID" class="col-sm-3  col-form-label">Group Name:</label>
+            <div class="col-sm-9 ">
+                <div class="input-group">
+                    <select name="GroupID" required id="GroupID" class="form-control">
+                        <option value="">--select--</option>
+                        {{range .Data.ConsumableGroup}}
+                        <option value="{{.IDconsumablegroups}}">{{.ConsumableGroupName}}</option>
+                        {{end}}
+                    </select>                  
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="Description" class="col-sm-3 col-form-label ">Description:</label>
+            <div class="col-sm-9">
+                <textarea name="Description" placeholder="Decription" title="Description" class="form-control "
+                    id="Description"></textarea>
+            </div>
+        </div>
+
+        <div class="row">
+            <label class="col-sm-3 col-form-label">Threshold Quantity:</label>
+            <div class="col-sm-3 ">
+                <div class="input-group">
+                    <input type="number" required  id="ThresholdQnty"
+                        title="Minimum quantity to get alert" min="1" name="ThresholdQnty" class="form-control">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-sm-3 col-form-label">ReOrder Stock Price:</label>
+            <div class="col-sm-3 ">
+                <div class="input-group">
+                    ₹<input type="number" required id="ReOrderStockPrice" min="1" name="ReOrderStockPrice"
+                        class="form-control">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-sm-3 col-form-label">Reorder Stock Quantity:</label>
+            <div class="col-sm-3 ">
+                <div class="input-group">
+                    <input type="number" required id="ReOrderQuantity" min="1" name="ReOrderQuantity"
+                        class="form-control">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <label for="LocationID" class="col-sm-3 col-form-label ">Location:</label>
+            <div class="col-sm-9 ">
+                <div class="input-group">
+                    <select name="LocationID" id="LocationID" class="form-control">
+                        <option value="">--select--</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group row justify-content-center">
+            <button id="btn1" class="btn btn-primary btn-sm">UPDATE</button>
+        </div>
+    </div>
+
+
+</form>
+
+
+
+
+<script>
+    $(document).ready(function () {
+        var data = getdata('/GetLocations')
+        loadLocations(data)
+
+
+        $("#btn1").click(function (e) {
+            var obj = new Object()
+            obj['Description'] = $("#Description").val()
+          //  obj['GroupID'] = $("#GroupID").val()
+           // obj['SubGroupID'] = $("#SubGroupID").val()
+            obj['ThresholdQnty'] = $("#ThresholdQnty").val()
+            obj['ReOrderStockPrice'] = $("#ReOrderStockPrice").val()
+            obj['ReOrderQuantity'] = $("#ReOrderQuantity").val()
+            obj['LocationID'] = $("#LocationID").val()
+            var ids = ""
+            "{{range $id, $element := .Data.SelectedIds}}"
+            ids += "{{$id}},"
+            "{{end}}"
+
+            obj['IDS'] = ids
+           
+            $.ajax({
+                url: "/Consumables/ConsumableBulkEdit",
+                type: 'POST',
+                data: { data: JSON.stringify(obj) },
+                dataType: 'json',
+                async: false,
+                success: function (data) {
+
+
+                }
+            });
+        });
+
+
+    })
+
+
+
+    function loadLocations(data) {
+        $("#LocationID").empty().append('<option selected="selected" value="0">--select--</option>');
+        $.each(data, function (i, el) {
+            $("#LocationID").append($("<option />", { text: el.Name + "\n" + el.Address1 + "\n" + el.Address2 + "\n" + el.Countryname + "\n" + el.Statename + "\n" + el.Zipcode, value: el.IDLocations }));
+        });
+    }
+
+
+</script>
+
+{{end}}

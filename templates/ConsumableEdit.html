@@ -1,0 +1,258 @@
+{{  define "ConsumableEdit"}}
+{{template "head" .}}
+<div class="page-header">
+    <div class="row align-items-end">
+        <div class="col-lg-8 col-md-8 col-sm-8  col-xs-8">
+            <div class="page-header-title">
+                <div class="d-inline">
+                    <h5>Update Consumable</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+            <a class="add float-right  font-weight-bold btn btn-outline-primary btn-rounded" title="Craete Employee"
+                href="/Consumables/ConsumableList"><i class="ik ik-list "></i><span>List</span></a>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-10 col-md-10">
+        <form method="POST" id="frm_Consumable" action="/Consumables/ConsumableEdit/{{.Data.IDConsumables}}"
+            enctype="multipart/form-data">
+            <div class="card">
+                <div class="card-body ">
+                    <div class="form-group row">
+                        <label for="Name" class="col-sm-3 col-form-label">Asset Name:</label>
+                        <div class="col-sm-9">
+                            <!-- <input type="text" name="ConsumableName"  required
+                                class="form-control " id="ConsumableName" placeholder="Consumable Name"> -->
+                            <select class=" selectpicker" data-live-search="true" name="IDconsumableMaster"
+                                data-size="5" id="ConsumableNames" tabindex="-98">
+                            </select>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="AssetGroup" class="col-sm-3  col-form-label">Group Name:</label>
+                        <div class="col-sm-9 ">
+                            <div class="input-group">
+                                <select disabled="true" name="GroupID" required id="GroupID" class="form-control">
+                                    <option value="">--select--</option>
+                                    {{range .Data.Consumablemaster.ConsumableGroups}}
+                                    <option selected value="{{.IDconsumablegroups}}">{{.ConsumableGroupName}}</option>
+                                    {{end}}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="row">
+                        <label for="AssetSubGroup" class="col-sm-3  col-form-label">Sub Group Name:</label>
+                        <div class="col-sm-9 ">
+                            <div class="input-group">
+                                <select name="SubGroupID" required id="SubGroupID" class="form-control">
+                                    <option value="">--select--</option>
+                                </select>
+                                <span class="input-group-append ">
+                                    <label class="input-group-text bg-info"><a href="#" data-toggle="modal"
+                                            data-target="#groupmodal" title="Create Group">Create</a></label>
+                                </span>
+                            </div>
+                        </div>
+                    </div> -->
+                    <div class="form-group row">
+                        <label for="IdentificationNo" class="col-sm-3 col-form-label ">Identification
+                            No:</label>
+                        <div class="col-sm-9 ">
+                            <input type="text" readonly value="{{.Data.IdentificationNo}}" name="IdentificationNo"
+                                class="form-control  mb-1" id="IdentificationNo" placeholder="Identification No">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="Description" class="col-sm-3 col-form-label ">Description:</label>
+                        <div class="col-sm-9">
+                            <textarea name="Description" maxlength="500" placeholder="Description" title="Description"
+                                class="form-control " id="Description">{{.Data.Description}}</textarea>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <label class="col-sm-3 col-form-label">Threshold Quantity:</label>
+                        <div class="col-sm-3 ">
+                            <div class="input-group">
+                                <input type="number" required value="{{.Data.ThresholdQnty}}" id="ThresholdQnty"
+                                    title="Minimum quantity to get alert" min="1" name="ThresholdQnty"
+                                    class="form-control">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <label class="col-sm-3 col-form-label">Rerder Stock Price:</label>
+                        <div class="col-sm-3 ">
+                            <div class="input-group">
+                                 <input type="number" value="{{.Data.ReOrderStockPrice}}" required id="ReOrderStockPrice"
+                                    min="1" name="ReOrderStockPrice" class="form-control">
+                                    <span class="input-group-append">
+                                        <label class="input-group-text">₹</label>
+                                    </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-3 col-form-label">Reorder Stock Quantity:</label>
+                        <div class="col-sm-3 ">
+                            <div class="input-group">
+                                <input type="number" value="{{.Data.ReOrderQuantity}}" required id="ReOrderQuantity"
+                                    min="1" name="ReOrderQuantity" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="LocationID" class="col-sm-3 col-form-label ">Location:</label>
+                        <div class="col-sm-9 ">
+                            <div class="input-group">
+                                <select name="LocationID" id="LocationID" class="form-control">
+                                    <option value="">--select--</option>
+                                </select>
+                                {{if .Auth.Accesstoalllocations}}
+                                <span class="input-group-append ">
+                                    <label class="input-group-text bg-info"> <a href="#" id="btnlocation"
+                                            data-toggle="modal" data-target="#locationmodal"
+                                            title="Add Location">Add</a></label>
+                                </span>
+                                {{end}}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="Img" class="col-sm-3 col-form-label ">Upload Image:</label>
+                        <div class="col-sm-6">
+                            <input type="file" id="Img" name="Img" accept="image/x-png,image/gif,image/jpeg"
+                                class="file-upload-default">
+                            <div class="input-group col-xs-12">
+                                <input type="text" class="form-control file-upload-info" disabled=""
+                                    placeholder="Upload Image">
+                                <span class="input-group-append">
+                                    <button class="file-upload-browse btn btn-info" type="button">Upload</button>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-sm-3 ">
+                            <input type="hidden" name="Img1" value="{{.Data.Img}}">
+                            <img height="70px" id="viewimg" width="70px"
+                                src="/AppFiles/Images/consumables/{{.Data.Img}}">
+                        </div>
+                    </div>
+
+
+                    <hr />
+                    <h6>Custom Fields</h6>
+                    <div class=" row w-70 " id="custm">
+                    </div>
+                    <div class="form-group row justify-content-center">
+                        <input type="submit" class="btn btn-primary btn-sm" value="Update Consumables" />
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+</div>
+
+
+
+<!-- location Modal -->
+<div class="modal fade bd-example-modal-lg" id="locationmodal" tabindex="-1" role="dialog"
+    aria-labelledby="locationmodalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog modal-lg modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="locationmodalTitle">Add Location</h5>
+                <button type="button" id="closeLoatonmodal" class="close" data-dismiss="modal"
+                    data-target="#locationmodal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body " id="divLocation">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        // const url = "/GenerateUniqueID/consumable"
+        // var id = getdata(url)
+        // $("#IdentificationNo").val(id)
+        var data = getdata('/GetLocations')
+        loadLocations(data)
+        data = getdata('/GetVendors')
+        loadVendors(data)
+        $("#custm").load("/Customfields")
+        var data = getdata('/Consumables/GetConsumableMasterList')
+        loadConsumableNames(data)
+        function loadLocations(data) {
+            $("#LocationID").empty().append('<option selected="selected" value="0">--select--</option>');
+            $.each(data, function (i, el) {
+                $("#LocationID").append($("<option />", { text: el.Name + "\n" + el.Address1 + "\n" + el.Address2 + "\n" + el.Countryname + "\n" + el.Statename + "\n" + el.Zipcode, value: el.IDLocations }));
+            });
+        }
+        function loadVendors(data) {
+            $("#Vendor").empty().append('<option selected="selected" value="0">--select--</option>');
+            $.each(data, function (i, el) {
+                $("#VendorID").append($("<option />", { text: el.Name + "\n" + el.Address + "\n" + el.Email + "\n" + el.ContactPersonName + "\n" + el.Phone + "\n", value: el.Idvendors }));
+            });
+        }
+        function loadConsumableNames(data) {
+            $("#ConsumableNames").empty().append('<option selected="selected" value="0">--select--</option>');
+            $.each(data, function (i, el) {
+                $("#ConsumableNames").append($("<option />", { text: el.ConsumableName + "\n" + el.Description + "\n", value: el.IDconsumableMaster, 'data-groupid': el.GroupID }));
+            });
+        }
+
+        $("#ConsumableNames").change(function () {
+            var id = $('#ConsumableNames option:selected').attr('data-groupid')
+            $("#GroupID").val(id)
+        })
+        //   $("#GroupID").val("")
+        $("#LocationID").val("{{.Data.LocationID}}")
+        $("#ConsumableNames").val("{{.Data.Consumablemaster.IDconsumableMaster}}")
+        //  $("#GroupID").val("{{.Data.Consumablemaster.GroupID}}")
+
+        // $("#LocationID").val("{{.Data.LocationID}}")
+    });
+
+
+    $(document).ready(function () {
+        $("#Img").on("change", function () {
+            var input = document.getElementById("Img")
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#viewimg').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        })
+        $("#btnlocation").click(function () {
+            $("#locationmodalTitle").html("Add Location")
+            $("#divLocation").load("/Location", null, function () {
+            });
+        })
+        $("#btnVendor").click(function () {
+
+            $("#locationmodalTitle").html("Add Vendor")
+            $("#divLocation").load("/Vendors", null, function () {
+            });
+
+
+        })
+    });
+
+</script>
+{{template "footer"}}
+{{end}}

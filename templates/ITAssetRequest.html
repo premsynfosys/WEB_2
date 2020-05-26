@@ -1,0 +1,196 @@
+{{define "ITAssetRequest" }}
+{{template "head" .}}
+<div class="page-header">
+  <div class="row align-items-end">
+    <div class="col-lg-8">
+      <div class="page-header-title">
+        <div class="d-inline">
+          <h5>Request ITAssets</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<form id="frm_ReqITAsset">
+  <input type="hidden" id="EmpID" value="{{.User.IDEmployees}}">
+  <input type="hidden" id="Grade" value="{{.Data.Grade}}">
+  <input type="hidden" id="RoleID" value="{{.Data.RoleID}}">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-body">
+
+          <div class="form-group row ">
+            <label for="AssetType" class="col-md-3 col-form-label ">ITAsset Type:</label>
+            <div class="col-md-9">
+              <select name="AssetType" id="AssetType" class="custom-select  float-left">
+                <option value="0">--select--</option>
+                {{ range .Data.ITAssetGroups}}
+                <option value="{{.ITAssetgroupName}}"> {{.ITAssetgroupName}}</option>
+                {{end}}
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="Description" class="col-md-3 col-form-label ">Description:</label>
+            <div class="col-md-9">
+              <textarea id="Description" name="Description" placeholder="Description" title="Decription"
+                class="form-control " id="Description"></textarea>
+            </div>
+          </div>
+
+          <div class="form-group row justify-content-center">
+            <input id="Add" type="button" class="btn btn-warning btn-sm" value="Add" />
+          </div>
+          <hr />
+          <div class="form-group row ">
+            <h5 class="">Records</h5>
+          </div>
+          <div class="dt-responsive">
+            <table id="tblRecords" class="table table-bordered ">
+              <thead>
+                <th>Asset Type</th>
+                <th>Description</th>
+                <th>Delete</th>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
+          </div>
+
+          <fieldset class="form-group">
+            <div class="row">
+              <legend class="col-form-label  col-md-3">Priority:</legend>
+              <div class="col-md-9 ">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input   " type="radio" name="Priority" id="PriorityHigh" value="High">
+                  <label class="form-check-label  " for="PriorityHigh">
+                    High
+                  </label>
+                </div>
+                <div class="form-check form-check-inline ">
+                  <input class="form-check-input  " type="radio" name="Priority" id="PriorityMedium" value="Medium">
+                  <label class="form-check-label  " for="PriorityMedium">
+                    Medium
+                  </label>
+                </div>
+                <div class="form-check form-check-inline ">
+                  <input class="form-check-input  " type="radio" name="Priority" id="PriorityLow" value="Low">
+                  <label class="form-check-label  " for="PriorityLow">
+                    Low
+                  </label>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+          <div class="form-group row ">
+            <label for="Approver" class="col-md-3 col-form-label ">Approver:</label>
+            <div class="col-md-9">
+              <select name="Approver" id="Approver" class="form-control ">
+                <option value="0">--select--</option>
+                {{ range .Data.UsersEmployees}}
+                <option value="{{.EmployeeID}}"> {{.Employee.FirstName}}</option>
+                {{end}}
+              </select>
+            </div>
+          </div>
+          <div class="form-group row justify-content-center">
+            <input type="button" id="AssetReq" class="btn btn-warning btn-sm" value="Request" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+
+
+
+<script>
+  $(document).ready(function () {
+
+    $("input[name='Priority'][value='Low']").prop("checked", true)
+    $("#Add").click(function () {
+      if ($("#tblRecords tbody tr").length == 3) {
+        alert('max 3 Assets can Request')
+        return;
+      }
+      if ($("#AssetType").val() == "0") {
+        alert('Please select Asset Type')
+        $("#AssetType").focus();
+        return;
+      }
+      var html = ' <tr><td>' + $("#AssetType").val() + '</td>'
+      html += '<td>' + $("#Description").val() + '</td>'
+
+      html += '<td><a href="javascript:void(0)" class="DeleteReqAsset" ><i class="fa fa-trash text-danger" aria-hidden="true"></a></i></td></tr>'
+      $("#tblRecords tbody").append(html);
+      $("#AssetType").val(0)
+      $("#Description").val("")
+    })
+
+    $("#tblRecords").on("click", ".DeleteReqAsset", function () {
+      $(this).parents('tr').remove();
+    })
+
+
+    $("#AssetReq").on("click", function (e) {
+
+      if ($("#Approver").val() == "0") {
+        Toast('warning', "Please select Approver")
+
+        $("#Approver").focus()
+        return false
+      }
+      var RecArry = new Array();
+
+      $("#tblRecords tbody tr").each(function (i, el) {
+        var rec = new Object();
+        var apprvl=new Object()
+        rec.RequestedBy = parseInt($("#EmpID").val());
+        rec.CreatedBy = parseInt($("#EmpID").val());
+        apprvl.ApproverID = parseInt($("#Approver").val());
+        apprvl.RoleID = parseInt($("#RoleID").val());
+        apprvl.Grade = parseInt($("#Grade").val());
+        rec.AssetType = this.cells[0].innerHTML
+        rec.Description = this.cells[1].innerHTML
+        rec.Priority = $("input[name='Priority']:checked").val()
+        rec.ITAssetRequestApproval=apprvl
+        RecArry.push(rec)
+      })
+      if (RecArry.length == 0) {
+        Toast("warning", 'Please select atleast one asset')
+
+        return false
+      }
+
+      $.ajax({
+        url: "/ITAssets/PostITAssetRequest",
+        type: 'POST',
+        data: JSON.stringify(RecArry),
+        dataType: 'json',
+        success: function (data) {
+          var msg = $("#EmpID").val() + " requested " + RecArry.length + " - Asset(s)"
+          WsToast(msg, "Admin", $("#Approver").val())
+          window.location = "http://" + document.location.host + "/ITAssets";
+        },
+        error: function (data) {
+          alert('Internal Error')
+        },
+        complete: function (data) {
+        }
+      });
+    })
+
+  })
+
+</script>
+
+
+
+{{template "footer"}}
+{{end}}

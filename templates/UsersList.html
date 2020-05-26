@@ -1,0 +1,486 @@
+{{  define "UsersList"}}
+{{template "head" .}}
+
+<div class="page-header">
+  <div class="row align-items-end">
+    <div class="col-lg-8">
+      <div class="page-header-title">
+        <!-- <i class="ik ik-layers bg-blue"></i> -->
+        <div class="d-inline">
+          <h5>Users Details</h5>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 ">
+      <div class=" dropdown float-right  dropleft">
+        <a class="float-right  font-weight-bold btn btn-outline-primary btn-rounded ml-1" title="List of History"
+          href="/UsersHistory"><i class="ik ik-list  "></i><span>History</span></a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-block">
+        <div class="dt-responsive ">
+          <table id="tblUsers" class="table table-bordered table-striped table-hover nowrap ">
+            <thead>
+              <th>ID</th>
+              <th><input type="checkbox" id="chkSelectAll"></th>
+              <th>User Name</th>
+              <th>Name</th>
+              <th>Role</th>
+              <th>Email</th>
+              <th>Mobile</th>
+              <th>Experience</th>
+              <th>Designation</th>
+              <th>Date Of Joining</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </thead>
+
+          </table>
+        </div>
+      </div>
+    </div>
+    <div id="tblbtn" class="btn-group dropright float-left ">
+      <button type="button" class="btn btn-info dropdown-toggle btn-sm " data-toggle="dropdown" aria-haspopup="true"
+        aria-expanded="false">
+        Export </button>
+      <div id="tblbtnList" class="dropdown-menu">
+      </div>
+    </div>
+    <div id="tblbtnResend" class="btn-group float-left ml-1">
+      <button type="button" id="btnResend" title="Resend Activation Link" class="btn btn-info btn-sm ">ReSend Link
+      </button>
+    </div>
+    <button type="button" id="btnRefresh" title="Refresh" class="btn btn-info btn-sm  float-left  ml-1 "><i
+        class="ik ik-refresh-ccw"></i>
+    </button>
+    <div id="tblClmnbtn" class="btn-group dropright float-left mr-1 ">
+      <button type="button" class="btn btn-info dropdown-toggle btn-sm " data-toggle="dropdown" aria-haspopup="true"
+        aria-expanded="false">
+        Fields </button>
+      <div id="tblClmnbtnList" class="dropdown-menu">
+        <div class="form-check form-check-inline dropdown-item">
+          <input class="form-check-input chkClmn" type="checkbox" checked id="chkAll">
+          <label class="form-check-label " for="chkAll">Select All</label></div>
+        <div class="dropdown-divider"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+
+  $(document).ready(function () {
+    var url;
+    if ("{{.Auth.Accesstoalllocations}}") {
+      url = '/GetUsersList'
+    } else {
+      url = '/GetUsersList?LocID=' + $("#locationid").val()
+    }
+    var tbl = $('#tblUsers').DataTable({
+      responsive: true,
+      "processing": true,
+      scrollCollapse: true,
+      scrollX: true,
+      destroy: true,
+      dom: 'Bfrtip',
+      ajax: {
+        "url": url,
+        "type": "GET",
+        "datatype": "json",
+        "dataSrc": ""//to read data from a plain array rather than an array in an object:
+      },
+      columnDefs: [
+        { orderable: false, targets: 1 },
+        { visible: false, targets: 0 }
+      ],
+      "order": [
+        [0, 'desc']
+      ],
+      // destroy: true,//to over come reintilize prblms
+      "columns": [
+        {
+          "name": "IDUsers",
+          'data': 'IDUsers'
+        },
+        {
+          "name": "Select",
+          'data': null,
+          render: function (dt) {
+            return '<input type="checkbox" class="tblchk"  data-name=' + dt.Employee.FirstName + ' value=' + dt.IDUsers + '>';
+          }
+        }, {
+          "name": "UserName",
+          'data': "UserName",
+        }, {
+          "name": "Name",
+          'data': null,
+          render: function (dt) {
+            return '<a  class="btn btn-sm  font-weight-bold text-info" href="/employee/' + dt.Employee.IDEmployees + '/mode/view">' + dt.Employee.FirstName + ' ' + dt.Employee.LastName + '</a> ';
+          }
+        }, {
+          "name": "Role",
+          'data': 'Role.RoleName'
+        },
+        {
+          "name": "Email",
+          'data': "Employee.Email"
+          // render: function (dt) {
+          //   if (dt.UserName == "" && dt.   != null) {
+          //     var tdy = new Date();
+          //     var data = new Date(dt.LinkGeneratedOn);
+          //     var diff = (tdy.getTime() - data.getTime()) / 1000;
+          //     var Diff_hours = diff /= (60 * 60)
+          //     if (Diff_hours > 10) {
+          //       return dt.Employee.Email + "</br>(<text class='text text-warning'>Link Expired</text>)<a data-value='" + dt.Employee.IDEmployees + "' class='ResendLink btn btn-link'>ReSend</a>";
+          //     } else {
+          //       return dt.Employee.Email + "</br>(<text class='text text-danger'>Activation pending</text>)";
+          //     }
+
+          //   } else {
+          //     return dt.Employee.Email;
+          //   }
+          // }
+        }, {
+          "name": "Mobile",
+          "data": "Employee.Mobile"
+        }, {
+          "name": "Experience",
+          "data": "Employee",
+          render: function (dt) {
+            var res;
+            if (dt.ExperienceYear == 0) {
+              res = dt.ExperienceMonth + ' mnt(s)'
+            } else {
+              if (dt.ExperienceMonth == 0)
+                res = dt.ExperienceYear + ' yr(s)'
+              else
+                res = dt.ExperienceYear + ' yr(s)  ' + dt.ExperienceMonth + ' mnt(s)'
+            }
+            return res
+          }
+        }, {
+          "name": "Designation",
+          'data': 'Designation',
+          render: function (dt) {
+            return dt.DesignationName
+          }
+
+        }, {
+          "name": "Date Of Joining",
+          'data': 'Employee.DOJ',
+          render: function (dt) {
+            return jsondate(dt);
+          }
+        }, {
+          "name": "Status",
+          "data": null,
+          render: function (dt) {
+            if (dt.Status == "Activation pending") {
+              return "<text class='text text-danger'>Activation pending</text>";
+            }
+            else {
+              return dt.Status
+            }
+          }
+        }, {
+          "name": "Action",
+          'data': null,
+          render: function (dt) {
+            var res = "<button disabled title='Activate User' data-value='" + dt.IDUsers + "' class='ActivateUser btn btn-link text-dark '><i class='ik ik-user-check btn-xs '></i></button>";
+            res += "<button disabled title='InActivate User' data-value='" + dt.IDUsers + "' class='InActivateUser btn btn-link text-dark'><i class='ik ik-user-x btn-xs'></i></button>"
+            res += "<button disabled  title='Send Reset password link' data-value='" + dt.Employee.IDEmployees + "' class='ResetPassword btn btn-link text-dark btn-xs'><i class='ik ik-link'></i></button>"
+            res += "<button disabled title='ReSend Activation Link' data-value='" + dt.Employee.IDEmployees + "' class='ResendLink btn btn-link btn-xs '>"
+            res += ' <img  src="/AppFiles/Images/LOGO/mailforward.png" width="15px" height="15px" > </button>'
+            res += "<button  title=Delete User' data-value='" + dt.IDUsers + "' class=' btn btn-link text-danger '><i class='ik ik-trash btn-xs '></i></button>";
+
+            // if (dt.UserName == "") {
+            //   res = "<a title='ReSend Activation Link' data-value='" + dt.Employee.IDEmployees + "' class='ResendLink btn btn-link '>"
+            //   res += ' <img  src="/AppFiles/Images/LOGO/mailforward.png" width="15px" height="15px" > </a>'
+
+            // } else {
+            //   if (dt.Status == "InActive") {
+            //     if ("{{.Auth.ActiveInActive}}") {
+            //       res = "<a title=Activate User' data-value='" + dt.IDUsers + "' class='ActivateUser btn btn-link text-warning'><i class='ik ik-user-check'></i></a>";
+            //     }
+            //   } else {
+            //     if ("{{.Auth.ActiveInActive}}") {
+            //       res = "<a title='InActivate User' data-value='" + dt.IDUsers + "' class='InActivateUser btn btn-link text-warning'><i class='ik ik-user-x'></i></a>"
+            //     } if ("{{.Auth.PasswordReset}}") {
+            //       res += "<a title='Send Reset password link' data-value='" + dt.Employee.IDEmployees + "' class='ResetPassword btn btn-link text-warning'><i class='ik ik-link'></i></a>"
+            //     }
+            //   }
+            // }
+
+
+            if (dt.UserName == "") {
+              var res = "<button disabled title='Activate User' data-value='" + dt.IDUsers + "' class='ActivateUser btn btn-link text-dark '><i class='ik ik-user-check btn-xs '></i></button>";
+              res += "<button disabled title='InActivate User' data-value='" + dt.IDUsers + "' class='InActivateUser btn btn-link text-dark'><i class='ik ik-user-x btn-xs'></i></button>"
+              res += "<button disabled  title='Send Reset password link' data-value='" + dt.Employee.IDEmployees + "' class='ResetPassword btn btn-link text-dark btn-xs'><i class='ik ik-link'></i></button>"
+              res += "<button  title='ReSend Activation Link' data-value='" + dt.Employee.IDEmployees + "' class='ResendLink btn btn-link btn-xs '>"
+              res += ' <img  src="/AppFiles/Images/LOGO/mailforward.png" width="15px" height="15px" > </button>'
+              res += "<button  title=Delete User' data-value='" + dt.Employee.IDEmployees + "' class='DeleteUser btn btn-link text-danger '><i class='ik ik-trash btn-xs '></i></button>";
+
+            } else {
+              if (dt.Status == "InActive") {
+                if ("{{.Auth.ActiveInActive}}") {
+                  var res = "<button  title='Activate User' data-value='" + dt.IDUsers + "' class='ActivateUser btn btn-link text-success '><i class='ik ik-user-check btn-xs '></i></button>";
+                  res += "<button disabled title='InActivate User' data-value='" + dt.IDUsers + "' class='InActivateUser btn btn-link text-dark'><i class='ik ik-user-x btn-xs'></i></button>"
+                  res += "<button disabled  title='Send Reset password link' data-value='" + dt.Employee.IDEmployees + "' class='ResetPassword btn btn-link text-dark btn-xs'><i class='ik ik-link'></i></button>"
+                  res += "<button disabled title='ReSend Activation Link' data-value='" + dt.Employee.IDEmployees + "' class='ResendLink btn btn-link btn-xs '>"
+                  res += ' <img  src="/AppFiles/Images/LOGO/mailforward.png" width="15px" height="15px" > </button>'
+                  res += "<button  title=Delete User' data-value='" + dt.Employee.IDEmployees + "' class='DeleteUser btn btn-link text-danger '><i class='ik ik-trash btn-xs '></i></button>";
+
+                }
+              } else {
+                if ("{{.Auth.ActiveInActive}}") {
+                  var res = "<button disabled title='Activate User' data-value='" + dt.IDUsers + "' class='ActivateUser btn btn-link text-dark '><i class='ik ik-user-check btn-xs '></i></button>";
+                  res += "<button  title='InActivate User' data-value='" + dt.IDUsers + "' class='InActivateUser btn btn-link text-warning'><i class='ik ik-user-x btn-xs'></i></button>"
+                  if ("{{.Auth.PasswordReset}}") {
+                    res += "<button   title='Send Reset password link' data-value='" + dt.Employee.IDEmployees + "' class='ResetPassword btn btn-link text-info btn-xs'><i class='ik ik-link'></i></button>"
+                  } else {
+                    res += "<button disabled  title='Send Reset password link' data-value='" + dt.Employee.IDEmployees + "' class='ResetPassword btn btn-link text-dark btn-xs'><i class='ik ik-link'></i></button>"
+
+                  } res += "<button disabled title='ReSend Activation Link' data-value='" + dt.Employee.IDEmployees + "' class='ResendLink btn btn-link btn-xs '>"
+                  res += ' <img  src="/AppFiles/Images/LOGO/mailforward.png" width="15px" height="15px" > </button>'
+                  res += "<button  title=Delete User' data-value='" + dt.Employee.IDEmployees + "' class='DeleteUser btn btn-link text-danger '><i class='ik ik-trash btn-xs '></i></button>";
+
+                } else if ("{{.Auth.PasswordReset}}") {
+                  var res = "<button disabled title='Activate User' data-value='" + dt.IDUsers + "' class='ActivateUser btn btn-link text-dark '><i class='ik ik-user-check btn-xs '></i></button>";
+                  if ("{{.Auth.ActiveInActive}}") {
+                    res += "<button  title='InActivate User' data-value='" + dt.IDUsers + "' class='InActivateUser btn btn-link text-warning'><i class='ik ik-user-x btn-xs'></i></button>"
+                  } else {
+                    res += "<button disabled title='InActivate User' data-value='" + dt.IDUsers + "' class='InActivateUser btn btn-link text-dark'><i class='ik ik-user-x btn-xs'></i></button>"
+                  }
+                  res += "<button   title='Send Reset password link' data-value='" + dt.Employee.IDEmployees + "' class='ResetPassword btn btn-link text-info btn-xs'><i class='ik ik-link'></i></button>"
+                  res += "<button disabled title='ReSend Activation Link' data-value='" + dt.Employee.IDEmployees + "' class='ResendLink btn btn-link btn-xs '>"
+                  res += ' <img  src="/AppFiles/Images/LOGO/mailforward.png" width="15px" height="15px" > </button>'
+                  res += "<button  title=Delete User' data-value='" + dt.Employee.IDEmployees + "' class='DeleteUser btn btn-link text-danger '><i class='ik ik-trash btn-xs '></i></button>";
+
+                }
+              }
+            }
+
+            return res
+          }
+        }
+      ], "initComplete": function (settings, json) {
+        if (!"{{.Auth.DeleteEmployee}}") {
+        
+          $('#tblUsers .DeleteUser').attr("disabled", true)
+        }
+
+      },
+      buttons: [
+        {
+          text: 'PDF',
+          extend: "pdf",
+          title: "User Details",
+          className: ' dropdown-item',
+          exportOptions: {
+            columns: ':visible'
+            //columns: ':not(.notexport)'
+          }
+        },
+        {
+          text: 'Print',
+          extend: "print",
+          title: "User Details",
+          className: ' dropdown-item',
+          exportOptions: {
+            columns: ':visible'
+            // columns: ':not(.notexport)'
+          }
+        },
+        {
+          text: 'Excel',
+          extend: "excel",
+          className: ' dropdown-item',
+          title: "User Details",
+          exportOptions: {
+            columns: ':visible'
+            // columns: ':not(.notexport)'
+          }
+        }
+      ]
+    });
+
+    $("#tblClmnbtn").appendTo('#tblUsers_filter')
+    $("#tblbtn").appendTo('#tblUsers_filter')
+    $("#tblbtnResend").appendTo('#tblUsers_filter')
+    $("#btnRefresh").appendTo('#tblUsers_filter')
+
+    tbl.buttons().containers().prependTo('#tblbtnList')
+
+    $('.dt-button').removeClass('dt-button').addClass(' btn btn-light btn-sm ');
+    $(".buttons-colvis").removeClass('btn-light').addClass('btn-info float-left ml-1').appendTo('#tblUsers_filter')
+
+    var idx = 0;
+    tbl.columns().every(function () {
+      if (idx != 0 && idx != 1) {
+        var html = '<div class="form-check form-check-inline dropdown-item">'
+        html += '<input class="form-check-input chkClmn" type="checkbox" checked id="chk' + idx + '" value="' + idx + '">'
+        html += '<label class="form-check-label " for="chk' + idx + '">' + this.header().innerHTML + '</label></div>'
+        $("#tblClmnbtnList").append(html)
+      }
+      idx++;
+
+    });
+
+    $("input.chkClmn").click(function (e) {
+      // Get the column API object
+      if ($(this).attr('id') == "chkAll") {
+        if ($(this).prop("checked")) {
+          for (var i = 1; i < tbl.init().columns.length; i++) {
+            tbl.column(i).visible(true, true)
+          }
+          $("input.chkClmn").prop("checked", true)
+          tbl.columns.adjust().draw();
+        }
+      }
+      else {
+        var column = tbl.column($(this).val());
+        // Toggle the visibility
+        if ($(this).prop("checked"))
+          column.visible(true);
+        else {
+          column.visible(false);
+          $("#chkAll").prop("checked", false)
+        }
+      }
+    })
+    $("#chkSelectAll").click(function () {
+      if ($("#chkSelectAll").prop('checked'))
+        $(".tblchk").prop('checked', true);
+      else
+        $(".tblchk").prop('checked', false);
+    })
+    $('#tblUsers').on("click", ".ResetPassword", function () {
+      var url = "/Send_ResetPasswordLink/" + $(this).attr('data-value');
+      $.ajax({
+        url: url,
+        dataType: 'json',
+        async: false,
+        success: function (data) {
+          Toast("success", "Password reset link sent successfully")
+
+        }, error: function () {
+          alert('Internal error')
+        }
+      });
+    });
+
+    $('#tblUsers').on("click", ".ResendLink", function () {
+      fncResendLink(false, $(this).attr('data-value'))
+    });
+    $('#tblUsers').on("click", ".InActivateUser", function () {
+      var url = "/User_Inactive/" + $(this).attr('data-value');
+      $.ajax({
+        url: url,
+        dataType: 'json',
+        async: false,
+        success: function (data) {
+          tbl.ajax.reload()
+          Toast("success", "User InActivated.")
+        }, error: function () {
+          alert('Internal error')
+        }
+      });
+    });
+    $('#tblUsers').on("click", ".ActivateUser", function () {
+      var url = "/User_Active/" + $(this).attr('data-value');
+      $.ajax({
+        url: url,
+        dataType: 'json',
+        async: false,
+        success: function (data) {
+          tbl.ajax.reload()
+          Toast("success", "User Activated")
+        }, error: function () {
+          alert('Internal error')
+        }
+      });
+    });
+
+    $('#tblUsers').on("click", ".DeleteUser", function () {
+      if (confirm('Are you sure want to delete?')) {
+        var url = "/employeeDelete/" + $(this).attr('data-value');
+        $.ajax({
+          url: url,
+          dataType: 'json',
+          async: false,
+          success: function (data) {
+            tbl.ajax.reload()
+            Toast("success", "Employee deleted successfully.")
+          }, error: function () {
+            tbl.ajax.reload()
+            Toast("success", "Employee deleted successfully.")
+          }
+        });
+      }
+    });
+
+
+    $("#btnRefresh").click(function () {
+      tbl.search("").draw();
+      for (var i = 1; i < tbl.init().columns.length; i++) {
+        tbl.column(i).visible(true, true)
+      }
+      $("input.chkClmn").prop("checked", true)
+      tbl.columns.adjust().draw();
+      // tbl.ajax.reload()
+    })
+    $("#btnResend").click(function () {
+      if ($(".tblchk:checked").length > 0) {
+        var isStatus = false
+        $(".tblchk:checked").each(function () {
+          if (tbl.row($(this).parents('tr')).data().Status == "Activation Pending") {
+            var btn = $(this).parents('tr').find('.ResendLink')
+            fncResendLink(true, btn.attr('data-value'))
+            isStatus = true
+          }
+        })
+        if (isStatus) {
+          alert('Activation link Resent to all Activation pending users.')
+          $(".tblchk").prop('checked', false)
+        } else {
+          alert('Please select atleast one Activation pending users')
+          $(".tblchk").prop('checked', false)
+        }
+      } else {
+        alert('Please select the Users from list')
+      }
+    })
+
+
+
+    function fncResendLink(trgr, id) {
+     
+      var url = "/ResendActivationLink/" + id;
+      $.ajax({
+        url: url,
+        dataType: 'json',
+        async: false,
+        success: function (data) {
+          if (!trgr)
+            Toast("success", "Activation link sent successfully")
+          // alert('Activation link sent successfully')
+        }, error: function () {
+          alert('Internal error')
+        }
+      });
+
+    }
+
+  });
+
+</script>
+{{template "footer"}}
+{{end}}

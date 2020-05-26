@@ -1,0 +1,535 @@
+{{  define "ConsumableView"}}
+{{template "head" .}}
+<div class="page-header">
+    <div class="row align-items-end">
+        <div class="col-lg-8">
+            <div class="page-header-title">
+                <div class="d-inline">
+
+                    <h5>{{.Data.Consumablemaster.ConsumableName}} - Consumable</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="btn-group dropleft float-right">
+                <a class="font-weight-bold btn btn-outline-primary btn-rounded dropdown-toggle" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false" href="javascript:void(0)"><span>Actions</span></a>
+                <div class="dropdown-menu">
+                    {{if .Auth.EditConsumable }}
+                    <a class="dropdown-item" href="/Consumables/ConsumableEdit/{{.Data.IDConsumables}}">
+                        <i class="ik ik-edit" aria-hidden="true"></i>Edit</span>
+                    </a>
+                    {{end}}
+                    <!-- <a class="dropdown-item" href="/Consumables/Consumables?mode=clone&&id={{.Data.IDConsumables}}">
+                        <i class="fa fa-clone" aria-hidden="true"></i><span> Clone</span>
+                    </a> -->
+                    {{if .Auth.DeleteConsumable }}
+                    <a class="dropdown-item" id="bulkdelete" href="#"> <i class="ik ik-trash " aria-hidden="true"></i>
+                        <span>Delete</span>
+                    </a>
+                    {{end}}
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body min-vh-100  ">
+        <ul class="nav nav-tabs nav-pills nav-justified " id="ConsumableTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link  active" href="#ConsumableDetails" role="tab" data-toggle="tab"
+                    aria-selected="true">Consumable
+                    Details</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#ConsumableHistory" role="tab" data-toggle="tab">History</a>
+            </li>
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="tab-content  ">
+            <div role="tabpanel" class="tab-pane fade show active  " id="ConsumableDetails">
+                <div class=" mt-2 row">
+                    <div class="col-md-5">
+                        <div class="form-group  row ">
+                            <div class="col text-info">Asset Name:</div>
+                            <div class="col">{{.Data.Consumablemaster.ConsumableName}} </div>
+                        </div>
+                        <div class="form-group  row ">
+                            <div class=" col text-info ">Group:</div>
+                            <div class=" col ">{{.Data.Consumablemaster.GroupName}} </div>
+                        </div>
+                        <div class="form-group  row ">
+                            <div class=" col text-info ">Total Quantity:</div>
+                            <div class=" col ">{{.Data.TotalQnty}} </div>
+                        </div>
+                        <div class="form-group  row ">
+                            <div class=" col text-info ">Threshold Quantity:</div>
+                            <div class=" col ">{{.Data.ThresholdQnty}} </div>
+                        </div>
+                        <div class="form-group  row ">
+                            <div class=" col text-info ">Reorder Stock Price:</div>
+                            <div class=" col "> ₹ {{.Data.ReOrderStockPrice}} </div>
+                        </div>
+                        <div class="form-group  row ">
+                            <div class=" col text-info ">Reorder Stock Quantity:</div>
+                            <div class=" col "> {{.Data.ReOrderQuantity}} </div>
+                        </div>
+                        <div class="form-group  row ">
+                            <div class=" col text-info ">Identification No:</div>
+                            <div class=" col ">{{.Data.IdentificationNo}} </div>
+                        </div>
+                        <hr />
+                        <div class="form-group row">
+                            <div class="col">Status:</div>
+                            <div class="col"> <span class="badge  badge-success">{{.Data.Status.StatusName}}</span>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-md-4  ">
+                        <img id="profile-img" class="img-thumbnail img-fluid mx-auto d-block" width="auto" height="auto"
+                            src="/AppFiles/Images/consumables/{{.Data.Img}}" alt="Not Found" />
+                    </div>
+                    <div class="col-md-3 btn-group  btn-group-vertical align-self-start    ">
+                        {{if .Auth.AddConsumableStock }}
+                        <button data-toggle="modal" data-target="#addstockmodal" class="btn btn-info m-1 ">Add
+                            Stock</button>
+                        {{end}}
+                        {{if .Auth.ConsumableConsume }}
+                        <button data-toggle="modal" data-target="#Removestockmodal" class="btn btn-info m-1 ">
+                            Consumed</button>
+                        {{end}}
+                        {{if .Auth.ConsumableRetire }}
+                        <button data-toggle="modal" data-target="#retiremodal" class="btn btn-info m-1 ">Retire
+                            Stock</button>
+                        {{end}}
+
+                        <!-- <button class="btn btn-info m-1 ">Transfer</button> -->
+
+
+                    </div>
+                </div>
+                <div class=" mt-2 row">
+
+                    <div class="col-md-6">
+                        <hr />
+                        <div class="form-group  row ">
+                            <div class="col text-info">Description:</div>
+                            <div class="col">{{.Data.Description}} </div>
+                        </div>
+
+                        <div class="form-group  row ">
+                            <div class=" col text-info ">depreciation:</div>
+                            <div class=" col ">--</div>
+                        </div>
+
+                        <div class="form-group  row ">
+                            <div class=" col text-info ">Location:</div>
+                            <div class=" col ">{{.Data.Location.Name}} <br />{{.Data.Location.Address1}}
+                                <br />{{.Data.Location.Zipcode }}</div>
+                        </div>
+
+
+                    </div>
+                    <div class="col-md-6">
+                        <hr />
+                        <div class="form-group  row ">
+                            {{if ne .Data.CustomFields1Type "" }}
+                            <div class="col text-info">{{.Data.CustomFields1}}:</div>
+                            <div class="col">{{.Data.CustomFields1Value}} </div>
+                            {{end}}
+                        </div>
+                        <div class="form-group  row ">
+                            {{if ne .Data.CustomFields2Type "" }}
+                            <div class="col text-info">{{.Data.CustomFields2}}:</div>
+                            <div class="col">{{.Data.CustomFields2Value}} </div>
+                            {{end}}
+                        </div>
+                        <div class="form-group  row ">
+                            {{if ne .Data.CustomFields3Type "" }}
+                            <div class="col text-info">{{.Data.CustomFields3}}:</div>
+                            <div class="col">{{.Data.CustomFields3Value}} </div>
+                            {{end}}
+                        </div>
+                        <div class="form-group  row ">
+                            {{if ne .Data.CustomFields4Type "" }}
+                            <div class="col text-info">{{.Data.CustomFields4}}:</div>
+                            <div class="col">{{.Data.CustomFields4Value}} </div>
+                            {{end}}
+                        </div>
+                        <div class="form-group  row ">
+                            {{if ne .Data.CustomFields5Type "" }}
+                            <div class="col text-info">{{.Data.CustomFields5}}:</div>
+                            <div class="col">{{.Data.CustomFields5Value}} </div>
+                            {{end}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="ConsumableHistory">
+                <div id="divConsumableHistory">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!--retire Modal -->
+<div class="modal fade" id="retiremodal" tabindex="-1" role="dialog" aria-labelledby="retiremodalTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="retiremodalTitle">Retire Asset</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="/Consumables/PostConsumableOprtnsRemovestock" id="frmRetire" method="POST">
+                    <input type="hidden" name="IDConsumables" value="{{.Data.IDConsumables}}">
+                    <input type="hidden" name="OrderedBy" value="{{.User.IDEmployees}}">
+                    <div class="form-group row">
+                        <label for="Reason" class="col-md-3 col-form-label ">Reason:</label>
+                        <div class="col-md-9">
+                            <select name="StatusID" id="StatusID" class="form-control float-left">
+                                {{range .Data.ListStatus}}
+                                <option value="{{.IDStatus}}">{{.StatusName}}</option>
+                                {{end}}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Retire Stock Quantity:</label>
+                        <div class="col-sm-9 ">
+                            <input type="number" required id="Quantity" title="Retire Stock Quantity" min="1"
+                                name="Quantity" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Price / Unit:</label>
+                        <div class="col-sm-6 ">
+                            <div class="input-group">
+                                <input type="number" required id="UnitPrice" title="Asset Price" min="0"
+                                    name="UnitPrice" class="form-control">
+                                <span class="input-group-append">
+                                    <label class="input-group-text">₹</label>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="Commnets" class="col-md-3 col-form-label">Comments:</label>
+                        <div class="col-md-9">
+                            <textarea name="Comments" maxlength="500" class="form-control form-control-sm"
+                                id="RetireComments" placeholder="Comments"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group row justify-content-center">
+                        <input type="submit" class="btn btn-primary btn-sm" value="Retire" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!--add stock Modal -->
+<div class="modal fade" id="addstockmodal" tabindex="-1" role="dialog" aria-labelledby="addstockmodalTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addstockmodalTitle">Add Stock</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="/Consumables/PostConsumableOprtnsAddStock" id="frmAddstock" method="POST">
+                    <input type="hidden" name="IDConsumables" value="{{.Data.IDConsumables}}">
+                    <input type="hidden" name="OrderedBy" value="{{.User.IDEmployees}}">
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Add Stock Quantity:</label>
+                        <div class="col-sm-9 ">
+                            <input type="number" required id="Quantity" title="Add Stock Quantity" min="1"
+                                name="Quantity" value="{{.Data.ReOrderQuantity}}" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="VendorID" class="col-sm-3 col-form-label ">Vendor:</label>
+                        <div class="col-sm-9 ">
+                            <div class="input-group">
+                                <select name="VendorID" required id="VendorID" class="form-control">
+                                    <option value="">--select--</option>
+                                </select>
+                                <span class="input-group-append ">
+                                    <label class="input-group-text bg-info"><a href="#" id="btnVendorAdd"
+                                            data-toggle="modal" data-target="#VendorADDmodal"
+                                            title="Add Vendor">Add</a></label>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Price / Unit:</label>
+                        <div class="col-sm-6 ">
+                            <div class="input-group">
+                                <input type="number" required id="UnitPrice" title="Asset Price" min="0"
+                                    name="UnitPrice" class="form-control">
+                                <span class="input-group-append">
+                                    <label class="input-group-text">₹</label>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Total adding stock price:</label>
+                        <div class="col-sm-6 ">
+                            <div class="input-group">
+                                <input type="number" required readonly id="TotalStockPrice" name="TotalStockPrice"
+                                    class="form-control">
+                                <span class="input-group-append">
+                                    <label class="input-group-text">₹</label>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="Commnets" class="col-md-3 col-form-label">Comments:</label>
+                        <div class="col-md-9">
+                            <textarea name="Comments" required maxlength="500" class="form-control form-control-sm"
+                                id="Comments" placeholder="Comments"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group row justify-content-center">
+                        <input type="submit" class="btn btn-primary btn-sm" value="Add Stock" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Consumed Modal -->
+<div class="modal fade" id="Removestockmodal" tabindex="-1" role="dialog" aria-labelledby="RemovestockmodalTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="RemovestockmodalTitle">Remove Stock</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="/Consumables/PostConsumableOprtnsRemovestock" id="frmRemovestock" method="POST">
+                    <input type="hidden" name="IDConsumables" value="{{.Data.IDConsumables}}">
+                    <input type="hidden" name="StatusID" value="17">
+                    <input type="hidden" name="OrderedBy" value="{{.User.IDEmployees}}">
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Remove Stock Quantity:</label>
+                        <div class="col-sm-9 ">
+                            <input type="number" required title="Remove Stock Quantity" min="1" name="Quantity"
+                                class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Price / Unit:</label>
+                        <div class="col-sm-6 ">
+                            <div class="input-group">
+                                <input type="number" required title="Asset Price" min="1" name="UnitPrice"
+                                    class="form-control">
+                                <span class="input-group-append">
+                                    <label class="input-group-text">₹</label>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Total Removing stock price:</label>
+                        <div class="col-sm-6 ">
+                            <div class="input-group">
+                                <input type="number" required readonly name="TotalStockPrice" class="form-control">
+                                <span class="input-group-append">
+                                    <label class="input-group-text">₹</label>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="Commnets" class="col-md-3 col-form-label">Comments:</label>
+                        <div class="col-md-9">
+                            <textarea name="Comments" required maxlength="500" class="form-control form-control-sm"
+                                placeholder="Comments"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group row justify-content-center">
+                        <input type="submit" class="btn btn-primary btn-sm" value="Consumed" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!--QR Modal -->
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="emodalTitle">QR Generator</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div id="modalbody" class="modal-body">
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- VendorADD Modal -->
+<div class="modal fade bd-example-modal-lg" id="VendorADDmodal" tabindex="-1" role="dialog"
+    aria-labelledby="VendorADDmodalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog modal-lg modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="VendorADDmodalTitle">Add Vendor</h5>
+                <button type="button" id="VendorADDmodalclose" class="close" data-dismiss="modal"
+                    data-target="#VendorADDmodal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body " id="divVendorADD">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#addstockmodal').on('show.bs.modal', function (e) {
+            $("#frmAddstock #Comments").val("")
+            $("#frmAddstock #VendorID").val("")
+        })
+        $('#Removestockmodal').on('show.bs.modal', function (e) {
+
+            $("#frmRemovestock textarea[name='Comments']").val("")
+            $("#frmRemovestock input[name='Quantity']").val("")
+            $("#frmRemovestock input[name='UnitPrice']").val("")
+
+        })
+        $('#retiremodal').on('show.bs.modal', function (e) {
+            $("#frmRetire textarea[name='Comments']").val("")
+            $("#frmRetire input[name='Quantity']").val("")
+            $("#frmRetire input[name='UnitPrice']").val("")
+            $("#StatusID").val(2)
+
+        })
+
+
+
+        $('#RetireDate').datetimepicker({
+            format: 'YYYY-MM-DD'
+        });
+        $("#bulkdelete").click(function () {
+            var SelectedIds = new Array()
+            SelectedIds.push($("#employeeid").val())
+            SelectedIds.push("{{.Data.IDConsumables}}")
+            $.ajax({
+                url: "/ConsumableBulkDelete",
+                type: 'Post',
+                data: JSON.stringify(SelectedIds),
+                dataType: 'Json',
+                async: false,
+                success: function (data) {
+                    window.location = "http://" + document.location.host + "/Consumables/ConsumableList";
+
+                }, error: function () {
+                    alert('Internal error')
+                }
+            });
+        })
+
+
+
+    });
+
+    $(document).ready(function () {
+        //to show the name of file on file upload
+        $(".custom-file-input").on("change", function () {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        });
+        //tabs
+
+        $("#modalbody").load("/QrGenerator", "{{.Data.IDConsumables}}", function () {
+        })
+
+        $("#btnVendorAdd").click(function () {
+            $("#divVendorADD").load("/Vendors", null, function () {
+            });
+        })
+
+        $('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
+            localStorage.setItem('activeTab', $(e.target).attr('href'));
+            if ($(e.target).attr('href') == "#ConsumableHistory") {
+                $("#divConsumableHistory").load('/Consumables/ConsumableOprtnListByID/{{.Data.IDConsumables}}', function () {
+                });
+
+            }
+        });
+        var activeTab = localStorage.getItem('activeTab');
+        if (activeTab) {
+            $('#ConsumableTab a[href="' + activeTab + '"]').tab('show');
+        }
+
+
+        $("#frmAddstock input[name='TotalStockPrice']").val($("#frmAddstock input[name='Quantity']").val() * $("#frmAddstock input[name='UnitPrice']").val())
+        $("#frmAddstock input[name='Quantity'],#frmAddstock input[name='UnitPrice']").change(function () {
+            $("#frmAddstock input[name='TotalStockPrice']").val($("#frmAddstock input[name='Quantity']").val() * $("#frmAddstock input[name='UnitPrice']").val())
+        })
+        $("#frmRemovestock input[name='Quantity'],#frmRemovestock input[name='UnitPrice']").change(function () {
+            if (parseInt($("#frmRemovestock input[name='Quantity']").val()) > parseInt("{{.Data.TotalQnty}}")) {
+                alert("Consumed Quantity should be less than Total Quantity");
+                $("#frmRemovestock input[name='Quantity']").val("")
+
+            }
+            $("#frmRemovestock input[name='TotalStockPrice']").val($("#frmRemovestock input[name='Quantity']").val() * $("#frmRemovestock input[name='UnitPrice']").val())
+        })
+
+
+        data = getdata('/GetVendorsByConsumable/{{.Data.Consumablemaster.IDconsumableMaster}}')
+        loadVendors(data)
+        $("#VendorID").change(function () {
+            $("#frmAddstock #UnitPrice").val($('#VendorID option:selected').attr('data-price'))
+            $("#frmAddstock input[name='Quantity'],#frmAddstock input[name='UnitPrice']").trigger("change")
+        })
+
+    });
+
+
+    function PrintQr() {
+        var url = window.location.href;
+        window.open("/PrintQr?url=" + url + "")
+    }
+    function loadVendors(data) {
+        $("#VendorID").empty().append('<option selected="selected" value="">--select--</option>');
+        $.each(data, function (i, item) {
+            var el = item.Vendors
+            var price = item.Vendors_consumablemaster_map
+            $("#VendorID").append($("<option />", { 'data-price': price.PriceperUnit, text: el.Name + "\n" + el.Address + "\n" + el.Email + "\n" + el.ContactPersonName + "\n" + el.Phone + "\n", value: el.Idvendors }));
+        });
+
+    }
+
+
+
+</script>
+{{template "footer"}}
+{{end}}
