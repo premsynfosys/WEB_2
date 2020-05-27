@@ -8,6 +8,7 @@ import (
 
 // ITAssetIntrfc explain method def...
 type ITAssetIntrfc interface {
+	ITAsset_Service_Request_Resolve(ctx context.Context, usr *ITAssetsmodel.ITAsset_service_request) error
 	Get_ITAssetsHistory_ByAsset(ctx context.Context, AssetID int) ([]*ITAssetsmodel.ITAssetModel, error)
 	ITAssetGroups_Create(ctx context.Context, usr *ITAssetsmodel.ITAssetGroup) error 
 	GetEmployeeITAssetsByID(ctx context.Context, EmpID int,isCheckin int) ([]*ITAssetsmodel.ITAssetModel, error)

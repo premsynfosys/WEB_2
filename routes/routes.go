@@ -42,6 +42,7 @@ func ConsumablesRoutings(r *mux.Router, hndl *cnsmblhndlr.IConsumables) {
 //ITAssetsRoutings ..
 func ITAssetsRoutings(r *mux.Router, hndl *itassethndlr.IITAsset) {
 	r.HandleFunc("/ITAssetReqForward", utils.AuthRequired(hndl.ITAssetReqForward))
+	r.HandleFunc("/ITAsset_Service_Request_Resolve", utils.AuthRequired(hndl.ITAsset_Service_Request_Resolve))
 	r.HandleFunc("/ITAssets/view/{id:[0-9]+}", utils.AuthRequired(hndl.GetITAssetsByID))
 	r.HandleFunc("/ITAssets/create", utils.AuthRequired(hndl.CreateITAsset))
 	r.HandleFunc("/GetITAssetGroups", utils.AuthRequired(hndl.GetITAssetGroups))

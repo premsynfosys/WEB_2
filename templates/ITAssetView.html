@@ -125,12 +125,7 @@
                             <span class="">Print QR</span>
                         </button>
                         {{end}}
-                        {{if eq .Data.Statusname "Assigned"}}
-                        <button data-toggle="modal" id="ServiceRequest" class="btn btn-info m-1 ">
-                            <i class="ik ik-alert-triangle" aria-hidden="true"></i>
-                            <span class="">Request for Service</span>
-                        </button>
-                        {{end}}
+                      
                         {{if  or (eq .User.RoleName "Admin") (eq .User.RoleName "Super Admin")}}
                         <div class="btn-group m-1 dropleft">
                             <button type="button" class="btn btn-info dropdown-toggle  " data-toggle="dropdown"
@@ -465,11 +460,11 @@
         })
 
 
-        $("#ServiceRequest").click(function () {
-            $("#modalService").modal("show")
-            $("#modalService .modal-title").text("Request Service")
-            $("#modalService .modal-body").load("/ITAsset_Service_Request/" + $("#AssetID").val())
-        })
+        // $("#ServiceRequest").click(function () {
+        //     $("#modalService").modal("show")
+        //     $("#modalService .modal-title").text("Request Service")
+        //     $("#modalService .modal-body").load("/ITAsset_Service_Request/" + $("#AssetID").val())
+        // })
     });
 
 

@@ -143,7 +143,7 @@
                             </h4>
                             <div id="divNonITAsset">
                                 {{ range $element :=  .Data.Features}}
-                                {{if eq  $element.Module "NonIT Assets"}}
+                                {{if eq  $element.Module "Non ITAssets"}}
                                 <div class="checkbox-fade fade-in-primary">
                                     <label>
                                         <input id="{{$element.Feature_Name}}" value="{{$element.IDFeatures_list}}"
@@ -178,6 +178,37 @@
                                 <div class="checkbox-fade fade-in-primary">
                                     <label>
                                         <input id="{{$element.IDFeatures_list}}" value="{{$element.IDFeatures_list}}"
+                                            type="checkbox">
+                                        <span class="cr">
+                                            <i class="cr-icon ik ik-check txt-primary"></i>
+                                        </span>
+                                        <span>{{$element.Feature_Name}}</span>
+                                    </label>
+                                </div>
+                                {{end}}
+                                {{end}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-12 col-xl-12 mb-30">
+                            <h4 class="sub-title">
+                                <div class=" checkbox-fade fade-in-warning">
+                                    <label>
+                                        <input id="chkRequests" type="checkbox">
+                                        <span class="cr">
+                                            <i class="cr-icon ik ik-check txt-warning"></i>
+                                        </span>
+                                        <span>Requests</span>
+                                    </label>
+                                </div>
+                            </h4>
+                            <div id="divRequests">
+                                {{ range $element :=  .Data.Features}}
+                                {{if eq  $element.Module "Requests"}}
+                                <div class="checkbox-fade fade-in-primary">
+                                    <label>
+                                        <input id="{{$element.Feature_Name}}" value="{{$element.IDFeatures_list}}"
                                             type="checkbox">
                                         <span class="cr">
                                             <i class="cr-icon ik ik-check txt-primary"></i>
@@ -255,6 +286,9 @@
             obj.RoleID = parseInt($("#Role").val())
             obj.CreatedBy = parseInt($("#userid").val())
             var Features_List_IDss = new Array()
+            if(obj.RoleID==1){
+                Features_List_IDss.push(16)//AccesstoalllocationsID:=16
+            }
             $(this).find("input[type='checkbox']:checked").each(function () {
                 Features_List_IDss.push(parseInt(this.value))
             })
@@ -300,6 +334,13 @@
                 $("#divNonITAsset").find('input[type="checkbox"]').prop('checked', true);
             } else {
                 $("#divNonITAsset").find('input[type="checkbox"]').prop('checked', false);
+            }
+        });
+        $("#chkRequests").change(function () {
+            if ($(this).prop('checked')) {
+                $("#divRequests").find('input[type="checkbox"]').prop('checked', true);
+            } else {
+                $("#divRequests").find('input[type="checkbox"]').prop('checked', false);
             }
         });
         $("#chkConsumables").change(function () {

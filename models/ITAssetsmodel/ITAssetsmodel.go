@@ -187,6 +187,7 @@ type ITAsset_service_request struct {
 	IDitasset_service_request *int                `json:"IDitasset_service_request"`
 	DateOfReq                 *string             `json:"DateOfReq"`
 	ITAssetID                 *int                `json:"ITAssetID"`
+	OldITAssetID                 *int              `json:"OldITAssetID"`
 	Admin_EmpID               *int                `json:"Admin_EmpID"`
 	Emp_EmpID                 *int                `json:"Emp_EmpID"`
 	Issue_Description         *string             `json:"Issue_Description"`

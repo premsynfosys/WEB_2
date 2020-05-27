@@ -345,6 +345,15 @@ func (m *APIRepo) ITAsset_Service_Request(ctx context.Context, usr *ITAssetsmode
 	return err
 }
 
+func (m *APIRepo) ITAsset_Service_Request_Resolve(ctx context.Context, usr *ITAssetsmodel.ITAsset_service_request) error {
+	url := fmt.Sprintf(m.APIConn + "/ITAsset_Service_Request_Resolve")
+	j, err := json.Marshal(usr)
+	if err != nil {
+		return err
+	}
+	_, err = utils.PostRequest(url, j)
+	return err
+}
 //GetITAsset_service_request_List ..
 func (m *APIRepo) GetITAsset_service_request_List(ctx context.Context, EmpID int) ([]*ITAssetsmodel.ITAsset_service_request, error) {
 	url := fmt.Sprintf(m.APIConn+"/GetITAsset_service_request_List/%d", EmpID)

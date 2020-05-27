@@ -13,47 +13,116 @@
 
   </div>
 </div>
-<div class="row">
-  <div class="col-md-12">
-    <div class="card">
-      <div class="card-block">
-        <div class="dt-responsive">
-          <table class="table table-striped table-hover  table-bordered nowrap " id="tblITAsset_services">
-            <thead>
-              <th>IDitasset_service_request</th>
-              <th><input type="checkbox" id="chkSelectAll"></th>
-              <th>Employee Name</th>
-              <th>ITAsset Name</th>
-              <th>Identification No</th>
-              <th>Issue</th>
-              <th>Date of request</th>
-              <th>Issue Status</th>
-              <th>Admin Comments</th>
-              
-            </thead>
-          </table>
+<div class="divReqList">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-block">
+          <div class="dt-responsive">
+            <table class="table table-striped table-hover  table-bordered nowrap " id="tblITAsset_services">
+              <thead>
+                <th>Action</th>
+                <th>Action</th>
+                <th>Employee Name</th>
+                <th>ITAsset Name</th>
+                <th>Identification No</th>
+                <th>Issue</th>
+                <th>Date of request</th>
+                <th>Issue Status</th>
+                <th>Admin Comments</th>
+
+              </thead>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div id="tblbtn" class="btn-group dropright float-left ">
+        <button type="button" class="btn btn-info dropdown-toggle  " data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          Export </button>
+        <div id="tblbtnList" class="dropdown-menu">
+        </div>
+      </div>
+      <div id="tblClmnbtn" class="btn-group dropright float-left mr-1 ">
+        <button type="button" class="btn btn-info dropdown-toggle btn-sm " data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          Fields </button>
+        <div id="tblClmnbtnList" class="dropdown-menu">
+          <div class="form-check form-check-inline dropdown-item">
+            <input class="form-check-input chkClmn" type="checkbox" checked id="chkAll">
+            <label class="form-check-label " for="chkAll">Select All</label></div>
+
+          <div class="dropdown-divider"></div>
         </div>
       </div>
     </div>
+  </div>
+</div>
+<div class="divReqApprove">
+  <div class=" d-flex float-right ">
+    <a href="#" id="back" class=" align-self-center btn btn-outline-danger"><i class="fas fa-arrow-left "></i></a>
+    &nbsp; &nbsp;&nbsp; &nbsp;
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-body">
+          <input id="IDitasset_service_request" type="hidden">
+          <input id="oldassetid" type="hidden">
+          <input id="newassetid" type="hidden">
+          <input id="Emp_EmpID" type="hidden">
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label ">Requested By:</label>
+            <div class="col-md-9">
+              <label id="requestedby" class="col-md-3 col-form-label "></label>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label ">Issue:</label>
+            <div class="col-md-9">
+              <label id="issue" class="col-md-3 col-form-label "></label>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label ">New Asset:</label>
+            <div class="col-md-9">
+              <label id="newasset" class="col-md-3 col-form-label "></label>
+            </div>
+          </div>
 
-    <div id="tblbtn" class="btn-group dropright float-left ">
-      <button type="button" class="btn btn-info dropdown-toggle  " data-toggle="dropdown" aria-haspopup="true"
-        aria-expanded="false">
-        Export </button>
-      <div id="tblbtnList" class="dropdown-menu">
-      </div>
-    </div>
-    <div id="tblClmnbtn" class="btn-group dropright float-left mr-1 ">
-      <button type="button" class="btn btn-info dropdown-toggle btn-sm " data-toggle="dropdown" aria-haspopup="true"
-        aria-expanded="false">
-        Fields </button>
-      <div id="tblClmnbtnList" class="dropdown-menu">
-        <div class="form-check form-check-inline dropdown-item">
-          <input class="form-check-input chkClmn" type="checkbox" checked id="chkAll">
-          <label class="form-check-label " for="chkAll">Select All</label></div>
+          <div class="form-group row">
+            <label for="ApproverComments" class="col-md-3 col-form-label ">Comments:</label>
+            <div class="col-md-5  ">
+              <textarea name="ApproverComments" class="form-control " id="ApproverComments"></textarea>
+            </div>
+          </div>
 
-        <div class="dropdown-divider"></div>
+          <div class="form-group row justify-content-center">
+            <input type="button" id="btnIssueResolve" class="btn btn-primary btn-sm" value="Issue Resolve" /> &nbsp;
+            &nbsp;
+
+          </div>
+          <div class="dt-responsive ">
+            <table class="table table-striped table-bordered table-hover nowrap" id="tblITAssets">
+              <thead>
+                <th>Select</th>
+                <th>IT Asset</th>
+                <th>Status</th>
+                <th>Group</th>
+                <th>Model No.</th>
+                <th>Serial No</th>
+                <th>Identification No</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Warranty </th>
+              </thead>
+            </table>
+          </div>
+
+        </div>
       </div>
+
     </div>
   </div>
 </div>
@@ -64,6 +133,7 @@
 <script>
   $(document).ready(function () {
 
+    $(".divReqApprove").hide();
     var link = '/GetITAsset_service_request_List/' + $("#employeeid").val()
 
     var tbl = $('#tblITAsset_services').DataTable({
@@ -95,17 +165,24 @@
           "name": "Select",
           'data': null,
           render: function (dt) {
-            return '<input type="checkbox" class="tblchk" value=' + dt.IDitasset_service_request + '>';
+            if(dt.Issue_Status!="Resolved")
+            return '<button  title="CheckIn & CheckOut" class=" btnmdlIssue btn btn-link text-warning "><i class="ik ik-log-in btn-xs "></i></button>';
+           else
+            return '<button disabled  title="CheckIn & CheckOut" class=" btnmdlIssue btn btn-link text-dark "><i class="ik ik-log-in btn-xs "></i></button>';
+           
           }
         }, {
           "name": "Name",
           'data': "Employee",
           render: function (dt) {
-            return dt.FirstName + ' ' + dt.LastName;
+            return '<a class="font-weight-bold text-info"  href="/employee/' + dt.IDEmployees + '/mode/view">' + dt.FirstName + ' ' + dt.LastName; + '</a>';
           }
         }, {
           "name": "ITAssets",
-          'data': 'ITAssets.ITAssetName'
+          'data': 'ITAssets',
+          render: function (dt) {
+            return '<a class="font-weight-bold text-info"  href="/ITAssets/view/' + dt.IDITAssets + '">' + dt.ITAssetName + '</a>';
+          }
         }, {
           "name": "ITAssetIdentificationNo",
           "data": "ITAssets.ITAssetIdentificationNo"
@@ -117,7 +194,10 @@
           "data": "DateOfReq"
         }, {
           "name": "Issue_Status",
-          'data': 'Issue_Status'
+          'data': 'Issue_Status',
+          render: function (dt) {
+            return '<span class="badge badge-warning">' + dt + '</span>'
+          }
         }
         , {
           "name": "AdminComments",
@@ -174,7 +254,6 @@
     });
 
     $("input.chkClmn").click(function (e) {
-
       // Get the column API object
       if ($(this).attr('id') == "chkAll") {
         if ($(this).prop("checked")) {
@@ -200,35 +279,139 @@
 
 
 
-    // $("#BulkEdit").click(function (e) {
 
-    //   var SelectedIds = new Object();
-    //   tbl = $('#tblITAsset_services').DataTable()
-    //   $("input:checked", tbl.rows().nodes()).each(function () {
-    //     SelectedIds[$(this).val()] = $(this).attr("data-name")
+    $("#tblITAsset_services").on("click", ".btnmdlIssue", function () {
+      var dt = tbl.row($(this).parents('tr')).data()
 
-    //   });
+      $("#requestedby").text(dt.Employee.FirstName)
+      $("#issue").text(dt.Issue_Description)
+      $("#oldassetid").val(dt.ITAssetID)
+      $("#Emp_EmpID").val(dt.Emp_EmpID)
 
-    //   var url = "/ITAssets/BulkEdit"
-    //   $.ajax({
-    //     url: url,
-    //     type: 'GET',
-    //     data: { SelectedIds: JSON.stringify(SelectedIds) },
-    //     dataType: 'HTML',
-    //     async: false,
-    //     success: function (data) {
+      $("#newassetid").val("")
+      $("#IDitasset_service_request").val(dt.IDitasset_service_request)
+      FillReqApprove()
+      $('.divReqList, .divReqApprove').toggle(200);
 
-    //       $("#modalbody").html(data);
-    //     }
-    //   });
-    // })
+    });
+
+    function FillReqApprove() {
+      var url;
+      if ("{{.Auth.Accesstoalllocations}}") {
+        url = '/GetITAssets'
+      } else {
+        url = '/GetITAssets?LocID=' + $("#locationid").val()
+      }
+      var ITAssetstbl = $('#tblITAssets').DataTable({
+        responsive: true,
+        "processing": true,
+        scrollCollapse: true,
+        //scrollY: "300px",
+        scrollX: true,
+
+        destroy: true,
+        dom: 'frtip',
+        ajax: {
+          "url": url,
+          "type": "GET",
+          "datatype": "json",
+          "dataSrc": ""//to read data from a plain array rather than an array in an object:
+        },
+        columnDefs: [{
+          orderable: false,
+          targets: 0
+        }],
+        order: [[1, 'asc']],
+        // destroy: true,//to over come reintilize prblms
+        "columns": [
+          {
+            "name": "Select",
+            'data': null,
+            render: function (dt) {
+              return '<input  type="button" data-Assetname=' + dt.ITAssetName + ' data-AssetID=' + dt.IDITAssets + ' class="btn btn-sm btn-warning Assign" value="Assign" />';
+            }
+          }, {
+            "name": "ITAssetName",
+            'data': "ITAssetName"
+          }, {
+            "name": "Statusname",
+            'data': "Statusname",
+            render: function (dt) {
+              var res;
+              if (dt == "Available")
+                res = '<span class="badge badge-pill badge-success">' + dt + '</span>'
+              else
+                res = ""
+              return res;
+            }
+          }, {
+            "name": "Itassetgroupname",
+            'data': 'Itassetgroupname'
+          }, {
+            "name": "ITAssetModel",
+            "data": "ITAssetModel"
+          }, {
+            "name": "ITAssetSerialNo",
+            'data': 'ITAssetSerialNo'
+          }, {
+            "name": "ITAssetIdentificationNo",
+            "data": "ITAssetIdentificationNo"
+          }, {
+            "name": "ITAssetDescription",
+            'data': 'ITAssetDescription'
+          }, {
+            "name": "ITAssetPrice",
+            'data': 'ITAssetPrice',
+            render: function (dt) { return dt + "$" }
+          }, {
+            "name": "ITAssetWarranty",
+            'data': 'ITAssetWarranty',
+            render: function (dt) {
+              return jsondate(dt);
+            }
+          }
+        ]
+      });
+      ITAssetstbl.column(2)
+        .search("Available")
+        .draw();
+
+
+    }
+
+
+    $("#back").click(function () {
+      $('.divReqList, .divReqApprove').toggle(200);
+
+    })
 
 
 
 
+    $("#btnIssueResolve").click(function () {
+      if ($("#ApproverComments").val() == "") {
+        alert("Please enter comments.")
+        return false;
+      }
+      var obj = new Object();
+      obj.Emp_EmpID = parseInt($("#Emp_EmpID").val())
+      obj.ITAssetID = parseInt($("#newassetid").val())
+      obj.OldITAssetID = parseInt($("#oldassetid").val())
+      obj.AdminComments = $("#ApproverComments").val()
+      obj.IDitasset_service_request = parseInt($("#IDitasset_service_request").val())
+      debugger;
+      $.ajax({
+        url: "/ITAsset_Service_Request_Resolve",
+        type: 'POST',
+        data: JSON.stringify(obj),
+        dataType: 'json',
+        async: false,
+        success: function (data) {
+          window.location.reload();
+        }
+      });
 
-
-
+    })
     $("#chkSelectAll").click(function () {
 
       if ($("#chkSelectAll").prop('checked'))
@@ -238,47 +421,82 @@
     })
 
 
-    //transfer
-    $("#BulkTransfer").click(function () {
-      var ok = true
-      if ($("#tblITAsset_services td input[type='checkbox']:checked").length <= 0) {
-        Toast("warning", "Please select atleast one 'Available' Asset(s).")
-        return false;
+    $("#tblITAssets").on("click", ".Assign", function () {
+      if (confirm("Old Asset will Replace with New asset, Are you ok?")) {
+        rmv = $("#tblITAssets").find(".Remove")
+        rmv.removeClass('btn-danger').addClass(' btn-warning')
+        rmv.removeClass('Remove').addClass('Assign')
+        rmv.val("Assign")
+        debugger;
+
+        // $('#tblReqApprvList input:checkbox:checked').parents('tr').find('td:last').text($(this).attr('data-Assetname'));
+        // $('#tblReqApprvList input:checkbox:checked').attr('data-AssetID', $(this).attr('data-AssetID'))
+        // $('#tblReqApprvList input:checkbox:checked').prop('checked', false);
+        $(this).removeClass('btn-warning').addClass('btn-danger')
+        $(this).removeClass('Assign').addClass('Remove')
+        $(this).val("Remove")
+        $(this).blur()
+        $("#newasset").text($(this).attr("data-Assetname"))
+
+        $("#newassetid").val($(this).attr("data-AssetID"))
       }
-      var ary = new Array()
-      var empid = parseInt($("#employeeid").val())
-      $("#tblITAsset_services td input[type='checkbox']:checked").each(function () {
-        var rowdata = tbl.row($(this).parents('tr')).data()
-        if (rowdata.ITAssetStatus != 1) {
-          Toast("info", "Please select only 'Available' Assets")
-          array = null;
-          ok = false
-          return false;
 
-        }
-        else {
-          var obj = new Object();
-          obj.AssetID = rowdata.IDITAssets
-          obj.AssetName = rowdata.ITAssetName
-          obj.AssetType = "itasset"
-          obj.SenderEmpID = empid
-          ary.push(obj)
-        }
-      });
 
-      if (ok)
-        $.ajax({
-          url: "/CreateOutWardCart",
-          type: 'POST',
-          data: JSON.stringify(ary),
-          dataType: 'json',
-          async: false,
-          success: function (data) {
-
-            Toast("success", "ITAssets are ready for request.")
-          }
-        });
     })
+    $("#tblITAssets").on("click", ".Remove", function () {
+
+      $(this).removeClass('btn-danger').addClass(' btn-warning')
+      $(this).removeClass('Remove').addClass('Assign')
+      $(this).val("Assign")
+      $(this).blur()
+      $("#newasset").text('')
+      $("#newassetid").val("")
+      // $('#tblReqApprvList input:checkbox[data-AssetID=' + $(this).attr("data-AssetID") + ']').parents('tr').find('td:last').text("");
+      // $('#tblReqApprvList input:checkbox[data-AssetID=' + $(this).attr("data-AssetID") + ']').attr('data-AssetID', "")
+
+
+    });
+    // //transfer
+    // $("#BulkTransfer").click(function () {
+    //   var ok = true
+    //   if ($("#tblITAsset_services td input[type='checkbox']:checked").length <= 0) {
+    //     Toast("warning", "Please select atleast one 'Available' Asset(s).")
+    //     return false;
+    //   }
+    //   var ary = new Array()
+    //   var empid = parseInt($("#employeeid").val())
+    //   $("#tblITAsset_services td input[type='checkbox']:checked").each(function () {
+    //     var rowdata = tbl.row($(this).parents('tr')).data()
+    //     if (rowdata.ITAssetStatus != 1) {
+    //       Toast("info", "Please select only 'Available' Assets")
+    //       array = null;
+    //       ok = false
+    //       return false;
+
+    //     }
+    //     else {
+    //       var obj = new Object();
+    //       obj.AssetID = rowdata.IDITAssets
+    //       obj.AssetName = rowdata.ITAssetName
+    //       obj.AssetType = "itasset"
+    //       obj.SenderEmpID = empid
+    //       ary.push(obj)
+    //     }
+    //   });
+
+    //   if (ok)
+    //     $.ajax({
+    //       url: "/CreateOutWardCart",
+    //       type: 'POST',
+    //       data: JSON.stringify(ary),
+    //       dataType: 'json',
+    //       async: false,
+    //       success: function (data) {
+
+    //         Toast("success", "ITAssets are ready for request.")
+    //       }
+    //     });
+    // })
 
 
   });

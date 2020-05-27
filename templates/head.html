@@ -380,24 +380,31 @@
                                                                   class="ik ik-arrow-up-right"></i><span>Asset
                                                                   Request</span></a>
                                                       {{end}}
+                                                      {{if .Auth.RetiredITAssetsList}}
                                                       <a href="/ITAssetRetiredList" class="menu-item"><i
                                                                   class="ik ik-list"></i><span>Retired
                                                                   ITAssets</span></a>
+                                                      {{end}}
                                                 </div>
                                           </div>
                                           <div class="nav-item has-sub">
                                                 <a href="#"><i class="ik ik-airplay"></i><span>Non ITAssets</span>
                                                 </a>
                                                 <div class="submenu-content">
+                                                      {{if .Auth.NonITAssetList}}
                                                       <a href="/NonITAsset/List" class="menu-item"><i
                                                                   class="ik ik-list"></i><span>List</span></a>
+                                                      {{end}}
+                                                      {{if .Auth.AddNonITAsset}}
                                                       <a href="/NonITAsset/Create" class="menu-item"><i
                                                                   class="ik ik-folder-plus"></i><span>Create</span></a>
-
+                                                      {{end}}
+                                                      {{if .Auth.NonITAssetRequest}}
                                                       <a href="/NonITAssetRequest?LocID={{.User.LocationID}}"
                                                             class="menu-item"><i
                                                                   class="ik ik-arrow-up-right"></i><span>Asset
                                                                   Request</span></a>
+                                                      {{end}}
 
                                                 </div>
                                           </div>
@@ -420,29 +427,43 @@
                                           <div class="nav-item has-sub">
                                                 <a href="#"><i class="ik ik-edit"></i><span>Requests</span></a>
                                                 <div class="submenu-content">
+                                                      {{if .Auth.ITAssetRequestList}}
                                                       <a href="/ITAssets/RequestList" class="menu-item">ITAssets</a>
+                                                      {{end}}
+
+                                                      {{if .Auth.ITAssetServiceRequestList}}
                                                       <a href="/ITAsset_Service_Request_List" class="menu-item">ITAsset
                                                             Services</a>
-                                                      <a href="/NonITAssetRequestList" class="menu-item">Non ITAssets</a>
+                                                      {{end}}
+
+                                                      {{if .Auth.NonITAssetRequestList}}
+                                                      <a href="/NonITAssetRequestList" class="menu-item">Non
+                                                            ITAssets</a>
+                                                      {{end}}
+
                                                 </div>
                                           </div>
                                           <div class="nav-item has-sub">
                                                 <a href="#"><i class="ik ik-edit"></i><span>InWard / OutWard</span></a>
                                                 <div class="submenu-content">
                                                       {{if .Auth.OutWardRequest}}
-                                                      <a href="/Transfer" class="menu-item">Transfer</a>
+                                                      <a href="/Transfer" class="menu-item"><i
+                                                                  class="ik ik-shopping-cart"></i>Transfer</a>
                                                       {{end}}
                                                       {{if .Auth.InWardList}}
-                                                      <a href="/InWardDetails" class="menu-item">InWard List</a>
+                                                      <a href="/InWardDetails" class="menu-item"><i
+                                                                  class="ik ik-arrow-right-circle"></i>InWard List</a>
                                                       {{end}}
                                                       {{if .Auth.OutWardList }}
-                                                      <a href="/OutWardDetails" class="menu-item">OutWard List</a>
+                                                      <a href="/OutWardDetails" class="menu-item"><i
+                                                                  class="ik ik-arrow-left-circle"></i>OutWard List</a>
                                                       {{end}}
                                                       {{if .Auth.ApprovalList}}
-                                                      <a href="/OWApprovalDeatils" class="menu-item">Approval List</a>
+                                                      <a href="/OWApprovalDeatils" class="menu-item"><i
+                                                                  class="ik ik-alert-circle"></i>Approval List</a>
                                                       {{end}} </div>
                                           </div>
-
+                                        
                                           <div class="nav-item has-sub">
                                                 <a href="#"><i class="ik ik-settings"></i><span>Settings</span></a>
                                                 <div class="submenu-content">
@@ -458,8 +479,7 @@
                                                                   class="ik ik-lock"></i><span>Authorization</span></a>
                                                 </div>
                                                 <div class="submenu-content">
-                                                      <a href="/NonITAssetMasterAdd" class="menu-item"><i
-                                                                  class="ik ik-lock"></i><span>NonITAsset
+                                                      <a href="/NonITAssetMasterAdd" class="menu-item"><span>NonITAsset
                                                                   Names</span></a>
                                                 </div>
                                                 <div class="submenu-content">
@@ -468,7 +488,7 @@
                                                                   Approval</span></a>
                                                 </div>
                                           </div>
-
+                                         
                                     </nav>
                               </div>
                         </div>

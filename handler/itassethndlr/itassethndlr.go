@@ -833,8 +833,24 @@ func (p *IITAsset) GetITAssetservices_List(w http.ResponseWriter, r *http.Reques
 	ITAssetID := params["ITAssetID"]
 	id, _ := strconv.Atoi(ITAssetID)
 
-	body, _ := p.Irepo.GetITAssetservices_List(r.Context(), id)
-	utils.RespondwithJSON(w, r, http.StatusOK, body)
+	body, err := p.Irepo.GetITAssetservices_List(r.Context(), id)
+	if err == nil {
+		utils.RespondwithJSON(w, r, http.StatusOK, body)
+	} else {
+		utils.RespondwithJSON(w, r, http.StatusBadRequest, nil)
+	}
+
+}
+
+func (p *IITAsset) ITAsset_Service_Request_Resolve(w http.ResponseWriter, r *http.Request) {
+	mdl := ITAssetsmodel.ITAsset_service_request{}
+	json.NewDecoder(r.Body).Decode(&mdl)
+	err:= p.Irepo.ITAsset_Service_Request_Resolve(r.Context(),&mdl)
+	if err == nil {
+		utils.RespondwithJSON(w, r, http.StatusOK, nil)
+	} else {
+		utils.RespondwithJSON(w, r, http.StatusBadRequest, nil)
+	}
 }
 
 // ITAsset_Service_Request ..

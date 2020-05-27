@@ -134,7 +134,10 @@
         var tbl = $('#tblNonITAssetsCheckIN').DataTable({
             responsive: true,
             "processing": true,
-           
+            "processing": true,
+            scrollY: $(window).height() - 350,
+            scrollCollapse: true,
+            scrollX: true,
             destroy: true,
             dom: 'Bfrtip',
             ajax: {

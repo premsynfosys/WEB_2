@@ -38,10 +38,30 @@
                 <div class="dropdown-divider"></div>
             </div>
         </div>
-        <button type="button" id="btnHistory" title="Refresh" class="btn btn-info btn-sm  float-left  ml-1 ">Last used Assets</button>
+
+        <button type="button" id="btnIssueRequest" title="Refresh" class="btn btn-info btn-sm  float-left  ml-1 ">Issue
+            Request</button>
+
+        <button type="button" id="btnHistory" value="LastusedAssets" title="History" class="btn btn-info btn-sm  float-left  ml-1 ">Last used
+            Assets</button>
     </div>
 </div>
+<div id="modalService" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="classInfo"
+    aria-hidden="true">
+    <div class="modal-dialog mdl-cstm modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalServiceLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-tblbody modal-body">
 
+            </div>
+
+        </div>
+    </div>
+</div>
 <script>
     $(document).ready(function () {
         var EmpID = $("#EmpID").val()
@@ -50,8 +70,8 @@
             responsive: true,
             "processing": true,
             //scrollY: $(window).height() - 350,
-         //   scrollCollapse: true,
-           // scrollX: true,
+            //   scrollCollapse: true,
+            // scrollX: true,
             destroy: true,
             dom: 'Bfrtip',
             ajax: {
@@ -142,6 +162,7 @@
         //columns hide /show
         $("#tblClmnbtn").prependTo('#tblITAssetFiles_filter')
         $("#btnHistory").appendTo('#tblITAssetFiles_filter')
+        $("#btnIssueRequest").appendTo('#tblITAssetFiles_filter')
 
         var idx = 0;
         //show hide clmns
@@ -180,14 +201,31 @@
 
         })
 
+        $("#btnIssueRequest").click(function () {
+            var chk=$('#tblITAssetFiles input[type="checkbox"]:checked')
+            if ($('#tblITAssetFiles input[type="checkbox"]:checked').length != 1) {
+                alert('Please select record to raise issue.')
+                return false;
+            }
+        var dt= tbl.row(chk.parents('tr')).data().IDITAssets
+        debugger;
+            $("#modalService").modal("show")
+            $("#modalService .modal-title").text("Request Service")
+            $("#modalService .modal-body").load("/ITAsset_Service_Request/" +dt)
+        })
         $("#btnHistory").click(function () {
            
-            if ($(this).text() == "Last used Assets") {
+            if ($(this).val() == "LastusedAssets") {
+               
+                $("#btnIssueRequest").hide()
                 tbl.ajax.url('/GetEmployeeITAssetsByID?EmpID=' + EmpID + '&isCheckin=1').load()
                 $(this).text("Allocated Assets")
-            } else if ($(this).text() == "Allocated Assets") {
+                $(this).val("AllocatedAssets")
+            } else if ($(this).val() == "AllocatedAssets") {
+                $("#btnIssueRequest").show()
                 tbl.ajax.url('/GetEmployeeITAssetsByID?EmpID=' + EmpID + '&isCheckin=0').load()
                 $(this).text("Last used Assets")
+                $(this).val("LastusedAssets")
             }
         })
 
