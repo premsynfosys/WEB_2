@@ -557,7 +557,7 @@ func (p *IITAsset) ITAssetsCheckout(w http.ResponseWriter, r *http.Request) {
 			aprvl.ApproverID, _ = strconv.Atoi(r.FormValue("Approver"))
 			aprvl.Grade, _ = strconv.Atoi(r.FormValue("Grade"))
 			aprvl.RoleID, _ = strconv.Atoi(r.FormValue("ApprvrRoleID"))
-		
+
 			aprvl.Status = 9
 			IW.InWardOutWardApproval = aprvl
 			err = p.ICmnrepo.CreateInWardOutWard(r.Context(), &IW)
@@ -662,7 +662,6 @@ func (p *IITAsset) Customfields(w http.ResponseWriter, r *http.Request) {
 
 //QrGenerator  ..
 func (p *IITAsset) QrGenerator(w http.ResponseWriter, r *http.Request) {
-
 	//deleteing all generated qr codes
 	dirRead, _ := os.Open("AppFiles/Images/QR/")
 	dirFiles, _ := dirRead.Readdir(0)
@@ -674,16 +673,22 @@ func (p *IITAsset) QrGenerator(w http.ResponseWriter, r *http.Request) {
 		os.Remove(fullPath)
 	}
 
-	s1 := r.URL.RawQuery
-	id, _ := strconv.Atoi(s1)
-	LocID, _ := strconv.Atoi(r.URL.Query().Get("LocID"))
-	data, _ := p.Irepo.GetITAssets(r.Context(), LocID)
-	for _, item := range data {
-		if item.IDITAssets == id {
-			utils.ExecuteTemplate(w, r, "QrGenerator", item)
-			break
-		}
-	}
+	name := r.URL.Query().Get("name")
+	Idntfctn := r.URL.Query().Get("Idntfctn")
+	//data, _ := p.Irepo.GetITAssets(r.Context(), LocID)
+	// for _, item := range data {
+	// 	if item.IDITAssets == id {
+	// 		utils.ExecuteTemplate(w, r, "QrGenerator", item)
+	// 		break
+	// 	}
+	// }
+	utils.ExecuteTemplate(w, r, "QrGenerator", struct {
+		Name     string
+		Idntfctn string
+	}{
+		Name:     name,
+		Idntfctn: Idntfctn,
+	})
 }
 
 // PrintQr ..
@@ -845,7 +850,7 @@ func (p *IITAsset) GetITAssetservices_List(w http.ResponseWriter, r *http.Reques
 func (p *IITAsset) ITAsset_Service_Request_Resolve(w http.ResponseWriter, r *http.Request) {
 	mdl := ITAssetsmodel.ITAsset_service_request{}
 	json.NewDecoder(r.Body).Decode(&mdl)
-	err:= p.Irepo.ITAsset_Service_Request_Resolve(r.Context(),&mdl)
+	err := p.Irepo.ITAsset_Service_Request_Resolve(r.Context(), &mdl)
 	if err == nil {
 		utils.RespondwithJSON(w, r, http.StatusOK, nil)
 	} else {
@@ -956,4 +961,23 @@ func (p *IITAsset) ITAssetReqForward(w http.ResponseWriter, r *http.Request) {
 		utils.RespondwithJSON(w, r, http.StatusInternalServerError, nil)
 	}
 
+}
+
+func (p *IITAsset) GetITAssetReqListByEmp(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	ID := params["EmpID"]
+	EmpID, _ := strconv.Atoi(ID)
+	data, err := p.Irepo.GetITAssetReqListByEmp(r.Context(), EmpID)
+	if err == nil {
+		utils.RespondwithJSON(w, r, http.StatusOK, data)
+	}
+}
+
+func (p *IITAsset) MyITAssetRequestList(w http.ResponseWriter, r *http.Request) {
+	usr, Auth := utils.GetCookieUser(r)
+	Mapdata := CmnModel.TemplateData{
+		User: usr,
+		Auth: Auth,
+	}
+	utils.ExecuteTemplate(w, r, "MyITAssetRequestList", Mapdata)
 }

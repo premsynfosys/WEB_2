@@ -143,15 +143,16 @@
 
                 </div>
                 <div role="tabpanel" class="tab-pane fade" id="tabEmployeeItassets">
-                    <div class="container" style="overflow-x: auto; width: 100%;">
+                    <!-- <div class="container" style="overflow-x: auto; width: 100%;"> -->
                     <div class="  mt-2 row " id="divtabEmployeeItassets">
+                        <!-- </div> -->
                     </div>
-                </div> </div>
+                </div>
                 <div role="tabpanel" class="tab-pane fade" id="tabEmployeeNonItassets">
-                    <div class="container" style="overflow-x: auto; width: 100%;">
-                        <div class=" mt-2 row " id="divtabEmployeeNonItassets">
-                        </div>
+                    <!-- <div class="container" style="overflow-x: auto; width: 100%;"> -->
+                    <div class=" mt-2 row " id="divtabEmployeeNonItassets">
                     </div>
+                    <!-- </div> -->
                 </div>
 
 
@@ -171,7 +172,7 @@
         //tabs
 
         $('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
-            localStorage.setItem('activeTab', $(e.target).attr('href'));
+            //   localStorage.setItem('activeTab', $(e.target).attr('href'));
             if ($(e.target).attr('href') == "#tabEmployeeItassets") {
                 var assetid = $("#IDEmployees").val()
                 var url = '/employee/' + assetid + '/ITassets'
@@ -183,10 +184,10 @@
                 $("#divtabEmployeeNonItassets").load("/NonITAssetCheckinDetails_Partial?mode=employee&ID=" + $("#IDEmployees").val())
             }
         });
-        var activeTab = localStorage.getItem('activeTab');
-        if (activeTab) {
-            $('#AssetTab a[href="' + activeTab + '"]').tab('show');
-        }
+        // var activeTab = localStorage.getItem('activeTab');
+        // if (activeTab) {
+        //     $('#AssetTab a[href="' + activeTab + '"]').tab('show');
+        // }
         //end tabs
         // document.getElementById('CheckInDate').valueAsDate = new Date();
         //to show the name of file on file upload

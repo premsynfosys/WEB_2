@@ -1,0 +1,105 @@
+{{define "MyDashBoard"}}
+{{template "head" .}}
+
+<div class="page-header">
+      <div class="row align-items-end">
+            <h4>My Dashboard</h4>
+      </div>
+</div>
+<div class="row">
+      {{if .Auth.EmployeeList}}
+      <div class="col-xl-3 col-sm-6 col-md-4">
+            <div class="card prod-p-card card-red">
+                  <div class="card-body">
+                        <div class="row align-items-center  mb-30 ">
+                              <div class="col">
+                                    <h3 class="mb-0 fw-700 text-white">{{.Data.ITAssetsAssigned}}</h3>
+                              </div>
+                              <div class="col-auto">
+                                    <a href="/MyDetails/{{.User.EmployeeID}}"> <i
+                                                class="fas fa-tv text-red f-18"></i></a>
+                              </div>
+                        </div>
+                        <h6 class="mb-0 text-white">ITAssets Assigned</h6>
+                  </div>
+            </div>
+      </div>
+      {{end}}
+      {{if .Auth.EmployeeList}}
+      <div class="col-xl-3 col-sm-6 col-md-4">
+            <div class="card prod-p-card card-blue">
+                  <div class="card-body">
+                        <div class="row align-items-center  mb-30 ">
+                              <div class="col">
+
+                                    <h3 class="mb-0 fw-700 text-white">{{.Data.NonITAssetsAssigned}}</h3>
+                              </div>
+                              <div class="col-auto">
+                                    <a href="/MyDetails/{{.User.EmployeeID}}"> <i
+                                                class="fas fa-tv text-blue f-18"></i></a>
+                              </div>
+                        </div>
+                        <h6 class="mb-0 text-white">Non ITAssets Assigned</h6>
+                  </div>
+            </div>
+      </div>
+      {{end}}
+            <div class="col-xl-3 col-sm-6 col-md-4">
+                  <div class="card prod-p-card card-green">
+                        <div class="card-body">
+                              <div class="row align-items-center mb-30 ">
+                                    <div class="col">
+
+                                          <h3 class="mb-0 fw-700 text-white">{{.Data.NonITAssetRequests}}</h3>
+
+                                    </div>
+                                    <div class="col-auto">
+                                          <a href="/MyNonITAssetRequestList">
+                                                <i class="fas fa-exclamation-circle text-green f-18"></i></a>
+                                    </div>
+                              </div>
+                              <h6 class="mb-0 text-white ">NonITAsset Requests</h6>
+                        </div>
+                  </div>
+            </div>
+            <div class="col-xl-3 col-sm-6 col-md-4">
+                  <div class="card prod-p-card card-yellow">
+                        <div class="card-body">
+                              <div class="row align-items-center mb-30 ">
+                                    <div class="col">
+
+                                          <h3 class="mb-0 fw-700 text-white">{{.Data.ITAssetRequests}}</h3>
+                                    </div>
+                                    <div class="col-auto">
+                                          <a href="/MyITAssetRequestList">
+                                                <i class="fas fa-exclamation-circle text-warning f-18"></i></a>
+                                    </div>
+                              </div>
+                              <h6 class="mb-0 text-white ">ITAsset Requests</h6>
+                        </div>
+                  </div>
+            </div>
+
+            <div class="col-xl-3 col-sm-6 col-md-4">
+                  <div class="card prod-p-card card-yellow">
+                        <div class="card-body">
+                              <div class="row align-items-center mb-30 ">
+                                    <div class="col">
+
+                                          <h3 class="mb-0 fw-700 text-white">{{.Data.ITAssetServiceRequests}}</h3>
+                                    </div>
+                                    <div class="col-auto">
+                                          <a href="#">
+                                                <i class="fas fa-exclamation-circle text-warning f-18"></i></a>
+                                    </div>
+                              </div>
+                              <h6 class="mb-0 text-white ">ITAsset Issue Service Requests</h6>
+                        </div>
+                  </div>
+            </div>
+    
+</div>
+
+
+{{template "footer"}}
+{{end}}

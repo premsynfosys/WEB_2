@@ -1,19 +1,252 @@
 {{define "dashboard"}}
 {{template "head" .}}
 
-<div class="card">
-      <div class="card-header">
-            <h3>Dashboard</h3>
+<div class="page-header">
+      <div class="row align-items-end">
+            <h4>Dashboard</h4>
       </div>
-      <div class="card-body d-flex justify-content-center">
-            <div class="card">
-                  <div class="card-header">No. of Employees</div>
-                  <div class="card-body text-center text-primary">
-                        <a href="/employees">
-                              <h1>{{.Data}}</h1>
-                        </a></div>
+</div>
+<div class="row">
+      {{if .Auth.EmployeeList}}
+      <div class="col-xl-3 col-sm-6 col-md-4">
+            <div class="card prod-p-card card-red">
+                  <div class="card-body">
+                        <div class="row align-items-center  mb-30 ">
+                              <div class="col">
+                                    <h3 class="mb-0 fw-700 text-white">{{.Data.ActivationPendingUsers}}</h3>
+                              </div>
+                              <div class="col-auto">
+                                    <a href="/UsersList"> <i class="fa fa-hand-point-up text-red f-18"></i></a>
+                              </div>
+                        </div>
+                        <h6 class="mb-0 text-white">Activation Pending</h6>
+                  </div>
             </div>
       </div>
+      {{end}}
+      {{if .Auth.EmployeeList}}
+      <div class="col-xl-3 col-sm-6 col-md-4">
+            <div class="card prod-p-card card-blue">
+                  <div class="card-body">
+                        <div class="row align-items-center  mb-30 ">
+                              <div class="col">
+
+                                    <h3 class="mb-0 fw-700 text-white">{{.Data.InActiveUsers}}</h3>
+                              </div>
+                              <div class="col-auto">
+                                    <a href="/UsersList"> <i class="fas fa-user-times text-blue f-18"></i></a>
+                              </div>
+                        </div>
+                        <h6 class="mb-0 text-white">InActive Users</h6>
+                  </div>
+            </div>
+      </div>
+      {{end}}
+</div>
+<div class="row">
+      {{if .Auth.ITAssetList}}
+      <div class="col-xl-3 col-sm-6 col-md-4">
+            <div class="card prod-p-card card-green">
+                  <div class="card-body">
+                        <div class="row align-items-center  mb-30 ">
+                              <div class="col">
+
+                                    <h3 class="mb-0 fw-700 text-white">{{.Data.ITAssetsAvailable}}</h3>
+                              </div>
+                              <div class="col-auto">
+                                    <a href="/ITAssets"> <i class="fas fa-tv text-green f-18"></i></a>
+                              </div>
+                        </div>
+                        <h6 class="mb-0 text-white ">ITAssets Available</h6>
+                  </div>
+            </div>
+      </div>
+      {{end}}
+      {{if .Auth.ITAssetList}}
+      <div class="col-xl-3 col-sm-6 col-md-4">
+            <div class="card prod-p-card card-red">
+                  <div class="card-body">
+                        <div class="row align-items-center  mb-30 ">
+                              <div class="col">
+
+                                    <h3 class="mb-0 fw-700 text-white">{{.Data.ITAssetsAssigned}}</h3>
+                              </div>
+                              <div class="col-auto">
+                                    <a href="/ITAssets"> <i class="fas fa-tv text-red f-18"></i></a>
+                              </div>
+                        </div>
+                        <h6 class="mb-0 text-white ">ITAssets Assigned</h6>
+                  </div>
+            </div>
+      </div>
+      {{end}}
+      {{if .Auth.ITAssetList}}
+      <div class="col-xl-3 col-sm-6 col-md-4">
+            <div class="card prod-p-card card-green">
+                  <div class="card-body">
+                        <div class="row align-items-center  mb-30 ">
+                              <div class="col">
+
+                                    <h3 class="mb-0 fw-700 text-white">{{.Data.ITAssetWarrentyExpired}}</h3>
+                              </div>
+                              <div class="col-auto">
+                                    <a href="/ITAssets"> <i class="fas fa-hourglass text-green f-18"></i></a>
+                              </div>
+                        </div>
+                        <h6 class="mb-0 text-white ">ITAsset Warranty Expire soon</h6>
+                  </div>
+            </div>
+      </div>
+      {{end}}
+    
+      {{if .Auth.ITAssetRequestList}}
+      <div class="col-xl-3 col-sm-6 col-md-4">
+            <div class="card prod-p-card card-blue">
+                  <div class="card-body">
+                        <div class="row align-items-center mb-30 ">
+                              <div class="col">
+                                    <h3 class="mb-0 fw-700 text-white">{{.Data.ITAssetApprovals}}</h3>
+                              </div>
+                              <div class="col-auto">
+                                    <a href="/ITAssets/RequestList"> <i class="fas fa-check text-blue f-18"></i></a>
+                              </div>
+                        </div>
+                        <h6 class="mb-0 text-white ">ITAsset Approvals</h6>
+                  </div>
+            </div>
+      </div>
+      {{end}}
+      
+      <div class="col-xl-3 col-sm-6 col-md-4">
+            <div class="card prod-p-card card-yellow">
+                  <div class="card-body">
+                        <div class="row align-items-center mb-30 ">
+                              <div class="col">
+
+                                    <h3 class="mb-0 fw-700 text-white">{{.Data.ITAssetServiceRequests}}</h3>
+                              </div>
+                              <div class="col-auto">
+                                    <a href="#">
+                                          <i class="fas fa-exclamation-circle text-warning f-18"></i></a>
+                              </div>
+                        </div>
+                        <h6 class="mb-0 text-white ">ITAsset Issue Service Requests</h6>
+                  </div>
+            </div>
+      </div>
+</div>
+<div class="row">
+     
+      {{if .Auth.NonITAssetRequestList}}
+      <div class="col-xl-3 col-sm-6 col-md-4">
+            <div class="card prod-p-card card-blue">
+                  <div class="card-body">
+                        <div class="row align-items-center mb-30 ">
+                              <div class="col">
+                                    <h3 class="mb-0 fw-700 text-white">{{.Data.NonITAssetApprovals}}</h3>
+                              </div>
+                              <div class="col-auto">
+                                    <a href="/NonITAssetRequestList"> <i class="fas fa-check text-blue f-18"></i></a>
+                              </div>
+                        </div>
+                        <h6 class="mb-0 text-white ">Non ITAsset Approvals</h6>
+                  </div>
+            </div>
+      </div>
+      {{end}}
+
+      {{if .Auth.NonITAssetList}}
+      <div class="col-xl-3 col-sm-6 col-md-4">
+            <div class="card prod-p-card card-red">
+                  <div class="card-body">
+                        <div class="row align-items-center mb-30 ">
+                              <div class="col">
+                                    <h3 class="mb-0 fw-700 text-white">{{.Data.NonITAssetThreshold}}</h3>
+                              </div>
+                              <div class="col-auto">
+                                    <a href="/NonITAsset/List"> <i class="fas fa-cart-plus text-red f-18"></i></a>
+                              </div>
+                        </div>
+                        <h6 class="mb-0 text-white ">Non ITAssets Threshold Reached</h6>
+                  </div>
+            </div>
+      </div>
+      {{end}}
+</div>
+<div class="row">
+      {{if .Auth.ConsumableList}}
+      <div class="col-xl-3 col-sm-6 col-md-4">
+            <div class="card prod-p-card card-red">
+                  <div class="card-body">
+                        <div class="row align-items-center mb-30 ">
+                              <div class="col">
+                                    <h3 class="mb-0 fw-700 text-white">{{.Data.ConsumableThreshold}}</h3>
+                              </div>
+                              <div class="col-auto">
+                                    <a href="/Consumables/ConsumableList"> <i
+                                                class="fas fa-cart-plus text-red f-18"></i></a>
+                              </div>
+                        </div>
+                        <h6 class="mb-0 text-white ">Consumables Threshold Reached</h6>
+                  </div>
+            </div>
+      </div>
+      {{end}}
+</div>
+<div class="row">
+      {{if .Auth.ApprovalList}}
+      <div class="col-xl-3 col-sm-6 col-md-4">
+            <div class="card prod-p-card card-red">
+                  <div class="card-body">
+                        <div class="row align-items-center mb-30 ">
+                              <div class="col">
+                                    <h3 class="mb-0 fw-700 text-white">{{.Data.OutwardApproval}}</h3>
+                              </div>
+                              <div class="col-auto">
+                                    <a href="/OWApprovalDeatils"> <i class="fas fa-check text-red f-18"></i></a>
+                              </div>
+                        </div>
+                        <h6 class="mb-0 text-white ">Outward Approval Requests</h6>
+                  </div>
+            </div>
+      </div>
+      {{end}}
+      {{if .Auth.OutWardList}}
+      <div class="col-xl-3 col-sm-6 col-md-4">
+            <div class="card prod-p-card card-yellow">
+                  <div class="card-body">
+                        <div class="row align-items-center mb-30 ">
+                              <div class="col">
+                                    <h3 class="mb-0 fw-700 text-white">{{.Data.ReadyToShip}}</h3>
+                              </div>
+                              <div class="col-auto">
+                                    <a href="/OutWardDetails"> <i class="fas fa-truck text-red f-18"></i></a>
+                              </div>
+                        </div>
+                        <h6 class="mb-0 text-white ">Ready To Transfer</h6>
+                  </div>
+            </div>
+      </div>
+      {{end}}
+      {{if .Auth.InWardList}}
+      <div class="col-xl-3 col-sm-6 col-md-4">
+            <div class="card prod-p-card card-blue">
+                  <div class="card-body">
+                        <div class="row align-items-center mb-30 ">
+                              <div class="col">
+                                    <h3 class="mb-0 fw-700 text-white">{{.Data.InWardAssets}}</h3>
+                              </div>
+                              <div class="col-auto">
+                                    <a href="/InWardDetails"> <i class="fas fa-truck text-black f-18"></i></a>
+                              </div>
+                        </div>
+                        <h6 class="mb-0 text-white ">InWard Assets In-Transit</h6>
+                  </div>
+            </div>
+      </div>
+      {{end}}
+
+
 </div>
 
 {{template "footer"}}

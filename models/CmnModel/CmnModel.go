@@ -1,8 +1,33 @@
 package CmnModel
+type EmployeeDashboard struct {
+	EmpID               int `json:"EmpID"`
+	LocID               int `json:"LocID"`
+	ITAssetsAssigned    int `json:"ITAssetsAssigned"`
+	NonITAssetsAssigned int `json:"NonITAssetsAssigned"`
+	ITAssetRequests        int `json:"ITAssetRequests"`
+	NonITAssetRequests     int `json:"NonITAssetRequests"`
+	ITAssetServiceRequests   int `json:"ITAssetServiceRequests"`
 
-// import (
-// 	ITAssetsmodel "github.com/premsynfosys/AMS_WEB/models/ITAssetsmodel"
-// )
+}
+type AdminDashBoard struct {
+	EmpID                  int `json:"EmpID"`
+	LocID                  int `json:"LocID"`
+	ActivationPendingUsers int `json:"ActivationPendingUsers"`
+	InActiveUsers          int `json:"InActiveUsers"`
+	ITAssetWarrentyExpired int `json:"ITAssetWarrentyExpired"`
+	
+	ITAssetApprovals       int `json:"ITAssetApprovals"`
+	NonITAssetApprovals    int `json:"NonITAssetApprovals"`
+
+	ITAssetsAvailable      int `json:"ITAssetsAvailable"`
+	ITAssetsAssigned       int `json:"ITAssetsAssigned"`
+	NonITAssetThreshold    int `json:"NonITAssetThreshold"`
+	ConsumableThreshold    int `json:"ConsumableThreshold"`
+	OutwardApproval        int `json:"OutwardApproval"`
+	ReadyToShip            int `json:"ReadyToShip"`
+	InWardAssets           int `json:"InWardAssets"`
+	ITAssetServiceRequests   int `json:"ITAssetServiceRequests"`
+}
 
 //TemplateData ..
 type TemplateData struct {

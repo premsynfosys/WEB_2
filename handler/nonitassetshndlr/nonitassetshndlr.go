@@ -698,3 +698,24 @@ func (p *INonITAsset) GetNonITAssetCheckinDetailsByEmp(w http.ResponseWriter, r 
 		utils.RespondwithJSON(w, r, http.StatusInternalServerError, nil)
 	}
 }
+
+func (p *INonITAsset) GetNonITAssetReqListByEmp(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	EmpID := params["EmpID"]
+	id, _ := strconv.Atoi(EmpID)
+	data, err := p.Irepo.GetNonITAssetReqListByEmp(r.Context(), id)
+	if err == nil {
+		utils.RespondwithJSON(w, r, http.StatusOK, data)
+	} else {
+		utils.RespondwithJSON(w, r, http.StatusBadRequest, nil)
+	}
+}
+
+func (p *INonITAsset) MyNonITAssetRequestList(w http.ResponseWriter, r *http.Request) {
+	usr, auth := utils.GetCookieUser(r)
+	Mapdata := CmnModel.TemplateData{
+		Auth: auth,
+		User: usr,
+	}
+	utils.ExecuteTemplate(w, r, "MyNonITAssetRequestList", Mapdata)
+}

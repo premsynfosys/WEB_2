@@ -10,7 +10,7 @@
                 </div>
             </div>
         </div>
-       
+
     </div>
 </div>
 <div class="row">
@@ -129,12 +129,16 @@
 
                 </div>
                 <div role="tabpanel" class="tab-pane fade" id="tabEmployeeItassets">
+                    <!-- <div class="container" style="overflow-x: auto; width: 100%;"> -->
                     <div class="  mt-2 row " id="divtabEmployeeItassets">
                     </div>
+                    <!-- </div> -->
                 </div>
                 <div role="tabpanel" class="tab-pane fade" id="tabEmployeeNonItassets">
-                    <div class="  mt-2 row ">
+
+                    <div class=" mt-2 row " id="divtabEmployeeNonItassets">
                     </div>
+
                 </div>
 
 
@@ -154,18 +158,41 @@
         //tabs
 
         $('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
-            localStorage.setItem('activeTab', $(e.target).attr('href'));
+            //localStorage.setItem('activeTab', $(e.target).attr('href'));
             if ($(e.target).attr('href') == "#tabEmployeeItassets") {
                 var assetid = $("#IDEmployees").val()
+                $("#divtabEmployeeNonItassets").empty()
                 var url = '/employee/' + assetid + '/ITassets'
                 $("#divtabEmployeeItassets").load(url);
 
+            } else if ($(e.target).attr('href') == "#tabEmployeeNonItassets") {
+                $("#divtabEmployeeItassets").empty()
+                $("#divtabEmployeeNonItassets").load("/NonITAssetCheckinDetails_Partial?mode=employee&ID=" + $("#IDEmployees").val(), function (response,
+                    status, http) {
+                })
+
+                setTimeout(function () {
+                    $('#tblNonITAssetsCheckIN').find('.mdlCheckin').removeClass('text-info').addClass('text-gray')
+                    $('#tblNonITAssetsCheckIN').find('.mdlCheckin').removeClass('mdlCheckin')
+                    $('#tblNonITAssetsCheckIN').find('.namelink').attr('href','#')
+                    
+                    if ($('#tblNonITAssetsCheckIN').find('.mdlCheckin').length > 0) {
+                        setTimeout(function () {
+                            $('#tblNonITAssetsCheckIN').find('.mdlCheckin').removeClass('text-info').addClass('text-gray')
+                            $('#tblNonITAssetsCheckIN').find('.mdlCheckin').removeClass('mdlCheckin')
+                            $('#tblNonITAssetsCheckIN').find('.namelink').attr('href','#')
+                        }, 1000);
+
+                    }
+                }, 500);
+
             }
+
         });
-        var activeTab = localStorage.getItem('activeTab');
-        if (activeTab) {
-            $('#AssetTab a[href="' + activeTab + '"]').tab('show');
-        }
+        // var activeTab = localStorage.getItem('activeTab');
+        // if (activeTab) {
+        //     $('#AssetTab a[href="' + activeTab + '"]').tab('show');
+        // }
         //end tabs
         // document.getElementById('CheckInDate').valueAsDate = new Date();
         //to show the name of file on file upload

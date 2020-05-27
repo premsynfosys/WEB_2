@@ -120,12 +120,13 @@
                             <span class="">Upload Files</span>
                         </button> -->
                         {{if  or (eq .User.RoleName "Admin") (eq .User.RoleName "Super Admin")}}
-                        <button data-toggle="modal" data-target="#modal" class="btn btn-info m-1 ">
+                        <button id="btnPrintQr" data-assetname="{{.Data.ITAssetName}}"
+                            data-Idnfctn="{{.Data.ITAssetIdentificationNo}}" class="btn btn-info m-1 ">
                             <i class="fa fa-print" aria-hidden="true"></i>
                             <span class="">Print QR</span>
                         </button>
                         {{end}}
-                      
+
                         {{if  or (eq .User.RoleName "Admin") (eq .User.RoleName "Super Admin")}}
                         <div class="btn-group m-1 dropleft">
                             <button type="button" class="btn btn-info dropdown-toggle  " data-toggle="dropdown"
@@ -237,7 +238,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="frmCreateITAssetsCheckIn" >
+                <form id="frmCreateITAssetsCheckIn">
                     <input type="hidden" name="IDITAssetCheckOutCheckIN"
                         value="{{.Data.ITassetCheckout.IDITAssetCheckOutCheckIN}}">
                     <div class="form-group row">
@@ -371,13 +372,13 @@
         });
         $('#CheckInDate').datetimepicker({
             format: 'YYYY-MM-DD',
-           
+
         });
 
 
         $('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
             var assetid = $("#AssetID").val()
-            localStorage.setItem('activeTab', $(e.target).attr('href'));
+            //  localStorage.setItem('activeTab', $(e.target).attr('href'));
             if ($(e.target).attr('href') == "#Files") {
                 $("#Files").load('/ITAssets/ITAssetView_Files/' + assetid + '', function () {
                 });
@@ -388,10 +389,10 @@
 
             }
         });
-        var activeTab = localStorage.getItem('activeTab');
-        if (activeTab) {
-            $('#AssetTab a[href="' + activeTab + '"]').tab('show');
-        }
+        // var activeTab = localStorage.getItem('activeTab');
+        // if (activeTab) {
+        //     $('#AssetTab a[href="' + activeTab + '"]').tab('show');
+        // }
         //end tabs
 
         //to show the name of file on file upload
@@ -442,10 +443,11 @@
             });
 
         });
-        $("#modalbody").load("/QrGenerator", "{{.Data.IDITAssets}}", function () {
+        $("#btnPrintQr").click(function () {
 
+            $("#modalbody").load("/QrGenerator?name={{.Data.ITAssetName}}&Idntfctn={{.Data.ITAssetIdentificationNo}}")
+            $("#modal").modal('show')
         })
-
 
 
         $("#ServiceSchedule").click(function () {

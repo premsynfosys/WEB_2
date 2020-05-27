@@ -364,3 +364,20 @@ func (m *APIRepo) GetNonITAssetCheckinDetailsByEmp(ctx context.Context, EmpID in
 	}
 	return data, nil
 }
+
+
+func (m *APIRepo) GetNonITAssetReqListByEmp(ctx context.Context, EmpID int) ([]*NonITAssets_mdl.NonITAssetReqList, error) {
+	url := fmt.Sprintf(m.APIConn+"/GetNonITAssetReqListByEmp/%d", EmpID)
+	bytes, err := utils.PutRequest(url, nil)
+	if err != nil {
+		return nil, err
+	}
+	data := []*NonITAssets_mdl.NonITAssetReqList{}
+	err = json.Unmarshal(bytes, &data)
+	if err != nil {
+		return nil, err
+	} else {
+		return data, nil
+	}
+
+}

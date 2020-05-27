@@ -43,14 +43,39 @@ func (p *ICommonrep) Emp(w http.ResponseWriter, r *http.Request) {
 //Dashboard sfc
 func (p *ICommonrep) Dashboard(w http.ResponseWriter, r *http.Request) {
 	usr, Auth := utils.GetCookieUser(r)
+	in:=CmnModel.AdminDashBoard{}
+	in.EmpID=usr.EmployeeID
+	in.LocID=usr.LocationID
+	
+	data, _ := p.Irepo.GetAdminDashBoard(r.Context(), in)
+	
 	Mapdata := CmnModel.TemplateData{
-		Data: 99,
+		Data: data,
 		User: usr,
 		Auth: Auth,
 	}
 
 	utils.ExecuteTemplate(w, r, "dashboard", Mapdata)
 }
+
+
+func (p *ICommonrep) MyDashBoard(w http.ResponseWriter, r *http.Request) {
+	usr, Auth := utils.GetCookieUser(r)
+	in:=CmnModel.EmployeeDashboard{}
+	in.EmpID=usr.EmployeeID
+	in.LocID=usr.LocationID
+	
+	data, _ := p.Irepo.GetEmployeeDashboard(r.Context(), in)
+	
+	Mapdata := CmnModel.TemplateData{
+		Data: data,
+		User: usr,
+		Auth: Auth,
+	}
+
+	utils.ExecuteTemplate(w, r, "MyDashBoard", Mapdata)
+}
+
 
 // Transfer ..
 func (p *ICommonrep) Transfer(w http.ResponseWriter, r *http.Request) {
@@ -435,9 +460,9 @@ func (p *ICommonrep) TransferApprovReject(w http.ResponseWriter, r *http.Request
 	params := mux.Vars(r)
 	idInWardOutWard := params["idInWardOutWard"]
 	status := params["status"]
-	comments:=r.URL.Query().Get("comments")
+	comments := r.URL.Query().Get("comments")
 	IDInWardOutWard, _ := strconv.Atoi(idInWardOutWard)
-	err := p.Irepo.TransferApprovReject(r.Context(), IDInWardOutWard, status,comments)
+	err := p.Irepo.TransferApprovReject(r.Context(), IDInWardOutWard, status, comments)
 	if err == nil {
 		utils.RespondwithJSON(w, r, http.StatusOK, nil)
 	} else {
@@ -651,7 +676,6 @@ func (p *ICommonrep) IWOW_ApprovalStatusList(w http.ResponseWriter, r *http.Requ
 	}
 }
 
-
 func (p *ICommonrep) InwardOutwardReqForward(w http.ResponseWriter, r *http.Request) {
 	res := CmnModel.InWardOutWardApproval{}
 	json.NewDecoder(r.Body).Decode(&res)
@@ -662,3 +686,14 @@ func (p *ICommonrep) InwardOutwardReqForward(w http.ResponseWriter, r *http.Requ
 		utils.RespondwithJSON(w, r, http.StatusBadRequest, nil)
 	}
 }
+
+// func (p *ICommonrep) GetAdminDashBoard(w http.ResponseWriter, r *http.Request) {
+// 	res := CmnModel.AdminDashBoard{}
+// 	json.NewDecoder(r.Body).Decode(&res)
+// 	data, err := p.Irepo.GetAdminDashBoard(r.Context(), res)
+// 	if err == nil {
+// 		utils.RespondwithJSON(w, r, http.StatusOK, data)
+// 	} else {
+// 		utils.RespondwithJSON(w, r, http.StatusBadRequest, nil)
+// 	}
+// }

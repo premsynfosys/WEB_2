@@ -477,17 +477,17 @@
         })
 
         $('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
-            localStorage.setItem('activeTab', $(e.target).attr('href'));
+           // localStorage.setItem('activeTab', $(e.target).attr('href'));
             if ($(e.target).attr('href') == "#ConsumableHistory") {
                 $("#divConsumableHistory").load('/Consumables/ConsumableOprtnListByID/{{.Data.IDConsumables}}', function () {
                 });
 
             }
         });
-        var activeTab = localStorage.getItem('activeTab');
-        if (activeTab) {
-            $('#ConsumableTab a[href="' + activeTab + '"]').tab('show');
-        }
+        // var activeTab = localStorage.getItem('activeTab');
+        // if (activeTab) {
+        //     $('#ConsumableTab a[href="' + activeTab + '"]').tab('show');
+        // }
 
 
         $("#frmAddstock input[name='TotalStockPrice']").val($("#frmAddstock input[name='Quantity']").val() * $("#frmAddstock input[name='UnitPrice']").val())

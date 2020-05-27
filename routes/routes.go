@@ -41,7 +41,9 @@ func ConsumablesRoutings(r *mux.Router, hndl *cnsmblhndlr.IConsumables) {
 
 //ITAssetsRoutings ..
 func ITAssetsRoutings(r *mux.Router, hndl *itassethndlr.IITAsset) {
+	r.HandleFunc("/MyITAssetRequestList", utils.AuthRequired(hndl.MyITAssetRequestList))
 	r.HandleFunc("/ITAssetReqForward", utils.AuthRequired(hndl.ITAssetReqForward))
+	r.HandleFunc("/GetITAssetReqListByEmp/{EmpID}",  utils.AuthRequired(hndl.GetITAssetReqListByEmp))
 	r.HandleFunc("/ITAsset_Service_Request_Resolve", utils.AuthRequired(hndl.ITAsset_Service_Request_Resolve))
 	r.HandleFunc("/ITAssets/view/{id:[0-9]+}", utils.AuthRequired(hndl.GetITAssetsByID))
 	r.HandleFunc("/ITAssets/create", utils.AuthRequired(hndl.CreateITAsset))
@@ -97,6 +99,7 @@ func CommonRoutings(r *mux.Router, hndl *cmnhandler.ICommonrep) {
 		utils.ServeWs(hub, w, r)
 	})
 
+
 	r.HandleFunc("/GetMultiLevelApproval_Map", utils.AuthRequired(hndl.GetMultiLevelApproval_Map))
 	r.HandleFunc("/InwardOutwardReqForward", utils.AuthRequired(hndl.InwardOutwardReqForward))
 	r.HandleFunc("/IWOW_ApprovalStatusList/{IDinwardoutward}", utils.AuthRequired(hndl.IWOW_ApprovalStatusList))
@@ -114,6 +117,7 @@ func CommonRoutings(r *mux.Router, hndl *cmnhandler.ICommonrep) {
 	r.HandleFunc("/logout", hndl.LogOut)
 	r.HandleFunc("/GetNotifications", utils.AuthRequired(hndl.GetNotifications))
 	r.HandleFunc("/dashboard", utils.AuthRequired(hndl.Dashboard))
+	r.HandleFunc("/MyDashBoard", utils.AuthRequired(hndl.MyDashBoard))
 	r.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("./static"))))
 	r.PathPrefix("/AppFiles/").Handler(http.StripPrefix("/AppFiles/", http.FileServer(http.Dir("./AppFiles"))))
 	r.HandleFunc("/Location", utils.AuthRequired(hndl.Location))
@@ -182,6 +186,8 @@ func CommonRoutings(r *mux.Router, hndl *cmnhandler.ICommonrep) {
 func NonITAssetsRoutings(r *mux.Router, hndl *nonitassetshndlr.INonITAsset) {
 	r.HandleFunc("/CheckDuplicateNonITAssetEntry/{MasterID:[0-9]+}/{LocID:[0-9]+}", utils.AuthRequired(hndl.CheckDuplicateNonITAssetEntry))
 	r.HandleFunc("/Check_Unique_NonITAsset/{NonITAssetName}", utils.AuthRequired(hndl.Check_Unique_NonITAsset))
+	r.HandleFunc("/GetNonITAssetReqListByEmp/{EmpID}", utils.AuthRequired(hndl.GetNonITAssetReqListByEmp))
+	r.HandleFunc("/MyNonITAssetRequestList", utils.AuthRequired(hndl.MyNonITAssetRequestList))
 	r.HandleFunc("/NonITAsset/Create", utils.AuthRequired(hndl.NonITAsset_Create))
 	r.HandleFunc("/NonITAsset/Edit/{IDNonITAsset}", utils.AuthRequired(hndl.NonITAsset_Edit))
 	r.HandleFunc("/GetNonITAssetMasterList", utils.AuthRequired(hndl.GetNonITAssetMasterList))

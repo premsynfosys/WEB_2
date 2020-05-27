@@ -1,31 +1,22 @@
 {{  define "NonITAssetCheckinDetails_Partial"}}
 <input type="hidden" id="mode" value="{{.Mode}}" />
 <input type="hidden" id="ID" value="{{.ID}}" />
-<div class="row">
+<div class="container">
+    <div class="dt-responsive">
+        <table class="table table-striped table-hover  nowrap table-bordered  " id="tblNonITAssetsCheckIN">
+            <thead>
+                <th>IDNonITAssets_Checkout_Checkin</th>
+                <th>Action</th>
+                <th>Asset Name</th>
+                <th>Identification No</th>
+                <th>Assigned To</th>
+                <th>CheckOut Comments</th>
+                <th>Assigned Quantity</th>
 
-    <div class="col-md-12">
-        <div class="card">
-            <div class="card-block">
-                <div class="dt-responsive">
-                    <table class="table table-striped table-hover  table-bordered nowrap " width="100%"
-                        id="tblNonITAssetsCheckIN">
-                        <thead>
-                            <th>IDNonITAssets_Checkout_Checkin</th>
-                            <th>Action</th>
-                            <th>Asset Name</th>
-                            <th>Identification No</th>
-                            <th>Assigned To</th>
-                            <th>CheckOut Comments</th>
-                            <th>Assigned Quantity</th>
-                            <th>In Use</th>
-                            <th>Assigned On</th>
-                            <th>Assigned By</th>
-                        </thead>
-                    </table>
-                </div>
-            </div>
-        </div>
-
+                <th>Assigned On</th>
+                <th>Assigned By</th>
+            </thead>
+        </table>
         <div id="tblbtn" class="btn-group dropright float-left ">
             <button type="button" class="btn btn-info dropdown-toggle  " data-toggle="dropdown" aria-haspopup="true"
                 aria-expanded="false">
@@ -44,11 +35,12 @@
 
                 <div class="dropdown-divider"></div>
             </div>
+
         </div>
     </div>
+
+
 </div>
-
-
 
 
 <!-- Modal -->
@@ -170,7 +162,7 @@
                     "name": "NonITAssets_Name",
                     'data': null,
                     render: function (dt) {
-                        return '<a  href="/NonITAsset/AssetID/' + dt.NonITAssets.IDNonITAsset + '" class="text-warning font-weight-bold">' + dt.AssetName + '</a> ';
+                        return '<a  href="/NonITAsset/AssetID/' + dt.NonITAssets.IDNonITAsset + '" class="text-warning namelink font-weight-bold">' + dt.AssetName + '</a> ';
                     }
                 }, {
                     "name": "IdentificationNo",
@@ -191,13 +183,10 @@
                     "name": "CheckOut_Qnty",
                     "data": null,
                     render: function (dt) {
-                        return '<a href="#" data-CheckinID="' + dt.IDNonITAssets_Checkout_Checkin + '"  class="text-info font-weight-bold mdlCheckinHistory" title="CheckInHistory">' + dt.CheckOut_Qnty + '</a> ';
+                        return '<a href="#" data-CheckinID="' + dt.IDNonITAssets_Checkout_Checkin + '"  class="text-info font-weight-bold mdlCheckinHistory" title="CheckInHistory">' + dt.InUse + '</a> ';
 
                     }
 
-                }, {
-                    "name": "InUse",
-                    "data": "InUse"
                 }, {
                     "name": "CheckedOutDate",
                     'data': 'CheckedOutDate',

@@ -105,7 +105,10 @@
                         <button data-toggle="modal" data-target="#retiremodal" class="btn btn-info m-1 ">Retire
                             Stock</button>
 
-
+                        <button id="btnPrintQr" class="btn btn-info m-1 ">
+                            <i class="fa fa-print" aria-hidden="true"></i>
+                            <span class="">Print QR</span>
+                        </button>
 
                     </div>
                 </div>
@@ -402,21 +405,23 @@
         })
 
         $('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
-            localStorage.setItem('activeTab', $(e.target).attr('href'));
+            //localStorage.setItem('activeTab', $(e.target).attr('href'));
             if ($(e.target).attr('href') == "#NonITAssetHistory") {
+                $("#divNonITAssetCheckIN").empty()
                 $("#divNonITAssetHistory").load('/NonITAssetOprtnListByID/{{.Data.IDNonITAsset}}', function () {
                 });
 
             } else if ($(e.target).attr('href') == "#NonITAssetCheckIN") {
+                $("#divNonITAssetHistory").empty()
                 $("#divNonITAssetCheckIN").load("/NonITAssetCheckinDetails_Partial?mode=asset&ID={{.Data.IDNonITAsset}}")
 
             }
 
         });
-        var activeTab = localStorage.getItem('activeTab');
-        if (activeTab) {
-            $('#AssetTab a[href="' + activeTab + '"]').tab('show');
-        }
+        // var activeTab = localStorage.getItem('activeTab');
+        // if (activeTab) {
+        //     $('#AssetTab a[href="' + activeTab + '"]').tab('show');
+        // }
 
 
         $("#frmAddstock input[name='TotalStockPrice']").val($("#frmAddstock input[name='Quantity']").val() * $("#frmAddstock input[name='UnitPrice']").val())
@@ -485,8 +490,15 @@
             $("#StatusID").append($("<option />", { text: el.StatusName, value: el.IDStatus }));
         });
     }
+    $("#modalbody").load("/QrGenerator", 1, function () {
 
+    })
 
+    $("#btnPrintQr").click(function () {
+
+        $("#modalbody").load("/QrGenerator?name={{.Data.NonITAssets_Master.NonITAssets_Name}}&Idntfctn={{.Data.IdentificationNo}}")
+        $("#modal").modal('show')
+    })
     function PrintQr() {
         var url = window.location.href;
         window.open("/PrintQr?url=" + url + "")

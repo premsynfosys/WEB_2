@@ -1,7 +1,8 @@
 {{define "QrGenerator"}}
 <div class="container">
     <form id="frmPrintQr">
-        <input type="hidden" name="IdntficationNumber" id="IdntficationNumber" value="{{.ITAssetIdentificationNo}}">
+        <input type="hidden" name="Assetname" id="Assetname" value="{{.Name}}">
+        <input type="hidden" name="Idntfctn" id="Idntfctn" value="{{.Idntfctn}}">
 
         <div class="form-group row justify-content-center">
             <div class="btn-group btn-group-toggle" data-toggle="buttons">
@@ -66,16 +67,16 @@
             } else {
                 var size = $("input[name='size']:checked").val()
             }
-            var IdntficationNumber = $("#IdntficationNumber").val()
+          //  var IdntficationNumber = $("#IdntficationNumber").val()
            
 
             var url = window.location.href;
             $.ajax({
-                url: "/PrintQr?url=" + url + "&&IdntficationNumber=" + IdntficationNumber + " &&size=" + size + "",
+                url: "/PrintQr?url=" + url + "&&IdntficationNumber={{.Idntfctn}}&&size=" + size + "",
                 type: 'GET',
                 async: false,
                 success: function (data) {
-                    var str = "{{.ITAssetIdentificationNo}}";
+                    var str = $("#Idntfctn").val();
                     var res = str.replace(/\//g, "");
                     $("#imgQR").attr("src", "/AppFiles/Images/QR/" + res + ".png?t=" + new Date().getTime())
                 }
@@ -86,7 +87,7 @@
     function SourcetoPrint(source, copies) {
         var img = ""
         for (i = 0; i < copies; i++) {
-            img = img + "<p>{{.ITAssetName}}</p><img  src='" + source + "' /><p>{{.ITAssetIdentificationNo}}</p>"
+            img = img + "<p>"+$("#Assetname").val()+"</p><img  src='" + source + "' /><p>"+$("#Idntfctn").val()+"</p>"
         }
        
         return "<html><head><script>function step1(){\n" +
@@ -102,7 +103,7 @@
        
         if (copies == "")
             copies = 1
-        var str = "{{.ITAssetIdentificationNo}}";
+        var str =$("#Idntfctn").val();
         var res = str.replace(/\//g, "");
         pwa.document.write(SourcetoPrint("/AppFiles/Images/QR/" + res + ".png", copies));
         pwa.document.close();

@@ -508,7 +508,7 @@ func (p *ICommonrep) Login(w http.ResponseWriter, r *http.Request) {
 			session, _ := utils.SessionStore.Get(r, "session")
 			session.Values["authenticated"] = true
 			session.Save(r, w)
-			http.Redirect(w, r, "/dashboard", http.StatusMovedPermanently)
+			http.Redirect(w, r, "/MyDashBoard", http.StatusMovedPermanently)
 
 		} else {
 			err := map[string]bool{

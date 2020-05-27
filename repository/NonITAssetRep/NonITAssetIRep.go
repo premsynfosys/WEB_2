@@ -8,6 +8,7 @@ import (
 
 // NonITAssetIntrfc explain method def...
 type NonITAssetIntrfc interface {
+	GetNonITAssetReqListByEmp(ctx context.Context, EmpID int) ([]*NonITAssets_mdl.NonITAssetReqList, error)
 	GetNonITAssetMasterList(ctx context.Context) ([]*NonITAssets_mdl.NonITAssets_Master, error)
 	CreateNonITAsset(ctx context.Context, mdl *NonITAssets_mdl.NonITAssets) error
 	GetNonITAssetLists(ctx context.Context,LocID int) ([]*NonITAssets_mdl.NonITAssets, error)

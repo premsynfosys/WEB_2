@@ -422,3 +422,18 @@ func (m *APIRepo) ITAssetReqForward(ctx context.Context, mdl *ITAssetsmodel.ITAs
 
 	return err
 }
+
+
+func (m *APIRepo) GetITAssetReqListByEmp(ctx context.Context, EmpID int) ([]*ITAssetsmodel.ITAssetReqList, error) {
+	url := fmt.Sprintf(m.APIConn+"/GetITAssetReqListByEmp/%d", EmpID)
+	bytes, err := utils.GetRequest(url)
+	if err != nil {
+		return nil, err
+	}
+	data := make([]*ITAssetsmodel.ITAssetReqList, 0)
+	err = json.Unmarshal(bytes, &data)
+	if err != nil {
+		return nil, err
+	}
+	return data, nil
+}

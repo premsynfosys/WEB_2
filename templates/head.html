@@ -330,13 +330,25 @@
                         <div class="sidebar-content">
                               <div class="nav-container">
                                     <nav id="main-menu-navigation" class="navigation-main">
+                                          <div class="nav-lavel">My Details</div>
+                                          <div class="nav-item">
+                                                <a href="/MyDashBoard"><i class="ik ik-bar-chart-2"></i><span>My
+                                                            Dashboard</span></a>
+                                                <a href="/MyDetails/{{.User.IDEmployees}}"><i
+                                                            class="ik ik-user"></i><span>My Details</span></a>
+                                                <a href="/MyITAssetRequestList"><i
+                                                            class="ik ik-monitor"></i><span>ITAsset Request List</span></a>
+                                                            <a href="/MyNonITAssetRequestList"><i
+                                                                  class="ik ik-monitor"></i><span>Non ITAsset Request List</span></a>
+                                          </div>
+                                          {{if or (eq .User.RoleID 2) (eq .User.RoleID 1)   }}
                                           <div class="nav-lavel">MENU</div>
                                           <div class="nav-item">
                                                 <a href="/dashboard"><i
                                                             class="ik ik-bar-chart-2"></i><span>Dashboard</span></a>
-                                                <a href="/MyDetails/{{.User.IDEmployees}}"><i
-                                                            class="ik ik-user"></i><span>My Details</span></a>
+
                                           </div>
+                                          {{end}}
                                           <div class="nav-lavel">Modules</div>
                                           <div class="nav-item has-sub">
                                                 <a href="#"><i class="ik ik-users"></i><span>User</span></a>
@@ -463,32 +475,42 @@
                                                                   class="ik ik-alert-circle"></i>Approval List</a>
                                                       {{end}} </div>
                                           </div>
-                                        
+
                                           <div class="nav-item has-sub">
                                                 <a href="#"><i class="ik ik-settings"></i><span>Settings</span></a>
+                                                {{if .Auth.Lcations}}
                                                 <div class="submenu-content">
                                                       <a href="/LocationsDetails" class="menu-item"><i
                                                                   class="ik ik-map-pin"></i><span>Locations</span></a>
                                                 </div>
+                                                {{end}}
+                                                {{if .Auth.Vendors}}
                                                 <div class="submenu-content">
                                                       <a href="/VendorsDetails" class="menu-item"><i
                                                                   class="ik ik-briefcase"></i><span>Vendors</span></a>
                                                 </div>
+                                                {{end}}
+                                                {{if .Auth.Authorizations}}
                                                 <div class="submenu-content">
                                                       <a href="/Authorization" class="menu-item"><i
                                                                   class="ik ik-lock"></i><span>Authorization</span></a>
                                                 </div>
+                                                {{end}}
+                                                {{if .Auth.AddNonITAssetNames}}
                                                 <div class="submenu-content">
                                                       <a href="/NonITAssetMasterAdd" class="menu-item"><span>NonITAsset
                                                                   Names</span></a>
                                                 </div>
+                                                {{end}}
+                                                {{if .Auth.MultiLevelApproval}}
                                                 <div class="submenu-content">
                                                       <a href="/MultiApproval" class="menu-item"><i
                                                                   class="ik ik-user-check"></i><span>Multi Level
                                                                   Approval</span></a>
                                                 </div>
+                                                {{end}}
                                           </div>
-                                         
+
                                     </nav>
                               </div>
                         </div>

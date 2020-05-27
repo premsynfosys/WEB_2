@@ -203,8 +203,8 @@ func (m *APIRepo) IWOWDetailsByAprvr(ctx context.Context, AprvrEmpID int) ([]*Cm
 }
 
 //TransferApprovReject ..
-func (m *APIRepo) TransferApprovReject(ctx context.Context, idInWardOutWard int, status string,comments string) error {
-	url := fmt.Sprintf(m.APIConn+"/TransferApprovReject/%d/%v?comments=%v", idInWardOutWard, status,comments)
+func (m *APIRepo) TransferApprovReject(ctx context.Context, idInWardOutWard int, status string, comments string) error {
+	url := fmt.Sprintf(m.APIConn+"/TransferApprovReject/%d/%v?comments=%v", idInWardOutWard, status, comments)
 	_, err := utils.GetRequest(url)
 	return err
 }
@@ -813,7 +813,6 @@ func (m *APIRepo) VednorsAssetMapUpdate(ctx context.Context, mdl CmnModel.Vendor
 
 }
 
-
 func (m *APIRepo) IWOW_ApprovalStatusList(ctx context.Context, IDinwardoutward int) ([]*CmnModel.InWardOutWardApproval, error) {
 	url := fmt.Sprintf(m.APIConn+"/IWOW_ApprovalStatusList/%d", IDinwardoutward)
 	bytes, err := utils.GetRequest(url)
@@ -842,5 +841,46 @@ func (m *APIRepo) InwardOutwardReqForward(ctx context.Context, mdl CmnModel.InWa
 	err = json.Unmarshal(bytes, &er)
 
 	return err
+
+}
+
+func (m *APIRepo) GetAdminDashBoard(ctx context.Context, mdl CmnModel.AdminDashBoard) (*CmnModel.AdminDashBoard, error) {
+	url := fmt.Sprintf(m.APIConn + "/GetAdminDashBoard")
+	j, err := json.Marshal(mdl)
+	if err != nil {
+		return nil, err
+	}
+	bytes, err := utils.PutRequest(url, j)
+	if err != nil {
+		return nil, err
+	}
+	data := CmnModel.AdminDashBoard{}
+	err = json.Unmarshal(bytes, &data)
+	if err != nil {
+		return nil, err
+	} else {
+		return &data, nil
+	}
+
+}
+
+
+func (m *APIRepo) GetEmployeeDashboard(ctx context.Context, mdl CmnModel.EmployeeDashboard) (*CmnModel.EmployeeDashboard, error) {
+	url := fmt.Sprintf(m.APIConn + "/GetEmployeeDashboard")
+	j, err := json.Marshal(mdl)
+	if err != nil {
+		return nil, err
+	}
+	bytes, err := utils.PutRequest(url, j)
+	if err != nil {
+		return nil, err
+	}
+	data := CmnModel.EmployeeDashboard{}
+	err = json.Unmarshal(bytes, &data)
+	if err != nil {
+		return nil, err
+	} else {
+		return &data, nil
+	}
 
 }
