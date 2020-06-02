@@ -146,7 +146,7 @@
                                 {{if eq  $element.Module "Non ITAssets"}}
                                 <div class="checkbox-fade fade-in-primary">
                                     <label>
-                                        <input id="{{$element.Feature_Name}}" value="{{$element.IDFeatures_list}}"
+                                        <input id="{{$element.IDFeatures_list}}" value="{{$element.IDFeatures_list}}"
                                             type="checkbox">
                                         <span class="cr">
                                             <i class="cr-icon ik ik-check txt-primary"></i>
@@ -208,7 +208,7 @@
                                 {{if eq  $element.Module "Requests"}}
                                 <div class="checkbox-fade fade-in-primary">
                                     <label>
-                                        <input id="{{$element.Feature_Name}}" value="{{$element.IDFeatures_list}}"
+                                        <input id="{{$element.IDFeatures_list}}" value="{{$element.IDFeatures_list}}"
                                             type="checkbox">
                                         <span class="cr">
                                             <i class="cr-icon ik ik-check txt-primary"></i>
@@ -270,7 +270,38 @@
                                 {{if eq  $element.Module "Settings"}}
                                 <div class="checkbox-fade fade-in-primary">
                                     <label>
-                                        <input id="{{$element.Feature_Name}}" value="{{$element.IDFeatures_list}}"
+                                        <input id="{{$element.IDFeatures_list}}" value="{{$element.IDFeatures_list}}"
+                                            type="checkbox">
+                                        <span class="cr">
+                                            <i class="cr-icon ik ik-check txt-primary"></i>
+                                        </span>
+                                        <span>{{$element.Feature_Name}}</span>
+                                    </label>
+                                </div>
+                                {{end}}
+                                {{end}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-12 col-xl-12 mb-30">
+                            <h4 class="sub-title">
+                                <div class=" checkbox-fade fade-in-warning">
+                                    <label>
+                                        <input id="chkPO" type="checkbox">
+                                        <span class="cr">
+                                            <i class="cr-icon ik ik-check txt-warning"></i>
+                                        </span>
+                                        <span>Purchase Order</span>
+                                    </label>
+                                </div>
+                            </h4>
+                            <div id="divPO">
+                                {{ range $element :=  .Data.Features}}
+                                {{if eq  $element.Module "PO"}}
+                                <div class="checkbox-fade fade-in-primary">
+                                    <label>
+                                        <input id="{{$element.IDFeatures_list}}" value="{{$element.IDFeatures_list}}"
                                             type="checkbox">
                                         <span class="cr">
                                             <i class="cr-icon ik ik-check txt-primary"></i>
@@ -393,6 +424,13 @@
                 $("#divSettings").find('input[type="checkbox"]').prop('checked', true);
             } else {
                 $("#divSettings").find('input[type="checkbox"]').prop('checked', false);
+            }
+        });
+        $("#chkPO").change(function () {
+            if ($(this).prop('checked')) {
+                $("#divPO").find('input[type="checkbox"]').prop('checked', true);
+            } else {
+                $("#divPO").find('input[type="checkbox"]').prop('checked', false);
             }
         });
 

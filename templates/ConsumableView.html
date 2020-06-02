@@ -24,7 +24,7 @@
                         <i class="fa fa-clone" aria-hidden="true"></i><span> Clone</span>
                     </a> -->
                     {{if .Auth.DeleteConsumable }}
-                    <a class="dropdown-item" id="bulkdelete" href="#"> <i class="ik ik-trash " aria-hidden="true"></i>
+                    <a class="dropdown-item list-delete" id="bulkdelete" href="#"> <i class="ik ik-trash " aria-hidden="true"></i>
                         <span>Delete</span>
                     </a>
                     {{end}}
@@ -528,6 +528,35 @@
 
     }
 
+
+    $(document).ready(function () {
+        var listDelete = $('.list-delete');
+        listDelete.on('click', function () {
+            swal({
+                title: "Are you sure?",
+                text: "Record will be delete Permanently.",
+                icon: "warning",
+                buttons: ["Cancel", "Delete"],
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        swal({
+                            title: "Deleted",
+                            text: "Consumable  has been deleted!",
+                            icon: "success",
+                        });
+
+                        window.location = "http://" + document.location.host + "/ConsumableDelete/{{.Data.IDConsumables}}"
+
+
+                    } else {
+                        swal("Consumable is not deleted!");
+                    }
+                });
+        });
+
+    })
 
 
 </script>

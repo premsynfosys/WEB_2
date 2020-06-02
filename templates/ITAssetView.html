@@ -22,10 +22,13 @@
                     <!-- <a class="dropdown-item" href="/ITAssets/create?mode=clone&&id={{.Data.IDITAssets}}">
                         <i class="fa fa-clone" aria-hidden="true"></i><span> Clone</span>
                     </a> -->
-                    <a class="dropdown-item" href="#"> <i class="ik ik-trash " aria-hidden="true"></i>
+                    {{if .Auth.DeleteITAsset }}
+                    {{if eq .Data.Statusname "Available"}}
+                    <a class="dropdown-item list-delete" href="#"> <i class="ik ik-trash " aria-hidden="true"></i>
                         <span> Delete</span>
                     </a>
-
+                    {{end}}
+                    {{end}}
                 </div>
             </div>
             <a class="float-right  font-weight-bold btn btn-outline-primary btn-rounded mr-1" title="List of History"
@@ -380,10 +383,13 @@
             var assetid = $("#AssetID").val()
             //  localStorage.setItem('activeTab', $(e.target).attr('href'));
             if ($(e.target).attr('href') == "#Files") {
+                $("#Maintenance").empty()
                 $("#Files").load('/ITAssets/ITAssetView_Files/' + assetid + '', function () {
                 });
 
             } if ($(e.target).attr('href') == "#Maintenance") {
+                $("#Files").empty()
+
                 $("#Maintenance").load('/ITAssetView_Maintenance/' + assetid + '', function () {
                 });
 
@@ -496,6 +502,36 @@
         var url = window.location.href;
         window.open("/PrintQr?url=" + url + "")
     }
+
+    $(document).ready(function () {
+        var listDelete = $('.list-delete');
+        listDelete.on('click', function () {
+            swal({
+                title: "Are you sure?",
+                text: "Record will be delete Permanently.",
+                icon: "warning",
+                buttons: ["Cancel", "Delete"],
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        swal({
+                            title: "Deleted",
+                            text: "ITAsset  has been deleted!",
+                            icon: "success",
+                        });
+
+                        window.location = "http://" + document.location.host + "/ITAssetDelete/{{.Data.IDITAssets}}"
+
+
+                    } else {
+                        swal("ITAsset is not deleted!");
+                    }
+                });
+        });
+
+    })
+
 
 </script>
 {{template "footer"}}

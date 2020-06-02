@@ -55,6 +55,7 @@
       <script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.print.min.js"></script>
       <script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.colVis.min.js"></script>
       <script src="/static/plugins/sweetalert/dist/sweetalert.min.js"></script>
+      <script src="/static/plugins/jquery.repeater/jquery.repeater.min.js"></script>
 
 
 
@@ -337,9 +338,11 @@
                                                 <a href="/MyDetails/{{.User.IDEmployees}}"><i
                                                             class="ik ik-user"></i><span>My Details</span></a>
                                                 <a href="/MyITAssetRequestList"><i
-                                                            class="ik ik-monitor"></i><span>ITAsset Request List</span></a>
-                                                            <a href="/MyNonITAssetRequestList"><i
-                                                                  class="ik ik-monitor"></i><span>Non ITAsset Request List</span></a>
+                                                            class="ik ik-monitor"></i><span>ITAsset Request
+                                                            List</span></a>
+                                                <a href="/MyNonITAssetRequestList"><i
+                                                            class="ik ik-monitor"></i><span>Non ITAsset Request
+                                                            List</span></a>
                                           </div>
                                           {{if or (eq .User.RoleID 2) (eq .User.RoleID 1)   }}
                                           <div class="nav-lavel">MENU</div>
@@ -360,7 +363,7 @@
                                                 </div>
                                           </div>
                                           <div class="nav-item has-sub">
-                                                <a href="#"><i class="ik ik-gitlab"></i><span>Employees</span>
+                                                <a href="#"><i class="fa fa-users"></i><span>Employees</span>
                                                 </a>
                                                 <div class="submenu-content">
                                                       {{if .Auth.EmployeeList  }}
@@ -437,7 +440,7 @@
                                           </div>
                                           <div class="nav-lavel">Extra</div>
                                           <div class="nav-item has-sub">
-                                                <a href="#"><i class="ik ik-edit"></i><span>Requests</span></a>
+                                                <a href="#"><i class="fa fa-check-square"></i><span>Requests</span></a>
                                                 <div class="submenu-content">
                                                       {{if .Auth.ITAssetRequestList}}
                                                       <a href="/ITAssets/RequestList" class="menu-item">ITAssets</a>
@@ -474,6 +477,35 @@
                                                       <a href="/OWApprovalDeatils" class="menu-item"><i
                                                                   class="ik ik-alert-circle"></i>Approval List</a>
                                                       {{end}} </div>
+                                          </div>
+
+
+                                          <div class="nav-item has-sub">
+                                                <a href="#"><i class="ik ik-dollar-sign"></i><span>Purchase
+                                                            Order</span></a>
+                                                {{if .Auth.CreatePO}}
+                                                <div class="submenu-content">
+                                                      <a href="/PurchaseOrder" class="menu-item"><i
+                                                                  class="ik ik-file-text"></i><span>Create Purchase
+                                                                  Order</span></a>
+                                                </div>
+                                                {{end}}
+                                                {{if .Auth.PODetails}}
+                                                <div class="submenu-content">
+                                                      <a href="/PurchaseOrderDetails" class="menu-item"><i
+                                                                  class="ik ik-briefcase"></i><span> Purchase Order
+                                                                  Details</span></a>
+                                                </div>
+                                                {{end}}
+                                                {{if .Auth.POApprovalList}}
+                                                <div class="submenu-content">
+                                                      <a href="/POApprovalDetails" class="menu-item"><i
+                                                                  class="ik ik-briefcase"></i><span> Purchase Order
+                                                                  Approvals</span></a>
+                                                </div>
+                                                {{end}}
+
+
                                           </div>
 
                                           <div class="nav-item has-sub">

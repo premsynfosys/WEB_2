@@ -1,0 +1,470 @@
+{{  define "PurchaseOrderView"}}
+{{template "head" .}}
+<form id="frm">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="d-block w-100">PO#{{.Data.POR.POID}}
+                {{if .Auth.POApprovalList}}
+                <a href="/PO_Edit/{{.Data.POR.IDPurchaseOrders_Requests}}" id="btnPOEdit" title=Edit
+                    class=' btn btn-link text-info  '>
+                    <i class='ik ik-edit btn-xs '></i></a>
+                {{end}}
+                <small class="float-right">Status:<b class="text-warning">{{.Data.POR.StatusName}}</b></small>
+            </h3>
+
+        </div>
+        <div class="card-body">
+            <div class="row invoice-info">
+                <div class="col-sm-4 invoice-col">
+                    Vendor Details
+                    <address class="mt-2">
+                        <strong>{{.Data.POR.VendorData.Name}}</strong><br>
+                        {{.Data.POR.VendorData.Address}}<br>
+                        {{.Data.POR.VendorData.ContactPersonName}}
+                        <br>Phone:{{.Data.POR.VendorData.Phone}}
+                        <br>Email: {{.Data.POR.VendorData.Email}}
+                    </address>
+                </div>
+                <div class="col-sm-4 invoice-col">
+                    Delivery Location
+                    <address class="mt-2">
+                        <strong>{{.Data.POR.LocationData.Name}}</strong><br>
+                        {{.Data.POR.LocationData.Address1}}<br>
+                        {{.Data.POR.LocationData.Address2}}
+                        {{.Data.POR.LocationData.Statename}}<br>
+                        {{.Data.POR.LocationData.Zipcode}}<br>
+                    </address>
+                </div>
+                <div class="col-sm-4 invoice-col">
+                    <address class="mt-2">
+                        <strong>Total Payable Ammount:</strong> ₹ <span>{{.Data.POR.TotalAmmount}}</span>
+                    </address>
+                </div>
+            </div>
+            <hr>
+            <div class=" form-group row">
+                <label class="col-sm-3 col-form-label">PO RequestedBy:</label>
+                <div class="col-sm-6 ">
+                    <label class="col-form-label"> {{.Data.POR.PORequestedByName}}</label>
+                </div>
+            </div>
+            <div class=" form-group row">
+                <label class="col-sm-3 col-form-label">PO Description:</label>
+                <div class="col-sm-6 ">
+                    <label class="col-form-label"> {{.Data.POR.PODescription}}</label>
+                </div>
+            </div>
+            <div class=" form-group row">
+                <label class="col-sm-3 col-form-label">Shipment Terms:</label>
+                <div class="col-sm-6 ">
+                    <label class="col-form-label"> {{.Data.POR.ShipmentTerms}}</label>
+                </div>
+            </div>
+            <div class=" form-group row">
+                <label class="col-sm-3 col-form-label">Payment Terms:</label>
+                <div class="col-sm-6 ">
+                    <label class="col-form-label">{{.Data.POR.PaymentTerms}}</label> </div>
+            </div>
+            <hr>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-title ml-3">
+            Items List
+        </div>
+        <div class="card-block ">
+            <div class="dt-responsive ">
+                <table class="table table-hover table-bordered nowrap" id="tblCatlogList">
+                    <thead>
+                        <th>AssetID</th>
+                        <th>Asset Name</th>
+                        <th>Asset Type</th>
+                        <th>Quantity</th>
+                        <th>Price/Unit</th>
+                        <th>Total Price</th>
+                        <th>Comments</th>
+
+                    </thead>
+                </table>
+            </div>
+        </div>
+        <div class="row justify-content-end">
+
+            <label class="col-sm-3 col-form-label text-bold"><strong>Total Payable Ammount:</strong> ₹ <span
+                    id="totalammount">{{.Data.POR.TotalAmmount}}</span></label>
+
+        </div>
+    </div>
+
+
+    <div class="row no-print">
+        <div class="col-12 justify-content-center">
+            <button id="SendtoVendor" type="button" class="btn btn-info" style="margin-right: 5px;"><i
+                    class="fa fa-check"></i>Send to Vendor</button>
+            <button id="ReceivedFromvendor" type="button" class="btn btn-info" style="margin-right: 5px;"><i
+                    class="fa fa-check"></i>Received From vendor</button>
+
+            <button id="flowmdl" type="button" class="btn btn-info" style="margin-right: 5px;"><i
+                    class="fa fa-check"></i>Approve/Reject</button>
+
+            <button id="print" type="button" class="btn btn-primary " style="margin-right: 5px;"><i
+                    class="fa fa-download"></i>Print</button>
+        </div>
+    </div>
+</form>
+
+<div class="modal fade edit-layout-modal" id="editLayoutItem" tabindex="-1" role="dialog"
+    aria-labelledby="editLayoutItemLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editLayoutItemLabel">Approval flow</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-12">
+                    <div class="card latest-update-card">
+                        <div class="card-block">
+                            <div class="scroll-widget">
+                                <div class="latest-update-box divflow">
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row ddlForward">
+                    <label for="Approver" class="col-md-3 col-form-label ">Forward To:</label>
+                    <div class="col-md-5  ">
+                        <select name="Approver" id="Approver" class="form-control">
+
+                        </select>
+                    </div>
+                </div>
+                <div id="btnApprvRjct">
+
+                    <div class="form-group row">
+                        <label for="ApproverComments" class="col-md-3 col-form-label ">Comments:</label>
+                        <div class="col-md-5  ">
+                            <textarea name="ApproverComments" class="form-control " id="ApproverComments"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group row justify-content-center">
+                        <button id="FlowApprove" type="button" class="btn btn-success "><i
+                                class="fa fa-check"></i>Approve & Forward </button>&nbsp;
+                        <button id="FlowReject" value="Reject" type="button" class="btn btn-danger "><i
+                                class="fa fa-ban"></i>Reject</button>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        var tbl = $('#tblCatlogList').DataTable({
+            responsive: true,
+            "processing": true,
+            scrollY: $(window).height() - 450,
+            scrollCollapse: true,
+            scrollX: true,
+            destroy: true,
+            dom: 'rt',
+            ajax: {
+                "url": '/POAssetDetailsByIDPO/{{.Data.POR.IDPurchaseOrders_Requests}}',
+                "type": "POST",
+                "datatype": "json",
+                "dataSrc": ""//to read data from a plain array rather than an array in an object:
+            },
+            "ordering": false,
+            columnDefs: [
+                { visible: false, targets: 0 }
+            ],
+            "columns": [
+                {
+                    "name": "AssetID",
+                    'data': 'AssetID'
+                }, {
+                    "name": "AssetName",
+                    'data': 'AssetName'
+                }, {
+                    "name": "AssetType",
+                    'data': 'AssetType'
+                }, {
+                    "name": "Quantity",
+                    'data': 'Quantity'
+                }, {
+                    "name": "PriceperUnit",
+                    'data': null,
+                    render: function (dt) {
+                        return "₹" + dt.PriceperUnit
+                    }
+                }
+                , {
+                    "name": "TotalPrice",
+                    'data': null,
+                    render: function (dt) {
+                        return "₹" + parseInt(dt.PriceperUnit) * parseFloat(dt.Quantity)
+                    }
+                }, {
+                    "name": "AssetComments",
+                    'data': 'AssetComments'
+                }]
+
+        });
+
+
+        var NextRoleID;
+        var NextGrade;
+        var GDlevel;
+        var EmpGrade;
+        var EmpRole;
+        var EmpApprvlstatus;
+        var IDPurchaseOrders_Requests;
+        var IDPO_approval;
+        $("#flowmdl").click(function () {
+            $("#editLayoutItem").modal("show")
+            var divflow = $(".divflow")
+            divflow.empty();
+            var data = getdata("/PO_ApprovalStatusList/{{.Data.POR.IDPurchaseOrders_Requests }}")
+
+            var totalGrades = data[0].Grade
+            var leftgrades = totalGrades - data.length
+            for (let i = 0; i < data.length; i++) {
+                var icon = "ik-alert-circle"
+                var color = "yellow"
+                var status = ""
+                if (data[i].StatusName == "Requested") {
+                    //  IDitasset_Req_approvals = data[i].IDitasset_Req_approvals
+                    color = "yellow"
+                    icon = "ik-alert-circle"
+                    status = 'Pending'
+                } else if (data[i].StatusName == "Rejected") {
+                    color = "red"
+                    icon = "ik-x"
+                    status = 'Rejected'
+
+                } else {
+                    color = "green"
+                    icon = "ik-check"
+                    status = 'Approved'
+                }
+                GDlevel = data[i].Grade
+                if ($("#roleid").val() == data[i].RoleID) {
+                    EmpRole = data[i].RoleID
+                    EmpGrade = data[i].Grade
+                    EmpApprvlstatus = data[i].StatusName
+                    IDPO_approval = data[i].IDPO_approval
+
+                }
+                var flowhtml = ' <div class="row flow pb-30"><div class="col-auto text-right update-meta pr-0">'
+                flowhtml += '<i class="ik ' + icon + ' bg-' + color + ' update-icon"></i>'
+                flowhtml += '  </div><div class="col pl-5"><a href="#!"><h6>' + status + '</h6> </a>'
+                flowhtml += '<p class="mb-2">' + data[i].ApproverName + ' - ' + data[i].RoleName + ' </p> '
+                flowhtml += '<p class="text-muted mb-0"></p> ' + data[i].Comments + ' </div> </div>'
+                divflow.append(flowhtml)
+
+            }
+
+            "{{range .Data.ListApprvl}}"
+            if ("{{.MultiLevelApproval_Map.Grade}}" < GDlevel) {
+                if (!NextRoleID) {
+
+                    NextRoleID = "{{.MultiLevelApproval_Map.Role.IDRoles}}"
+                    NextGrade = "{{.MultiLevelApproval_Map.Grade}}"
+                }
+                var flowhtmll = ' <div class="row flow pb-30"><div class="col-auto text-right update-meta pr-0">'
+                flowhtmll += '<i class="ik ' + icon + '  update-icon" style="background-color: gray;"></i>'
+                flowhtmll += '  </div><div class="col pl-5"><a href="#!"><h6>Pending </h6> </a>'
+                flowhtmll += '<p class="text-muted mb-0"> </p>{{.MultiLevelApproval_Map.Role.RoleName}}</div> </div>'
+                divflow.append(flowhtmll)
+            }
+            " {{end}}"
+
+            IDPurchaseOrders_Requests = data[data.length - 1].PurchaseOrders_RequestsID
+            //  if (data[data.length - 1].StatusName == "Outward Requested") {
+            // $("#btnApprvRjct").show()
+            // if (GDlevel == 1) {
+            //     $(".ddlForward").hide()
+            // } else {
+            //     $(".ddlForward").show()
+            // }
+            if (NextRoleID) {
+                var url = "/GetApprovers/" + parseInt($("#locationid").val()) + "/" + parseInt(NextRoleID)
+
+                var aprvr = getdata(url)
+                $("#Approver").empty().append('<option value="">--select--</option>');
+                $.each(aprvr, function (i, el) {
+                    $("#Approver").append($("<option />", { text: el.Employee.FirstName, value: el.EmployeeID }));
+                });
+            }
+            // } 
+            // else {
+            //     $("#btnApprvRjct").hide()
+            // }
+
+
+            if ("{{.Data.POR.StatusName}}" == "Rejected") {
+                debugger
+                $("#flowmdl").text("View Status")
+                $(".ddlForward").hide()
+                $("#btnApprvRjct").hide()
+            } else {
+
+                if (EmpApprvlstatus == "Requested") {
+                    if (EmpGrade == 1) {
+                        $(".ddlForward").hide()
+                    }
+                    $("#btnApprvRjct").show()
+                } else {
+                    $(".ddlForward").hide()
+                    $("#btnApprvRjct").hide()
+                }
+            }
+
+
+
+
+        })
+
+
+
+
+        if ("{{.Data.POR.StatusName}}" == "Draft") {
+            $("#flowmdl").hide()
+
+        } else {
+            $("#btnPOEdit").hide()
+            $("#flowmdl").show()
+        }
+        if ("{{.Data.POR.StatusName}}" != "Requested") {
+            $("#flowmdl").text("View Status")
+        }
+
+
+
+        $("#FlowApprove").click(function () {
+            //var ApproverComments = $("#ApproverComments").val()
+            if ($('#ApproverComments').val() == "") {
+                Toast('warning', "Please enter comments.")
+                // alert("Please enter comments.")
+                $('#ApproverComments').focus();
+                return;
+            }
+            if ($('#Approver').val() == "") {
+                Toast('warning', "Please select Approver.")
+                //alert("Please select Approver.")
+                $('#Approver').focus();
+                return;
+            }
+            var data = new Object();
+            data.Status = "Approved"
+            data.Comments = $('#ApproverComments').val()
+            data.PurchaseOrders_RequestsID = parseInt(IDPurchaseOrders_Requests)
+            data.IDPO_approval = parseInt(IDPO_approval)
+            data.NextApproverID = parseInt($('#Approver').val())
+            data.NextGrade = parseInt(NextGrade)
+            data.NextRoleID = parseInt(NextRoleID)
+            debugger;
+            var url;
+            if (EmpGrade == 1) {
+                url = "/POReqApproved"
+            } else {
+                url = "/POReqForward"
+            }
+            $.ajax({
+                url: url,
+                type: 'POST',
+                async: false,
+                data: JSON.stringify(data),
+                success: function (data) {
+                    if (EmpGrade == 1) {
+                        Toast('success', 'Request Approved successfully')
+                    } else {
+                        Toast('success', 'Request forwarded successfully')
+                    }
+                    window.location.reload();
+                }, error: function () {
+                    alert('Internal error')
+                }
+            });
+        })
+
+        $("#FlowReject").click(function () {
+            if ($('#ApproverComments').val() == "") {
+                Toast('warning', "Please enter comments.")
+                // alert("Please enter comments.")
+                $('#ApproverComments').focus();
+                return;
+            }
+
+            var data = new Object();
+            data.Status = "Rejected"
+            data.Comments = $('#ApproverComments').val()
+            data.PurchaseOrders_RequestsID = parseInt(IDPurchaseOrders_Requests)
+            data.IDPO_approval = parseInt(IDPO_approval)
+
+            $.ajax({
+                url: "/POReqRejected",
+                type: 'POST',
+                data: JSON.stringify(data),
+                // dataType: 'json'
+                success: function (s) {
+                    location.reload()
+                }
+            });
+        });
+
+
+
+
+
+
+
+
+
+
+        $("#print").click(function () {
+            var printContents = $("#frm").not(".no-print").html();
+            var originalContents = document.body.innerHTML;
+            document.body.innerHTML = printContents;
+            window.print();
+            document.body.innerHTML = originalContents;
+            // window.close();
+        })
+
+
+        $("#SendtoVendor").hide();
+        $("#ReceivedFromvendor").hide();
+        if ("{{.Data.POR.StatusID}}" == 36) {
+            $("#SendtoVendor").show();
+        }
+        if ("{{.Data.POR.StatusID}}" == 37) {
+            $("#ReceivedFromvendor").show();
+        }
+
+        $("#SendtoVendor").click(function () {
+            if (confirm('Did you sent to vednor?'))
+                $.ajax({
+                    url: "/POStatusChange/{{.Data.POR.IDPurchaseOrders_Requests}}/37",
+                    type: 'POST',
+                    success: function (s) {
+                        location.reload()
+                    }
+                });
+        })
+
+    })
+</script>
+
+
+
+
+{{template "footer"}}
+{{end}}

@@ -501,3 +501,26 @@ func (p *IConsumables) ConsumableBulkDelete(w http.ResponseWriter, r *http.Reque
 		utils.RespondwithJSON(w, r, http.StatusBadRequest, nil)
 	}
 }
+
+func (p *IConsumables) ConsumableDelete(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	AssetID := params["AssetID"]
+	AssetIDs, _ := strconv.Atoi(AssetID)
+	_ = p.Irepo.ConsumableDelete(r.Context(), AssetIDs)
+
+	http.Redirect(w, r, "/Consumables/ConsumableList", 301)
+
+}
+
+func (p *IConsumables) GetConsumableMastersByVendors(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	VendorID := params["VendorID"]
+	id, _ := strconv.Atoi(VendorID)
+	data, err := p.Irepo.GetConsumableMastersByVendors(r.Context(), id)
+
+	if err == nil {
+		utils.RespondwithJSON(w, r, http.StatusOK, data)
+	} else {
+		utils.RespondwithJSON(w, r, http.StatusBadRequest, nil)
+	}
+}

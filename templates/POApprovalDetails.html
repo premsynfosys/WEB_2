@@ -1,0 +1,251 @@
+{{  define "POApprovalDetails"}}
+{{template "head" .}}
+<div class="page-header">
+    <div class="row align-items-end">
+        <div class="col-lg-8">
+            <div class="page-header-title">
+                <div class="d-inline">
+                    <h5>Purchase Approval Details</h5>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+
+        <div class="card">
+            <div class="card-block">
+                <div class="dt-responsive">
+                    <table id="tblPODetails" class="table table-striped table-bordered " width="100%">
+                        <thead>
+                            <th>IDPurchaseOrders_Requests</th>
+
+                            <th>POID</th>
+                            <th>PODescription</th>
+                            <th>ShipmentTerms</th>
+                            <th>PaymentTerms</th>
+                            <th>Total Ammont</th>
+                            <th>Vendor</th>
+                            <th>Location</th>
+                            <th>Requested By</th>
+                            <th>Status</th>
+                            <th>Requested On </th>
+
+
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div id="tblbtn" class="btn-group dropright float-left ">
+            <button type="button" class="btn btn-info dropdown-toggle btn-sm " data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                Export </button>
+            <div id="tblbtnList" class="dropdown-menu">
+            </div>
+        </div>
+        <div id="tblClmnbtn" class="btn-group dropright float-left mr-1 ">
+            <button type="button" class="btn btn-info dropdown-toggle btn-sm " data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                Fields </button>
+            <div id="tblClmnbtnList" class="dropdown-menu">
+                <div class="form-check form-check-inline dropdown-item">
+                    <input class="form-check-input chkClmn" type="checkbox" checked id="chkAll">
+                    <label class="form-check-label " for="chkAll">Select All</label></div>
+
+                <div class="dropdown-divider"></div>
+            </div>
+        </div>
+        <button type="button" id="btnRefresh" title="Refresh" class="btn btn-info btn-sm  float-left  ml-1 "><i
+                class="ik ik-refresh-ccw"></i>
+        </button>
+    </div>
+</div>
+
+
+
+
+<!-- view -->
+
+
+<div class="modal fade bd-example-modal-lg employeeeView" tabindex="-1" role="dialog"
+    aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content ">
+            <div class="modal-header">
+                <h5 class="modal-title" id="employeeeViewBodyLabel">
+                    Employee Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body employeeeViewBody">
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+
+        var tbl = $('#tblPODetails').DataTable({
+            responsive: true,
+            "processing": true,
+            scrollY: $(window).height() - 350,
+            scrollCollapse: true,
+            scrollX: true,
+            destroy: true,
+            dom: 'Bfrtip',
+            ajax: {
+                "url": "/GetPODetailsByApprover/" + $("#employeeid").val(),
+                "type": "POST",
+                "datatype": "json",
+                "dataSrc": ""//to read data from a plain array rather than an array in an object:
+            },
+            columnDefs: [
+
+                { visible: false, targets: 0 }
+            ],
+            "columns": [
+                {
+                    "name": "IDPurchaseOrders_Requests",
+                    'data': 'IDPurchaseOrders_Requests'
+                },
+                {
+                    "name": "POID",
+                    'data': null,
+                    render: function (dt) {
+                        return '<a href="/PurchaseOrderView/' + dt.IDPurchaseOrders_Requests + '" class="btn btn-sm  font-weight-bold text-info"  >#' + dt.POID + '</a> ';
+                    }
+                }, {
+                    "name": "PODescription",
+                    'data': 'PODescription'
+                }, {
+                    "name": "ShipmentTerms",
+                    'data': 'ShipmentTerms'
+                }, {
+                    "name": "PaymentTerms",
+                    "data": "PaymentTerms"
+                }, {
+                    "name": "TotalAmmount",
+                    'data': 'TotalAmmount',
+                    render: function (dt) {
+                        return "₹ " + dt
+                    }
+                }, {
+                    "name": "VendorData",
+                    'data': 'VendorData.Name'
+                }, {
+                    "name": "LocationData",
+                    "data": "LocationData.Name"
+                }, {
+                    "name": "PORequestedByName",
+                    'data': 'PORequestedByName'
+
+                }, {
+                    "name": "StatusName",
+                    'data': 'StatusName',
+                    render: function (dt) {
+                        var res;
+                        if (dt == "Draft")
+                            res = '<span class="badge badge-pill badge-info">' + dt + '</span>'
+                        else if (dt == "Requested")
+                            res = '<span class="badge badge-pill badge-warning">' + dt + '</span>'
+                        else if (dt == "Rejected")
+                            res = '<span class="badge badge-pill badge-danger">' + dt + '</span>'
+                        else
+                            res = '<span class="badge badge-pill badge-success">' + dt + '</span>'
+                        return res;
+                    }
+
+                }, {
+                    "name": "Requested On",
+                    'data': 'CreatedOn',
+                    render: function (dt) {
+                        return jsondate(dt);
+                    }
+                }], buttons: [
+                    {
+                        text: 'Excel',
+                        extend: "excel",
+                        className: ' dropdown-item',
+                        title: "PO Details",
+                        exportOptions: {
+                            columns: ':visible'
+                            // columns: ':not(.notexport)'
+                        }
+                    }
+                ]
+        });
+
+
+
+        $("#tblbtn").prependTo('#tblPODetails_filter')
+        tbl.buttons().containers().prependTo('#tblbtnList')
+        $('.dt-button').removeClass('dt-button').addClass(' btn btn-light btn-sm ');
+        $(".buttons-colvis").removeClass('btn-light').addClass('btn-info float-left ml-1').appendTo('#tblPODetails_filter')
+        $("#tblClmnbtn").prependTo('#tblPODetails_filter')
+        $("#btnRefresh").appendTo('#tblPODetails_filter')
+        var idx = 0;
+        //show hide clmns
+        tbl.columns().every(function () {
+            if (idx != 0 && idx != 1) {
+                var html = '<div class="form-check form-check-inline dropdown-item">'
+                html += '<input class="form-check-input chkClmn" type="checkbox" checked id="chk' + idx + '" value="' + idx + '">'
+                html += '<label class="form-check-label " for="chk' + idx + '">' + this.header().innerHTML + '</label></div>'
+                $("#tblClmnbtnList").append(html)
+            }
+            idx++;
+
+        });
+
+        $("input.chkClmn").click(function (e) {
+            // Get the column API object
+            if ($(this).attr('id') == "chkAll") {
+                if ($(this).prop("checked")) {
+                    for (var i = 1; i < tbl.init().columns.length; i++) {
+                        tbl.column(i).visible(true, true)
+                    }
+                    $("input.chkClmn").prop("checked", true)
+                    tbl.columns.adjust().draw();
+                }
+            }
+            else {
+                var column = tbl.column($(this).val());
+                // Toggle the visibility
+                if ($(this).prop("checked"))
+                    column.visible(true);
+                else {
+                    column.visible(false);
+                    $("#chkAll").prop("checked", false)
+                }
+            }
+        })
+
+
+
+
+        $("#btnRefresh").click(function () {
+            tbl.search("").draw();
+            for (var i = 1; i < tbl.init().columns.length; i++) {
+                tbl.column(i).visible(true, true)
+            }
+            $("input.chkClmn").prop("checked", true)
+            tbl.columns.adjust().draw();
+            // tbl.ajax.reload()
+        })
+    });
+
+
+</script>
+
+
+
+
+
+{{template "footer"}}
+{{end}}

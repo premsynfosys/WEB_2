@@ -251,3 +251,27 @@ func (m *APIRepo) ConsumableBulkDelete(ctx context.Context, idss []string) error
 	_, err = utils.PostRequest(url, j)
 	return err
 }
+
+func (m *APIRepo) ConsumableDelete(ctx context.Context, AssetID int) (error) {
+	url := fmt.Sprintf(m.APIConn+"/ConsumableDelete/%d", AssetID)
+	bytes, err := utils.GetRequest(url)
+	if err != nil {
+		return  err
+	}
+	err = json.Unmarshal(bytes, nil)
+	return  nil
+}
+
+func (m *APIRepo) GetConsumableMastersByVendors(ctx context.Context,VendorID int) ([]*CmnModel.VendorsAssetDetails, error) {
+	url := fmt.Sprintf(m.APIConn + "/GetConsumableMastersByVendors/%d",VendorID)
+	bytes, err := utils.GetRequest(url)
+	if err != nil {
+		return nil, err
+	}
+	data := make([]*CmnModel.VendorsAssetDetails, 0)
+	err = json.Unmarshal(bytes, &data)
+	if err != nil {
+		return nil, err
+	}
+	return data, nil
+}

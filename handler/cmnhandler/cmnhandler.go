@@ -43,12 +43,12 @@ func (p *ICommonrep) Emp(w http.ResponseWriter, r *http.Request) {
 //Dashboard sfc
 func (p *ICommonrep) Dashboard(w http.ResponseWriter, r *http.Request) {
 	usr, Auth := utils.GetCookieUser(r)
-	in:=CmnModel.AdminDashBoard{}
-	in.EmpID=usr.EmployeeID
-	in.LocID=usr.LocationID
-	
+	in := CmnModel.AdminDashBoard{}
+	in.EmpID = usr.EmployeeID
+	in.LocID = usr.LocationID
+
 	data, _ := p.Irepo.GetAdminDashBoard(r.Context(), in)
-	
+
 	Mapdata := CmnModel.TemplateData{
 		Data: data,
 		User: usr,
@@ -58,15 +58,14 @@ func (p *ICommonrep) Dashboard(w http.ResponseWriter, r *http.Request) {
 	utils.ExecuteTemplate(w, r, "dashboard", Mapdata)
 }
 
-
 func (p *ICommonrep) MyDashBoard(w http.ResponseWriter, r *http.Request) {
 	usr, Auth := utils.GetCookieUser(r)
-	in:=CmnModel.EmployeeDashboard{}
-	in.EmpID=usr.EmployeeID
-	in.LocID=usr.LocationID
-	
+	in := CmnModel.EmployeeDashboard{}
+	in.EmpID = usr.EmployeeID
+	in.LocID = usr.LocationID
+
 	data, _ := p.Irepo.GetEmployeeDashboard(r.Context(), in)
-	
+
 	Mapdata := CmnModel.TemplateData{
 		Data: data,
 		User: usr,
@@ -75,7 +74,6 @@ func (p *ICommonrep) MyDashBoard(w http.ResponseWriter, r *http.Request) {
 
 	utils.ExecuteTemplate(w, r, "MyDashBoard", Mapdata)
 }
-
 
 // Transfer ..
 func (p *ICommonrep) Transfer(w http.ResponseWriter, r *http.Request) {
@@ -687,13 +685,237 @@ func (p *ICommonrep) InwardOutwardReqForward(w http.ResponseWriter, r *http.Requ
 	}
 }
 
-// func (p *ICommonrep) GetAdminDashBoard(w http.ResponseWriter, r *http.Request) {
-// 	res := CmnModel.AdminDashBoard{}
-// 	json.NewDecoder(r.Body).Decode(&res)
-// 	data, err := p.Irepo.GetAdminDashBoard(r.Context(), res)
-// 	if err == nil {
-// 		utils.RespondwithJSON(w, r, http.StatusOK, data)
-// 	} else {
-// 		utils.RespondwithJSON(w, r, http.StatusBadRequest, nil)
-// 	}
-// }
+func (p *ICommonrep) PurchaseOrder(w http.ResponseWriter, r *http.Request) {
+	usr, Auth := utils.GetCookieUser(r)
+	mapRoles, _ := p.Irepo.GetMultiLevelApproval_Map(r.Context())
+	var RoleID int
+	var Grade int
+	for i := 0; i < len(mapRoles); i++ {
+		if mapRoles[i].FeatureName == "Purchase Order" {
+			RoleID = mapRoles[i].MultiLevelApproval_Map.RoleID
+			Grade = mapRoles[i].MultiLevelApproval_Map.Grade
+			break
+		}
+	}
+	data := struct {
+		RoleID int
+		Grade  int
+	}{
+		RoleID: RoleID,
+		Grade:  Grade,
+	}
+	Mapdata := CmnModel.TemplateData{
+		User: usr,
+		Auth: Auth,
+		Data: data,
+	}
+	if r.Method == "GET" {
+		utils.ExecuteTemplate(w, r, "PurchaseOrder", Mapdata)
+	}
+}
+func (p *ICommonrep) PurchaseOrderView(w http.ResponseWriter, r *http.Request) {
+	usr, Auth := utils.GetCookieUser(r)
+	params := mux.Vars(r)
+	IDPO := params["IDPO"]
+	IDPOs, _ := strconv.Atoi(IDPO)
+	POR, _ := p.Irepo.PODetailsByIDPO(r.Context(), IDPOs)
+	mapRoles, _ := p.Irepo.GetMultiLevelApproval_Map(r.Context())
+	requstmap := []*CmnModel.MultiLevelApproval_Main{}
+	for _, itm := range mapRoles {
+		if itm.FeatureName == "Purchase Order" {
+			requstmap = append(requstmap, itm)
+		}
+	}
+	data := struct {
+		POR        *CmnModel.PurchaseOrders_Requests
+		ListApprvl []*CmnModel.MultiLevelApproval_Main
+	}{
+		POR:        POR,
+		ListApprvl: requstmap,
+	}
+	Mapdata := CmnModel.TemplateData{
+		User: usr,
+		Auth: Auth,
+		Data: data,
+	}
+	if r.Method == "GET" {
+		utils.ExecuteTemplate(w, r, "PurchaseOrderView", Mapdata)
+	}
+}
+func (p *ICommonrep) PurchaseOrderDetails(w http.ResponseWriter, r *http.Request) {
+	usr, Auth := utils.GetCookieUser(r)
+
+	Mapdata := CmnModel.TemplateData{
+		User: usr,
+		Auth: Auth,
+	}
+	if r.Method == "GET" {
+		utils.ExecuteTemplate(w, r, "PurchaseOrderDetails", Mapdata)
+	}
+}
+
+func (p *ICommonrep) PurchaseOrders_RequestsInsert(w http.ResponseWriter, r *http.Request) {
+	res := CmnModel.PurchaseOrders_Requests{}
+	json.NewDecoder(r.Body).Decode(&res)
+	err := p.Irepo.PurchaseOrders_RequestsInsert(r.Context(), res)
+	if err == nil {
+		utils.RespondwithJSON(w, r, http.StatusOK, nil)
+	} else {
+		utils.RespondwithJSON(w, r, http.StatusBadRequest, nil)
+	}
+}
+
+func (p *ICommonrep) GetPurchaseOrderUniqueID(w http.ResponseWriter, r *http.Request) {
+	NextID, err := p.Irepo.GetPurchaseOrderUniqueID()
+	if err == nil {
+		utils.RespondwithJSON(w, r, http.StatusOK, NextID)
+	} else {
+		utils.RespondwithJSON(w, r, http.StatusBadRequest, nil)
+	}
+}
+
+func (p *ICommonrep) GetPODetailsByReqstrID(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	ReqstrID := params["ReqstrID"]
+	ReqstrIDs, _ := strconv.Atoi(ReqstrID)
+	data, err := p.Irepo.GetPODetailsByReqstrID(r.Context(), ReqstrIDs)
+	if err == nil {
+		utils.RespondwithJSON(w, r, http.StatusOK, data)
+	} else {
+		utils.RespondwithJSON(w, r, http.StatusBadRequest, err.Error())
+	}
+}
+func (p *ICommonrep) POAssetDetailsByIDPO(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	POID := params["IDPO"]
+	POIDs, _ := strconv.Atoi(POID)
+	data, err := p.Irepo.POAssetDetailsByIDPO(r.Context(), POIDs)
+	if err == nil {
+		utils.RespondwithJSON(w, r, http.StatusOK, data)
+	} else {
+		utils.RespondwithJSON(w, r, http.StatusBadRequest, err.Error())
+	}
+}
+func (p *ICommonrep) PO_ApprovalStatusList(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	POID := params["IDPO"]
+	POIDs, _ := strconv.Atoi(POID)
+	data, err := p.Irepo.PO_ApprovalStatusList(r.Context(), POIDs)
+	if err == nil {
+		utils.RespondwithJSON(w, r, http.StatusOK, data)
+	} else {
+		utils.RespondwithJSON(w, r, http.StatusBadRequest, err.Error())
+	}
+}
+
+func (p *ICommonrep) POApprovalDetails(w http.ResponseWriter, r *http.Request) {
+	usr, Auth := utils.GetCookieUser(r)
+	Mapdata := CmnModel.TemplateData{
+		User: usr,
+		Auth: Auth,
+	}
+	if r.Method == "GET" {
+		utils.ExecuteTemplate(w, r, "POApprovalDetails", Mapdata)
+	}
+}
+
+func (p *ICommonrep) GetPODetailsByApprover(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	ApprvrID := params["ApprvrID"]
+	ApprvrIDs, _ := strconv.Atoi(ApprvrID)
+	data, err := p.Irepo.GetPODetailsByApprover(r.Context(), ApprvrIDs)
+	if err == nil {
+		utils.RespondwithJSON(w, r, http.StatusOK, data)
+	} else {
+		utils.RespondwithJSON(w, r, http.StatusBadRequest, err.Error())
+	}
+}
+func (p *ICommonrep) POReqApproved(w http.ResponseWriter, r *http.Request) {
+	res := CmnModel.POApproval{}
+	json.NewDecoder(r.Body).Decode(&res)
+	err := p.Irepo.POReqApproved(r.Context(), res)
+	if err == nil {
+		utils.RespondwithJSON(w, r, http.StatusOK, nil)
+	} else {
+		utils.RespondwithJSON(w, r, http.StatusBadRequest, nil)
+	}
+}
+func (p *ICommonrep) POReqForward(w http.ResponseWriter, r *http.Request) {
+	res := CmnModel.POApproval{}
+	json.NewDecoder(r.Body).Decode(&res)
+	err := p.Irepo.POReqForward(r.Context(), res)
+	if err == nil {
+		utils.RespondwithJSON(w, r, http.StatusOK, nil)
+	} else {
+		utils.RespondwithJSON(w, r, http.StatusBadRequest, nil)
+	}
+}
+func (p *ICommonrep) POReqRejected(w http.ResponseWriter, r *http.Request) {
+	res := CmnModel.POApproval{}
+	json.NewDecoder(r.Body).Decode(&res)
+	err := p.Irepo.POReqRejected(r.Context(), res)
+	if err == nil {
+		utils.RespondwithJSON(w, r, http.StatusOK, nil)
+	} else {
+		utils.RespondwithJSON(w, r, http.StatusBadRequest, nil)
+	}
+}
+
+func (p *ICommonrep) PO_Edit(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	IDPO := params["IDPO"]
+	IDPOs, _ := strconv.Atoi(IDPO)
+	usr, Auth := utils.GetCookieUser(r)
+	mapRoles, _ := p.Irepo.GetMultiLevelApproval_Map(r.Context())
+	POR, _ := p.Irepo.PODetailsByIDPO(r.Context(), IDPOs)
+	var RoleID int
+	var Grade int
+	for i := 0; i < len(mapRoles); i++ {
+		if mapRoles[i].FeatureName == "Purchase Order" {
+			RoleID = mapRoles[i].MultiLevelApproval_Map.RoleID
+			Grade = mapRoles[i].MultiLevelApproval_Map.Grade
+			break
+		}
+	}
+	data := struct {
+		RoleID int
+		Grade  int
+		POR    *CmnModel.PurchaseOrders_Requests
+	}{
+		RoleID: RoleID,
+		Grade:  Grade,
+		POR:    POR,
+	}
+	Mapdata := CmnModel.TemplateData{
+		User: usr,
+		Auth: Auth,
+		Data: data,
+	}
+	if r.Method == "GET" {
+		utils.ExecuteTemplate(w, r, "PO_Edit", Mapdata)
+	}
+}
+
+func (p *ICommonrep) PurchaseOrders_RequestsUpdate(w http.ResponseWriter, r *http.Request) {
+	res := CmnModel.PurchaseOrders_Requests{}
+	json.NewDecoder(r.Body).Decode(&res)
+	err := p.Irepo.PurchaseOrders_RequestsUpdate(r.Context(), res)
+	if err == nil {
+		utils.RespondwithJSON(w, r, http.StatusOK, nil)
+	} else {
+		utils.RespondwithJSON(w, r, http.StatusBadRequest, nil)
+	}
+}
+func (p *ICommonrep) POStatusChange(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	IDPO := params["IDPO"]
+	Status := params["Status"]
+	IDPOs, _ := strconv.Atoi(IDPO)
+	status, _ := strconv.Atoi(Status)
+	err := p.Irepo.POStatusChange(IDPOs, status)
+	if err == nil {
+		utils.RespondwithJSON(w, r, http.StatusOK, nil)
+	} else {
+		utils.RespondwithJSON(w, r, http.StatusBadRequest, nil)
+	}
+}

@@ -981,3 +981,13 @@ func (p *IITAsset) MyITAssetRequestList(w http.ResponseWriter, r *http.Request) 
 	}
 	utils.ExecuteTemplate(w, r, "MyITAssetRequestList", Mapdata)
 }
+
+func (p *IITAsset) ITAssetDelete(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	AssetID := params["AssetID"]
+	AssetIDs, _ := strconv.Atoi(AssetID)
+	_ = p.Irepo.ITAssetDelete(r.Context(), AssetIDs)
+
+	http.Redirect(w, r, "/ITAssets", 301)
+
+}

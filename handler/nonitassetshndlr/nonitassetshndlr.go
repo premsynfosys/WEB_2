@@ -403,9 +403,13 @@ func (p *INonITAsset) NonITAssetAdd_Partial(w http.ResponseWriter, r *http.Reque
 	}
 }
 func (p *INonITAsset) NonITAssetMasterAdd(w http.ResponseWriter, r *http.Request) {
-
+	usr, Auth := utils.GetCookieUser(r)
+	Mapdata := CmnModel.TemplateData{
+		User: usr,
+		Auth: Auth,
+	}
 	if r.Method == "GET" {
-		utils.ExecuteTemplate(w, r, "NonITAssetMasterAdd", nil)
+		utils.ExecuteTemplate(w, r, "NonITAssetMasterAdd", Mapdata)
 	}
 }
 
@@ -718,4 +722,15 @@ func (p *INonITAsset) MyNonITAssetRequestList(w http.ResponseWriter, r *http.Req
 		User: usr,
 	}
 	utils.ExecuteTemplate(w, r, "MyNonITAssetRequestList", Mapdata)
+}
+
+
+func (p *INonITAsset) NonITAssetDelete(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	AssetID := params["AssetID"]
+	AssetIDs, _ := strconv.Atoi(AssetID)
+	_ = p.Irepo.NonITAssetDelete(r.Context(), AssetIDs)
+
+	http.Redirect(w, r, "/NonITAsset/List", 301)
+
 }

@@ -1,0 +1,623 @@
+{{  define "PurchaseOrder"}}
+{{template "head" .}}
+
+<div class="page-header">
+    <div class="row align-items-end">
+        <div class="col-lg-8">
+            <div class="page-header-title">
+                <div class="d-inline">
+                    <h5>Purchase Order</h5>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="font-weight-bold">PO # <span id="POID"></span></h4>
+                <input type="hidden" id="Grade" value="{{.Data.Grade}}">
+                <input type="hidden" id="RoleID" value="{{.Data.RoleID}}">
+            </div>
+            <div class="card-body">
+                <div class="form-group  row  ">
+                    <div class="col-md-6">
+                        <div class=" row">
+                            <label for="LocationID" class="col-sm-4 col-form-label">Delivery Location</label>
+                            <div class="col-sm-6">
+                                <select name="LocationID" id="LocationID" class="form-control ">
+                                </select>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mt-0 row ">
+                            <text id="LocationsAddress" class="align-self-center col-form-label">--</text>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row  ">
+                    <div class="col-md-6">
+                        <div class=" row">
+                            <label for="VendorID" class="col-sm-4 col-form-label">Vendor Name</label>
+                            <div class="col-sm-6">
+                                <select name="VendorID" id="VendorID" class="form-control ">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mt-0 row ">
+                            <label id="VendorsAddress" class="col-sm-3 col-form-label">--</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row mt-2">
+                    <label class="col-sm-3 col-form-label">PO Approver:</label>
+                    <div class="col-sm-3 ">
+                        <select name="POApproverID" id="POApproverID" class="form-control ">
+                        </select>
+                    </div>
+                </div>
+                <div class=" form-group row">
+                    <label class="col-sm-3 col-form-label">PO RequestedBy:</label>
+                    <div class="col-sm-6 ">
+                        <label class="col-sm-3 col-form-label"> {{.User.FirstName}}</label>
+
+                    </div>
+                </div>
+                <div class=" form-group row">
+                    <label class="col-sm-3 col-form-label">PO Description:</label>
+                    <div class="col-sm-6 ">
+                        <textarea name="PODescription" maxlength="500" required placeholder="PO Decription"
+                            title="Description" class="form-control " id="PODescription"></textarea>
+
+                    </div>
+                </div>
+                <div class=" form-group row">
+                    <label class="col-sm-3 col-form-label">Shipment Terms:</label>
+                    <div class="col-sm-6 ">
+                        <textarea name="ShipmentTerms" maxlength="500" required placeholder="Shipment Decription"
+                            title="Shipment Description" class="form-control " id="ShipmentTerms"></textarea>
+
+                    </div>
+                </div>
+                <div class=" form-group row">
+                    <label class="col-sm-3 col-form-label">Payment Terms:</label>
+                    <div class="col-sm-6 ">
+                        <textarea name="PaymentTerms" maxlength="500" required placeholder="Payment Terms"
+                            title="PaymentTerms" class="form-control " id="PaymentTerms"></textarea>
+                    </div>
+                </div>
+                <hr>
+                <div class="form-group row">
+                    <label for="AssignTo" class="col-md-3 col-form-label ">Asset Type:</label>
+                    <div class="col-md-9">
+                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                            <label class="btn btn-light btn-sm ">
+                                <input type="radio" name="AssetType" value="ITAsset" id="rdITAsset">
+                                ITAsset
+                            </label>
+                            <label class="btn btn-light btn-sm">
+                                <input type="radio" name="AssetType" id="rdNonITAsset" value="NonITAsset">
+                                NonITAsset
+                            </label>
+                            <label class="btn btn-light btn-sm">
+                                <input type="radio" name="AssetType" id="rdConsumable" value="Consumable">
+                                Consumable
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="collapse" id="divNonITAsset">
+                    <div class="form-group row ">
+                        <label for="IDNonITAssets_Master" class="col-sm-3 col-form-label">NonITAsset Name:</label>
+                        <div class="col-sm-6">
+                            <select name="IDNonITAssets_Master" class="form-control " id="IDNonITAssets_Master">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="collapse" id="divITAsset">
+                    <div class="form-group row ">
+                        <label for="IDITAssets_Master" class="col-sm-3 col-form-label">ITAsset Name:</label>
+                        <div class="col-sm-6">
+                            <input type="text" name="ITAssetName" class="form-control " id="ITAssetName" />
+                        </div>
+                    </div>
+                </div>
+                <div class="collapse" id="divConsumable">
+                    <div class="form-group row ">
+                        <label for="IDConsumable_Master" class="col-sm-3 col-form-label">Consumable Name:</label>
+                        <div class="col-sm-6">
+                            <select name="IDConsumable_Master" class="form-control " id="IDConsumable_Master">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row ">
+                    <label class="col-sm-3 col-form-label">Quantity:</label>
+                    <div class="col-sm-2">
+                        <input type="number" id="Quantity" min="1" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group row ">
+                    <label class="col-sm-3 col-form-label">Price/Unit:</label>
+                    <div class="col-sm-2 ">
+                        <div class="input-group">
+                            <input type="number" id="PricePerUnit" min="0" class="form-control">
+                            <span class="input-group-append">
+                                <label class="input-group-text">₹</label>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class=" form-group row">
+                    <label class="col-sm-3 col-form-label">Asset Comments:</label>
+                    <div class="col-sm-6 ">
+                        <textarea name="AssetComments" maxlength="500" required placeholder="Comments" title="Comments"
+                            class="form-control " id="AssetComments"></textarea>
+
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <input type="button" id="btnAddtoList" class="btn btn-primary btn-sm " value="Add to List" />
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-title ml-3">
+                Items List
+            </div>
+            <div class="card-block ">
+                <div class="dt-responsive ">
+                    <table class="table table-hover nowrap table-bordered" id="tblCatlogList">
+                        <thead>
+                            <th>AssetID</th>
+                            <th>S.No.</th>
+                            <th>Asset Name</th>
+                            <th>Asset Type</th>
+                            <th>Quantity</th>
+                            <th>Price/Unit</th>
+                            <th>Comments</th>
+                            <th>Total Price</th>
+                            <th>Action</th>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+            <div class="row justify-content-end">
+
+                <label class="col-sm-3 col-form-label text-bold"><strong>Total Payable Ammount:</strong> ₹ <span
+                        id="totalammount">0</span></label>
+
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <button type="button" id="btnDraft" class="btn btn-primary btn-sm m-1 ">Add to Draft</button>
+            <button type="button" id="btnSubmitRequest" class="btn btn-primary btn-sm m-1 ">Submit Request</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#POID").text(getdata("GetPurchaseOrderUniqueID"))
+        function GetNonITAssetMasterList(data) {
+            $("#IDNonITAssets_Master").empty().append('<option value="">--select--</option>');
+            $.each(data, function (i, el) {
+                $("#IDNonITAssets_Master").append($("<option />", { text: el.NonITAssets_Name, value: el.IDNonITAssets_Master }));
+            });
+        }
+        function GetConsumableMasterList(data) {
+            $("#IDConsumable_Master").empty().append('<option value="">--select--</option>');
+            $.each(data, function (i, el) {
+                $("#IDConsumable_Master").append($("<option />",
+                    { 'data-price': el.Vendors_consumablemaster_map.PriceperUnit, text: el.Consumablemaster.ConsumableName, value: el.Consumablemaster.IDconsumableMaster }));
+            });
+        }
+        function loadLocations(data) {
+            $("#LocationID").empty().append('<option value="" >--select--</option>');
+            $.each(data, function (i, el) {
+                $("#LocationID").append($("<option />", { "data-Address1": el.Address1, "data-Address2": el.Address2, "data-Countryname": el.Countryname, "data-Zipcode": el.Zipcode, "data-Statename": el.Statename, text: el.Name, value: el.IDLocations }));
+            });
+        }
+        function loadApprovers(data) {
+            $("#POApproverID").empty().append('<option value="">--select--</option>');
+            $.each(data, function (i, el) {
+                $("#POApproverID").append($("<option />", { text: el.Employee.FirstName, value: el.Employee.IDEmployees }));
+            });
+        }
+        function loadVendors(data) {
+            $("#VendorID").empty().append('<option value="">--select--</option>');
+            $.each(data, function (i, el) {
+                $("#VendorID").append($("<option />", { "data-Address": el.Address, "data-Email": el.Email, "data-ContactPersonName": el.ContactPersonName, "data-Phone": el.Phone, text: el.Name, value: el.Idvendors }));
+            });
+        }
+
+        var data = getdata('/GetLocations')
+        loadLocations(data)
+        var data = getdata('/GetVendors')
+        loadVendors(data)
+        var data = getdata('/GetApprovers/' + $("#locationid").val() + "/{{.Data.RoleID}}")
+        loadApprovers(data)
+
+
+        var tbl = $('#tblCatlogList').DataTable({
+            responsive: true,
+            "processing": true,
+            scrollY: $(window).height() - 450,
+            scrollCollapse: true,
+            scrollX: true,
+            destroy: true,
+            dom: 'rt',
+            "ordering": false,
+            columnDefs: [
+                { visible: false, targets: 0 }
+            ], "order": [
+                [0, 'desc']
+            ],
+            "columns": [
+                {
+                    "name": "AssetID",
+                    'data': 'AssetID'
+                }, {
+                    "name": "S.No",
+                    'data': 'SNo'
+
+                }, {
+                    "name": "AssetName",
+                    'data': 'AssetName'
+                }, {
+                    "name": "AssetType",
+                    'data': 'AssetType'
+                }, {
+                    "name": "Quantity",
+                    'data': 'Quantity'
+                }, {
+                    "name": "PriceperUnit",
+                    'data': 'PriceperUnit'
+                }, {
+                    "name": "TotalPrice",
+                    'data': 'TotalPrice'
+                }, {
+                    "name": "AssetComments",
+                    'data': 'AssetComments'
+                }, {
+                    "name": "Actions",
+                    'data': 'Actions'
+                }]
+            , "createdRow": function (row, data, index) {
+
+                var price = $("#totalammount").text()
+                if (price == "")
+                    price = 0
+                $("#totalammount").text(parseFloat(data.TotalPrice) + parseFloat(price))
+
+            }
+        });
+
+
+        $("#LocationID").change(function () {
+            if ("{{.Auth.Accesstoalllocations}}") {
+            }
+            else {
+                if ($("#LocationID").val() != "") {
+                    if ($("#LocationID").val() != $("#locationid").val()) {
+                        Toast("warning", "you are not access to select other locations")
+                        $("#LocationID").val("")
+                        $('#LocationsAddress').html("--")
+                        return
+                    }
+                } else {
+                    $('#LocationsAddress').html("--")
+                    return
+                }
+
+            }
+            var html = "<p class=' text-wrap m-0'> " + $("#LocationID option:selected").attr("data-Address1") + ",</p>"
+            html += "<p class=' text-wrap m-0'>" + $("#LocationID option:selected").attr("data-Address2") + "," + $("#LocationID option:selected").attr("data-Zipcode") + "</p>"
+            // html += "<p>" + $("#LocationID option:selected").attr("data-Countryname") + ",</p>"
+            // html += "<p>" + $("#LocationID option:selected").attr("data-Statename") + ",</p>"
+            //  html += "<p>" + $("#LocationID option:selected").attr("data-Zipcode") + "</p>"
+            $('#LocationsAddress').html(html)
+        })
+
+        $("#VendorID").change(function () {
+            $("input[name='AssetType']").parents('label').removeClass('active')
+            $("input[name='AssetType']:checked").prop('checked', false)
+            $("#divConsumable,#divITAsset,#divNonITAsset").addClass("collapse")
+            if ($("#VendorID").val() == "") {
+                $('#VendorsAddress').html("--")
+                return
+            }
+            var html = "<p class='text-nowrap m-0 '> " + $("#VendorID option:selected").attr("data-Address") + "</p>"
+            html += "<p class='text-nowrap m-0 '>" + $("#VendorID option:selected").attr("data-Email") + "," + $("#VendorID option:selected").attr("data-Phone") + "</p>"
+            $('#VendorsAddress').html(html)
+
+
+        })
+
+        $("input[name='AssetType']").change(function () {
+
+            if ($("#VendorID").val() == "") {
+                Toast('warning', 'Please select vendor')
+                return;
+            }
+            //clear
+            $("#PricePerUnit").prop('readonly', false)
+            $("#AssetComments").val('')
+            $("#PricePerUnit").val(0)
+            $("#Quantity").val(1)
+            //end clear
+            if (this.value == 'NonITAsset') {
+                var data = getdata('/GetNonITAssetMasterList')
+                GetNonITAssetMasterList(data)
+                $("#divNonITAsset").removeClass("collapse")
+                $("#divConsumable,#divITAsset").addClass("collapse")
+            } else if (this.value == 'ITAsset') {
+                $("#divITAsset").removeClass("collapse")
+                $("#divConsumable,#divNonITAsset").addClass("collapse")
+            }
+            else if (this.value == 'Consumable') {
+                $("#divConsumable").removeClass("collapse")
+                $("#divITAsset,#divNonITAsset").addClass("collapse")
+                var data = getdata('/GetConsumableMastersByVendors/' + $("#VendorID").val())
+
+                GetConsumableMasterList(data)
+            }
+        });
+
+        $("#IDConsumable_Master").change(function () {
+            $("#PricePerUnit").val($("#IDConsumable_Master option:selected").attr('data-price'))
+
+            if ($("#PricePerUnit").val() > 0) {
+                $("#PricePerUnit").prop('readonly', true)
+            }
+        });
+
+        $("#btnAddtoList").click(function () {
+            var PricePerUnit = $("#PricePerUnit").val();
+            var AssetComments = $("#AssetComments").val();
+            var Quantity = $("#Quantity").val();
+            var AssetType = $("input[name='AssetType']:checked").val()
+            var AssetID = ""
+            var AssetName = ""
+            if ($("#VendorID").val() == "") {
+                Toast('warning', 'Please select vendor')
+                return;
+            } else if (AssetType == undefined) {
+                Toast('warning', 'Please select asset type')
+                return
+            }
+            if (AssetType == "ITAsset") {
+                AssetName = $("#ITAssetName").val()
+                if (AssetName == "") {
+                    Toast('warning', 'Please Enter Asset Name')
+                    return
+                }
+            } else if (AssetType == "NonITAsset") {
+                AssetID = $("#IDNonITAssets_Master").val()
+                AssetName = $("#IDNonITAssets_Master option:selected").text()
+                if (AssetID == "") {
+                    Toast('warning', 'Please select an Asset')
+                    return
+                }
+
+            } else if (AssetType == "Consumable") {
+                AssetID = $("#IDConsumable_Master").val()
+                AssetName = $("#IDConsumable_Master option:selected").text()
+                if (AssetID == "") {
+                    Toast('warning', 'Please select an Asset')
+                    return
+                }
+            }
+
+            //validations
+            if (AssetType == undefined) {
+                Toast('warning', 'Please select asset type')
+                return
+            } else if (Quantity <= 0 || Quantity == "") {
+                Toast('warning', 'Please enter Quantity')
+                return
+            }
+            else if (PricePerUnit <= 0 || PricePerUnit == "") {
+                Toast('warning', 'Please enter Price per Unit')
+                return
+            } else if (AssetComments == "") {
+                Toast('warning', 'Please enter comments')
+                return
+            }
+
+            tbl.row.add({
+                "SNo": $('#tblCatlogList').DataTable().rows().count() + 1,
+                "AssetID": AssetID,
+                "AssetName": AssetName,
+                "AssetType": AssetType,
+                "Quantity": Quantity,
+                "PriceperUnit": PricePerUnit,
+                "AssetComments": AssetComments,
+                "TotalPrice": parseFloat(Quantity) * parseFloat(PricePerUnit),
+                "Actions": "<button  title='Delete'  class='rowDelete btn btn-link text-red '><i class='ik ik-trash btn-md '></i></button>"
+            }).draw();
+
+            $("#VendorID").prop('read');
+            $("#PricePerUnit").prop('readonly', false)
+            $("#AssetComments").val('')
+            $("#PricePerUnit").val('')
+            $("#Quantity").val('')
+            $("#ITAssetName").val('')
+            $("#IDConsumable_Master").val('')
+            $("#IDNonITAssets_Master").val('')
+
+        })
+
+        $('#tblCatlogList tbody').on('click', '.rowDelete', function () {
+            var tr = tbl.row($(this).parents('tr'))
+            var price = $("#totalammount").text()
+            if (price == "")
+                price = 0
+            debugger;
+            $("#totalammount").text(parseFloat(price) - parseFloat(tr.data().TotalPrice))
+
+            tr.remove().draw();
+
+        });
+
+        $("#btnDraft").click(function () {
+            if ($("#LocationID").val() == "") {
+                Toast('warning', 'Please select Deleivery Location')
+                $("#LocationID").focus();
+                return;
+            } else if ($("#VendorID").val() == "") {
+                Toast('warning', 'Please select Vendor')
+                $("#VendorID").focus();
+                return;
+            } else if ($("#POApproverID").val() == "") {
+                Toast('warning', 'Please select POApprover')
+                $("#POApproverID").focus();
+                return;
+            }
+
+            var array = new Array()
+            tbl.rows().every(function (rowIdx, tableLoop, rowLoop) {
+                var data = this.data();
+                debugger;
+                var objAssets = new Object()
+                objAssets.AssetName = data.AssetName;
+                objAssets.AssetID = parseInt(data.AssetID);
+                objAssets.PricePerUnit = parseFloat(data.PriceperUnit);
+                objAssets.AssetComments = data.AssetComments;
+                objAssets.Quantity = parseInt(data.Quantity);
+                objAssets.AssetType = data.AssetType
+                objAssets.CreatedBy = parseInt($("#employeeid").val());
+                array.push(objAssets)
+            });
+
+
+            var res = new Object();
+            res.POID = $("#POID").text();
+            res.LocationID = parseInt($("#LocationID").val());
+            res.VendorID = parseInt($("#VendorID").val());
+            //  res.POApproverID = parseInt($("#POApproverID").val());
+            res.PORequestedBy = parseInt($("#employeeid").val());
+            res.CreatedBy = parseInt($("#employeeid").val());
+            res.PODescription = $("#PODescription").val();
+            res.ShipmentTerms = $("#ShipmentTerms").val();
+            res.PaymentTerms = $("#PaymentTerms").val();
+            res.TotalAmmount = parseFloat($("#totalammount").text())
+            res.StatusID = 33 //draft
+            res.ListPurchaseOrders_Assets = array
+
+            $.ajax({
+                url: "/PurchaseOrders_RequestsInsert",
+                type: "POST",
+                dataType: 'json',
+                data: JSON.stringify(res),
+                async: false,
+                success: function (dt) {
+                    alert('PO added to Draft.')
+                    location.reload();
+                }, error: function () {
+                    alert('Internal error')
+                }
+            });
+
+        });
+
+        $("#btnSubmitRequest").click(function () {
+            if ($("#LocationID").val() == "") {
+                Toast('warning', 'Please select Deleivery Location')
+                $("#LocationID").focus();
+                return;
+            } else if ($("#VendorID").val() == "") {
+                Toast('warning', 'Please select Vendor')
+                $("#VendorID").focus();
+                return;
+            } else if ($("#POApproverID").val() == "") {
+                Toast('warning', 'Please select POApprover')
+                $("#POApproverID").focus();
+                return;
+            }
+
+
+            if ($("#LocationID").val() == "") {
+                Toast('warning', 'Please select Deleivery Location')
+                $("#LocationID").focus();
+                return;
+            } else if ($("#VendorID").val() == "") {
+                Toast('warning', 'Please select Vendor')
+                $("#VendorID").focus();
+                return;
+            } else if ($("#POApproverID").val() == "") {
+                Toast('warning', 'Please select POApprover')
+                $("#POApproverID").focus();
+                return;
+            }
+
+            var array = new Array()
+            tbl.rows().every(function (rowIdx, tableLoop, rowLoop) {
+                var data = this.data();
+                debugger;
+                var objAssets = new Object()
+                objAssets.AssetName = data.AssetName;
+                objAssets.AssetID = parseInt(data.AssetID);
+                objAssets.PricePerUnit = parseFloat(data.PriceperUnit);
+                objAssets.AssetComments = data.AssetComments;
+                objAssets.Quantity = parseInt(data.Quantity);
+                objAssets.AssetType = data.AssetType
+                objAssets.CreatedBy = parseInt($("#employeeid").val());
+                array.push(objAssets)
+            });
+            var Approval = new Object();
+            Approval.RoleID = parseInt($("#RoleID").val());
+            Approval.ApproverID = parseInt($("#POApproverID").val());
+            Approval.Grade = parseInt($("#Grade").val());
+
+            var res = new Object();
+            res.POID = $("#POID").text();
+            res.LocationID = parseInt($("#LocationID").val());
+            res.VendorID = parseInt($("#VendorID").val());
+            //  res.POApproverID = parseInt($("#POApproverID").val());
+            res.PORequestedBy = parseInt($("#employeeid").val());
+            res.CreatedBy = parseInt($("#employeeid").val());
+            res.PODescription = $("#PODescription").val();
+            res.ShipmentTerms = $("#ShipmentTerms").val();
+            res.PaymentTerms = $("#PaymentTerms").val();
+            res.TotalAmmount = parseFloat($("#totalammount").text())
+            res.StatusID = 34 //Request
+            res.ListPurchaseOrders_Assets = array
+            res.POApproval = Approval
+
+            $.ajax({
+                url: "/PurchaseOrders_RequestsInsert",
+                type: "POST",
+                dataType: 'json',
+                data: JSON.stringify(res),
+                async: false,
+                success: function (dt) {
+                    alert('PO Requested successfully.')
+                    location.reload();
+                }, error: function () {
+                    alert('Internal error')
+                }
+            });
+
+        });
+
+
+
+
+    });
+
+</script>
+
+
+
+
+{{template "footer"}}
+{{end}}

@@ -69,4 +69,16 @@ type CmnRepIntrfc interface {
 	InwardOutwardReqForward(ctx context.Context, mdl CmnModel.InWardOutWardApproval) error 
 	GetAdminDashBoard(ctx context.Context, mdl CmnModel.AdminDashBoard) (*CmnModel.AdminDashBoard, error)
 	GetEmployeeDashboard(ctx context.Context, mdl CmnModel.EmployeeDashboard) (*CmnModel.EmployeeDashboard, error) 
+	PurchaseOrders_RequestsInsert(ctx context.Context, mdl CmnModel.PurchaseOrders_Requests) error
+	GetPurchaseOrderUniqueID() (*string, error)
+	GetPODetailsByReqstrID(ctx context.Context,ReqstrID int) ([]*CmnModel.PurchaseOrders_Requests, error) 
+	PODetailsByIDPO(ctx context.Context,IDPO int) (*CmnModel.PurchaseOrders_Requests, error)
+	POAssetDetailsByIDPO(ctx context.Context, IDPO int) ([]*CmnModel.PurchaseOrders_Assets, error) 
+	PO_ApprovalStatusList(ctx context.Context, IDPO int) ([]*CmnModel.POApproval, error) 
+	GetPODetailsByApprover(ctx context.Context, ApprvrID int) ([]*CmnModel.PurchaseOrders_Requests, error) 
+	POReqApproved(ctx context.Context, mdl CmnModel.POApproval) error 
+	POReqForward(ctx context.Context, mdl CmnModel.POApproval) error 
+	POReqRejected(ctx context.Context, mdl CmnModel.POApproval) error 
+	PurchaseOrders_RequestsUpdate(ctx context.Context, mdl CmnModel.PurchaseOrders_Requests) error
+	POStatusChange(IDPO int, Status int) error
 }

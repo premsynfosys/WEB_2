@@ -437,3 +437,14 @@ func (m *APIRepo) GetITAssetReqListByEmp(ctx context.Context, EmpID int) ([]*ITA
 	}
 	return data, nil
 }
+
+
+func (m *APIRepo) ITAssetDelete(ctx context.Context, AssetID int) (error) {
+	url := fmt.Sprintf(m.APIConn+"/ITAssetDelete/%d", AssetID)
+	bytes, err := utils.GetRequest(url)
+	if err != nil {
+		return  err
+	}
+	err = json.Unmarshal(bytes, nil)
+	return  nil
+}

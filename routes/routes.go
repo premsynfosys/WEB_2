@@ -13,6 +13,8 @@ import (
 
 //ConsumablesRoutings ..s
 func ConsumablesRoutings(r *mux.Router, hndl *cnsmblhndlr.IConsumables) {
+	r.HandleFunc("/GetConsumableMastersByVendors/{VendorID}", utils.AuthRequired(hndl.GetConsumableMastersByVendors))
+	r.HandleFunc("/ConsumableDelete/{AssetID}", utils.AuthRequired(hndl.ConsumableDelete))
 	r.HandleFunc("/ConsumableBulkDelete", utils.AuthRequired(hndl.ConsumableBulkDelete))
 	r.HandleFunc("/Consumables/Consumables", utils.AuthRequired(hndl.Consumable))
 	r.HandleFunc("/GetVendorsByConsumable/{ConsumableID}", utils.AuthRequired(hndl.GetVendorsByConsumable))
@@ -41,6 +43,7 @@ func ConsumablesRoutings(r *mux.Router, hndl *cnsmblhndlr.IConsumables) {
 
 //ITAssetsRoutings ..
 func ITAssetsRoutings(r *mux.Router, hndl *itassethndlr.IITAsset) {
+	r.HandleFunc("/ITAssetDelete/{AssetID}", utils.AuthRequired(hndl.ITAssetDelete))
 	r.HandleFunc("/MyITAssetRequestList", utils.AuthRequired(hndl.MyITAssetRequestList))
 	r.HandleFunc("/ITAssetReqForward", utils.AuthRequired(hndl.ITAssetReqForward))
 	r.HandleFunc("/GetITAssetReqListByEmp/{EmpID}",  utils.AuthRequired(hndl.GetITAssetReqListByEmp))
@@ -98,8 +101,22 @@ func CommonRoutings(r *mux.Router, hndl *cmnhandler.ICommonrep) {
 	r.HandleFunc("/echo", func(w http.ResponseWriter, r *http.Request) {
 		utils.ServeWs(hub, w, r)
 	})
-
-
+	r.HandleFunc("/POStatusChange/{IDPO}/{Status}", utils.AuthRequired(hndl.POStatusChange))
+	r.HandleFunc("/PurchaseOrders_RequestsUpdate", utils.AuthRequired(hndl.PurchaseOrders_RequestsUpdate))
+	r.HandleFunc("/POApprovalDetails", utils.AuthRequired(hndl.POApprovalDetails))
+	r.HandleFunc("/POReqForward", utils.AuthRequired(hndl.POReqForward))
+	r.HandleFunc("/POReqApproved", utils.AuthRequired(hndl.POReqApproved))
+	r.HandleFunc("/PO_Edit/{IDPO}", utils.AuthRequired(hndl.PO_Edit))
+	r.HandleFunc("/POReqRejected", utils.AuthRequired(hndl.POReqRejected))
+	r.HandleFunc("/GetPODetailsByApprover/{ApprvrID}", utils.AuthRequired(hndl.GetPODetailsByApprover))
+	r.HandleFunc("/POAssetDetailsByIDPO/{IDPO}", utils.AuthRequired(hndl.POAssetDetailsByIDPO))
+	r.HandleFunc("/PO_ApprovalStatusList/{IDPO}", utils.AuthRequired(hndl.PO_ApprovalStatusList))
+	r.HandleFunc("/PurchaseOrderView/{IDPO}", utils.AuthRequired(hndl.PurchaseOrderView))
+	r.HandleFunc("/GetPODetailsByReqstrID/{ReqstrID}", utils.AuthRequired(hndl.GetPODetailsByReqstrID))
+	r.HandleFunc("/GetPurchaseOrderUniqueID", utils.AuthRequired(hndl.GetPurchaseOrderUniqueID))
+	r.HandleFunc("/PurchaseOrder", utils.AuthRequired(hndl.PurchaseOrder))
+	r.HandleFunc("/PurchaseOrders_RequestsInsert", utils.AuthRequired(hndl.PurchaseOrders_RequestsInsert))
+	r.HandleFunc("/PurchaseOrderDetails", utils.AuthRequired(hndl.PurchaseOrderDetails))
 	r.HandleFunc("/GetMultiLevelApproval_Map", utils.AuthRequired(hndl.GetMultiLevelApproval_Map))
 	r.HandleFunc("/InwardOutwardReqForward", utils.AuthRequired(hndl.InwardOutwardReqForward))
 	r.HandleFunc("/IWOW_ApprovalStatusList/{IDinwardoutward}", utils.AuthRequired(hndl.IWOW_ApprovalStatusList))
@@ -184,6 +201,7 @@ func CommonRoutings(r *mux.Router, hndl *cmnhandler.ICommonrep) {
 
 //NonITAssetsRoutings ..
 func NonITAssetsRoutings(r *mux.Router, hndl *nonitassetshndlr.INonITAsset) {
+	r.HandleFunc("/NonITAssetDelete/{AssetID}", utils.AuthRequired(hndl.NonITAssetDelete))
 	r.HandleFunc("/CheckDuplicateNonITAssetEntry/{MasterID:[0-9]+}/{LocID:[0-9]+}", utils.AuthRequired(hndl.CheckDuplicateNonITAssetEntry))
 	r.HandleFunc("/Check_Unique_NonITAsset/{NonITAssetName}", utils.AuthRequired(hndl.Check_Unique_NonITAsset))
 	r.HandleFunc("/GetNonITAssetReqListByEmp/{EmpID}", utils.AuthRequired(hndl.GetNonITAssetReqListByEmp))

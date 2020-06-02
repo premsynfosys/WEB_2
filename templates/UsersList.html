@@ -199,7 +199,7 @@
             res += "<button disabled  title='Send Reset password link' data-value='" + dt.Employee.IDEmployees + "' class='ResetPassword btn btn-link text-dark btn-xs'><i class='ik ik-link'></i></button>"
             res += "<button disabled title='ReSend Activation Link' data-value='" + dt.Employee.IDEmployees + "' class='ResendLink btn btn-link btn-xs '>"
             res += ' <img  src="/AppFiles/Images/LOGO/mailforward.png" width="15px" height="15px" > </button>'
-            res += "<button  title=Delete User' data-value='" + dt.IDUsers + "' class=' btn btn-link text-danger '><i class='ik ik-trash btn-xs '></i></button>";
+            res += "<button  title='Delete User' data-value='" + dt.IDUsers + "' class=' btn btn-link text-danger '><i class='ik ik-trash btn-xs '></i></button>";
 
             // if (dt.UserName == "") {
             //   res = "<a title='ReSend Activation Link' data-value='" + dt.Employee.IDEmployees + "' class='ResendLink btn btn-link '>"
@@ -226,7 +226,7 @@
               res += "<button disabled  title='Send Reset password link' data-value='" + dt.Employee.IDEmployees + "' class='ResetPassword btn btn-link text-dark btn-xs'><i class='ik ik-link'></i></button>"
               res += "<button  title='ReSend Activation Link' data-value='" + dt.Employee.IDEmployees + "' class='ResendLink btn btn-link btn-xs '>"
               res += ' <img  src="/AppFiles/Images/LOGO/mailforward.png" width="15px" height="15px" > </button>'
-              res += "<button  title=Delete User' data-value='" + dt.Employee.IDEmployees + "' class='DeleteUser btn btn-link text-danger '><i class='ik ik-trash btn-xs '></i></button>";
+              res += "<button  title='Delete User' data-value='" + dt.Employee.IDEmployees + "' class='DeleteUser btn btn-link text-danger '><i class='ik ik-trash btn-xs '></i></button>";
 
             } else {
               if (dt.Status == "InActive") {
@@ -236,7 +236,7 @@
                   res += "<button disabled  title='Send Reset password link' data-value='" + dt.Employee.IDEmployees + "' class='ResetPassword btn btn-link text-dark btn-xs'><i class='ik ik-link'></i></button>"
                   res += "<button disabled title='ReSend Activation Link' data-value='" + dt.Employee.IDEmployees + "' class='ResendLink btn btn-link btn-xs '>"
                   res += ' <img  src="/AppFiles/Images/LOGO/mailforward.png" width="15px" height="15px" > </button>'
-                  res += "<button  title=Delete User' data-value='" + dt.Employee.IDEmployees + "' class='DeleteUser btn btn-link text-danger '><i class='ik ik-trash btn-xs '></i></button>";
+                  res += "<button  title='Delete User' data-value='" + dt.Employee.IDEmployees + "' class='DeleteUser btn btn-link text-danger '><i class='ik ik-trash btn-xs '></i></button>";
 
                 }
               } else {
@@ -250,7 +250,7 @@
 
                   } res += "<button disabled title='ReSend Activation Link' data-value='" + dt.Employee.IDEmployees + "' class='ResendLink btn btn-link btn-xs '>"
                   res += ' <img  src="/AppFiles/Images/LOGO/mailforward.png" width="15px" height="15px" > </button>'
-                  res += "<button  title=Delete User' data-value='" + dt.Employee.IDEmployees + "' class='DeleteUser btn btn-link text-danger '><i class='ik ik-trash btn-xs '></i></button>";
+                  res += "<button  title='Delete User' data-value='" + dt.Employee.IDEmployees + "' class='DeleteUser btn btn-link text-danger '><i class='ik ik-trash btn-xs '></i></button>";
 
                 } else if ("{{.Auth.PasswordReset}}") {
                   var res = "<button disabled title='Activate User' data-value='" + dt.IDUsers + "' class='ActivateUser btn btn-link text-dark '><i class='ik ik-user-check btn-xs '></i></button>";
@@ -262,7 +262,7 @@
                   res += "<button   title='Send Reset password link' data-value='" + dt.Employee.IDEmployees + "' class='ResetPassword btn btn-link text-info btn-xs'><i class='ik ik-link'></i></button>"
                   res += "<button disabled title='ReSend Activation Link' data-value='" + dt.Employee.IDEmployees + "' class='ResendLink btn btn-link btn-xs '>"
                   res += ' <img  src="/AppFiles/Images/LOGO/mailforward.png" width="15px" height="15px" > </button>'
-                  res += "<button  title=Delete User' data-value='" + dt.Employee.IDEmployees + "' class='DeleteUser btn btn-link text-danger '><i class='ik ik-trash btn-xs '></i></button>";
+                  res += "<button  title='Delete User' data-value='" + dt.Employee.IDEmployees + "' class='DeleteUser btn btn-link text-danger '><i class='ik ik-trash btn-xs '></i></button>";
 
                 }
               }

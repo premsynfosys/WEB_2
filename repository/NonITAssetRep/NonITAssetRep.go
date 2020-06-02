@@ -381,3 +381,13 @@ func (m *APIRepo) GetNonITAssetReqListByEmp(ctx context.Context, EmpID int) ([]*
 	}
 
 }
+
+func (m *APIRepo) NonITAssetDelete(ctx context.Context, AssetID int) (error) {
+	url := fmt.Sprintf(m.APIConn+"/NonITAssetDelete/%d", AssetID)
+	bytes, err := utils.GetRequest(url)
+	if err != nil {
+		return  err
+	}
+	err = json.Unmarshal(bytes, nil)
+	return  nil
+}

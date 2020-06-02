@@ -864,7 +864,6 @@ func (m *APIRepo) GetAdminDashBoard(ctx context.Context, mdl CmnModel.AdminDashB
 
 }
 
-
 func (m *APIRepo) GetEmployeeDashboard(ctx context.Context, mdl CmnModel.EmployeeDashboard) (*CmnModel.EmployeeDashboard, error) {
 	url := fmt.Sprintf(m.APIConn + "/GetEmployeeDashboard")
 	j, err := json.Marshal(mdl)
@@ -883,4 +882,183 @@ func (m *APIRepo) GetEmployeeDashboard(ctx context.Context, mdl CmnModel.Employe
 		return &data, nil
 	}
 
+}
+
+func (m *APIRepo) PurchaseOrders_RequestsInsert(ctx context.Context, mdl CmnModel.PurchaseOrders_Requests) error {
+	url := fmt.Sprintf(m.APIConn + "/PurchaseOrders_RequestsInsert")
+	j, err := json.Marshal(mdl)
+	if err != nil {
+		return err
+	}
+	bytes, err := utils.PutRequest(url, j)
+	if err != nil {
+		return err
+	}
+	var er string
+	err = json.Unmarshal(bytes, &er)
+
+	return err
+
+}
+
+func (m *APIRepo) GetPurchaseOrderUniqueID() (*string, error) {
+	url := fmt.Sprintf(m.APIConn + "/GetPurchaseOrderUniqueID")
+	bytes, err := utils.GetRequest(url)
+	if err != nil {
+		return nil, err
+	}
+	var NextID string
+	err = json.Unmarshal(bytes, &NextID)
+	if err != nil {
+		return nil, err
+	}
+	return &NextID, nil
+
+}
+
+func (m *APIRepo) GetPODetailsByReqstrID(ctx context.Context, ReqstrID int) ([]*CmnModel.PurchaseOrders_Requests, error) {
+	url := fmt.Sprintf(m.APIConn+"/GetPODetailsByReqstrID/%d", ReqstrID)
+	bytes, err := utils.GetRequest(url)
+	if err != nil {
+		return nil, err
+	}
+	data := []*CmnModel.PurchaseOrders_Requests{}
+	err = json.Unmarshal(bytes, &data)
+	if err != nil {
+		return nil, err
+	}
+	return data, nil
+
+}
+func (m *APIRepo) PODetailsByIDPO(ctx context.Context, IDPO int) (*CmnModel.PurchaseOrders_Requests, error) {
+	url := fmt.Sprintf(m.APIConn+"/PODetailsByIDPO/%d", IDPO)
+	bytes, err := utils.GetRequest(url)
+	if err != nil {
+		return nil, err
+	}
+	data := CmnModel.PurchaseOrders_Requests{}
+	err = json.Unmarshal(bytes, &data)
+	if err != nil {
+		return nil, err
+	}
+	return &data, nil
+
+}
+
+func (m *APIRepo) POAssetDetailsByIDPO(ctx context.Context, IDPO int) ([]*CmnModel.PurchaseOrders_Assets, error) {
+	url := fmt.Sprintf(m.APIConn+"/POAssetDetailsByIDPO/%d", IDPO)
+	bytes, err := utils.GetRequest(url)
+	if err != nil {
+		return nil, err
+	}
+	data := []*CmnModel.PurchaseOrders_Assets{}
+	err = json.Unmarshal(bytes, &data)
+	if err != nil {
+		return nil, err
+	}
+	return data, nil
+
+}
+
+func (m *APIRepo) PO_ApprovalStatusList(ctx context.Context, IDPO int) ([]*CmnModel.POApproval, error) {
+	url := fmt.Sprintf(m.APIConn+"/PO_ApprovalStatusList/%d", IDPO)
+	bytes, err := utils.GetRequest(url)
+	if err != nil {
+		return nil, err
+	}
+	data := []*CmnModel.POApproval{}
+	err = json.Unmarshal(bytes, &data)
+	if err != nil {
+		return nil, err
+	}
+	return data, nil
+
+}
+
+func (m *APIRepo) GetPODetailsByApprover(ctx context.Context, ApprvrID int) ([]*CmnModel.PurchaseOrders_Requests, error) {
+	url := fmt.Sprintf(m.APIConn+"/GetPODetailsByApprover/%d", ApprvrID)
+	bytes, err := utils.GetRequest(url)
+	if err != nil {
+		return nil, err
+	}
+	data := []*CmnModel.PurchaseOrders_Requests{}
+	err = json.Unmarshal(bytes, &data)
+	if err != nil {
+		return nil, err
+	}
+	return data, nil
+
+}
+func (m *APIRepo) POReqApproved(ctx context.Context, mdl CmnModel.POApproval) error {
+	url := fmt.Sprintf(m.APIConn + "/POReqApproved")
+	j, err := json.Marshal(mdl)
+	if err != nil {
+		return err
+	}
+	bytes, err := utils.PutRequest(url, j)
+	if err != nil {
+		return err
+	}
+	var er string
+	err = json.Unmarshal(bytes, &er)
+
+	return err
+
+}
+func (m *APIRepo) POReqForward(ctx context.Context, mdl CmnModel.POApproval) error {
+	url := fmt.Sprintf(m.APIConn + "/POReqForward")
+	j, err := json.Marshal(mdl)
+	if err != nil {
+		return err
+	}
+	bytes, err := utils.PutRequest(url, j)
+	if err != nil {
+		return err
+	}
+	var er string
+	err = json.Unmarshal(bytes, &er)
+
+	return err
+
+}
+func (m *APIRepo) POReqRejected(ctx context.Context, mdl CmnModel.POApproval) error {
+	url := fmt.Sprintf(m.APIConn + "/POReqRejected")
+	j, err := json.Marshal(mdl)
+	if err != nil {
+		return err
+	}
+	bytes, err := utils.PutRequest(url, j)
+	if err != nil {
+		return err
+	}
+	var er string
+	err = json.Unmarshal(bytes, &er)
+
+	return err
+
+}
+
+
+func (m *APIRepo) PurchaseOrders_RequestsUpdate(ctx context.Context, mdl CmnModel.PurchaseOrders_Requests) error {
+	url := fmt.Sprintf(m.APIConn + "/PurchaseOrders_RequestsUpdate")
+	j, err := json.Marshal(mdl)
+	if err != nil {
+		return err
+	}
+	bytes, err := utils.PutRequest(url, j)
+	if err != nil {
+		return err
+	}
+	var er string
+	err = json.Unmarshal(bytes, &er)
+
+	return err
+
+}
+
+
+func (m *APIRepo) POStatusChange(IDPO int, Status int) error {
+	url := fmt.Sprintf(m.APIConn+"/POStatusChange/%d/%d", IDPO, Status)
+	_, err := utils.GetRequest(url)
+	return err
 }
