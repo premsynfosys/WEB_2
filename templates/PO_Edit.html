@@ -500,7 +500,7 @@
             res.VendorID = parseInt($("#VendorID").val());
             //  res.POApproverID = parseInt($("#POApproverID").val());
             res.PORequestedBy = parseInt($("#employeeid").val());
-            res.CreatedBy = parseInt($("#employeeid").val());
+            res.ModifiedBy = parseInt($("#employeeid").val());
             res.PODescription = $("#PODescription").val();
             res.ShipmentTerms = $("#ShipmentTerms").val();
             res.PaymentTerms = $("#PaymentTerms").val();
@@ -567,7 +567,7 @@
                 objAssets.AssetComments = data.AssetComments;
                 objAssets.Quantity = parseInt(data.Quantity);
                 objAssets.AssetType = data.AssetType
-                objAssets.CreatedBy = parseInt($("#employeeid").val());
+                objAssets.ModifiedBy = parseInt($("#employeeid").val());
                 array.push(objAssets)
             });
             var Approval = new Object();
@@ -582,7 +582,7 @@
             res.VendorID = parseInt($("#VendorID").val());
             //  res.POApproverID = parseInt($("#POApproverID").val());
             res.PORequestedBy = parseInt($("#employeeid").val());
-            res.CreatedBy = parseInt($("#employeeid").val());
+            res.ModifiedBy = parseInt($("#employeeid").val());
             res.PODescription = $("#PODescription").val();
             res.ShipmentTerms = $("#ShipmentTerms").val();
             res.PaymentTerms = $("#PaymentTerms").val();

@@ -919,3 +919,190 @@ func (p *ICommonrep) POStatusChange(w http.ResponseWriter, r *http.Request) {
 		utils.RespondwithJSON(w, r, http.StatusBadRequest, nil)
 	}
 }
+
+func (p *ICommonrep) Requisition(w http.ResponseWriter, r *http.Request) {
+	usr, Auth := utils.GetCookieUser(r)
+	mapRoles, _ := p.Irepo.GetMultiLevelApproval_Map(r.Context())
+	var RoleID int
+	var Grade int
+	for i := 0; i < len(mapRoles); i++ {
+		if mapRoles[i].FeatureName == "Requisition" {
+			RoleID = mapRoles[i].MultiLevelApproval_Map.RoleID
+			Grade = mapRoles[i].MultiLevelApproval_Map.Grade
+			break
+		}
+	}
+	data := struct {
+		RoleID int
+		Grade  int
+	}{
+		RoleID: RoleID,
+		Grade:  Grade,
+	}
+	Mapdata := CmnModel.TemplateData{
+		User: usr,
+		Auth: Auth,
+		Data: data,
+	}
+	if r.Method == "GET" {
+		utils.ExecuteTemplate(w, r, "Requisition", Mapdata)
+	}
+}
+
+func (p *ICommonrep) Requisition_RequestsInsert(w http.ResponseWriter, r *http.Request) {
+	res := CmnModel.Requisition_Requests{}
+	json.NewDecoder(r.Body).Decode(&res)
+	err := p.Irepo.Requisition_RequestsInsert(r.Context(), res)
+	if err == nil {
+		utils.RespondwithJSON(w, r, http.StatusOK, nil)
+	} else {
+		utils.RespondwithJSON(w, r, http.StatusBadRequest, nil)
+	}
+}
+
+
+func (p *ICommonrep) RequisitionDetails(w http.ResponseWriter, r *http.Request) {
+	usr, Auth := utils.GetCookieUser(r)
+
+	Mapdata := CmnModel.TemplateData{
+		User: usr,
+		Auth: Auth,
+	}
+	if r.Method == "GET" {
+		utils.ExecuteTemplate(w, r, "RequisitionDetails", Mapdata)
+	}
+}
+
+func (p *ICommonrep) GetRequisitionDetailsByReqstrID(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	ReqstrID := params["ReqstrID"]
+	ReqstrIDs, _ := strconv.Atoi(ReqstrID)
+	data, err := p.Irepo.GetRequisitionDetailsByReqstrID(r.Context(), ReqstrIDs)
+	if err == nil {
+		utils.RespondwithJSON(w, r, http.StatusOK, data)
+	} else {
+		utils.RespondwithJSON(w, r, http.StatusBadRequest, err.Error())
+	}
+}
+
+func (p *ICommonrep) RequisitionView(w http.ResponseWriter, r *http.Request) {
+	usr, Auth := utils.GetCookieUser(r)
+	params := mux.Vars(r)
+	ID := params["ID"]
+	IDs, _ := strconv.Atoi(ID)
+	POR, _ := p.Irepo.RequisitionDetailsByID(r.Context(), IDs)
+	mapRoles, _ := p.Irepo.GetMultiLevelApproval_Map(r.Context())
+	requstmap := []*CmnModel.MultiLevelApproval_Main{}
+	for _, itm := range mapRoles {
+		if itm.FeatureName == "Requisition" {
+			requstmap = append(requstmap, itm)
+		}
+	}
+	data := struct {
+		POR        *CmnModel.Requisition_Requests
+		ListApprvl []*CmnModel.MultiLevelApproval_Main
+	}{
+		POR:        POR,
+		ListApprvl: requstmap,
+	}
+	Mapdata := CmnModel.TemplateData{
+		User: usr,
+		Auth: Auth,
+		Data: data,
+	}
+	if r.Method == "GET" {
+		utils.ExecuteTemplate(w, r, "RequisitionView", Mapdata)
+	}
+}
+
+func (p *ICommonrep) RequisitionAssetDetailsByID(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	ID := params["ID"]
+	IDs, _ := strconv.Atoi(ID)
+	data, err := p.Irepo.RequisitionAssetDetailsByID(r.Context(), IDs)
+	if err == nil {
+		utils.RespondwithJSON(w, r, http.StatusOK, data)
+	} else {
+		utils.RespondwithJSON(w, r, http.StatusBadRequest, err.Error())
+	}
+}
+
+func (p *ICommonrep) Requisition_ApprovalStatusList(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	POID := params["ID"]
+	POIDs, _ := strconv.Atoi(POID)
+	data, err := p.Irepo.Requisition_ApprovalStatusList(r.Context(), POIDs)
+	if err == nil {
+		utils.RespondwithJSON(w, r, http.StatusOK, data)
+	} else {
+		utils.RespondwithJSON(w, r, http.StatusBadRequest, err.Error())
+	}
+}
+
+func (p *ICommonrep) RequisitionApprovalDetails(w http.ResponseWriter, r *http.Request) {
+	usr, Auth := utils.GetCookieUser(r)
+	Mapdata := CmnModel.TemplateData{
+		User: usr,
+		Auth: Auth,
+	}
+	if r.Method == "GET" {
+		utils.ExecuteTemplate(w, r, "RequisitionApprovalDetails", Mapdata)
+	}
+}
+func (p *ICommonrep) GetRequisitionDetailsByApprover(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	ApprvrID := params["ApprvrID"]
+	ApprvrIDs, _ := strconv.Atoi(ApprvrID)
+	data, err := p.Irepo.GetRequisitionDetailsByApprover(r.Context(), ApprvrIDs)
+	if err == nil {
+		utils.RespondwithJSON(w, r, http.StatusOK, data)
+	} else {
+		utils.RespondwithJSON(w, r, http.StatusBadRequest, err.Error())
+	}
+}
+
+func (p *ICommonrep) Requisition_Edit(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	ID := params["ID"]
+	IDPOs, _ := strconv.Atoi(ID)
+	usr, Auth := utils.GetCookieUser(r)
+	mapRoles, _ := p.Irepo.GetMultiLevelApproval_Map(r.Context())
+	POR, _ := p.Irepo.RequisitionDetailsByID(r.Context(), IDPOs)
+	var RoleID int
+	var Grade int
+	for i := 0; i < len(mapRoles); i++ {
+		if mapRoles[i].FeatureName == "Requisition" {
+			RoleID = mapRoles[i].MultiLevelApproval_Map.RoleID
+			Grade = mapRoles[i].MultiLevelApproval_Map.Grade
+			break
+		}
+	}
+	data := struct {
+		RoleID int
+		Grade  int
+		POR    *CmnModel.Requisition_Requests
+	}{
+		RoleID: RoleID,
+		Grade:  Grade,
+		POR:    POR,
+	}
+	Mapdata := CmnModel.TemplateData{
+		User: usr,
+		Auth: Auth,
+		Data: data,
+	}
+	if r.Method == "GET" {
+		utils.ExecuteTemplate(w, r, "Requisition_Edit", Mapdata)
+	}
+}
+
+func (p *ICommonrep) Requisition_RequestsUpdate(w http.ResponseWriter, r *http.Request) {
+	res := CmnModel.Requisition_Requests{}
+	json.NewDecoder(r.Body).Decode(&res)
+	err := p.Irepo.Requisition_RequestsUpdate(r.Context(), res)
+	if err == nil {
+		utils.RespondwithJSON(w, r, http.StatusOK, nil)
+	} else {
+		utils.RespondwithJSON(w, r, http.StatusBadRequest, nil)
+	}
+}

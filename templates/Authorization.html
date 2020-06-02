@@ -89,7 +89,7 @@
                                         </span>
                                         <span>{{$element.Feature_Name}}</span>
                                     </label>
-                                </div> 
+                                </div>
                                 {{end}}
                                 {{end}}
                                 {{end}}
@@ -314,6 +314,38 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="form-group row">
+                        <div class="col-sm-12 col-xl-12 mb-30">
+                            <h4 class="sub-title">
+                                <div class=" checkbox-fade fade-in-warning">
+                                    <label>
+                                        <input id="chkRequisition" type="checkbox">
+                                        <span class="cr">
+                                            <i class="cr-icon ik ik-check txt-warning"></i>
+                                        </span>
+                                        <span>Requisition</span>
+                                    </label>
+                                </div>
+                            </h4>
+                            <div id="divRequisition">
+                                {{ range $element :=  .Data.Features}}
+                                {{if eq  $element.Module "Requisition"}}
+                                <div class="checkbox-fade fade-in-primary">
+                                    <label>
+                                        <input id="{{$element.IDFeatures_list}}" value="{{$element.IDFeatures_list}}"
+                                            type="checkbox">
+                                        <span class="cr">
+                                            <i class="cr-icon ik ik-check txt-primary"></i>
+                                        </span>
+                                        <span>{{$element.Feature_Name}}</span>
+                                    </label>
+                                </div>
+                                {{end}}
+                                {{end}}
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -324,6 +356,12 @@
 </form>
 <script>
     $(document).ready(function () {
+        $("input[type='checkbox']").change(function () {
+            if ($("#Role").val() == "") {
+                alert('Please select Role')
+                $(this).prop('checked',false)
+            }
+        })
         $("#Role").change(function () {
             $("#frmAuthorization").find("input[type='checkbox']").prop('checked', false)
             if ($(this).val() != "") {
@@ -348,7 +386,7 @@
             obj.RoleID = parseInt($("#Role").val())
             obj.CreatedBy = parseInt($("#userid").val())
             var Features_List_IDss = new Array()
-            if(obj.RoleID==1){
+            if (obj.RoleID == 1) {
                 Features_List_IDss.push(16)//AccesstoalllocationsID:=16
             }
             $(this).find("input[type='checkbox']:checked").each(function () {
@@ -431,6 +469,13 @@
                 $("#divPO").find('input[type="checkbox"]').prop('checked', true);
             } else {
                 $("#divPO").find('input[type="checkbox"]').prop('checked', false);
+            }
+        });
+        $("#chkRequisition").change(function () {
+            if ($(this).prop('checked')) {
+                $("#divRequisition").find('input[type="checkbox"]').prop('checked', true);
+            } else {
+                $("#divRequisition").find('input[type="checkbox"]').prop('checked', false);
             }
         });
 

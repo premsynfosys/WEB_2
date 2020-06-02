@@ -55,9 +55,7 @@
       <script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.print.min.js"></script>
       <script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.colVis.min.js"></script>
       <script src="/static/plugins/sweetalert/dist/sweetalert.min.js"></script>
-      <script src="/static/plugins/jquery.repeater/jquery.repeater.min.js"></script>
-
-
+      
 
       <script>
             if (window["WebSocket"]) {
@@ -258,7 +256,7 @@
                                                 class="ik ik-maximize"></i></button>
                               </div>
                               <div class="top-menu d-flex align-items-center">
-                                    <div class="dropdown">
+                                    <!-- <div class="dropdown">
                                           <a class="nav-link dropdown-toggle notificationsBadge" href="#"
                                                 id="notiDropdown" role="button" data-toggle="dropdown"
                                                 aria-haspopup="true" aria-expanded="false"><i
@@ -271,7 +269,7 @@
                                                 <div class="footer"><a href="javascript:void(0);">See all activity</a>
                                                 </div>
                                           </div>
-                                    </div>
+                                    </div> -->
 
 
                                     <div class="dropdown">
@@ -321,7 +319,7 @@
                               <a class="header-brand" href="/dashboard">
                                     <div class="logo-img">
                                           <img src="/AppFiles/Images/LOGO/AMS-color.png" width="80" height="auto"
-                                                class="header-brand-img" alt="lavalite">
+                                                class="header-brand-img" alt="AMS">
                                     </div>
                               </a>
                               <button type="button" class="nav-toggle"><i data-toggle="expanded"
@@ -500,7 +498,36 @@
                                                 {{if .Auth.POApprovalList}}
                                                 <div class="submenu-content">
                                                       <a href="/POApprovalDetails" class="menu-item"><i
-                                                                  class="ik ik-briefcase"></i><span> Purchase Order
+                                                                  class="ik ik-check"></i><span> Purchase Order
+                                                                  Approvals</span></a>
+                                                </div>
+                                                {{end}}
+
+
+                                          </div>
+
+
+                                          <div class="nav-item has-sub">
+                                                <a href="#"><i
+                                                            class="ik ik-file-text"></i><span>Requisition</span></a>
+                                                {{if .Auth.CreateRequisition}}
+                                                <div class="submenu-content">
+                                                      <a href="/Requisition" class="menu-item"><i
+                                                                  class="ik ik-file-text"></i><span>Create
+                                                                  Requisition</span></a>
+                                                </div>
+                                                {{end}}
+                                                {{if .Auth.RequisitionDetails}}
+                                                <div class="submenu-content">
+                                                      <a href="/RequisitionDetails" class="menu-item"><i
+                                                                  class="ik ik-briefcase"></i><span>Requisition
+                                                                  Details</span></a>      
+                                                </div>
+                                                {{end}}
+                                                {{if .Auth.RequisitionApprovalList}}
+                                                <div class="submenu-content">
+                                                      <a href="/RequisitionApprovalDetails" class="menu-item"><i
+                                                                  class="ik ik-check"></i><span>Requisition
                                                                   Approvals</span></a>
                                                 </div>
                                                 {{end}}

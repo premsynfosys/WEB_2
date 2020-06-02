@@ -81,4 +81,11 @@ type CmnRepIntrfc interface {
 	POReqRejected(ctx context.Context, mdl CmnModel.POApproval) error 
 	PurchaseOrders_RequestsUpdate(ctx context.Context, mdl CmnModel.PurchaseOrders_Requests) error
 	POStatusChange(IDPO int, Status int) error
+	Requisition_RequestsInsert(ctx context.Context, mdl CmnModel.Requisition_Requests) error 
+	GetRequisitionDetailsByReqstrID(ctx context.Context, ReqstrID int) ([]*CmnModel.Requisition_Requests, error)
+	RequisitionDetailsByID(ctx context.Context, ID int) (*CmnModel.Requisition_Requests, error) 
+	RequisitionAssetDetailsByID(ctx context.Context, ID int) ([]*CmnModel.Requisition_Assets, error)
+	Requisition_ApprovalStatusList(ctx context.Context, ID int) ([]*CmnModel.RequisitionApproval, error) 
+	GetRequisitionDetailsByApprover(ctx context.Context, ApprvrID int) ([]*CmnModel.Requisition_Requests, error)
+	Requisition_RequestsUpdate(ctx context.Context, mdl CmnModel.Requisition_Requests) error
 }

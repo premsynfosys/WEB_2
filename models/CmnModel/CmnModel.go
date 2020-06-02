@@ -434,3 +434,60 @@ type PO_Bills struct {
 	PurchaseOrders_RequestsID int    `json:"PurchaseOrders_RequestsID"`
 	InvoiceNumber             string `json:"InvoiceNumber"`
 }
+
+type Requisition_Requests struct {
+	IDRequisition_Requests int                  `json:"IDRequisition_Requests"`
+	LocationID             int                  `json:"LocationID"`
+	VendorID               int                  `json:"VendorID"`
+	RequestedBy            int                  `json:"RequestedBy"`
+	Description            string               `json:"Description"`
+	ShipmentTerms          string               `json:"ShipmentTerms"`
+	PaymentTerms           string               `json:"PaymentTerms"`
+	TotalAmmount           float64              `json:"TotalAmmount"`
+	TotalPaidAmmount       float64              `json:"TotalPaidAmmount"`
+	StatusID               int                  `json:"StatusID"`
+	CreatedBy              int                  `json:"CreatedBy"`
+	ModifiedBy             int                  `json:"ModifiedBy"`
+	CreatedOn              string               `json:"CreatedOn"`
+	ModifiedOn             string               `json:"ModifiedOn"`
+	RecordStatus           string               `json:"RecordStatus"`
+	RequestedByName        string               `json:"RequestedByName"`
+	StatusName             string               `json:"StatusName"`
+	ListRequisition_Assets []Requisition_Assets `json:"ListRequisition_Assets"`
+	VendorData             Vendors              `json:"VendorData"`
+	LocationData           Locations            `json:"LocationData"`
+	RequisitionApproval    RequisitionApproval  `json:"RequisitionApproval"`
+}
+
+type Requisition_Assets struct {
+	IDRequisition_assets   int     `json:"IDRequisition_assets"`
+	Requisition_RequestsID int     `json:"Requisition_RequestsID"`
+	AssetType              string  `json:"AssetType"`
+	AssetName              string  `json:"AssetName"`
+	AssetID                int     `json:"AssetID"`
+	PriceperUnit           float64 `json:"PriceperUnit"`
+	ReqQuantity            int     `json:"ReqQuantity"`
+	RecvQuantity           int     `json:"RecvQuantity"`
+	AssetComments          string  `json:"AssetComments"`
+	CreatedBy              int     `json:"CreatedBy"`
+	CreatedOn              string  `json:"CreatedOn"`
+	ModifiedOn             string  `json:"ModifiedOn"`
+	ModifiedBy             int     `json:"ModifiedBy"`
+}
+type RequisitionApproval struct {
+	IDRequisition_approval int    `json:"IDRequisition_approval"`
+	Requisition_RequestsID int    `json:"Requisition_RequestsID"`
+	RoleID                 int    `json:"RoleID"`
+	RoleName               string `json:"RoleName"`
+	ApproverID             int    `json:"ApproverID"`
+	ApproverName           string `json:"ApproverName"`
+	Grade                  int    `json:"Grade"`
+	Comments               string `json:"Comments"`
+	Status                 int    `json:"Status"`
+	StatusName             string `json:"StatusName"`
+	CreatedOn              string `json:"CreatedOn"`
+	ActionedOn             string `json:"ActionedOn"`
+	NextRoleID             int    `json:"NextRoleID"`
+	NextApproverID         int    `json:"NextApproverID"`
+	NextGrade              int    `json:"NextGrade"`
+}

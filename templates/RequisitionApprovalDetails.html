@@ -1,11 +1,11 @@
-{{  define "POApprovalDetails"}}
+{{  define "RequisitionApprovalDetails"}}
 {{template "head" .}}
 <div class="page-header">
     <div class="row align-items-end">
         <div class="col-lg-8">
             <div class="page-header-title">
                 <div class="d-inline">
-                    <h5>Purchase Approval Details</h5>
+                    <h5>Requisition Approval Details</h5>
                 </div>
             </div>
         </div>
@@ -20,17 +20,17 @@
                 <div class="dt-responsive">
                     <table id="tblPODetails" class="table table-striped table-bordered " width="100%">
                         <thead>
-                            <th>IDPurchaseOrders_Requests</th>
-
-                            <th>POID</th>
-                            <th>PODescription</th>
+                            <th>IDRequisition_approval</th>
+                            <th>Status</th>
+                            <th>Description</th>
                             <th>ShipmentTerms</th>
                             <th>PaymentTerms</th>
                             <th>Total Ammont</th>
+                            <th>Total paid Ammount(bill)</th>
                             <th>Vendor</th>
                             <th>Location</th>
                             <th>Requested By</th>
-                            <th>Status</th>
+                           
                             <th>Requested On </th>
 
 
@@ -101,7 +101,7 @@
             destroy: true,
             dom: 'Bfrtip',
             ajax: {
-                "url": "/GetPODetailsByApprover/" + $("#employeeid").val(),
+                "url": "/GetRequisitionDetailsByApprover/" + $("#employeeid").val(),
                 "type": "POST",
                 "datatype": "json",
                 "dataSrc": ""//to read data from a plain array rather than an array in an object:
@@ -114,15 +114,16 @@
             ],
             "columns": [
                 {
-                    "name": "IDPurchaseOrders_Requests",
-                    'data': 'IDPurchaseOrders_Requests'
-                },
-                {
-                    "name": "POID",
+                    "name": "IDRequisition_approval",
+                    'data': 'IDRequisition_approval'
+                }, {
+                    "name": "StatusName",
                     'data': null,
                     render: function (dt) {
-                        return '<a href="/PurchaseOrderView/' + dt.IDPurchaseOrders_Requests + '" class="btn btn-sm  font-weight-bold text-info"  >#' + dt.POID + '</a> ';
+                        return '<a href="/RequisitionView/' + dt.IDRequisition_Requests + '" class="btn btn-sm  font-weight-bold text-info"  >' + dt.StatusName + '</a> ';
+            
                     }
+
                 }, {
                     "name": "PODescription",
                     'data': 'PODescription'
@@ -139,6 +140,12 @@
                         return "₹ " + dt
                     }
                 }, {
+                    "name": "TotalPaidAmmount",
+                    'data': 'TotalPaidAmmount',
+                    render: function (dt) {
+                        return "₹ " + dt
+                    }
+                }, {
                     "name": "VendorData",
                     'data': 'VendorData.Name'
                 }, {
@@ -147,22 +154,6 @@
                 }, {
                     "name": "PORequestedByName",
                     'data': 'PORequestedByName'
-
-                }, {
-                    "name": "StatusName",
-                    'data': 'StatusName',
-                    render: function (dt) {
-                        var res;
-                        if (dt == "Draft")
-                            res = '<span class="badge badge-pill badge-info">' + dt + '</span>'
-                        else if (dt == "Requested")
-                            res = '<span class="badge badge-pill badge-warning">' + dt + '</span>'
-                        else if (dt == "Rejected")
-                            res = '<span class="badge badge-pill badge-danger">' + dt + '</span>'
-                        else
-                            res = '<span class="badge badge-pill badge-success">' + dt + '</span>'
-                        return res;
-                    }
 
                 }, {
                     "name": "Requested On",

@@ -1,12 +1,13 @@
-{{  define "PurchaseOrder"}}
+{{  define "Requisition_Edit"}}
 {{template "head" .}}
+
 
 <div class="page-header">
     <div class="row align-items-end">
         <div class="col-lg-8">
             <div class="page-header-title">
                 <div class="d-inline">
-                    <h5>Purchase Order</h5>
+                    <h5>Requisition Edit</h5>
                 </div>
             </div>
         </div>
@@ -16,13 +17,11 @@
 <div class="row">
     <div class="col-md-12">
         <div class="card">
-            <div class="card-header">
-                <h4 class="font-weight-bold">PO # <span id="POID"></span></h4>
-                <input type="hidden" id="Grade" value="{{.Data.Grade}}">
-                <input type="hidden" id="RoleID" value="{{.Data.RoleID}}">
-            </div>
             <div class="card-body">
                 <div class="form-group  row  ">
+                    <input type="hidden" id="Grade" value="{{.Data.Grade}}">
+                    <input type="hidden" id="RoleID" value="{{.Data.RoleID}}">
+                    <input type="hidden" id="IDRequisition_Requests" value="{{.Data.POR.IDRequisition_Requests}}">
                     <div class="col-md-6">
                         <div class=" row">
                             <label for="LocationID" class="col-sm-4 col-form-label">Delivery Location</label>
@@ -56,24 +55,24 @@
                     </div>
                 </div>
                 <div class="form-group row mt-2">
-                    <label class="col-sm-3 col-form-label">PO Approver:</label>
+                    <label class="col-sm-3 col-form-label">Approver:</label>
                     <div class="col-sm-3 ">
-                        <select name="POApproverID" id="POApproverID" class="form-control ">
+                        <select name="ApproverID" id="ApproverID" class="form-control ">
                         </select>
                     </div>
                 </div>
                 <div class=" form-group row">
-                    <label class="col-sm-3 col-form-label">PO RequestedBy:</label>
+                    <label class="col-sm-3 col-form-label">RequestedBy:</label>
                     <div class="col-sm-6 ">
                         <label class="col-sm-3 col-form-label"> {{.User.FirstName}}</label>
 
                     </div>
                 </div>
                 <div class=" form-group row">
-                    <label class="col-sm-3 col-form-label">PO Description:</label>
+                    <label class="col-sm-3 col-form-label">Description:</label>
                     <div class="col-sm-6 ">
-                        <textarea name="PODescription" maxlength="500" required placeholder="PO Decription"
-                            title="Description" class="form-control " id="PODescription"></textarea>
+                        <textarea name="Description" maxlength="500" required placeholder="Decription"
+                            title="Description" class="form-control " id="Description"></textarea>
 
                     </div>
                 </div>
@@ -93,40 +92,8 @@
                     </div>
                 </div>
                 <hr>
-                <div class="form-group row">
-                    <label for="AssignTo" class="col-md-3 col-form-label ">Asset Type:</label>
-                    <div class="col-md-9">
-                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                            <label class="btn btn-light btn-sm ">
-                                <input type="radio" name="AssetType" value="ITAsset" id="rdITAsset">
-                                ITAsset
-                            </label>
-                            <label class="btn btn-light btn-sm">
-                                <input type="radio" name="AssetType" id="rdNonITAsset" value="NonITAsset">
-                                NonITAsset
-                            </label>
-                           
-                        </div>
-                    </div>
-                </div>
-                <div class="collapse" id="divNonITAsset">
-                    <div class="form-group row ">
-                        <label for="IDNonITAssets_Master" class="col-sm-3 col-form-label">NonITAsset Name:</label>
-                        <div class="col-sm-6">
-                            <select name="IDNonITAssets_Master" class="form-control " id="IDNonITAssets_Master">
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="collapse" id="divITAsset">
-                    <div class="form-group row ">
-                        <label for="IDITAssets_Master" class="col-sm-3 col-form-label">ITAsset Name:</label>
-                        <div class="col-sm-6">
-                            <input type="text" name="ITAssetName" class="form-control " id="ITAssetName" />
-                        </div>
-                    </div>
-                </div>
-                <div class="collapse" id="divConsumable">
+
+                <div id="divConsumable">
                     <div class="form-group row ">
                         <label for="IDConsumable_Master" class="col-sm-3 col-form-label">Consumable Name:</label>
                         <div class="col-sm-6">
@@ -136,16 +103,16 @@
                     </div>
                 </div>
                 <div class="form-group row ">
-                    <label class="col-sm-3 col-form-label">Quantity:</label>
+                    <label class="col-sm-3 col-form-label">Req Quantity:</label>
                     <div class="col-sm-2">
-                        <input type="number" id="Quantity" min="1" class="form-control">
+                        <input type="number" id="ReqQuantity" min="1" class="form-control">
                     </div>
                 </div>
                 <div class="form-group row ">
                     <label class="col-sm-3 col-form-label">Price/Unit:</label>
                     <div class="col-sm-2 ">
                         <div class="input-group">
-                            <input type="number" id="PricePerUnit" min="0" class="form-control">
+                            <input type="number" readonly id="PricePerUnit" min="0" class="form-control">
                             <span class="input-group-append">
                                 <label class="input-group-text">₹</label>
                             </span>
@@ -174,14 +141,13 @@
                     <table class="table table-hover nowrap table-bordered" id="tblCatlogList">
                         <thead>
                             <th>AssetID</th>
-                            <th>S.No.</th>
+
                             <th>Asset Name</th>
-                            <th>Asset Type</th>
-                            <th>Quantity</th>
+                            <th>Req Quantity</th>
                             <th>Price/Unit</th>
                             <th>Total Price</th>
                             <th>Comments</th>
-                           
+
                             <th>Action</th>
                         </thead>
                     </table>
@@ -196,7 +162,7 @@
         </div>
 
         <div class="row justify-content-center">
-            <button type="button" id="btnDraft" class="btn btn-primary btn-sm m-1 ">Add to Draft</button>
+            <button type="button" id="btnDraft" class="btn btn-primary btn-sm m-1 ">Update Draft</button>
             <button type="button" id="btnSubmitRequest" class="btn btn-primary btn-sm m-1 ">Submit Request</button>
         </div>
     </div>
@@ -204,13 +170,6 @@
 
 <script>
     $(document).ready(function () {
-        $("#POID").text(getdata("GetPurchaseOrderUniqueID"))
-        function GetNonITAssetMasterList(data) {
-            $("#IDNonITAssets_Master").empty().append('<option value="">--select--</option>');
-            $.each(data, function (i, el) {
-                $("#IDNonITAssets_Master").append($("<option />", { text: el.NonITAssets_Name, value: el.IDNonITAssets_Master }));
-            });
-        }
         function GetConsumableMasterList(data) {
             $("#IDConsumable_Master").empty().append('<option value="">--select--</option>');
             $.each(data, function (i, el) {
@@ -225,9 +184,9 @@
             });
         }
         function loadApprovers(data) {
-            $("#POApproverID").empty().append('<option value="">--select--</option>');
+            $("#ApproverID").empty().append('<option value="">--select--</option>');
             $.each(data, function (i, el) {
-                $("#POApproverID").append($("<option />", { text: el.Employee.FirstName, value: el.Employee.IDEmployees }));
+                $("#ApproverID").append($("<option />", { text: el.Employee.FirstName, value: el.Employee.IDEmployees }));
             });
         }
         function loadVendors(data) {
@@ -244,60 +203,59 @@
         var data = getdata('/GetApprovers/' + $("#locationid").val() + "/{{.Data.RoleID}}")
         loadApprovers(data)
 
-
         var tbl = $('#tblCatlogList').DataTable({
             responsive: true,
             "processing": true,
             scrollY: $(window).height() - 450,
             scrollCollapse: true,
             scrollX: true,
-            destroy: true,
+            //  destroy: true,
             dom: 'rt',
+            ajax: {
+                "url": '/RequisitionAssetDetailsByID/{{.Data.POR.IDRequisition_Requests}}',
+                "type": "POST",
+                "datatype": "json",
+                "dataSrc": ""//to read data from a plain array rather than an array in an object:
+            },
             "ordering": false,
             columnDefs: [
                 { visible: false, targets: 0 }
-            ], "order": [
-                [0, 'desc']
             ],
             "columns": [
                 {
                     "name": "AssetID",
                     'data': 'AssetID'
                 }, {
-                    "name": "S.No",
-                    'data': 'SNo'
-
-                }, {
                     "name": "AssetName",
                     'data': 'AssetName'
                 }, {
-                    "name": "AssetType",
-                    'data': 'AssetType'
-                }, {
-                    "name": "Quantity",
-                    'data': 'Quantity'
+                    "name": "ReqQuantity",
+                    'data': 'ReqQuantity'
                 }, {
                     "name": "PriceperUnit",
-                    'data': 'PriceperUnit'
+                    'data': null,
+                    render: function (dt) {
+                        return "₹" + dt.PriceperUnit
+                    }
                 }, {
                     "name": "TotalPrice",
-                    'data': 'TotalPrice'
+                    'data': null,
+                    render: function (dt) {
+                        return "₹" + parseInt(dt.PriceperUnit) * parseFloat(dt.ReqQuantity)
+                    }
                 }, {
                     "name": "AssetComments",
                     'data': 'AssetComments'
                 }, {
-                    "name": "Actions",
-                    'data': 'Actions'
+                    "name": "Action",
+                    'data': null,
+                    render: function (dt) {
+                        return "<button  title='Delete' data-totalprice='" + parseInt(dt.PriceperUnit) * parseFloat(dt.ReqQuantity) + "'   class='rowDelete btn btn-link text-red '><i class='ik ik-trash btn-md '></i></button>"
+                    }
                 }]
-            , "createdRow": function (row, data, index) {
 
-                var price = $("#totalammount").text()
-                if (price == "")
-                    price = 0
-                $("#totalammount").text(parseFloat(data.TotalPrice) + parseFloat(price))
-
-            }
         });
+
 
 
         $("#LocationID").change(function () {
@@ -326,9 +284,6 @@
         })
 
         $("#VendorID").change(function () {
-            $("input[name='AssetType']").parents('label').removeClass('active')
-            $("input[name='AssetType']:checked").prop('checked', false)
-            $("#divConsumable,#divITAsset,#divNonITAsset").addClass("collapse")
             if ($("#VendorID").val() == "") {
                 $('#VendorsAddress').html("--")
                 return
@@ -336,77 +291,40 @@
             var html = "<p class='text-nowrap m-0 '> " + $("#VendorID option:selected").attr("data-Address") + "</p>"
             html += "<p class='text-nowrap m-0 '>" + $("#VendorID option:selected").attr("data-Email") + "," + $("#VendorID option:selected").attr("data-Phone") + "</p>"
             $('#VendorsAddress').html(html)
+            var data = getdata('/GetConsumableMastersByVendors/' + $("#VendorID").val())
+            GetConsumableMasterList(data)
 
-
+            tbl.clear().draw();
+            $("#totalammount").text(0)
+            $("#AssetComments").val('')
+            $("#PricePerUnit").val('')
+            $("#ReqQuantity").val('')
+            $("#IDConsumable_Master").val('')
         })
 
-        $("input[name='AssetType']").change(function () {
 
-            if ($("#VendorID").val() == "") {
-                Toast('warning', 'Please select vendor')
-                return;
-            }
-            //clear
-            $("#PricePerUnit").prop('readonly', false)
-            $("#AssetComments").val('')
-            $("#PricePerUnit").val(0)
-            $("#Quantity").val(1)
-            //end clear
-            if (this.value == 'NonITAsset') {
-                var data = getdata('/GetNonITAssetMasterList')
-                GetNonITAssetMasterList(data)
-                $("#divNonITAsset").removeClass("collapse")
-                $("#divConsumable,#divITAsset").addClass("collapse")
-            } else if (this.value == 'ITAsset') {
-                $("#divITAsset").removeClass("collapse")
-                $("#divConsumable,#divNonITAsset").addClass("collapse")
-            }
-            else if (this.value == 'Consumable') {
-                $("#divConsumable").removeClass("collapse")
-                $("#divITAsset,#divNonITAsset").addClass("collapse")
-                var data = getdata('/GetConsumableMastersByVendors/' + $("#VendorID").val())
 
-                GetConsumableMasterList(data)
-            }
-        });
+
+
 
         $("#IDConsumable_Master").change(function () {
             $("#PricePerUnit").val($("#IDConsumable_Master option:selected").attr('data-price'))
-
-            if ($("#PricePerUnit").val() > 0) {
-                $("#PricePerUnit").prop('readonly', true)
-            }
+            $("#AssetComments").val('')
+            $("#ReqQuantity").val('')
         });
 
         $("#btnAddtoList").click(function () {
             var PricePerUnit = $("#PricePerUnit").val();
             var AssetComments = $("#AssetComments").val();
-            var Quantity = $("#Quantity").val();
-            var AssetType = $("input[name='AssetType']:checked").val()
+            var ReqQuantity = $("#ReqQuantity").val();
+
             var AssetID = ""
             var AssetName = ""
             if ($("#VendorID").val() == "") {
                 Toast('warning', 'Please select vendor')
                 return;
-            } else if (AssetType == undefined) {
-                Toast('warning', 'Please select asset type')
-                return
             }
-            if (AssetType == "ITAsset") {
-                AssetName = $("#ITAssetName").val()
-                if (AssetName == "") {
-                    Toast('warning', 'Please Enter Asset Name')
-                    return
-                }
-            } else if (AssetType == "NonITAsset") {
-                AssetID = $("#IDNonITAssets_Master").val()
-                AssetName = $("#IDNonITAssets_Master option:selected").text()
-                if (AssetID == "") {
-                    Toast('warning', 'Please select an Asset')
-                    return
-                }
-
-            } else if (AssetType == "Consumable") {
+            {
                 AssetID = $("#IDConsumable_Master").val()
                 AssetName = $("#IDConsumable_Master option:selected").text()
                 if (AssetID == "") {
@@ -416,17 +334,11 @@
             }
 
             //validations
-            if (AssetType == undefined) {
-                Toast('warning', 'Please select asset type')
-                return
-            } else if (Quantity <= 0 || Quantity == "") {
-                Toast('warning', 'Please enter Quantity')
+            if (ReqQuantity <= 0 || ReqQuantity == "") {
+                Toast('warning', 'Please enter Requested Quantity')
                 return
             }
-            else if (PricePerUnit <= 0 || PricePerUnit == "") {
-                Toast('warning', 'Please enter Price per Unit')
-                return
-            } else if (AssetComments == "") {
+            else if (AssetComments == "") {
                 Toast('warning', 'Please enter comments')
                 return
             }
@@ -435,22 +347,21 @@
                 "SNo": $('#tblCatlogList').DataTable().rows().count() + 1,
                 "AssetID": AssetID,
                 "AssetName": AssetName,
-                "AssetType": AssetType,
-                "Quantity": Quantity,
+                "ReqQuantity": ReqQuantity,
                 "PriceperUnit": PricePerUnit,
+                "TotalPrice": parseFloat(ReqQuantity) * parseFloat(PricePerUnit),
                 "AssetComments": AssetComments,
-                "TotalPrice": parseFloat(Quantity) * parseFloat(PricePerUnit),
-                "Actions": "<button  title='Delete'  class='rowDelete btn btn-link text-red '><i class='ik ik-trash btn-md '></i></button>"
+                "Actions": "<button  title='Delete' data-totalprice='" + parseFloat(ReqQuantity) * parseFloat(PricePerUnit) + "'   class='rowDelete btn btn-link text-red '><i class='ik ik-trash btn-md '></i></button>"
             }).draw();
-
+            var price = $("#totalammount").text()
+            if (price == "")
+                price = 0
+            $("#totalammount").text((parseFloat(ReqQuantity) * parseFloat(PricePerUnit)) + parseFloat(price))
             $("#VendorID").prop('read');
-            $("#PricePerUnit").prop('readonly', false)
             $("#AssetComments").val('')
             $("#PricePerUnit").val('')
-            $("#Quantity").val('')
-            $("#ITAssetName").val('')
+            $("#ReqQuantity").val('')
             $("#IDConsumable_Master").val('')
-            $("#IDNonITAssets_Master").val('')
 
         })
 
@@ -460,7 +371,8 @@
             if (price == "")
                 price = 0
             debugger;
-            $("#totalammount").text(parseFloat(price) - parseFloat(tr.data().TotalPrice))
+            var assettotalprice = $(this).attr('data-totalprice')
+            $("#totalammount").text(parseFloat(price) - assettotalprice)
 
             tr.remove().draw();
 
@@ -475,9 +387,9 @@
                 Toast('warning', 'Please select Vendor')
                 $("#VendorID").focus();
                 return;
-            } else if ($("#POApproverID").val() == "") {
-                Toast('warning', 'Please select POApprover')
-                $("#POApproverID").focus();
+            } else if ($("#ApproverID").val() == "") {
+                Toast('warning', 'Please select Approver')
+                $("#ApproverID").focus();
                 return;
             }
 
@@ -486,39 +398,40 @@
                 var data = this.data();
                 debugger;
                 var objAssets = new Object()
+                objAssets.Requisition_RequestsID = parseInt($("#IDRequisition_Requests").val());
                 objAssets.AssetName = data.AssetName;
                 objAssets.AssetID = parseInt(data.AssetID);
                 objAssets.PricePerUnit = parseFloat(data.PriceperUnit);
                 objAssets.AssetComments = data.AssetComments;
-                objAssets.Quantity = parseInt(data.Quantity);
-                objAssets.AssetType = data.AssetType
+                objAssets.ReqQuantity = parseInt(data.ReqQuantity);
+
                 objAssets.CreatedBy = parseInt($("#employeeid").val());
                 array.push(objAssets)
             });
 
 
             var res = new Object();
-            res.POID = $("#POID").text();
+            res.IDRequisition_Requests = parseInt($("#IDRequisition_Requests").val());
             res.LocationID = parseInt($("#LocationID").val());
             res.VendorID = parseInt($("#VendorID").val());
-            //  res.POApproverID = parseInt($("#POApproverID").val());
-            res.PORequestedBy = parseInt($("#employeeid").val());
-            res.CreatedBy = parseInt($("#employeeid").val());
-            res.PODescription = $("#PODescription").val();
+
+            res.RequestedBy = parseInt($("#employeeid").val());
+            res.ModifiedBy = parseInt($("#employeeid").val());
+            res.Description = $("#Description").val();
             res.ShipmentTerms = $("#ShipmentTerms").val();
             res.PaymentTerms = $("#PaymentTerms").val();
             res.TotalAmmount = parseFloat($("#totalammount").text())
-            res.StatusID = 33 //draft
-            res.ListPurchaseOrders_Assets = array
+            res.StatusID = 39 //draft
+            res.ListRequisition_Assets = array
 
             $.ajax({
-                url: "/PurchaseOrders_RequestsInsert",
+                url: "/Requisition_RequestsUpdate",
                 type: "POST",
                 dataType: 'json',
                 data: JSON.stringify(res),
                 async: false,
                 success: function (dt) {
-                    alert('PO added to Draft.')
+                    alert('Requisition added to Draft.')
                     location.reload();
                 }, error: function () {
                     alert('Internal error')
@@ -536,9 +449,9 @@
                 Toast('warning', 'Please select Vendor')
                 $("#VendorID").focus();
                 return;
-            } else if ($("#POApproverID").val() == "") {
-                Toast('warning', 'Please select POApprover')
-                $("#POApproverID").focus();
+            } else if ($("#ApproverID").val() == "") {
+                Toast('warning', 'Please select Approver')
+                $("#ApproverID").focus();
                 return;
             }
 
@@ -551,9 +464,9 @@
                 Toast('warning', 'Please select Vendor')
                 $("#VendorID").focus();
                 return;
-            } else if ($("#POApproverID").val() == "") {
-                Toast('warning', 'Please select POApprover')
-                $("#POApproverID").focus();
+            } else if ($("#ApproverID").val() == "") {
+                Toast('warning', 'Please select Approver')
+                $("#ApproverID").focus();
                 return;
             }
 
@@ -562,44 +475,43 @@
                 var data = this.data();
                 debugger;
                 var objAssets = new Object()
+                objAssets.Requisition_RequestsID = parseInt($("#IDRequisition_Requests").val());
                 objAssets.AssetName = data.AssetName;
                 objAssets.AssetID = parseInt(data.AssetID);
                 objAssets.PricePerUnit = parseFloat(data.PriceperUnit);
                 objAssets.AssetComments = data.AssetComments;
-                objAssets.Quantity = parseInt(data.Quantity);
-                objAssets.AssetType = data.AssetType
+                objAssets.ReqQuantity = parseInt(data.ReqQuantity);
                 objAssets.CreatedBy = parseInt($("#employeeid").val());
                 array.push(objAssets)
             });
             var Approval = new Object();
             Approval.RoleID = parseInt($("#RoleID").val());
-            Approval.ApproverID = parseInt($("#POApproverID").val());
+            Approval.ApproverID = parseInt($("#ApproverID").val());
             Approval.Grade = parseInt($("#Grade").val());
 
             var res = new Object();
-            res.POID = $("#POID").text();
+            res.IDRequisition_Requests = parseInt($("#IDRequisition_Requests").val());
             res.LocationID = parseInt($("#LocationID").val());
             res.VendorID = parseInt($("#VendorID").val());
-            //  res.POApproverID = parseInt($("#POApproverID").val());
-            res.PORequestedBy = parseInt($("#employeeid").val());
+            res.RequestedBy = parseInt($("#employeeid").val());
             res.CreatedBy = parseInt($("#employeeid").val());
-            res.PODescription = $("#PODescription").val();
+            res.Description = $("#Description").val();
             res.ShipmentTerms = $("#ShipmentTerms").val();
             res.PaymentTerms = $("#PaymentTerms").val();
             res.TotalAmmount = parseFloat($("#totalammount").text())
-            res.StatusID = 34 //Request
-            res.ListPurchaseOrders_Assets = array
-            res.POApproval = Approval
+            res.StatusID = 40 //Request
+            res.ListRequisition_Assets = array
+            res.RequisitionApproval = Approval
 
             $.ajax({
-                url: "/PurchaseOrders_RequestsInsert",
+                url: "/Requisition_RequestsUpdate",
                 type: "POST",
                 dataType: 'json',
                 data: JSON.stringify(res),
                 async: false,
                 success: function (dt) {
-                    alert('PO Requested successfully.')
-                    location.reload();
+                    alert('Requisition Requested successfully.')
+                    window.location = "http://" + document.location.host + "/Requisition"
                 }, error: function () {
                     alert('Internal error')
                 }
@@ -609,6 +521,17 @@
 
 
 
+        filupdata()
+        function filupdata() {
+            $("#LocationID").val("{{.Data.POR.LocationID}}")
+            $("#LocationID").trigger('change')
+            $("#VendorID").val("{{.Data.POR.VendorID}}")
+            $("#VendorID").trigger('change')
+            $("#Description").val("{{.Data.POR.Description}}")
+            $("#ShipmentTerms").val("{{.Data.POR.ShipmentTerms}}")
+            $("#PaymentTerms").val("{{.Data.POR.PaymentTerms}}")
+            $("#totalammount").text("{{.Data.POR.TotalAmmount}}")
+        }
 
     });
 

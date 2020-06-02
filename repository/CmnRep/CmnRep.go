@@ -1062,3 +1062,116 @@ func (m *APIRepo) POStatusChange(IDPO int, Status int) error {
 	_, err := utils.GetRequest(url)
 	return err
 }
+
+
+func (m *APIRepo) Requisition_RequestsInsert(ctx context.Context, mdl CmnModel.Requisition_Requests) error {
+	url := fmt.Sprintf(m.APIConn + "/Requisition_RequestsInsert")
+	j, err := json.Marshal(mdl)
+	if err != nil {
+		return err
+	}
+	bytes, err := utils.PutRequest(url, j)
+	if err != nil {
+		return err
+	}
+	var er string
+	err = json.Unmarshal(bytes, &er)
+
+	return err
+
+}
+
+func (m *APIRepo) GetRequisitionDetailsByReqstrID(ctx context.Context, ReqstrID int) ([]*CmnModel.Requisition_Requests, error) {
+	url := fmt.Sprintf(m.APIConn+"/GetRequisitionDetailsByReqstrID/%d", ReqstrID)
+	bytes, err := utils.GetRequest(url)
+	if err != nil {
+		return nil, err
+	}
+	data := []*CmnModel.Requisition_Requests{}
+	err = json.Unmarshal(bytes, &data)
+	if err != nil {
+		return nil, err
+	}
+	return data, nil
+
+}
+
+func (m *APIRepo) RequisitionDetailsByID(ctx context.Context, ID int) (*CmnModel.Requisition_Requests, error) {
+	url := fmt.Sprintf(m.APIConn+"/RequisitionDetailsByID/%d", ID)
+	bytes, err := utils.GetRequest(url)
+	if err != nil {
+		return nil, err
+	}
+	data := CmnModel.Requisition_Requests{}
+	err = json.Unmarshal(bytes, &data)
+	if err != nil {
+		return nil, err
+	}
+	return &data, nil
+
+}
+
+
+func (m *APIRepo) RequisitionAssetDetailsByID(ctx context.Context, ID int) ([]*CmnModel.Requisition_Assets, error) {
+	url := fmt.Sprintf(m.APIConn+"/RequisitionAssetDetailsByID/%d", ID)
+	bytes, err := utils.GetRequest(url)
+	if err != nil {
+		return nil, err
+	}
+	data := []*CmnModel.Requisition_Assets{}
+	err = json.Unmarshal(bytes, &data)
+	if err != nil {
+		return nil, err
+	}
+	return data, nil
+
+}
+
+func (m *APIRepo) Requisition_ApprovalStatusList(ctx context.Context, ID int) ([]*CmnModel.RequisitionApproval, error) {
+	url := fmt.Sprintf(m.APIConn+"/Requisition_ApprovalStatusList/%d", ID)
+	bytes, err := utils.GetRequest(url)
+	if err != nil {
+		return nil, err
+	}
+	data := []*CmnModel.RequisitionApproval{}
+	err = json.Unmarshal(bytes, &data)
+	if err != nil {
+		return nil, err
+	}
+	return data, nil
+
+}
+
+
+func (m *APIRepo) GetRequisitionDetailsByApprover(ctx context.Context, ApprvrID int) ([]*CmnModel.Requisition_Requests, error) {
+	url := fmt.Sprintf(m.APIConn+"/GetRequisitionDetailsByApprover/%d", ApprvrID)
+	bytes, err := utils.GetRequest(url)
+	if err != nil {
+		return nil, err
+	}
+	data := []*CmnModel.Requisition_Requests{}
+	err = json.Unmarshal(bytes, &data)
+	if err != nil {
+		return nil, err
+	}
+	return data, nil
+
+}
+
+
+func (m *APIRepo) Requisition_RequestsUpdate(ctx context.Context, mdl CmnModel.Requisition_Requests) error {
+	url := fmt.Sprintf(m.APIConn + "/Requisition_RequestsUpdate")
+	j, err := json.Marshal(mdl)
+	if err != nil {
+		return err
+	}
+	bytes, err := utils.PutRequest(url, j)
+	if err != nil {
+		return err
+	}
+	var er string
+	err = json.Unmarshal(bytes, &er)
+
+	return err
+
+}
