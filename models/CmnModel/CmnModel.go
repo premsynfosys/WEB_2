@@ -10,23 +10,23 @@ type EmployeeDashboard struct {
 	ITAssetServiceRequests int `json:"ITAssetServiceRequests"`
 }
 type AdminDashBoard struct {
-	EmpID                  int `json:"EmpID"`
-	LocID                  int `json:"LocID"`
-	ActivationPendingUsers int `json:"ActivationPendingUsers"`
-	InActiveUsers          int `json:"InActiveUsers"`
-	ITAssetWarrentyExpired int `json:"ITAssetWarrentyExpired"`
-
-	ITAssetApprovals    int `json:"ITAssetApprovals"`
-	NonITAssetApprovals int `json:"NonITAssetApprovals"`
-
-	ITAssetsAvailable      int `json:"ITAssetsAvailable"`
-	ITAssetsAssigned       int `json:"ITAssetsAssigned"`
-	NonITAssetThreshold    int `json:"NonITAssetThreshold"`
-	ConsumableThreshold    int `json:"ConsumableThreshold"`
-	OutwardApproval        int `json:"OutwardApproval"`
-	ReadyToShip            int `json:"ReadyToShip"`
-	InWardAssets           int `json:"InWardAssets"`
-	ITAssetServiceRequests int `json:"ITAssetServiceRequests"`
+	EmpID                       int `json:"EmpID"`
+	LocID                       int `json:"LocID"`
+	ActivationPendingUsers      int `json:"ActivationPendingUsers"`
+	InActiveUsers               int `json:"InActiveUsers"`
+	ITAssetWarrentyExpired      int `json:"ITAssetWarrentyExpired"`
+	ITAssetApprovals            int `json:"ITAssetApprovals"`
+	NonITAssetApprovals         int `json:"NonITAssetApprovals"`
+	ITAssetsAvailable           int `json:"ITAssetsAvailable"`
+	ITAssetsAssigned            int `json:"ITAssetsAssigned"`
+	NonITAssetThreshold         int `json:"NonITAssetThreshold"`
+	ConsumableThreshold         int `json:"ConsumableThreshold"`
+	OutwardApproval             int `json:"OutwardApproval"`
+	ReadyToShip                 int `json:"ReadyToShip"`
+	InWardAssets                int `json:"InWardAssets"`
+	ITAssetServiceRequests      int `json:"ITAssetServiceRequests"`
+	RequisitionRequestesPending int `json:"RequisitionRequestesPending"`
+	RequisitionApprovalRequests int `json:"RequisitionApprovalRequests"`
 }
 
 //TemplateData ..
@@ -445,8 +445,8 @@ type Requisition_Requests struct {
 	PaymentTerms           string               `json:"PaymentTerms"`
 	TotalAmmount           float64              `json:"TotalAmmount"`
 	TotalPaidAmmount       float64              `json:"TotalPaidAmmount"`
-	BillInvoiceNo          string              `json:"BillInvoiceNo"`
-	BillImagePath          string              `json:"BillImagePath"`
+	BillInvoiceNo          string               `json:"BillInvoiceNo"`
+	BillImagePath          string               `json:"BillImagePath"`
 	StatusID               int                  `json:"StatusID"`
 	CreatedBy              int                  `json:"CreatedBy"`
 	ModifiedBy             int                  `json:"ModifiedBy"`

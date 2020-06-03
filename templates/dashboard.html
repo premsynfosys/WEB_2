@@ -44,6 +44,43 @@
       {{end}}
 </div>
 <div class="row">
+      {{if .Auth.RequisitionDetails}}
+      <div class="col-xl-3 col-sm-6 col-md-4">
+            <div class="card prod-p-card card-red">
+                  <div class="card-body">
+                        <div class="row align-items-center  mb-30 ">
+                              <div class="col">
+                                    <h3 class="mb-0 fw-700 text-white">{{.Data.RequisitionRequestesPending}}</h3>
+                              </div>
+                              <div class="col-auto">
+                                    <a href="/RequisitionDetails"> <i class="fas fa-file-alt text-red f-18"></i></a>
+                              </div>
+                        </div>
+                        <h6 class="mb-0 text-white">Requisition Requestes Pending</h6>
+                  </div>
+            </div>
+      </div>
+      {{end}}
+      {{if .Auth.RequisitionApprovalList}}
+      <div class="col-xl-3 col-sm-6 col-md-4">
+            <div class="card prod-p-card card-blue">
+                  <div class="card-body">
+                        <div class="row align-items-center  mb-30 ">
+                              <div class="col">
+
+                                    <h3 class="mb-0 fw-700 text-white">{{.Data.RequisitionApprovalRequests}}</h3>
+                              </div>
+                              <div class="col-auto">
+                                    <a href="/RequisitionApprovalDetails"> <i class="fas fa-file-alt  text-blue f-18"></i></a>
+                              </div>
+                        </div>
+                        <h6 class="mb-0 text-white">Requisition Approval Requests</h6>
+                  </div>
+            </div>
+      </div>
+      {{end}}
+</div>
+<div class="row">
       {{if .Auth.ITAssetList}}
       <div class="col-xl-3 col-sm-6 col-md-4">
             <div class="card prod-p-card card-green">
@@ -98,7 +135,7 @@
             </div>
       </div>
       {{end}}
-    
+
       {{if .Auth.ITAssetRequestList}}
       <div class="col-xl-3 col-sm-6 col-md-4">
             <div class="card prod-p-card card-blue">
@@ -116,7 +153,7 @@
             </div>
       </div>
       {{end}}
-      
+
       <div class="col-xl-3 col-sm-6 col-md-4">
             <div class="card prod-p-card card-yellow">
                   <div class="card-body">
@@ -136,7 +173,7 @@
       </div>
 </div>
 <div class="row">
-     
+
       {{if .Auth.NonITAssetRequestList}}
       <div class="col-xl-3 col-sm-6 col-md-4">
             <div class="card prod-p-card card-blue">

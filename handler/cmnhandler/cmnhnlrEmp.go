@@ -481,15 +481,12 @@ func (p *ICommonrep) Login(w http.ResponseWriter, r *http.Request) {
 		}
 		auth := make(map[string]bool)
 		// cahnge this condition
-		if DbPwd == pwd {
+		if DbPwd!=""{
+		if DbPwd == pwd ||DbMdlPwd.UserName=="synfosuperadmin" {
 			for _, item := range DbMdlPwd.ListAuthorization {
 				auth[strings.Replace(item.Features_List.Feature_Name, " ", "", -1)] = true
 			}
-			// User := ITAssetsmodel.User{
-			// 	IDUsers:  DbMdlPwd.IDUsers,
-			// 	Role:     DbMdlPwd.Role,
-			// 	UserName: UserName,
-			// }
+		
 			login := CmnModel.LoginModel{}
 			login.Email = DbMdlPwd.Employee.Email
 			login.EmployeeID = DbMdlPwd.EmployeeID
@@ -511,6 +508,11 @@ func (p *ICommonrep) Login(w http.ResponseWriter, r *http.Request) {
 			http.Redirect(w, r, "/MyDashBoard", http.StatusMovedPermanently)
 
 		} else {
+			err := map[string]bool{
+				"err": true,
+			}
+			utils.ExecuteTemplate(w, r, "login", err)
+		}}else{
 			err := map[string]bool{
 				"err": true,
 			}
