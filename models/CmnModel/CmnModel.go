@@ -445,6 +445,8 @@ type Requisition_Requests struct {
 	PaymentTerms           string               `json:"PaymentTerms"`
 	TotalAmmount           float64              `json:"TotalAmmount"`
 	TotalPaidAmmount       float64              `json:"TotalPaidAmmount"`
+	BillInvoiceNo          string              `json:"BillInvoiceNo"`
+	BillImagePath          string              `json:"BillImagePath"`
 	StatusID               int                  `json:"StatusID"`
 	CreatedBy              int                  `json:"CreatedBy"`
 	ModifiedBy             int                  `json:"ModifiedBy"`

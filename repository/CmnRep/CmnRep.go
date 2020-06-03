@@ -1038,7 +1038,6 @@ func (m *APIRepo) POReqRejected(ctx context.Context, mdl CmnModel.POApproval) er
 
 }
 
-
 func (m *APIRepo) PurchaseOrders_RequestsUpdate(ctx context.Context, mdl CmnModel.PurchaseOrders_Requests) error {
 	url := fmt.Sprintf(m.APIConn + "/PurchaseOrders_RequestsUpdate")
 	j, err := json.Marshal(mdl)
@@ -1056,13 +1055,11 @@ func (m *APIRepo) PurchaseOrders_RequestsUpdate(ctx context.Context, mdl CmnMode
 
 }
 
-
 func (m *APIRepo) POStatusChange(IDPO int, Status int) error {
 	url := fmt.Sprintf(m.APIConn+"/POStatusChange/%d/%d", IDPO, Status)
 	_, err := utils.GetRequest(url)
 	return err
 }
-
 
 func (m *APIRepo) Requisition_RequestsInsert(ctx context.Context, mdl CmnModel.Requisition_Requests) error {
 	url := fmt.Sprintf(m.APIConn + "/Requisition_RequestsInsert")
@@ -1111,7 +1108,6 @@ func (m *APIRepo) RequisitionDetailsByID(ctx context.Context, ID int) (*CmnModel
 
 }
 
-
 func (m *APIRepo) RequisitionAssetDetailsByID(ctx context.Context, ID int) ([]*CmnModel.Requisition_Assets, error) {
 	url := fmt.Sprintf(m.APIConn+"/RequisitionAssetDetailsByID/%d", ID)
 	bytes, err := utils.GetRequest(url)
@@ -1142,7 +1138,6 @@ func (m *APIRepo) Requisition_ApprovalStatusList(ctx context.Context, ID int) ([
 
 }
 
-
 func (m *APIRepo) GetRequisitionDetailsByApprover(ctx context.Context, ApprvrID int) ([]*CmnModel.Requisition_Requests, error) {
 	url := fmt.Sprintf(m.APIConn+"/GetRequisitionDetailsByApprover/%d", ApprvrID)
 	bytes, err := utils.GetRequest(url)
@@ -1158,9 +1153,80 @@ func (m *APIRepo) GetRequisitionDetailsByApprover(ctx context.Context, ApprvrID 
 
 }
 
-
 func (m *APIRepo) Requisition_RequestsUpdate(ctx context.Context, mdl CmnModel.Requisition_Requests) error {
 	url := fmt.Sprintf(m.APIConn + "/Requisition_RequestsUpdate")
+	j, err := json.Marshal(mdl)
+	if err != nil {
+		return err
+	}
+	bytes, err := utils.PutRequest(url, j)
+	if err != nil {
+		return err
+	}
+	var er string
+	err = json.Unmarshal(bytes, &er)
+
+	return err
+
+}
+func (m *APIRepo) RequisitionReqRejected(ctx context.Context, mdl CmnModel.POApproval) error {
+	url := fmt.Sprintf(m.APIConn + "/RequisitionReqRejected")
+	j, err := json.Marshal(mdl)
+	if err != nil {
+		return err
+	}
+	bytes, err := utils.PutRequest(url, j)
+	if err != nil {
+		return err
+	}
+	var er string
+	err = json.Unmarshal(bytes, &er)
+
+	return err
+
+}
+
+func (m *APIRepo) RequisitionReqApproved(ctx context.Context, mdl CmnModel.RequisitionApproval) error {
+	url := fmt.Sprintf(m.APIConn + "/RequisitionReqApproved")
+	j, err := json.Marshal(mdl)
+	if err != nil {
+		return err
+	}
+	bytes, err := utils.PutRequest(url, j)
+	if err != nil {
+		return err
+	}
+	var er string
+	err = json.Unmarshal(bytes, &er)
+
+	return err
+
+}
+func (m *APIRepo) RequisitionReqForward(ctx context.Context, mdl CmnModel.RequisitionApproval) error {
+	url := fmt.Sprintf(m.APIConn + "/RequisitionReqForward")
+	j, err := json.Marshal(mdl)
+	if err != nil {
+		return err
+	}
+	bytes, err := utils.PutRequest(url, j)
+	if err != nil {
+		return err
+	}
+	var er string
+	err = json.Unmarshal(bytes, &er)
+
+	return err
+
+}
+
+func (m *APIRepo) RequisitionStatusChange(ID int, Status int) error {
+	url := fmt.Sprintf(m.APIConn+"/RequisitionStatusChange/%d/%d", ID, Status)
+	_, err := utils.GetRequest(url)
+	return err
+}
+
+func (m *APIRepo) RequisitionStcokReceived(ctx context.Context, mdl CmnModel.Requisition_Requests) error {
+	url := fmt.Sprintf(m.APIConn + "/RequisitionStcokReceived")
 	j, err := json.Marshal(mdl)
 	if err != nil {
 		return err

@@ -37,13 +37,18 @@
                 </div>
                 <div class="col-sm-4 invoice-col">
                     <address class="mt-2">
+                        {{if eq .Data.POR.StatusID 44}}
+                        <strong>Total Paid Ammount:</strong> ₹ <span>{{.Data.POR.TotalPaidAmmount}} </span><text
+                            class="text-muted">(as per bill)</text><br>
+                        <strong>Bill Invoice No:</strong><a href="/AppFiles/Images/RequisitionBIlls/{{.Data.POR.BillImagePath}}"  class="btn btn-sm  text-warning"> {{.Data.POR.BillInvoiceNo}}</a><br>
+                        {{end}}
                         <strong>Total Payable Ammount:</strong> ₹ <span>{{.Data.POR.TotalAmmount}}</span><br>
-                        <strong>RequestedBy:</strong> <span> {{.Data.POR.RequestedByName}}</span>
+                        <strong>Requested By:</strong> <span> {{.Data.POR.RequestedByName}}</span>
                     </address>
                 </div>
             </div>
             <hr>
-           
+
             <div class=" form-group row">
                 <label class="col-sm-3 col-form-label">Description:</label>
                 <div class="col-sm-6 ">
@@ -76,19 +81,21 @@
                         <th>Asset Name</th>
                         <th>Req Quantity</th>
                         <th>Price/Unit</th>
-                        <th>Total Price</th>
+                        <th>SubTotal Price</th>
                         <th>Comments</th>
-
+                        <th>Received Quantity</th>
                     </thead>
                 </table>
             </div>
         </div>
+        {{if ne .Data.POR.StatusID 44}}
         <div class="row justify-content-end">
 
             <label class="col-sm-3 col-form-label text-bold"><strong>Total Payable Ammount:</strong> ₹ <span
                     id="totalammount">{{.Data.POR.TotalAmmount}}</span></label>
 
         </div>
+        {{end}}
     </div>
 
 
@@ -147,6 +154,12 @@
                     </div>
 
                     <div class="form-group row justify-content-center">
+                        {{if eq .Data.POR.RequestedBy  .User.IDEmployees}}
+                        <button id="SendtoVendor" type="button" class="btn btn-info" style="margin-right: 5px;"><i
+                                class="fa fa-check"></i>Send to Vendor</button>
+                        <button id="ReceivedFromvendor" type="button" class="btn btn-info" style="margin-right: 5px;"><i
+                                class="fa fa-check"></i>Received From vendor</button>
+                        {{end}}
                         <button id="FlowApprove" type="button" class="btn btn-success "><i
                                 class="fa fa-check"></i>Approve & Forward </button>&nbsp;
                         <button id="FlowReject" value="Reject" type="button" class="btn btn-danger "><i
@@ -157,6 +170,81 @@
 
             </div>
         </div>
+    </div>
+</div>
+
+
+<div class="modal fade  bd-example-modal-lg" id="RcvStockmdl" tabindex="-1" role="dialog"
+    aria-labelledby="RcvStockmdlLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <form method="POST" id="frmRcv" enctype="multipart/form-data">
+            <input type="hidden" name="IDRequisition_Requests" value="{{.Data.POR.IDRequisition_Requests}}">
+            <input type="hidden" name="LocationID" value="{{.Data.POR.LocationID}}">
+            <input type="hidden" name="VendorID" value="{{.Data.POR.VendorID}}">
+            <input type="hidden" name="CreatedBy" id="CreatedBy" value="{{.User.EmployeeID}}">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="RcvStockmdlLabel">Received Stock entry</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="dt-responsive">
+                        <table class="table table-hover table-bordered nowrap" id="tblRcvList">
+                            <thead>
+                                <th>IDRequisition_assets</th>
+                                <th>AssetID</th>
+                                <th>Asset Name</th>
+                                <th>Req Quantity</th>
+                                <th>Price/Unit</th>
+                                <th>SubTotal Price</th>
+                                <th>Comments</th>
+                                <th>Received Quantity</th>
+                            </thead>
+                        </table>
+                    </div>
+                    <hr>
+                    <div class="form-group row mt-5">
+                        <label for="Invoice" class="col-sm-3 col-form-label">Bill Invoice No:</label>
+                        <div class="col-sm-6">
+                            <input type="text" required name="BillInvoiceNo" maxlength="45" class="form-control "
+                                id="BillInvoiceNo" />
+                        </div>
+                    </div>
+                    <div class="form-group row ">
+                        <label class="col-sm-3 col-form-label">Paid Bill Ammount:</label>
+                        <div class="col-sm-4 ">
+                            <div class="input-group">
+                                <input type="number" required name="TotalPaidAmmount" id="TotalPaidAmmount" min="0"
+                                    class="form-control">
+                                <span class="input-group-append">
+                                    <label class="input-group-text">₹</label>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="ITAssetImg" class="col-sm-3 col-form-label ">Upload Bill:</label>
+                        <div class="col-sm-6">
+                            <input type="file" id="BillImagePath" name="BillImagePath"
+                                accept="image/x-png,image/gif,image/jpeg" class="file-upload-default">
+                            <div class="input-group col-xs-12">
+                                <input type="text" class="form-control file-upload-info" disabled=""
+                                    placeholder="Upload Image">
+                                <span class="input-group-append">
+                                    <button class="file-upload-browse btn btn-info" type="button">Upload</button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="SubmitRcvdQnty" type="submit" class="btn btn-primary "><i
+                            class="fa fa-check"></i>Submit</button>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
 
@@ -207,6 +295,9 @@
                 }, {
                     "name": "AssetComments",
                     'data': 'AssetComments'
+                }, {
+                    "name": "RecvQuantity",
+                    'data': 'RecvQuantity'
                 }]
 
         });
@@ -279,7 +370,7 @@
             }
             " {{end}}"
 
-            IDRequisition_Requests = data[data.length - 1].PurchaseOrders_RequestsID
+            IDRequisition_Requests = data[data.length - 1].Requisition_RequestsID
             //  if (data[data.length - 1].StatusName == "Outward Requested") {
             // $("#btnApprvRjct").show()
             // if (GDlevel == 1) {
@@ -303,7 +394,7 @@
 
 
             if ("{{.Data.POR.StatusName}}" == "Rejected") {
-                debugger
+
                 $("#flowmdl").text("View Status")
                 $(".ddlForward").hide()
                 $("#btnApprvRjct").hide()
@@ -358,17 +449,17 @@
             var data = new Object();
             data.Status = "Approved"
             data.Comments = $('#ApproverComments').val()
-            data.PurchaseOrders_RequestsID = parseInt(IDRequisition_Requests)
+            data.Requisition_RequestsID = parseInt(IDRequisition_Requests)
             data.IDRequisition_approval = parseInt(IDRequisition_approval)
             data.NextApproverID = parseInt($('#Approver').val())
             data.NextGrade = parseInt(NextGrade)
             data.NextRoleID = parseInt(NextRoleID)
-            debugger;
+
             var url;
             if (EmpGrade == 1) {
-                url = "/POReqApproved"
+                url = "/RequisitionReqApproved"
             } else {
-                url = "/POReqForward"
+                url = "/RequisitionReqForward"
             }
             $.ajax({
                 url: url,
@@ -397,13 +488,14 @@
             }
 
             var data = new Object();
-            data.Status = "Rejected"
+            // data.Status = "Rejected"
             data.Comments = $('#ApproverComments').val()
-            data.PurchaseOrders_RequestsID = parseInt(IDRequisition_Requests)
-            data.IDRequisition_approval = parseInt(IDRequisition_approval)
+            data.Requisition_RequestsID = parseInt(IDRequisition_Requests)
+
+            data.ApproverID = parseInt($("#employeeid").val())
 
             $.ajax({
-                url: "/POReqRejected",
+                url: "/RequisitionReqRejected",
                 type: 'POST',
                 data: JSON.stringify(data),
                 // dataType: 'json'
@@ -412,15 +504,6 @@
                 }
             });
         });
-
-
-
-
-
-
-
-
-
 
         $("#print").click(function () {
             var printContents = $("#frm").not(".no-print").html();
@@ -434,20 +517,127 @@
 
         $("#SendtoVendor").hide();
         $("#ReceivedFromvendor").hide();
-        if ("{{.Data.POR.StatusID}}" == 36) {
+        if ("{{.Data.POR.StatusID}}" == 42) {
             $("#SendtoVendor").show();
         }
-        if ("{{.Data.POR.StatusID}}" == 37) {
+        if ("{{.Data.POR.StatusID}}" == 43) {
             $("#ReceivedFromvendor").show();
         }
 
         $("#SendtoVendor").click(function () {
             if (confirm('Did you sent to vednor?'))
                 $.ajax({
-                    url: "/POStatusChange/{{.Data.POR.IDRequisition_Requests}}/37",
+                    url: "/RequisitionStatusChange/{{.Data.POR.IDRequisition_Requests}}/43",
                     type: 'POST',
                     success: function (s) {
                         location.reload()
+                    }
+                });
+        })
+
+
+
+        var tblRcv;
+        $("#ReceivedFromvendor").click(function () {
+            $("#RcvStockmdl").modal('show')
+            tblRcv = $('#tblRcvList').DataTable({
+                responsive: true,
+                "processing": true,
+                scrollY: $(window).height() - 450,
+                scrollCollapse: true,
+                scrollX: true,
+                destroy: true,
+                dom: 'rt',
+                ajax: {
+                    "url": '/RequisitionAssetDetailsByID/{{.Data.POR.IDRequisition_Requests}}',
+                    "type": "POST",
+                    "datatype": "json",
+                    "dataSrc": ""//to read data from a plain array rather than an array in an object:
+                },
+                "ordering": false,
+                columnDefs: [
+                    { visible: false, targets: 0 },
+                    { visible: false, targets: 1 }
+                ],
+                "columns": [
+
+                    {
+                        "name": "IDRequisition_assets",
+                        'data': 'IDRequisition_assets'
+                    },
+                    {
+                        "name": "AssetID",
+                        'data': 'AssetID'
+                    }, {
+                        "name": "AssetName",
+                        'data': 'AssetName'
+                    }, {
+                        "name": "ReqQuantity",
+                        'data': 'ReqQuantity'
+                    }, {
+                        "name": "PriceperUnit",
+                        'data': null,
+                        render: function (dt) {
+                            return "₹" + dt.PriceperUnit
+                        }
+                    }
+                    , {
+                        "name": "TotalPrice",
+                        'data': null,
+                        render: function (dt) {
+                            return "₹" + parseInt(dt.PriceperUnit) * parseFloat(dt.ReqQuantity)
+                        }
+                    }, {
+                        "name": "AssetComments",
+                        'data': 'AssetComments'
+                    }, {
+                        "name": "ReqQuantity",
+                        'data': null,
+                        render: function (dt) {
+                            return '<input data-PriceperUnit="' + dt.PriceperUnit + '" data-AssetID="' + dt.AssetID + '" data-id="' + dt.IDRequisition_assets + '" type="number" min="0" class="rcvQnty w-auto form-control">'
+                        }
+                    }]
+
+            });
+
+        })
+        $("#frmRcv").submit(function (event) {
+            debugger
+            event.preventDefault();
+            if ($("#BillImagePath").val() == "") {
+                alert('Please Upload Bill')
+                return false;
+            }
+            var fd = new FormData(this);
+            var ListStocks = new Array()
+            var res = true
+            $.each($("#tblRcvList tbody .rcvQnty"), function () {
+                if ($(this).val() == 0 || $(this).val() == "") {
+                    alert('Please enter received quantity')
+                    res = false;
+                    return false;
+                }
+                var objstock = new Object()
+                objstock.RecvQuantity = parseInt($(this).val());
+                objstock.IDRequisition_assets = parseInt($(this).attr('data-id'));
+                objstock.AssetID = parseInt($(this).attr('data-AssetID'));
+                objstock.PriceperUnit = parseFloat($(this).attr('data-PriceperUnit'));
+
+                ListStocks.push(objstock)
+
+            })
+
+            fd.append('ReceivedStockList', JSON.stringify(ListStocks));
+            if (res)
+                $.ajax({
+                    url: "/RequisitionReceivedStock",
+                    type: 'POST',
+                    data: fd,
+                    // dataType: 'json',
+                    contentType: false,
+                    processData: false,
+                    success: function () {
+                        location.reload();
                     }
                 });
         })

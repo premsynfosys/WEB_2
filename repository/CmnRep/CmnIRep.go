@@ -88,4 +88,9 @@ type CmnRepIntrfc interface {
 	Requisition_ApprovalStatusList(ctx context.Context, ID int) ([]*CmnModel.RequisitionApproval, error) 
 	GetRequisitionDetailsByApprover(ctx context.Context, ApprvrID int) ([]*CmnModel.Requisition_Requests, error)
 	Requisition_RequestsUpdate(ctx context.Context, mdl CmnModel.Requisition_Requests) error
+	RequisitionReqRejected(ctx context.Context, mdl CmnModel.POApproval) error
+	RequisitionReqApproved(ctx context.Context, mdl CmnModel.RequisitionApproval) error
+	RequisitionReqForward(ctx context.Context, mdl CmnModel.RequisitionApproval) error 
+	RequisitionStatusChange(ID int, Status int) error
+	RequisitionStcokReceived(ctx context.Context, mdl CmnModel.Requisition_Requests) error 
 }

@@ -81,7 +81,7 @@
                         <th>Asset Type</th>
                         <th>Quantity</th>
                         <th>Price/Unit</th>
-                        <th>Total Price</th>
+                        <th>SubTotal Price</th>
                         <th>Comments</th>
 
                     </thead>
@@ -99,11 +99,12 @@
 
     <div class="row no-print">
         <div class="col-12 justify-content-center">
+            {{if eq .Data.POR.RequestedBy  .User.IDEmployees}}
             <button id="SendtoVendor" type="button" class="btn btn-info" style="margin-right: 5px;"><i
                     class="fa fa-check"></i>Send to Vendor</button>
             <button id="ReceivedFromvendor" type="button" class="btn btn-info" style="margin-right: 5px;"><i
                     class="fa fa-check"></i>Received From vendor</button>
-
+            {{end}}
             <button id="flowmdl" type="button" class="btn btn-info" style="margin-right: 5px;"><i
                     class="fa fa-check"></i>Approve/Reject</button>
 

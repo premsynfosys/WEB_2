@@ -2,7 +2,9 @@ package cmnhandler
 
 import (
 	"encoding/json"
+	"io"
 	"net/http"
+	"os"
 	"strconv"
 	"strings"
 	"time"
@@ -960,7 +962,6 @@ func (p *ICommonrep) Requisition_RequestsInsert(w http.ResponseWriter, r *http.R
 	}
 }
 
-
 func (p *ICommonrep) RequisitionDetails(w http.ResponseWriter, r *http.Request) {
 	usr, Auth := utils.GetCookieUser(r)
 
@@ -1104,5 +1105,85 @@ func (p *ICommonrep) Requisition_RequestsUpdate(w http.ResponseWriter, r *http.R
 		utils.RespondwithJSON(w, r, http.StatusOK, nil)
 	} else {
 		utils.RespondwithJSON(w, r, http.StatusBadRequest, nil)
+	}
+}
+
+func (p *ICommonrep) RequisitionReqRejected(w http.ResponseWriter, r *http.Request) {
+	res := CmnModel.POApproval{}
+	json.NewDecoder(r.Body).Decode(&res)
+	err := p.Irepo.RequisitionReqRejected(r.Context(), res)
+	if err == nil {
+		utils.RespondwithJSON(w, r, http.StatusOK, nil)
+	} else {
+		utils.RespondwithJSON(w, r, http.StatusBadRequest, nil)
+	}
+}
+
+func (p *ICommonrep) RequisitionReqApproved(w http.ResponseWriter, r *http.Request) {
+	res := CmnModel.RequisitionApproval{}
+	json.NewDecoder(r.Body).Decode(&res)
+	err := p.Irepo.RequisitionReqApproved(r.Context(), res)
+	if err == nil {
+		utils.RespondwithJSON(w, r, http.StatusOK, nil)
+	} else {
+		utils.RespondwithJSON(w, r, http.StatusBadRequest, nil)
+	}
+}
+func (p *ICommonrep) RequisitionReqForward(w http.ResponseWriter, r *http.Request) {
+	res := CmnModel.RequisitionApproval{}
+	json.NewDecoder(r.Body).Decode(&res)
+	err := p.Irepo.RequisitionReqForward(r.Context(), res)
+	if err == nil {
+		utils.RespondwithJSON(w, r, http.StatusOK, nil)
+	} else {
+		utils.RespondwithJSON(w, r, http.StatusBadRequest, nil)
+	}
+}
+
+func (p *ICommonrep) RequisitionStatusChange(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	IDPO := params["ID"]
+	Status := params["Status"]
+	IDPOs, _ := strconv.Atoi(IDPO)
+	status, _ := strconv.Atoi(Status)
+	err := p.Irepo.RequisitionStatusChange(IDPOs, status)
+	if err == nil {
+		utils.RespondwithJSON(w, r, http.StatusOK, nil)
+	} else {
+		utils.RespondwithJSON(w, r, http.StatusBadRequest, nil)
+	}
+}
+
+func (p *ICommonrep) RequisitionReceivedStock(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "POST" {
+		mdl := CmnModel.Requisition_Requests{}
+		mdl.IDRequisition_Requests, _ = strconv.Atoi(r.FormValue("IDRequisition_Requests"))
+		mdl.ModifiedBy, _ = strconv.Atoi(r.FormValue("CreatedBy"))
+		mdl.BillInvoiceNo = r.FormValue("BillInvoiceNo")
+		TotalPaidAmmount, _ := strconv.ParseFloat(r.FormValue("TotalPaidAmmount"), 32)
+		mdl.TotalPaidAmmount = TotalPaidAmmount
+		mdl.LocationID, _ = strconv.Atoi(r.FormValue("LocationID"))
+		mdl.VendorID, _ = strconv.Atoi(r.FormValue("VendorID"))
+		img, handle, err := r.FormFile("BillImagePath")
+		if err == nil {
+			file, _ := os.Create("AppFiles/Images/RequisitionBIlls/" + handle.Filename)
+			io.Copy(file, img)
+			defer file.Close()
+			mdl.BillImagePath = handle.Filename
+			defer img.Close()
+		}
+
+		ListStocks := []CmnModel.Requisition_Assets{}
+		customfieldsRaw := []byte(r.FormValue("ReceivedStockList"))
+		json.Unmarshal(customfieldsRaw, &ListStocks)
+		mdl.ListRequisition_Assets = ListStocks
+
+		err = p.Irepo.RequisitionStcokReceived(r.Context(), mdl)
+		if err == nil {
+			utils.RespondwithJSON(w, r, http.StatusOK, nil)
+		} else {
+			utils.RespondwithJSON(w, r, http.StatusBadRequest, nil)
+		}
+
 	}
 }
