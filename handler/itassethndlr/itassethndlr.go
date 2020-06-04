@@ -847,6 +847,21 @@ func (p *IITAsset) GetITAssetservices_List(w http.ResponseWriter, r *http.Reques
 
 }
 
+func (p *IITAsset) GetITAssetToCheckoutToITasset(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	LocID := params["LocID"]
+	LocIDs, _ := strconv.Atoi(LocID)
+	AssetID := params["AssetID"]
+	AssetIDs, _ := strconv.Atoi(AssetID)
+	body, err := p.Irepo.GetITAssetToCheckoutToITasset(r.Context(), LocIDs,AssetIDs)
+	if err == nil {
+		utils.RespondwithJSON(w, r, http.StatusOK, body)
+	} else {
+		utils.RespondwithJSON(w, r, http.StatusBadRequest, nil)
+	}
+
+}
+
 func (p *IITAsset) ITAsset_Service_Request_Resolve(w http.ResponseWriter, r *http.Request) {
 	mdl := ITAssetsmodel.ITAsset_service_request{}
 	json.NewDecoder(r.Body).Decode(&mdl)

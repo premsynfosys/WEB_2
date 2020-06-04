@@ -8,6 +8,7 @@ import (
 
 //CmnRepIntrfc explain method def...
 type CmnRepIntrfc interface {
+	GetRequisitionHistoryByReqID(ctx context.Context, ID int) ([]*CmnModel.Requisition_Requests, error)
 	GetAuthorizationList_ByRole(ctx context.Context, RoleID int) ([]*CmnModel.Authorization, error)
 	GetFeatures_List(ctx context.Context) ([]*CmnModel.Features_List, error)
 	Login(ctx context.Context, usr *CmnModel.User) (*CmnModel.User, error)
@@ -36,6 +37,7 @@ type CmnRepIntrfc interface {
 	CreateLocation(ctx context.Context, usr *CmnModel.Locations) (int64, error)
 	UpdateLocations(ctx context.Context, usr *CmnModel.Locations) error
 	UpdateVendors(ctx context.Context, usr *CmnModel.Vendors) error
+	DeleteVendors(ctx context.Context, usr *CmnModel.Vendors) error
 	GetNotifications(ctx context.Context) ([]*CmnModel.Notifications, error)
 
 	CreateInWardOutWard(ctx context.Context, usr *CmnModel.InWardOutWard) error

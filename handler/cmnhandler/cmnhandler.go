@@ -359,6 +359,17 @@ func (p *ICommonrep) GetAssetdIDsNotEligbleForTransfer(w http.ResponseWriter, r 
 	}
 }
 
+func (p *ICommonrep) DeleteVendors(w http.ResponseWriter, r *http.Request) {
+	res := CmnModel.Vendors{}
+	json.NewDecoder(r.Body).Decode(&res)
+	err := p.Irepo.DeleteVendors(r.Context(), &res)
+	if err == nil {
+		utils.RespondwithJSON(w, r, http.StatusOK, nil)
+	} else {
+		utils.RespondwithJSON(w, r, http.StatusBadRequest, nil)
+	}
+}
+
 //IWOWDetailsByAprvr ..
 func (p *ICommonrep) IWOWDetailsByAprvr(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
@@ -1028,6 +1039,18 @@ func (p *ICommonrep) RequisitionAssetDetailsByID(w http.ResponseWriter, r *http.
 	}
 }
 
+func (p *ICommonrep) GetRequisitionHistoryByReqID(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	ID := params["ReqID"]
+	IDs, _ := strconv.Atoi(ID)
+	data, err := p.Irepo.GetRequisitionHistoryByReqID(r.Context(), IDs)
+	if err == nil {
+		utils.RespondwithJSON(w, r, http.StatusOK, data)
+	} else {
+		utils.RespondwithJSON(w, r, http.StatusBadRequest, err.Error())
+	}
+}
+
 func (p *ICommonrep) Requisition_ApprovalStatusList(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	POID := params["ID"]
@@ -1186,4 +1209,16 @@ func (p *ICommonrep) RequisitionReceivedStock(w http.ResponseWriter, r *http.Req
 		}
 
 	}
+}
+
+func (p *ICommonrep) RequisitionHistoryDetails_Partial(w http.ResponseWriter, r *http.Request) {
+
+	params := mux.Vars(r)
+	ID := params["ReqID"]
+	IDs, _ := strconv.Atoi(ID)
+	utils.ExecuteTemplate(w, r, "RequisitionHistoryDetails_Partial", struct {
+		ReqID int
+	}{
+		ReqID: IDs,
+	})
 }

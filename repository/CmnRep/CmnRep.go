@@ -367,6 +367,17 @@ func (m *APIRepo) UpdateVendors(ctx context.Context, usr *CmnModel.Vendors) erro
 
 }
 
+func (m *APIRepo) DeleteVendors(ctx context.Context, usr *CmnModel.Vendors) error {
+	url := fmt.Sprintf(m.APIConn + "/DeleteVendors")
+	j, err := json.Marshal(usr)
+	_, err = utils.PostRequest(url, j)
+	if err != nil {
+		return err
+	}
+	return err
+
+}
+
 //UpdateLocations ..
 func (m *APIRepo) UpdateLocations(ctx context.Context, usr *CmnModel.Locations) error {
 	url := fmt.Sprintf(m.APIConn + "/UpdateLocations")
@@ -1239,5 +1250,21 @@ func (m *APIRepo) RequisitionStcokReceived(ctx context.Context, mdl CmnModel.Req
 	err = json.Unmarshal(bytes, &er)
 
 	return err
+
+}
+
+
+func (m *APIRepo) GetRequisitionHistoryByReqID(ctx context.Context, ID int) ([]*CmnModel.Requisition_Requests, error) {
+	url := fmt.Sprintf(m.APIConn+"/GetRequisitionHistoryByReqID/%d", ID)
+	bytes, err := utils.GetRequest(url)
+	if err != nil {
+		return nil, err
+	}
+	data := []*CmnModel.Requisition_Requests{}
+	err = json.Unmarshal(bytes, &data)
+	if err != nil {
+		return nil, err
+	}
+	return data, nil
 
 }

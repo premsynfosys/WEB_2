@@ -43,6 +43,7 @@ func ConsumablesRoutings(r *mux.Router, hndl *cnsmblhndlr.IConsumables) {
 
 //ITAssetsRoutings ..
 func ITAssetsRoutings(r *mux.Router, hndl *itassethndlr.IITAsset) {
+	r.HandleFunc("/GetITAssetToCheckoutToITasset/{LocID}/{AssetID}", utils.AuthRequired(hndl.GetITAssetToCheckoutToITasset))
 	r.HandleFunc("/ITAssetDelete/{AssetID}", utils.AuthRequired(hndl.ITAssetDelete))
 	r.HandleFunc("/MyITAssetRequestList", utils.AuthRequired(hndl.MyITAssetRequestList))
 	r.HandleFunc("/ITAssetReqForward", utils.AuthRequired(hndl.ITAssetReqForward))
@@ -108,6 +109,7 @@ func CommonRoutings(r *mux.Router, hndl *cmnhandler.ICommonrep) {
 	r.HandleFunc("/PurchaseOrders_RequestsUpdate", utils.AuthRequired(hndl.PurchaseOrders_RequestsUpdate))
 	r.HandleFunc("/Requisition_RequestsUpdate", utils.AuthRequired(hndl.Requisition_RequestsUpdate))
 	r.HandleFunc("/POApprovalDetails", utils.AuthRequired(hndl.POApprovalDetails))
+	r.HandleFunc("/DeleteVendors", utils.AuthRequired(hndl.DeleteVendors))
 	r.HandleFunc("/RequisitionApprovalDetails", utils.AuthRequired(hndl.RequisitionApprovalDetails))
 	r.HandleFunc("/POReqForward", utils.AuthRequired(hndl.POReqForward))
 	r.HandleFunc("/POReqApproved", utils.AuthRequired(hndl.POReqApproved))
@@ -121,6 +123,8 @@ func CommonRoutings(r *mux.Router, hndl *cmnhandler.ICommonrep) {
 	r.HandleFunc("/GetRequisitionDetailsByApprover/{ApprvrID}", utils.AuthRequired(hndl.GetRequisitionDetailsByApprover))
 	r.HandleFunc("/POAssetDetailsByIDPO/{IDPO}", utils.AuthRequired(hndl.POAssetDetailsByIDPO))
 	r.HandleFunc("/RequisitionAssetDetailsByID/{ID}", utils.AuthRequired(hndl.RequisitionAssetDetailsByID))
+	r.HandleFunc("/GetRequisitionHistoryByReqID/{ReqID}", utils.AuthRequired(hndl.GetRequisitionHistoryByReqID))
+	r.HandleFunc("/RequisitionHistoryDetails_Partial/{ReqID}", utils.AuthRequired(hndl.RequisitionHistoryDetails_Partial))
 	r.HandleFunc("/PO_ApprovalStatusList/{IDPO}", utils.AuthRequired(hndl.PO_ApprovalStatusList))
 	r.HandleFunc("/Requisition_ApprovalStatusList/{ID}", utils.AuthRequired(hndl.Requisition_ApprovalStatusList))
 	r.HandleFunc("/PurchaseOrderView/{IDPO}", utils.AuthRequired(hndl.PurchaseOrderView))

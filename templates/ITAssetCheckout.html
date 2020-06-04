@@ -207,15 +207,9 @@
                 $("#divUsers,#divLocations").addClass("collapse")
                 $("#Users,#Locations,#Assets").empty();
                 $("#Assets").append('<option selected="selected" value="0">--select--</option>');
-                var data
-                if ("{{.Auth.Accesstoalllocations}}") {
-                    data = getdata("/GetEmployeesList")
-                    LoadUsers(data)
-                }
-                else {
-                    data = getdata("/GetEmployeesList?LocID=" + $("#locationid").val())
-                    LoadUsers(data)
-                }
+
+                data = getdata("/GetITAssetToCheckoutToITasset/" + $("#locationid").val() + "/{{.Data.Mdl.IDITAssets}}")
+                LoadAssets(data)
 
             }
             if (this.value == 'Location') {
@@ -260,8 +254,11 @@
 
 
     $("#Users").change(function () {
+        debugger;
         $("#divUserAssets").empty();
-        var data = getdata("/employee/" + $(this).val() + "/GetEmployeeITAssetsByID")
+
+        var data = getdata("/GetEmployeeITAssetsByID?EmpID=" + $(this).val() + "&isCheckin=0")
+        // var data = getdata("/employee/" + $(this).val() + "/GetEmployeeITAssetsByID")
         var div = document.getElementById("divUserAssets")
         for (let i in data) {
 

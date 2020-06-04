@@ -1,0 +1,87 @@
+{{  define "RequisitionHistoryDetails_Partial"}}
+
+<div class="container">
+    <div class="dt-responsive">
+        <table class="table table-striped table-hover  nowrap table-bordered  " id="tblRequisitionHistory">
+            <thead>
+                <th>IDRequisition_Requests</th>
+                <th>Status</th>
+                
+                <th>Actioned On</th>
+                <th>Action Performed</th>
+            </thead>
+        </table>
+        
+    </div>
+
+</div>
+
+
+
+<script>
+    $(document).ready(function () {
+
+        var tbl = $('#tblRequisitionHistory').DataTable({
+            responsive: true,
+            "processing": true,
+            "processing": true,
+            scrollY: $(window).height() - 350,
+            scrollCollapse: true,
+            scrollX: true,
+            destroy: true,
+            dom: 'rt',
+            ajax: {
+                "url": "/GetRequisitionHistoryByReqID/{{.ReqID}}",
+                "type": "GET",
+                "datatype": "json",
+                "dataSrc": ""//to read data from a plain array rather than an array in an object:
+            },
+            columnDefs: [
+                { orderable: false, targets: 1 },
+                { visible: false, targets: 0 }
+            ],
+            order: [[0, 'desc']],
+            // destroy: true,//to over come reintilize prblms
+            "columns": [
+                {
+                    "name": "IDRequisition_Requests",
+                    'data': 'IDRequisition_Requests'
+                }, {
+                    "name": "StatusName",
+                    'data': "StatusName"
+                }, {
+                    "name": "ActionedOn On",
+                    'data': 'ActionedOn',
+                    render: function (dt) {
+                        return jsondate(dt);
+                    }
+                }, {
+                    "name": "ActionePerformed",
+                    'data': 'ActionePerformed'
+                }
+            ],
+
+            buttons: [
+
+
+                {
+                    text: 'Excel',
+                    extend: "excel",
+                    className: ' dropdown-item',
+                    title: "Requisition Details",
+                    exportOptions: {
+                        columns: ':visible'
+                        // columns: ':not(.notexport)'
+                    }
+                }
+            ]
+        });
+
+    
+
+
+    });
+
+</script>
+
+{{end}}

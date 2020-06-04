@@ -1,6 +1,7 @@
 {{  define "RequisitionView"}}
 {{template "head" .}}
 <form id="frm">
+    <button id="ReqHistory" type="button" class="btn btn-link float-right "><i class="fa fa-list"></i>History</button>
     <div class="card">
         <div class="card-header">
             <h3 class="d-block w-100">Requisition View
@@ -40,10 +41,13 @@
                         {{if eq .Data.POR.StatusID 44}}
                         <strong>Total Paid Ammount:</strong> ₹ <span>{{.Data.POR.TotalPaidAmmount}} </span><text
                             class="text-muted">(as per bill)</text><br>
-                        <strong>Bill Invoice No:</strong><a href="/AppFiles/Images/RequisitionBIlls/{{.Data.POR.BillImagePath}}"  class="btn btn-sm  text-warning"> {{.Data.POR.BillInvoiceNo}}</a><br>
+                        <strong>Bill Invoice No:</strong><a
+                            href="/AppFiles/Images/RequisitionBIlls/{{.Data.POR.BillImagePath}}"
+                            class="btn btn-sm  text-warning"> {{.Data.POR.BillInvoiceNo}}</a><br>
                         {{end}}
                         <strong>Total Payable Ammount:</strong> ₹ <span>{{.Data.POR.TotalAmmount}}</span><br>
-                        <strong>Requested By:</strong> <span> {{.Data.POR.RequestedByName}}</span>
+                        <strong>Requested By:</strong> <span> {{.Data.POR.RequestedByName}}</span><br>
+                        <strong>Requested On:</strong> <span> {{.Data.POR.CreatedOn}}</span>
                     </address>
                 </div>
             </div>
@@ -101,11 +105,12 @@
 
     <div class="row no-print">
         <div class="col-12 justify-content-center">
+            {{if eq .Data.POR.RequestedBy  .User.IDEmployees}}
             <button id="SendtoVendor" type="button" class="btn btn-info" style="margin-right: 5px;"><i
                     class="fa fa-check"></i>Send to Vendor</button>
             <button id="ReceivedFromvendor" type="button" class="btn btn-info" style="margin-right: 5px;"><i
                     class="fa fa-check"></i>Received From vendor</button>
-
+            {{end}}
             <button id="flowmdl" type="button" class="btn btn-info" style="margin-right: 5px;"><i
                     class="fa fa-check"></i>Approve/Reject</button>
 
@@ -154,12 +159,12 @@
                     </div>
 
                     <div class="form-group row justify-content-center">
-                        {{if eq .Data.POR.RequestedBy  .User.IDEmployees}}
-                        <button id="SendtoVendor" type="button" class="btn btn-info" style="margin-right: 5px;"><i
+
+                        <!-- <button id="SendtoVendor" type="button" class="btn btn-info" style="margin-right: 5px;"><i
                                 class="fa fa-check"></i>Send to Vendor</button>
                         <button id="ReceivedFromvendor" type="button" class="btn btn-info" style="margin-right: 5px;"><i
-                                class="fa fa-check"></i>Received From vendor</button>
-                        {{end}}
+                                class="fa fa-check"></i>Received From vendor</button> -->
+
                         <button id="FlowApprove" type="button" class="btn btn-success "><i
                                 class="fa fa-check"></i>Approve & Forward </button>&nbsp;
                         <button id="FlowReject" value="Reject" type="button" class="btn btn-danger "><i
@@ -249,6 +254,21 @@
 </div>
 
 
+<div class="modal fade " id="ReqHistoryModal" tabindex="-1" role="dialog"
+    aria-labelledby="ReqHistoryModalLabel" aria-hidden="true">
+    <div class="modal-dialog " role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ReqHistoryModalLabel">History</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body" id="divHistory">
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     $(document).ready(function () {
         var tbl = $('#tblCatlogList').DataTable({
@@ -301,8 +321,9 @@
                 }]
 
         });
-
-
+        if ("{{.Data.POR.StatusID}}" != 44) {
+            tbl.column(6).visible(false);
+        }
         var NextRoleID;
         var NextGrade;
         var GDlevel;
@@ -640,6 +661,11 @@
                         location.reload();
                     }
                 });
+        })
+
+        $("#ReqHistory").click(function () {
+            $("#ReqHistoryModal").modal("show")
+            $("#divHistory").load('/RequisitionHistoryDetails_Partial/{{.Data.POR.IDRequisition_Requests}}')
         })
 
     })

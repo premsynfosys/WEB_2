@@ -114,7 +114,7 @@
                     'data': null,
                     render: function (dt) {
                         var res = "<button  title='Edit Vendor'  data-value='" + dt.Idvendors + "'  class=' VendEdit btn btn-link text-warning '><i class='ik ik-edit btn-xs '></i></button>"
-                        res += "<button  title='Delete Vendor'  data-value='" + dt.Idvendors + "'  class=' btn btn-link text-warning '><i class='ik ik-delete btn-xs '></i></button>";
+                        res += "<button  title='Delete Vendor'  data-value='" + dt.Idvendors + "'  class='VendDelete btn btn-link text-warning '><i class='ik ik-delete btn-xs '></i></button>";
                         return res;
                     }
                 }, {
@@ -233,6 +233,25 @@
             tbl.ajax.reload();
         })
 
+        $("#tblVendors").on("click", ".VendDelete", function () {
+            var id = $(this).attr("data-value")
+            var data = new Object()
+            data.Idvendors = parseInt(id)
+            if (confirm('Do you want to delete Vendor?')) {
+                $.ajax({
+                    url: "/DeleteVendors",
+                    type: 'POST',
+                    async: false,
+                    data: JSON.stringify(data),
+                    success: function (data) {
+                        Toast('success', 'Vendor Deleted successfully')
+                        tbl.ajax.reload();
+                    }, error: function () {
+                        alert('Internal error')
+                    }
+                });
+            }
+        });
 
     });
 
@@ -248,6 +267,7 @@
             $(".VendorBody").load("/Vendors?mode=edit&&id=" + id, null, function () {
             });
         });
+
         $(".Venadd").on("click", function () {
             $(".VendorEdit").modal("show")
             $(".modal-title").text("Add Vendor")

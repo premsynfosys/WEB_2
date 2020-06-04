@@ -448,3 +448,17 @@ func (m *APIRepo) ITAssetDelete(ctx context.Context, AssetID int) (error) {
 	err = json.Unmarshal(bytes, nil)
 	return  nil
 }
+
+func (m *APIRepo) GetITAssetToCheckoutToITasset(ctx context.Context,LocID int, AssetID int) ([]*ITAssetsmodel.ITAssetModel, error) {
+	url := fmt.Sprintf(m.APIConn+"/GetITAssetToCheckoutToITasset/%d/%d",LocID, AssetID)
+	bytes, err := utils.GetRequest(url)
+	if err != nil {
+		return nil, err
+	}
+	data := make([]*ITAssetsmodel.ITAssetModel, 0)
+	err = json.Unmarshal(bytes, &data)
+	if err != nil {
+		return nil, err
+	}
+	return data, nil
+}
