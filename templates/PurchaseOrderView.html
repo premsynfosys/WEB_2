@@ -460,6 +460,16 @@
                     }
                 });
         })
+        $("#ReceivedFromvendor").click(function () {
+            if (confirm('Did you receive from vednor?'))
+                $.ajax({
+                    url: "/POStatusChange/{{.Data.POR.IDPurchaseOrders_Requests}}/38",
+                    type: 'POST',
+                    success: function (s) {
+                        location.reload()
+                    }
+                });
+        })
 
     })
 </script>

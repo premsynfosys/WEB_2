@@ -134,6 +134,22 @@
                   </div>
             </div>
       </div>
+      <div class="col-xl-3 col-sm-6 col-md-4">
+            <div class="card prod-p-card card-green">
+                  <div class="card-body">
+                        <div class="row align-items-center  mb-30 ">
+                              <div class="col">
+
+                                    <h3 class="mb-0 fw-700 text-white">{{.Data.ITAssetExpectedCheckInDate}}</h3>
+                              </div>
+                              <div class="col-auto">
+                                    <a href="/ITAssets"> <i class="fas fa-hourglass text-green f-18"></i></a>
+                              </div>
+                        </div>
+                        <h6 class="mb-0 text-white ">ITAsset CheckInDate Due</h6>
+                  </div>
+            </div>
+      </div>
       {{end}}
 
       {{if .Auth.ITAssetRequestList}}

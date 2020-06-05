@@ -3,7 +3,6 @@ package utils
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"html/template"
 	"net/http"
 
@@ -62,8 +61,7 @@ func ExecuteTemplate(w http.ResponseWriter, r *http.Request, tmplName string, da
 	tmpl = template.Must(template.ParseGlob("templates/*.html"))
 	buf := new(bytes.Buffer)
 	if err := tmpl.ExecuteTemplate(buf, tmplName, data); err != nil {
-		fmt.Printf("\nRender Error: %v\n", err)
-		return
+		tmpl.ExecuteTemplate(buf, "Error", err.Error());
 	}
 	w.Write(buf.Bytes())
 }
@@ -86,7 +84,6 @@ func GetCookieUser(r *http.Request) (User CmnModel.LoginModel, Auth map[string]b
 	}
 	return User, Auth
 }
-
 
 //SetCookieHandler ..
 func SetCookieHandler(User CmnModel.LoginModel, Auth map[string]bool, r *http.Request, w http.ResponseWriter) {
