@@ -143,7 +143,7 @@ func CommonRoutings(r *mux.Router, hndl *cmnhandler.ICommonrep) {
 	r.HandleFunc("/MultiLevelApproval_config", utils.AuthRequired(hndl.MultiLevelApproval_config))
 	r.HandleFunc("/emp", utils.AuthRequired(hndl.Emp))
 	r.HandleFunc("/MultiApproval", utils.AuthRequired(hndl.MultiApproval))
-	r.HandleFunc("/MyDetails/{EmpID}", utils.AuthRequired(hndl.MyDetails))
+	r.HandleFunc("/MyDetails", utils.AuthRequired(hndl.MyDetails))
 	r.HandleFunc("/User_ActivityLog/{EmpID}", utils.AuthRequired(hndl.User_ActivityLog))
 	r.HandleFunc("/Activivty_Log_List/{EmpID}", utils.AuthRequired(hndl.Activivty_Log_List))
 	r.HandleFunc("/Authorization_Create", utils.AuthRequired(hndl.Authorization_Create))

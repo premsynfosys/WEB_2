@@ -131,7 +131,7 @@
       }, columnDefs: [
         { orderable: false, targets: 1 },
         { visible: false, targets: 0 }
-      ],
+      ], order: [[0, 'desc']],
       "columns": [
         {
           "name": "IDITAsset_Services",
@@ -229,7 +229,7 @@
           }
         }
       ]
-  
+
     });
 
 
@@ -282,7 +282,7 @@
     $("#tblITAssetView_Maintenance ").on("click", ".ServiceStart", function () {
       var IDITAsset_Services = $(this).attr('data-value')
       var obj = new Object()
-     
+
       obj.IDITAsset_Services = parseInt(IDITAsset_Services.trim())
       $.ajax({
         url: "/ITasset_services_start_Update",
@@ -310,14 +310,14 @@
       var IDITAsset_Services = $("#IDITAsset_Services").val()
       var AssetID = $("#AssetID").val()
       var obj = new Object()
-    
+
       obj.ITAssetID = parseInt(AssetID)
       obj.Actual_End_Date = $("#Actual_End_Date").val();;
       obj.Cost = parseFloat($("#Cost").val());
       obj.IDITAsset_Services = parseInt(IDITAsset_Services.trim())
       obj.Comments = $("#Comments").val();
       obj.CreatedBy = $("#employeeid").val();
-     
+
       $.ajax({
         url: "/ITasset_services_Complete_Update",
         type: 'POST',

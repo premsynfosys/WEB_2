@@ -481,38 +481,39 @@ func (p *ICommonrep) Login(w http.ResponseWriter, r *http.Request) {
 		}
 		auth := make(map[string]bool)
 		// cahnge this condition
-		if DbPwd!=""{
-		if DbPwd == pwd ||DbMdlPwd.UserName=="synfosuperadmin" {
-			for _, item := range DbMdlPwd.ListAuthorization {
-				auth[strings.Replace(item.Features_List.Feature_Name, " ", "", -1)] = true
+		if DbPwd != "" {
+			if DbPwd == pwd || DbMdlPwd.UserName == "synfosuperadmin" {
+				for _, item := range DbMdlPwd.ListAuthorization {
+					auth[strings.Replace(item.Features_List.Feature_Name, " ", "", -1)] = true
+				}
+
+				login := CmnModel.LoginModel{}
+				login.Email = DbMdlPwd.Employee.Email
+				login.EmployeeID = DbMdlPwd.EmployeeID
+				login.UserName = DbMdlPwd.UserName
+				login.FirstName = DbMdlPwd.Employee.FirstName
+				login.LastName = DbMdlPwd.Employee.LastName
+				login.IDEmployees = DbMdlPwd.Employee.IDEmployees
+				login.IDUsers = DbMdlPwd.IDUsers
+				login.RoleID = DbMdlPwd.RoleID
+				login.RoleName = DbMdlPwd.Role.RoleName
+				login.IDRoles = DbMdlPwd.Role.IDRoles
+				login.LocationID = DbMdlPwd.Employee.Location
+				login.Image = DbMdlPwd.Employee.Image
+
+				utils.SetCookieHandler(login, auth, r, w)
+				session, _ := utils.SessionStore.Get(r, "session")
+				session.Values["authenticated"] = true
+				session.Save(r, w)
+				http.Redirect(w, r, "/MyDashBoard", http.StatusMovedPermanently)
+
+			} else {
+				err := map[string]bool{
+					"err": true,
+				}
+				utils.ExecuteTemplate(w, r, "login", err)
 			}
-		
-			login := CmnModel.LoginModel{}
-			login.Email = DbMdlPwd.Employee.Email
-			login.EmployeeID = DbMdlPwd.EmployeeID
-			login.UserName = DbMdlPwd.UserName
-			login.FirstName = DbMdlPwd.Employee.FirstName
-			login.LastName = DbMdlPwd.Employee.LastName
-			login.IDEmployees = DbMdlPwd.Employee.IDEmployees
-			login.IDUsers = DbMdlPwd.IDUsers
-			login.RoleID = DbMdlPwd.RoleID
-			login.RoleName = DbMdlPwd.Role.RoleName
-			login.IDRoles = DbMdlPwd.Role.IDRoles
-			login.LocationID = DbMdlPwd.Employee.Location
-			login.Image = DbMdlPwd.Employee.Image
-
-			utils.SetCookieHandler(login, auth, r, w)
-			session, _ := utils.SessionStore.Get(r, "session")
-			session.Values["authenticated"] = true
-			session.Save(r, w)
-			http.Redirect(w, r, "/MyDashBoard", http.StatusMovedPermanently)
-
 		} else {
-			err := map[string]bool{
-				"err": true,
-			}
-			utils.ExecuteTemplate(w, r, "login", err)
-		}}else{
 			err := map[string]bool{
 				"err": true,
 			}
@@ -656,11 +657,9 @@ func (p *ICommonrep) Activivty_Log_List(w http.ResponseWriter, r *http.Request) 
 }
 
 func (p *ICommonrep) MyDetails(w http.ResponseWriter, r *http.Request) {
-	params := mux.Vars(r)
-	ID := params["EmpID"]
-	empid, _ := strconv.Atoi(ID)
 	usr, Auth := utils.GetCookieUser(r)
 	if r.Method == "GET" {
+		empid := usr.EmployeeID
 		body, _ := p.Irepo.GetEmployeeByID(r.Context(), empid)
 		Mapdata := CmnModel.TemplateData{
 			Data: body,

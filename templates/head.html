@@ -55,7 +55,7 @@
       <script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.print.min.js"></script>
       <script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.colVis.min.js"></script>
       <script src="/static/plugins/sweetalert/dist/sweetalert.min.js"></script>
-      
+
 
       <script>
             if (window["WebSocket"]) {
@@ -333,33 +333,48 @@
                                           <div class="nav-item">
                                                 <a href="/MyDashBoard"><i class="ik ik-bar-chart-2"></i><span>My
                                                             Dashboard</span></a>
-                                                <a href="/MyDetails/{{.User.IDEmployees}}"><i
+                                                <a href="/MyDetails"><i
                                                             class="ik ik-user"></i><span>My Details</span></a>
+                                                {{if .Auth.ITAssetRequest}}
+                                                <a href="/ITAssets/Request?LocID={{.User.LocationID}}"
+                                                      class="menu-item"><i
+                                                            class="ik ik-arrow-up-right"></i><span>ITAsset
+                                                            Request</span></a>
+                                                {{end}}
                                                 <a href="/MyITAssetRequestList"><i
                                                             class="ik ik-monitor"></i><span>ITAsset Request
                                                             List</span></a>
+                                                {{if .Auth.NonITAssetRequest}}
+                                                <a href="/NonITAssetRequest?LocID={{.User.LocationID}}"
+                                                      class="menu-item"><i
+                                                            class="ik ik-arrow-up-right"></i><span>NonITAsset
+                                                            Request</span></a>
+                                                {{end}}
                                                 <a href="/MyNonITAssetRequestList"><i
                                                             class="ik ik-monitor"></i><span>Non ITAsset Request
                                                             List</span></a>
                                           </div>
                                           {{if or (eq .User.RoleID 2) (eq .User.RoleID 1)   }}
-                                          <div class="nav-lavel">MENU</div>
+                                          <div class="nav-lavel">ADMIN MENU</div>
                                           <div class="nav-item">
                                                 <a href="/dashboard"><i
                                                             class="ik ik-bar-chart-2"></i><span>Dashboard</span></a>
 
                                           </div>
                                           {{end}}
-                                          <div class="nav-lavel">Modules</div>
+                                          <!-- <div class="nav-lavel">Modules</div> -->
+                                          {{if .Auth.EmployeeList  }}
                                           <div class="nav-item has-sub">
                                                 <a href="#"><i class="ik ik-users"></i><span>User</span></a>
                                                 <div class="submenu-content">
-                                                      {{if .Auth.EmployeeList  }}
+
                                                       <a href="/UsersList" class="menu-item"><i
                                                                   class="ik ik-list"></i><span>List</span></a>
-                                                      {{end}}
+
                                                 </div>
                                           </div>
+                                          {{end}}
+                                          {{if or .Auth.EmployeeList  .Auth.AddEmployee  }}
                                           <div class="nav-item has-sub">
                                                 <a href="#"><i class="fa fa-users"></i><span>Employees</span>
                                                 </a>
@@ -374,6 +389,8 @@
                                                       {{end}}
                                                 </div>
                                           </div>
+                                          {{end}}
+                                          {{if or .Auth.ITAssetList .Auth.AddITAsset  .Auth.RetiredITAssetsList}}
                                           <div class="nav-item has-sub">
                                                 <a href="#"><i class="ik ik-monitor"></i><span>ITAssets</span>
                                                 </a>
@@ -387,12 +404,7 @@
                                                       <a href="/ITAssets/create" class="menu-item"><i
                                                                   class="ik ik-folder-plus"></i><span>Create</span></a>
                                                       {{end}}
-                                                      {{if .Auth.ITAssetRequest}}
-                                                      <a href="/ITAssets/Request?LocID={{.User.LocationID}}"
-                                                            class="menu-item"><i
-                                                                  class="ik ik-arrow-up-right"></i><span>Asset
-                                                                  Request</span></a>
-                                                      {{end}}
+
                                                       {{if .Auth.RetiredITAssetsList}}
                                                       <a href="/ITAssetRetiredList" class="menu-item"><i
                                                                   class="ik ik-list"></i><span>Retired
@@ -400,6 +412,8 @@
                                                       {{end}}
                                                 </div>
                                           </div>
+                                          {{end}}
+                                          {{if or .Auth.NonITAssetList .Auth.AddNonITAsset }}
                                           <div class="nav-item has-sub">
                                                 <a href="#"><i class="ik ik-airplay"></i><span>Non ITAssets</span>
                                                 </a>
@@ -412,15 +426,12 @@
                                                       <a href="/NonITAsset/Create" class="menu-item"><i
                                                                   class="ik ik-folder-plus"></i><span>Create</span></a>
                                                       {{end}}
-                                                      {{if .Auth.NonITAssetRequest}}
-                                                      <a href="/NonITAssetRequest?LocID={{.User.LocationID}}"
-                                                            class="menu-item"><i
-                                                                  class="ik ik-arrow-up-right"></i><span>Asset
-                                                                  Request</span></a>
-                                                      {{end}}
+
 
                                                 </div>
                                           </div>
+                                          {{end}}
+                                          {{if or .Auth.ConsumableList .Auth.AddConsumable}}
                                           <div class="nav-item has-sub">
                                                 <a href="#"><i class="fas fa-tint"></i><span>Consumables</span>
                                                 </a>
@@ -436,7 +447,9 @@
 
                                                 </div>
                                           </div>
-                                          <div class="nav-lavel">Extra</div>
+                                          {{end}}
+                                          <!-- <div class="nav-lavel">Extra</div> -->
+                                          {{if or .Auth.ITAssetRequestList .Auth.ITAssetServiceRequestList .Auth.NonITAssetRequestList}}
                                           <div class="nav-item has-sub">
                                                 <a href="#"><i class="fa fa-check-square"></i><span>Requests</span></a>
                                                 <div class="submenu-content">
@@ -456,6 +469,9 @@
 
                                                 </div>
                                           </div>
+                                          {{end}}
+                                          {{if or .Auth.OutWardRequest .Auth.InWardList .Auth.OutWardList .Auth.ApprovalList}}
+
                                           <div class="nav-item has-sub">
                                                 <a href="#"><i class="ik ik-edit"></i><span>InWard / OutWard</span></a>
                                                 <div class="submenu-content">
@@ -476,8 +492,9 @@
                                                                   class="ik ik-alert-circle"></i>Approval List</a>
                                                       {{end}} </div>
                                           </div>
+                                          {{end}}
 
-
+                                          {{if or .Auth.CreatePO .Auth.PODetails .Auth.POApprovalList }}
                                           <div class="nav-item has-sub">
                                                 <a href="#"><i class="ik ik-dollar-sign"></i><span>Purchase
                                                             Order</span></a>
@@ -505,11 +522,10 @@
 
 
                                           </div>
-
-
+                                          {{end}}
+                                          {{if or .Auth.CreateRequisition .Auth.RequisitionDetails .Auth.RequisitionApprovalList }}
                                           <div class="nav-item has-sub">
-                                                <a href="#"><i
-                                                            class="ik ik-file-text"></i><span>Requisition</span></a>
+                                                <a href="#"><i class="ik ik-file-text"></i><span>Requisition</span></a>
                                                 {{if .Auth.CreateRequisition}}
                                                 <div class="submenu-content">
                                                       <a href="/Requisition" class="menu-item"><i
@@ -521,7 +537,7 @@
                                                 <div class="submenu-content">
                                                       <a href="/RequisitionDetails" class="menu-item"><i
                                                                   class="ik ik-briefcase"></i><span>Requisition
-                                                                  Details</span></a>      
+                                                                  Details</span></a>
                                                 </div>
                                                 {{end}}
                                                 {{if .Auth.RequisitionApprovalList}}
@@ -534,6 +550,8 @@
 
 
                                           </div>
+                                          {{end}}
+                                          {{if or .Auth.Lcations .Auth.Vendors .Auth.Authorizations .Auth.AddNonITAssetNames .Auth.MultiLevelApproval }}
 
                                           <div class="nav-item has-sub">
                                                 <a href="#"><i class="ik ik-settings"></i><span>Settings</span></a>
@@ -569,7 +587,7 @@
                                                 </div>
                                                 {{end}}
                                           </div>
-
+                                          {{end}}
                                     </nav>
                               </div>
                         </div>
