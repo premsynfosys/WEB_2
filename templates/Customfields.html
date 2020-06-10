@@ -5,7 +5,7 @@
     <div class="form-group row">
         <label for="FieldName" class="col-md-3 col-form-label ">Field Name:</label>
         <div class="col-md-9 ">
-            <input type="text"  maxlength="45" name="FieldName" class="form-control form-control-sm" id="FieldName">
+            <input type="text" maxlength="45" name="FieldName" class="form-control form-control-sm" id="FieldName">
         </div>
     </div>
     <div class="form-group row">
@@ -43,47 +43,48 @@
 
     <script>
         $(document).ready(function () {
-            $.ajax({
-                url: "/GetCustomFields",
-                type: 'GET',
-                dataType: 'json',
-                success: function (data) {
-                   
-                    if (data["CustomFields1Type"] != "") {
-                        $("#FieldName").val(data["CustomFields1"])
-                        $("#FieldType").val(data["CustomFields1Type"])
-                        $("#btnAddCustm").click();
-                        //$("#CustomFields1").val(data["CustomFields1Value"])
+            if ("{{.}}" != "0")
+                $.ajax({
+                    url: "/GetCustomFields/{{.}}",
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+
+                        if (data["CustomFields1Type"] != "") {
+                            $("#FieldName").val(data["CustomFields1"])
+                            $("#FieldType").val(data["CustomFields1Type"])
+                            $("#btnAddCustm").click();
+                            $("#CustomFields1").val(data["CustomFields1Value"])
+                        }
+
+                        if (data["CustomFields2Type"] != "") {
+                            $("#FieldName").val(data["CustomFields2"])
+                            $("#FieldType").val(data["CustomFields2Type"])
+                            $("#btnAddCustm").click();
+                            $("#CustomFields2").val(data["CustomFields2Value"])
+                        }
+
+                        if (data["CustomFields3Type"] != "") {
+                            $("#FieldName").val(data["CustomFields3"])
+                            $("#FieldType").val(data["CustomFields3Type"])
+                            $("#btnAddCustm").click();
+                            $("#CustomFields3").val(data["CustomFields3Value"])
+                        }
+
+                        if (data["CustomFields4Type"] != "") {
+                            $("#FieldName").val(data["CustomFields4"])
+                            $("#FieldType").val(data["CustomFields4Type"])
+                            $("#btnAddCustm").click();
+                            $("#CustomFields4").val(data["CustomFields4Value"])
+                        }
+                        if (data["CustomFields5Type"] != "") {
+                            $("#FieldName").val(data["CustomFields5"])
+                            $("#FieldType").val(data["CustomFields5Type"])
+                            $("#btnAddCustm").click();
+                            $("#CustomFields5").val(data["CustomFields5Value"])
+                        }
                     }
-                  
-                    if (data["CustomFields2Type"] != "") {
-                        $("#FieldName").val(data["CustomFields2"])
-                        $("#FieldType").val(data["CustomFields2Type"])
-                        $("#btnAddCustm").click();
-                      
-                    }
-                   
-                    if (data["CustomFields3Type"] != "") {
-                        $("#FieldName").val(data["CustomFields3"])
-                        $("#FieldType").val(data["CustomFields3Type"])
-                        $("#btnAddCustm").click();
-                      
-                    }
-                   
-                    if (data["CustomFields4Type"] != "") {
-                        $("#FieldName").val(data["CustomFields4"])
-                        $("#FieldType").val(data["CustomFields4Type"])
-                        $("#btnAddCustm").click();
-                       
-                    }
-                    if (data["CustomFields5Type"] != "") {
-                        $("#FieldName").val(data["CustomFields5"])
-                        $("#FieldType").val(data["CustomFields5Type"])
-                        $("#btnAddCustm").click();
-                       
-                    }
-                }
-            });
+                });
         })
 
         $("#divCustm").on("click", "button", function () {

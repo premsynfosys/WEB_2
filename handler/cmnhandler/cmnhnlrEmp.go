@@ -22,6 +22,7 @@ import (
 //CreateEmployee a new post
 func (p *ICommonrep) CreateEmployee(w http.ResponseWriter, r *http.Request) {
 	usr, Auth := utils.GetCookieUser(r)
+	
 	if r.Method == "GET" {
 		// usr, Auth := utils.GetCookieUser(r)
 		Mapdata := CmnModel.TemplateData{
@@ -504,6 +505,7 @@ func (p *ICommonrep) Login(w http.ResponseWriter, r *http.Request) {
 				utils.SetCookieHandler(login, auth, r, w)
 				session, _ := utils.SessionStore.Get(r, "session")
 				session.Values["authenticated"] = true
+				session.Options.Path="/"
 				session.Save(r, w)
 				http.Redirect(w, r, "/MyDashBoard", http.StatusMovedPermanently)
 

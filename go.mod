@@ -5,6 +5,7 @@ go 1.13
 require (
 	9fans.net/go v0.0.2 // indirect
 	github.com/boombuler/barcode v1.0.0
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/go-delve/delve v1.4.0
 	github.com/google/uuid v1.1.1
 	github.com/gorilla/mux v1.7.3

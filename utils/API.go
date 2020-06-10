@@ -6,10 +6,39 @@ import (
 	"io/ioutil"
 	"net/http"
 	"time"
+
+	jwt "github.com/dgrijalva/jwt-go"
 	//ITAssetRep "github.com/premsynfosys/AMS_WEB/repository/ITAssetRep"
 )
 
+var mySigningKey = []byte("captainjacksparrowsayshi")
+
+func GenerateJWT() (string, error) {
+	token := jwt.New(jwt.SigningMethodHS256)
+
+	claims := token.Claims.(jwt.MapClaims)
+
+	claims["authorized"] = true
+	claims["client"] = "Elliot Forbes"
+	claims["exp"] = time.Now().Add(time.Minute * 30).Unix()
+
+	tokenString, err := token.SignedString(mySigningKey)
+
+	if err != nil {
+		fmt.Errorf("Something Went Wrong: %s", err.Error())
+		return "", err
+	}
+
+	return tokenString, nil
+}
+
 func doRequest(req *http.Request) ([]byte, error) {
+	validToken, err := GenerateJWT()
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Set("Token", validToken)
+
 	timeout := time.Duration(5 * time.Second)
 	client := &http.Client{
 		Timeout: timeout,

@@ -110,8 +110,8 @@ func (m *APIRepo) GetITAssets(ctx context.Context, LocID int) ([]*ITAssetsmodel.
 }
 
 //GetCustomFields ..
-func (m *APIRepo) GetCustomFields(ctx context.Context) (*ITAssetsmodel.ITAssetModel, error) {
-	url := fmt.Sprintf(m.APIConn + "/GetCustomFields")
+func (m *APIRepo) GetCustomFields(ctx context.Context,id int) (*ITAssetsmodel.ITAssetModel, error) {
+	url := fmt.Sprintf(m.APIConn + "/GetCustomFields/%d", id)
 	bytes, err := utils.GetRequest(url)
 	if err != nil {
 		return nil, err

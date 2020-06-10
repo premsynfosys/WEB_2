@@ -24,7 +24,7 @@ type ITAssetIntrfc interface {
 	GetITassetsFilesByID(ctx context.Context, id int) ([]*ITAssetsmodel.ITassetsFiles, error)
 	CreateITAssetFiles(ctx context.Context, mdl *ITAssetsmodel.ITassetsFiles) error
 	ITAssetsBulkEdit(ctx context.Context, mdl *ITAssetsmodel.ITAssetModel, ids *[]string) error
-	GetCustomFields(ctx context.Context) (*ITAssetsmodel.ITAssetModel, error)
+	GetCustomFields(ctx context.Context,id int) (*ITAssetsmodel.ITAssetModel, error)
 	ITAssetRetire(ctx context.Context, Rtr *CmnModel.Retire) error
 	GetITAssetGroups(ctx context.Context) ([]*ITAssetsmodel.ITAssetGroup, error)
 	CreateITAssetRequest(ctx context.Context, mdl []*ITAssetsmodel.ITAssetRequest) error

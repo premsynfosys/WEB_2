@@ -155,7 +155,7 @@
           </div>
           <hr />
           <h5>Custom Fields</h5>
-          <div class=" row border border-dark m-3" id="custm">
+          <div class=" row border m-3" id="custm">
           </div>
           <div class="form-group row justify-content-center">
             <input type="submit" class="btn btn-primary btn-sm" value="Create ITAsset" />
@@ -247,7 +247,7 @@
     loadLocations(data)
     data = getdata('/GetVendors')
     loadVendors(data)
-    $("#custm").load("/Customfields")
+    $("#custm").load("/Customfields/0")
     //events
     // $(".custom-file-input").on("change", function () {
     //   var fileName = $(this).val().split("\\").pop();

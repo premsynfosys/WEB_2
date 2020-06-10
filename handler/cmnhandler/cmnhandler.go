@@ -767,6 +767,12 @@ func (p *ICommonrep) PurchaseOrderDetails(w http.ResponseWriter, r *http.Request
 	}
 }
 
+func (p *ICommonrep) Error(w http.ResponseWriter, r *http.Request) {
+	
+		utils.ExecuteTemplate(w, r, "Error", nil)
+	
+}
+
 func (p *ICommonrep) PurchaseOrders_RequestsInsert(w http.ResponseWriter, r *http.Request) {
 	res := CmnModel.PurchaseOrders_Requests{}
 	json.NewDecoder(r.Body).Decode(&res)

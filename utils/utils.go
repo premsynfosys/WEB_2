@@ -29,7 +29,8 @@ func LoadTemplates(pattern string) {
 func AuthRequired(handler http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		session, _ := SessionStore.Get(r, "session")
-		if auth, ok := session.Values["authenticated"].(bool); !ok || !auth {
+		auth, ok := session.Values["authenticated"].(bool)
+		if !ok || !auth {
 			http.Redirect(w, r, "/", 302)
 			return
 		}
@@ -61,7 +62,7 @@ func ExecuteTemplate(w http.ResponseWriter, r *http.Request, tmplName string, da
 	tmpl = template.Must(template.ParseGlob("templates/*.html"))
 	buf := new(bytes.Buffer)
 	if err := tmpl.ExecuteTemplate(buf, tmplName, data); err != nil {
-		tmpl.ExecuteTemplate(buf, "Error", err.Error());
+		tmpl.ExecuteTemplate(buf, "Error", err.Error())
 	}
 	w.Write(buf.Bytes())
 }
@@ -96,7 +97,6 @@ func SetCookieHandler(User CmnModel.LoginModel, Auth map[string]bool, r *http.Re
 		cookie := &http.Cookie{
 			Name:  "User",
 			Value: encoded,
-			//	Path:  "/",
 		}
 		http.SetCookie(w, cookie)
 	}
@@ -104,7 +104,6 @@ func SetCookieHandler(User CmnModel.LoginModel, Auth map[string]bool, r *http.Re
 		cookie := &http.Cookie{
 			Name:  "Auth",
 			Value: encoded,
-			//Path:  "/",
 		}
 		http.SetCookie(w, cookie)
 	}
@@ -112,6 +111,7 @@ func SetCookieHandler(User CmnModel.LoginModel, Auth map[string]bool, r *http.Re
 
 //RespondwithJSON ..
 func RespondwithJSON(w http.ResponseWriter, r *http.Request, code int, payload interface{}) {
+
 	data, _ := json.Marshal(payload)
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(code)
