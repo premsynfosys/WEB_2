@@ -231,7 +231,32 @@ func (p *INonITAsset) NonITAsset_Edit(w http.ResponseWriter, r *http.Request) {
 			defer file.Close()
 			defer img.Close()
 		}
+		customfields := make(map[string][]string)
+		customfieldsRaw := []byte(r.FormValue("customfields"))
+		json.Unmarshal(customfieldsRaw, &customfields)
 
+		if r.FormValue("CustomFields1") != "" {
+			mdl.CustomFields1Value = r.FormValue("CustomFields1")
+			mdl.CustomFields1 = customfields["CustomFields1"][0]
+			mdl.CustomFields1Type = customfields["CustomFields1"][1]
+		}
+		if r.FormValue("CustomFields2") != "" {
+			mdl.CustomFields2Value = r.FormValue("CustomFields2")
+			mdl.CustomFields2 = customfields["CustomFields2"][0]
+			mdl.CustomFields2Type = customfields["CustomFields2"][1]
+		}
+
+		if r.FormValue("CustomFields3") != "" {
+			mdl.CustomFields3Value = r.FormValue("CustomFields3")
+			mdl.CustomFields3 = customfields["CustomFields3"][0]
+			mdl.CustomFields3Type = customfields["CustomFields3"][1]
+		}
+
+		if r.FormValue("CustomFields4") != "" {
+			mdl.CustomFields4Value = r.FormValue("CustomFields4")
+			mdl.CustomFields4 = customfields["CustomFields4"][0]
+			mdl.CustomFields4Type = customfields["CustomFields4"][1]
+		}
 		_ = p.Irepo.PostNonITAssetEdit(r.Context(), &mdl)
 		http.Redirect(w, r, "/NonITAsset/AssetID/"+IDNonITAsset, 301)
 	}

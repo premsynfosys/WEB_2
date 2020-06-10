@@ -450,7 +450,7 @@ func (p *IITAsset) GetITAssetsEditByID(w http.ResponseWriter, r *http.Request) {
 		}
 		mdl.ModifiedBy = usr.EmployeeID
 		_ = p.Irepo.UpadteITAsset(r.Context(), &mdl)
-		http.Redirect(w, r, "/ITAssets", 301)
+		
 	}
 }
 
@@ -636,7 +636,8 @@ func (p *IITAsset) GetCustomFields(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	ID := params["id"]
 	id, _ := strconv.Atoi(ID)
-	body, _ := p.Irepo.GetCustomFields(r.Context(),id)
+	Mod := params["Mod"]
+	body, _ := p.Irepo.GetCustomFields(r.Context(), id, Mod)
 	utils.RespondwithJSON(w, r, http.StatusOK, body)
 }
 
@@ -688,8 +689,15 @@ func (p *IITAsset) UploadFiles(w http.ResponseWriter, r *http.Request) {
 func (p *IITAsset) Customfields(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	ID := params["id"]
+	Mod := params["Mod"]
 	id, _ := strconv.Atoi(ID)
-	utils.ExecuteTemplate(w, r, "Customfields", id)
+	utils.ExecuteTemplate(w, r, "Customfields", struct {
+		ID  int
+		Mod string
+	}{
+		ID:  id,
+		Mod: Mod,
+	})
 }
 
 //QrGenerator  ..

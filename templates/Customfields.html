@@ -43,9 +43,9 @@
 
     <script>
         $(document).ready(function () {
-            if ("{{.}}" != "0")
+            if ("{{.ID}}" != "0")
                 $.ajax({
-                    url: "/GetCustomFields/{{.}}",
+                    url: "/GetCustomFields/{{.ID}}/{{.Mod}}",
                     type: 'GET',
                     dataType: 'json',
                     success: function (data) {

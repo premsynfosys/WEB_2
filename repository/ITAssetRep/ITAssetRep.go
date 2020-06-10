@@ -110,8 +110,8 @@ func (m *APIRepo) GetITAssets(ctx context.Context, LocID int) ([]*ITAssetsmodel.
 }
 
 //GetCustomFields ..
-func (m *APIRepo) GetCustomFields(ctx context.Context,id int) (*ITAssetsmodel.ITAssetModel, error) {
-	url := fmt.Sprintf(m.APIConn + "/GetCustomFields/%d", id)
+func (m *APIRepo) GetCustomFields(ctx context.Context, id int, Mod string) (*ITAssetsmodel.ITAssetModel, error) {
+	url := fmt.Sprintf(m.APIConn+"/GetCustomFields/%d/"+Mod, id)
 	bytes, err := utils.GetRequest(url)
 	if err != nil {
 		return nil, err
@@ -354,6 +354,7 @@ func (m *APIRepo) ITAsset_Service_Request_Resolve(ctx context.Context, usr *ITAs
 	_, err = utils.PostRequest(url, j)
 	return err
 }
+
 //GetITAsset_service_request_List ..
 func (m *APIRepo) GetITAsset_service_request_List(ctx context.Context, EmpID int) ([]*ITAssetsmodel.ITAsset_service_request, error) {
 	url := fmt.Sprintf(m.APIConn+"/GetITAsset_service_request_List/%d", EmpID)
@@ -423,7 +424,6 @@ func (m *APIRepo) ITAssetReqForward(ctx context.Context, mdl *ITAssetsmodel.ITAs
 	return err
 }
 
-
 func (m *APIRepo) GetITAssetReqListByEmp(ctx context.Context, EmpID int) ([]*ITAssetsmodel.ITAssetReqList, error) {
 	url := fmt.Sprintf(m.APIConn+"/GetITAssetReqListByEmp/%d", EmpID)
 	bytes, err := utils.GetRequest(url)
@@ -438,19 +438,18 @@ func (m *APIRepo) GetITAssetReqListByEmp(ctx context.Context, EmpID int) ([]*ITA
 	return data, nil
 }
 
-
-func (m *APIRepo) ITAssetDelete(ctx context.Context, AssetID int) (error) {
+func (m *APIRepo) ITAssetDelete(ctx context.Context, AssetID int) error {
 	url := fmt.Sprintf(m.APIConn+"/ITAssetDelete/%d", AssetID)
 	bytes, err := utils.GetRequest(url)
 	if err != nil {
-		return  err
+		return err
 	}
 	err = json.Unmarshal(bytes, nil)
-	return  nil
+	return nil
 }
 
-func (m *APIRepo) GetITAssetToCheckoutToITasset(ctx context.Context,LocID int, AssetID int) ([]*ITAssetsmodel.ITAssetModel, error) {
-	url := fmt.Sprintf(m.APIConn+"/GetITAssetToCheckoutToITasset/%d/%d",LocID, AssetID)
+func (m *APIRepo) GetITAssetToCheckoutToITasset(ctx context.Context, LocID int, AssetID int) ([]*ITAssetsmodel.ITAssetModel, error) {
+	url := fmt.Sprintf(m.APIConn+"/GetITAssetToCheckoutToITasset/%d/%d", LocID, AssetID)
 	bytes, err := utils.GetRequest(url)
 	if err != nil {
 		return nil, err

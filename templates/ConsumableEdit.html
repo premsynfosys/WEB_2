@@ -17,7 +17,7 @@
 </div>
 <div class="row">
     <div class="col-lg-10 col-md-10">
-        <form method="POST" id="frm_Consumable" action="/Consumables/ConsumableEdit/{{.Data.IDConsumables}}"
+        <form method="POST" id="frm_Consumable" 
             enctype="multipart/form-data">
             <div class="card">
                 <div class="card-body ">
@@ -90,11 +90,11 @@
                         <label class="col-sm-3 col-form-label">Rerder Stock Price:</label>
                         <div class="col-sm-3 ">
                             <div class="input-group">
-                                 <input type="number" value="{{.Data.ReOrderStockPrice}}" required id="ReOrderStockPrice"
+                                <input type="number" value="{{.Data.ReOrderStockPrice}}" required id="ReOrderStockPrice"
                                     min="1" name="ReOrderStockPrice" class="form-control">
-                                    <span class="input-group-append">
-                                        <label class="input-group-text">₹</label>
-                                    </span>
+                                <span class="input-group-append">
+                                    <label class="input-group-text">₹</label>
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -147,9 +147,11 @@
 
 
                     <hr />
-                    <h6>Custom Fields</h6>
-                    <div class=" row w-70 " id="custm">
+                   
+                    <h5>Custom Fields</h5>
+                    <div class=" row border  m-3" id="custm">
                     </div>
+
                     <div class="form-group row justify-content-center">
                         <input type="submit" class="btn btn-primary btn-sm" value="Update Consumables" />
                     </div>
@@ -192,7 +194,7 @@
         loadLocations(data)
         data = getdata('/GetVendors')
         loadVendors(data)
-        $("#custm").load("/Customfields")
+        $("#custm").load("/Customfields/{{.Data.IDConsumables}}/Consumable")
         var data = getdata('/Consumables/GetConsumableMasterList')
         loadConsumableNames(data)
         function loadLocations(data) {
@@ -251,6 +253,47 @@
 
 
         })
+
+
+
+        $("#frm_Consumable").on("submit", function (event) {
+            event.preventDefault();
+
+            var fd = new FormData(this);
+            var cstm = new Object();
+
+
+            $.each($("#divCustm .count"), function () {
+
+                //$(this).find('input').attr('data-val') //field_name
+                var arry = new Array();
+
+                arry.push($(this).find('.cstm').attr('data-FieldName')) //passing ield_name
+                arry.push($(this).find('.cstm').attr('data-type')) //passing type
+
+
+                cstm[$(this).find('.cstm').attr('name')] = arry //passing //field_name
+
+            })
+
+            fd.append('customfields', JSON.stringify(cstm));
+            debugger;
+            $.ajax({
+                url: "/Consumables/ConsumableEdit/{{.Data.IDConsumables}}",
+                type: 'POST',
+                data: fd,
+                // dataType: 'json',
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    //  $('#frm_ITAsset')[0].reset();  
+                    Toast("success","Updated sucessfully")     
+                    window.location.reload();
+                }
+            });
+
+        });
+
     });
 
 </script>
