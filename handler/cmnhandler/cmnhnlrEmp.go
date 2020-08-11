@@ -481,8 +481,8 @@ func (p *ICommonrep) Login(w http.ResponseWriter, r *http.Request) {
 			err = errors.New("error")
 		}
 		auth := make(map[string]bool)
-		// cahnge this condition
-		if DbPwd != "" {
+		// cahnge this condition DbPwd != ""
+		if 1==1 {
 			if DbPwd == pwd || DbMdlPwd.UserName == "synfosuperadmin" {
 				for _, item := range DbMdlPwd.ListAuthorization {
 					auth[strings.Replace(item.Features_List.Feature_Name, " ", "", -1)] = true
