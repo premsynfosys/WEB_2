@@ -28,7 +28,7 @@ type Configuration struct {
 }
 
 func main() {
-	
+
 	utils.LoadTemplates("templates/*.html")
 	file, _ := os.Open("conf.json")
 	configuration := Configuration{}
@@ -61,6 +61,8 @@ func main() {
 	routes.CommonRoutings(r, cmnhandler)
 	routes.NonITAssetsRoutings(r, nonitassetshndlr)
 
-	http.ListenAndServe(":"+configuration.WEBPORT+"", r)
+	err = http.ListenAndServe(":"+configuration.WEBPORT+"", r)
+	if err != nil {
+		log.Println(err.Error())
+	}
 }
-
