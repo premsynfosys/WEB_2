@@ -317,7 +317,7 @@
             <div class="page-wrap">
                   <div class="app-sidebar colored">
                         <div class="sidebar-header">
-                              <a class="header-brand" href="/dashboard">
+                              <a class="header-brand" href="/MyDashBoard">
                                     <div class="logo-img">
                                           <img src="/AppFiles/Images/LOGO/AMS-color.png" width="80" height="auto"
                                                 class="header-brand-img" alt="AMS">
@@ -336,23 +336,23 @@
                                                             Dashboard</span></a>
                                                 <a href="/MyDetails"><i
                                                             class="ik ik-user"></i><span>My Details</span></a>
-                                                {{if .Auth.ITAssetRequest}}
+                                             
                                                 <a href="/ITAssets/Request?LocID={{.User.LocationID}}"
                                                       class="menu-item"><i
                                                             class="ik ik-arrow-up-right"></i><span>ITAsset
                                                             Request</span></a>
-                                                {{end}}
+                                             
                                                 <a href="/MyITAssetRequestList"><i
                                                             class="ik ik-monitor"></i><span>ITAsset Request
                                                             List</span></a>
-                                                {{if .Auth.NonITAssetRequest}}
+                                            
                                                 <a href="/NonITAssetRequest?LocID={{.User.LocationID}}"
                                                       class="menu-item"><i
                                                             class="ik ik-arrow-up-right"></i><span>NonITAsset
                                                             Request</span></a>
-                                                {{end}}
+                                               
                                                 <a href="/MyNonITAssetRequestList"><i
-                                                            class="ik ik-monitor"></i><span>Non ITAsset Request
+                                                            class="ik ik-monitor"></i><span>Non-ITAsset Request
                                                             List</span></a>
                                           </div>
                                           {{if or (eq .User.RoleID 2) (eq .User.RoleID 1)   }}
@@ -416,7 +416,7 @@
                                           {{end}}
                                           {{if or .Auth.NonITAssetList .Auth.AddNonITAsset }}
                                           <div class="nav-item has-sub">
-                                                <a href="#"><i class="ik ik-airplay"></i><span>Non ITAssets</span>
+                                                <a href="#"><i class="ik ik-airplay"></i><span>Non-ITAssets</span>
                                                 </a>
                                                 <div class="submenu-content">
                                                       {{if .Auth.NonITAssetList}}

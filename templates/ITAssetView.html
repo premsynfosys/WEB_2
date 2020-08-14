@@ -450,8 +450,10 @@
 
         });
         $("#btnPrintQr").click(function () {
-
-            $("#modalbody").load("/QrGenerator?name={{.Data.ITAssetName}}&Idntfctn={{.Data.ITAssetIdentificationNo}}")
+          
+            var ITAssetName = "{{.Data.ITAssetName}}";
+        
+            $("#modalbody").load("/QrGenerator?name=" + ITAssetName.replace(/ /g,'') + "&Idntfctn={{.Data.ITAssetIdentificationNo}}")
             $("#modal").modal('show')
         })
 

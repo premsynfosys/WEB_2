@@ -237,7 +237,7 @@ func (p *IConsumables) PostConsumableOprtnsRemovestock(w http.ResponseWriter, r 
 	mdl.ConsumableID, _ = strconv.Atoi(r.FormValue("IDConsumables"))
 	RemoveStockQnty, _ := strconv.Atoi(r.FormValue("Quantity"))
 	mdl.Quantity = RemoveStockQnty
-	mdl.UnitPrice, _ = strconv.ParseFloat(r.FormValue("UnitPrice"), 32)
+	//mdl.UnitPrice, _ = strconv.ParseFloat(r.FormValue("UnitPrice"), 32)
 	mdl.OrderedBy, _ = strconv.Atoi(r.FormValue("OrderedBy"))
 	mdl.Comments = r.FormValue("Comments")
 	mdl.StatusID, _ = strconv.Atoi(r.FormValue("StatusID"))

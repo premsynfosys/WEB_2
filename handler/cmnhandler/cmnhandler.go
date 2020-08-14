@@ -190,8 +190,14 @@ func (p *ICommonrep) Location(w http.ResponseWriter, r *http.Request) {
 	}
 }
 func (p *ICommonrep) LocationsDetails(w http.ResponseWriter, r *http.Request) {
+	usr, Auth := utils.GetCookieUser(r)
+	Mapdata := CmnModel.TemplateData{
+
+		User: usr,
+		Auth: Auth,
+	}
 	if r.Method == "GET" {
-		utils.ExecuteTemplate(w, r, "LocationsDetails", nil)
+		utils.ExecuteTemplate(w, r, "LocationsDetails", Mapdata)
 	}
 }
 

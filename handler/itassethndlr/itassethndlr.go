@@ -706,7 +706,7 @@ func (p *IITAsset) QrGenerator(w http.ResponseWriter, r *http.Request) {
 	dirRead, _ := os.Open("AppFiles/Images/QR/")
 	dirFiles, _ := dirRead.Readdir(0)
 	// Loop over the directory's files.
-	for index := range dirFiles {
+	for index := range dirFiles { 
 		fileHere := dirFiles[index]
 		nameHere := fileHere.Name()
 		fullPath := "AppFiles/Images/QR/" + nameHere
