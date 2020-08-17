@@ -45,7 +45,7 @@
                     </div>
                     <div class="form-group">
                         <label for="DOB">Date of Birth:</label>
-                        <input type="text" maxlength="44" required class="form-control datetimepicker-input" name="DOB"
+                        <input type="text" maxlength="44" required class="form-control datetimepicker-input w-auto" name="DOB"
                             id="DOB" data-toggle="datetimepicker" autocomplete="off" data-target="#DOB"
                             placeholder="Date of Birth">
                     </div>
@@ -53,7 +53,8 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="Email">Email:</label>
-                                <input type="email" autocomplete="off" name="Email" required class="form-control"
+                                <input type="email"   pattern="^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$"
+                                autocomplete="off" name="Email" required class="form-control"
                                     id="Email" placeholder="Email">
                             </div>
                         </div>
@@ -70,7 +71,7 @@
                     <div class="form-group ">
                         <label for="Mobile">Mobile:</label>
                         <input type="text" maxlength="10" autocomplete="off" required name="Mobile"
-                            class="form-control mobile" id="Mobile" placeholder="Mobile">
+                            class="form-control mobile" id="Mobile" minlength="10" placeholder="Mobile">
 
                     </div>
                     <div class="form-group">
