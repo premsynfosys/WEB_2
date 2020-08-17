@@ -1,5 +1,5 @@
 {
-    "IsTesting": true,
+    "IsTesting": false,
     "Test": {
         "APIPORT": "9000",
         "APIHost": "http://localhost",
