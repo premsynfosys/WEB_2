@@ -29,7 +29,7 @@ type Configuration struct {
 
 func main() {
 
-	utils.LoadTemplates("templates/*.html")
+
 	file, _ := os.Open("conf.json")
 	configuration := Configuration{}
 	err := json.NewDecoder(file).Decode(&configuration)
@@ -51,6 +51,7 @@ func main() {
 	log.Println("Web started on:" + configuration.WEBHost + ":" + configuration.WEBPORT + "")
 	APIURL := configuration.APIHost + ":" + configuration.APIPORT
 
+	utils.LoadTemplates("templates/*.html",configuration.IsTesting)
 	r := mux.NewRouter()
 	ItassetHandler := itassethndlr.NewITAssetHandler(APIURL)
 	cnsmblhndlr := cnsmblhndlr.NewConsumablesHandler(APIURL)

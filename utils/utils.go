@@ -12,7 +12,7 @@ import (
 )
 
 var tmpl *template.Template
-
+var istesting bool
 var cookieHandler = securecookie.New(
 	securecookie.GenerateRandomKey(64),
 	securecookie.GenerateRandomKey(32))
@@ -21,8 +21,9 @@ var cookieHandler = securecookie.New(
 var SessionStore = sessions.NewCookieStore(securecookie.GenerateRandomKey(64))
 
 //LoadTemplates ..
-func LoadTemplates(pattern string) {
-	//tmpl = template.Must(template.ParseGlob(pattern))
+func LoadTemplates(pattern string, isTesting bool) {
+	istesting = isTesting
+	tmpl = template.Must(template.ParseGlob(pattern))
 }
 
 //AuthRequired ..
@@ -59,7 +60,9 @@ func ClearCookie(response http.ResponseWriter) {
 //ExecuteTemplate ..
 func ExecuteTemplate(w http.ResponseWriter, r *http.Request, tmplName string, data interface{}) {
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	tmpl = template.Must(template.ParseGlob("templates/*.html"))
+	if istesting {
+		tmpl = template.Must(template.ParseGlob("templates/*.html"))
+	}
 	buf := new(bytes.Buffer)
 	if err := tmpl.ExecuteTemplate(buf, tmplName, data); err != nil {
 		tmpl.ExecuteTemplate(buf, "Error", err.Error())
