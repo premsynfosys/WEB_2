@@ -41,8 +41,8 @@ func main() {
 	} else {
 		configuration.WEBPORT = configuration.Production["WEBPORT"]
 		configuration.APIPORT = configuration.Production["APIPORT"]
-		configuration.APIHost = configuration.Test["APIHost"]
-		configuration.WEBHost = configuration.Test["WEBHost"]
+		configuration.APIHost = configuration.Production["APIHost"]
+		configuration.WEBHost = configuration.Production["WEBHost"]
 	}
 	defer file.Close()
 	if err != nil {
