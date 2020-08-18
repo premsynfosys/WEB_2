@@ -45,17 +45,17 @@
                     </div>
                     <div class="form-group">
                         <label for="DOB">Date of Birth:</label>
-                        <input type="text" maxlength="44" required class="form-control datetimepicker-input w-auto" name="DOB"
-                            id="DOB" data-toggle="datetimepicker" autocomplete="off" data-target="#DOB"
+                        <input type="text" maxlength="44" required class="form-control datetimepicker-input w-auto"
+                            name="DOB" id="DOB" data-toggle="datetimepicker" autocomplete="off" data-target="#DOB"
                             placeholder="Date of Birth">
                     </div>
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="Email">Email:</label>
-                                <input type="email"   pattern="^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$"
-                                autocomplete="off" name="Email" required class="form-control"
-                                    id="Email" placeholder="Email">
+                                <input type="email" pattern="^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$"
+                                    autocomplete="off" name="Email" required class="form-control" id="Email"
+                                    placeholder="Email">
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -136,10 +136,10 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="Location" class="">Location:</label>
+                        <label for="Location" class="lblrequired">Location:</label>
                         <div class="input-group col-xs-12">
 
-                            <select name="Location" required id="Location" class="form-control">
+                            <select name="Location" required id="Location"  class="form-control">
                             </select>
                             {{if .Auth.Accesstoalllocations}}
                             <span class="input-group-append">
@@ -153,18 +153,18 @@
                     {{if .Auth.CreateUser}}
                     <div class="border-checkbox-group border-checkbox-group-info">
                         <input class="border-checkbox" type="checkbox" name="Islogin" id="AllowToLogin" value="true">
-                        <label class="border-checkbox-label" for="Islogin">Allow to Login</label>
+                        <label class="border-checkbox-label" for="AllowToLogin">Allow to Login</label>
                     </div>
                     <hr />
-                    <div id="divuser" style="display: none;">
+                    <div id="divuser" >
                         <div class="form-group ">
-                            <label for="Role">Role:</label>
-                            <select name="Role" id="Role" class="form-control">
+                            <label class="lblrequired" for="Role">Role:</label>
+                            <select disabled name="Role" id="Role" class="form-control">
                             </select>
                         </div>
                         <div class="form-group ">
-                            <label for="UserStatus">Status:</label>
-                            <select name="UserStatus" id="UserStatus" class="form-control">
+                            <label class="lblrequired" for="UserStatus">Status:</label>
+                            <select disabled name="UserStatus" id="UserStatus" class="form-control">
                                 <option value="">-- select --</option>
                                 <option value="Active">Active</option>
                                 <option value="InActive">InActive</option>
@@ -205,6 +205,7 @@
     </div>
     <script>
         function validate(frm) {
+            
             if ($("#Location").val() == "") {
                 Toast("warning", "Please select Location")
                 //  alert('Please select Location')
@@ -248,7 +249,7 @@
         $("#Role").append($("<option />", { text: '-- select --', value: "" }));
         $.each(data, function (i, el) {
             if ("{{.User.RoleName}}" != "Super Admin" && el.RoleName == "Super Admin") {
-                
+
             } else {
                 $("#Role").append($("<option />", { text: el.RoleName, value: el.IDRoles }));
             }
@@ -294,11 +295,12 @@
             });
         })
         $("#AllowToLogin").change(function () {
+            debugger
             if ($(this).prop('checked')) {
-                $("#divuser").css("display", "block")
+                $("#divuser").find("select").removeAttr('disabled')
             }
             else {
-                $("#divuser").css("display", "none")
+                $("#divuser").find("select").attr('disabled',true)
                 $("#divuser").find('input').val('');
                 $("#divuser").find('select').val('');
             }
@@ -397,6 +399,9 @@
                 }
             }
         }
+
+//$("#frmEmp").on
+        
 
     })
 </script>

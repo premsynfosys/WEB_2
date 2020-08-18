@@ -27,7 +27,7 @@
             </div>
         </div>
         <div id="tblClmnbtn" class="btn-group dropright float-left mr-1 ">
-            <button type="button" class="btn btn-info dropdown-toggle btn-sm " data-toggle="dropdown"
+            <button type="button" class="btn btn-info dropdown-toggle btn-sm " title="Fields" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
                 Fields </button>
             <div id="tblClmnbtnList" class="dropdown-menu">
@@ -39,11 +39,10 @@
             </div>
         </div>
 
-        <button type="button" id="btnIssueRequest" title="Refresh" class="btn btn-info btn-sm  float-left  ml-1 ">Issue Resolve
+        <button type="button" id="btnIssueRequest" title="Issue Resolve Request" class="btn btn-info btn-sm  float-left  ml-1 ">Issue Resolve
             Request</button>
 
-        <button type="button" id="btnHistory" value="LastusedAssets" title="History" class="btn btn-info btn-sm  float-left  ml-1 ">Last used
-            Assets</button>
+        <button type="button" id="btnHistory" value="LastusedAssets" title="Last used Assets" class="btn btn-info btn-sm  float-left  ml-1 ">Last used Assets</button>
     </div>
 </div>
 <div id="modalService" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="classInfo"
@@ -152,7 +151,19 @@
                         return dt.Comments;
                     }
                 }
-            ]
+            ],
+            buttons: [
+        {
+          text: 'Excel',
+          extend: "excel",
+          className: ' dropdown-item',
+          title: "Employee ITAssets",
+          exportOptions: {
+            columns: ':visible'
+            // columns: ':not(.notexport)'
+          }
+        }
+      ]
         });
         $("#tblbtn").prependTo('#tblITAssetFiles_filter')
         tbl.buttons().containers().prependTo('#tblbtnList')

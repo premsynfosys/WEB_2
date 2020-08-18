@@ -5,7 +5,7 @@
     <div class="col-lg-8">
       <div class="page-header-title">
         <div class="d-inline">
-          <h5>Request NonITAssets</h5>
+          <h5>Request Non IT-Assets</h5>
         </div>
       </div>
     </div>
@@ -24,9 +24,9 @@
         <div class="card-body">
 
           <div class="form-group row ">
-            <label for="AssetType" class="col-md-3 col-form-label ">NonITAsset Type:</label>
+            <label for="AssetType" class="col-md-3 col-form-label lblrequired ">NonITAsset Type:</label>
             <div class="col-md-9">
-              <select name="AssetType" id="AssetType" class="custom-select  float-left">
+              <select name="AssetType" id="AssetType" class="custom-select w-auto  float-left">
                 <option value="0">--select--</option>
                 {{ range .Data.NonITAssetGroups}}
                 <option value="{{.NonITAssets_GroupName}}"> {{.NonITAssets_GroupName}}</option>
@@ -36,7 +36,7 @@
           </div>
 
           <div class="form-group row">
-            <label for="Description" class="col-md-3 col-form-label ">Description:</label>
+            <label for="Description" class="col-md-3 col-form-label lblrequired">Description:</label>
             <div class="col-md-9">
               <textarea id="Description" name="Description" placeholder="Description" title="Description"
                 class="form-control " id="Description"></textarea>
@@ -88,9 +88,9 @@
             </div>
           </fieldset>
           <div class="form-group row ">
-            <label for="Approver" class="col-md-3 col-form-label ">Approver:</label>
+            <label for="Approver" class="col-md-3 col-form-label lblrequired ">Approver:</label>
             <div class="col-md-9">
-              <select name="Approver" id="Approver" class="form-control ">
+              <select name="Approver" id="Approver" class="form-control w-auto ">
                 <option value="0">--select--</option>
                 {{ range .Data.UsersEmployees}}
                 <option value="{{.EmployeeID}}"> {{.Employee.FirstName}}</option>
@@ -116,11 +116,11 @@
     $("input[name='Priority'][value='Low']").prop("checked", true)
     $("#Add").click(function () {
       if ($("#tblRecords tbody tr").length == 3) {
-        alert('max 3 Assets can Request')
+        Toast('warning', 'max 3 Assets can Request')
         return;
       }
       if ($("#AssetType").val() == "0") {
-        alert('Please select Asset Type')
+        Toast('warning', "Please select Asset Type")
         $("#AssetType").focus();
         return;
       }
