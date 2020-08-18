@@ -34,11 +34,13 @@
               <th>Mobile</th>
               <th>Correspondence Address</th>
               <th>Permanent Address</th>
-              <th>Status</th>
+             
               <th>Education</th>
               <th>Experience</th>
+              <th>Role</th>
               <th>Designation</th>
               <th>Date Of Joining</th>
+              <th>Status</th>
             </thead>
           </table>
         </div>
@@ -164,9 +166,6 @@
           "name": "PrmntAddress",
           'data': 'PrmntAddress'
         }, {
-          "name": "Status",
-          "data": "Status"
-        }, {
           "name": "Education",
           'data': 'EducationData',
           render: function (dt) {
@@ -188,6 +187,9 @@
             return res
           }
         }, {
+          "name": "Role",
+          'data': 'User.Role.RoleName'
+        }, {
           "name": "Designation",
           'data': 'DesignationData',
           render: function (dt) {
@@ -200,6 +202,9 @@
           render: function (dt) {
             return jsondate(dt);
           }
+        }, {
+          "name": "Status",
+          "data": "Status"
         }
       ]
       ,

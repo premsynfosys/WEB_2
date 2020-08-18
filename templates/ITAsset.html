@@ -111,11 +111,11 @@
               </div>
             </div>
           </div>
-          <div class="row">
+          <div class="form-group row">
             <label for="Location" class="col-sm-3 col-form-label ">Location:</label>
             <div class="col-sm-9 ">
               <div class="input-group">
-                <select name="Location" id="Location" class="form-control">
+                <select name="Location"  id="Location" class="form-control">
                   <option value="">--select--</option>
                 </select>
                 {{if .Auth.Accesstoalllocations}}
@@ -309,7 +309,7 @@
     }
 
     function loadLocations(data) {
-      $("#Location").empty().append('<option >--select--</option>');
+      $("#Location").empty().append('<option value="" >--select--</option>');
       $.each(data, function (i, el) {
         $("#Location").append($("<option />", { text: el.Name + "\n" + el.Address1 + "\n" + el.Address2 + "\n" + el.Countryname + "\n" + el.Statename + "\n" + el.Zipcode, value: el.IDLocations }));
       });

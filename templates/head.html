@@ -55,7 +55,7 @@
       <script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.print.min.js"></script>
       <script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.colVis.min.js"></script>
       <script src="/static/plugins/sweetalert/dist/sweetalert.min.js"></script>
-     
+
 
 
       <script>
@@ -185,18 +185,30 @@
                         }
 
                   })
-                  $('input,textarea,select').filter("[required]").prev("label").append("<span style='color:red'>*</span>")
-                  $('input,textarea,select').parents(".form-group").find("label").append("<span style='color:red'>*</span>")
-                  $(".lblrequired").append("<span style='color:red'>*</span>")
+                  // $('input,textarea,select').filter("[required]").prev("label").append("<span style='color:red'>*</span>")
+                  $('input,textarea,select').filter("[required]").parents(".form-group").children("label").append("<span style='color:red'>*</span>")
+                  $(".lblrequired").append("<span style='color:red'>*</span>");
+
+
+                  $(".sidebar-content").scroll(function () {
+                        console.log( $(this).scrollTop())
+                        sessionStorage.scrollTop = $(this).scrollTop();
+                  });
+                  if (sessionStorage.scrollTop != "undefined") {
+                        $(".sidebar-content").scrollTop(sessionStorage.scrollTop);
+                  }
+
             })
 
       </script>
       <script>
             $(document).ready(function () {
                   $(".nav-item a").each(function () {
+
                         var url = $(this).attr('href');
                         href = url.replace('#', '@@@');
-                        if (window.location.pathname == url) {
+                        href = url.split("?");
+                        if (window.location.pathname == href[0]) {
                               $(this).parents('.nav-item').addClass('active');
                               // $(this).parents('ul').removeClass('collapse');
                               $(this).parents('.nav-item.has-sub').addClass('open');
@@ -329,31 +341,32 @@
                                           class="ik ik-toggle-right toggle-icon"></i></button>
                               <button id="sidebarClose" class="nav-close"><i class="ik ik-x"></i></button>
                         </div>
-                        <div class="sidebar-content">
+                        <div class="sidebar-content ">
                               <div class="nav-container">
                                     <nav id="main-menu-navigation" class="navigation-main">
                                           <div class="nav-lavel">My Details</div>
                                           <div class="nav-item">
                                                 <a href="/MyDashBoard"><i class="ik ik-bar-chart-2"></i><span>My
-                                                            Dashboard</span></a>
-                                                <a href="/MyDetails"><i
-                                                            class="ik ik-user"></i><span>My Details</span></a>
-                                             
-                                                <a href="/ITAssets/Request?LocID={{.User.LocationID}}"
-                                                      class="menu-item"><i
-                                                            class="ik ik-arrow-up-right"></i><span>ITAsset
-                                                            Request</span></a>
-                                             
-                                                <a href="/MyITAssetRequestList"><i
-                                                            class="ik ik-monitor"></i><span>ITAsset Request
-                                                            List</span></a>
-                                            
-                                                <a href="/NonITAssetRequest?LocID={{.User.LocationID}}"
+                                                            Dashboard</span></a></div>
+                                          <div class="nav-item"> <a href="/MyDetails"><i class="ik ik-user"></i><span>My
+                                                            Details</span></a>
+                                          </div>
+                                          <div class="nav-item"> <a href="/ITAssets/Request?LocID={{.User.LocationID}}">
+                                                      <i class="ik ik-arrow-up-right"></i>
+                                                      <span>ITAsset Request</span></a>
+                                          </div>
+
+                                          <div class="nav-item"> <a href="/MyITAssetRequestList"><i
+                                                            class="ik ik-monitor"></i><span>ITAsset
+                                                            Request
+                                                            List</span></a></div>
+
+                                          <div class="nav-item"> <a href="/NonITAssetRequest?LocID={{.User.LocationID}}"
                                                       class="menu-item"><i
                                                             class="ik ik-arrow-up-right"></i><span>NonITAsset
-                                                            Request</span></a>
-                                               
-                                                <a href="/MyNonITAssetRequestList"><i
+                                                            Request</span></a></div>
+
+                                          <div class="nav-item"> <a href="/MyNonITAssetRequestList"><i
                                                             class="ik ik-monitor"></i><span>Non-ITAsset Request
                                                             List</span></a>
                                           </div>
@@ -596,5 +609,5 @@
                         </div>
                   </div>
                   <div class="main-content">
-                        <div class="container-fluid">
+                        <div class="container-fluid ">
                               {{end}}
