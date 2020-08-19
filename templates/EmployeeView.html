@@ -1,5 +1,5 @@
 {{define "EmployeeView"}}
-{{template "head" .}}
+{{template "head" .}} 
 <div class="page-header">
     <div class="row align-items-end">
         <div class="col-lg-8">
@@ -86,7 +86,7 @@
                             </div>
                             <div class="form-group   ">
                                 <div class="  text-info ">Role:</div>
-                                <div class="  ">{{.User.RoleName}}</div>
+                                <div class="  ">{{.Data.User.Role.RoleName}}</div>
                             </div>
                             <div class="form-group   ">
                                 <div class="  text-info ">Designation:</div>
@@ -107,14 +107,14 @@
                             <hr />
                             <div class="form-group row">
                                 <div class="col">Status:</div>
-                                {{if eq .Data.Status "Active"}}
-                                <div class="col"> <span class="badge  badge-success">{{.Data.Status}}</span></div>
+                                {{if eq .Data.User.Status "Active"}}
+                                <div class="col"> <span class="badge  badge-success">{{.Data.User.Status}}</span></div>
                                 {{end}}
-                                {{if eq .Data.Status "InActive"}}
-                                <div class="col"> <span class="badge  badge-info">{{.Data.Status}}</span></div>
+                                {{if eq .Data.User.Status "InActive"}}
+                                <div class="col"> <span class="badge  badge-info">{{.Data.User.Status}}</span></div>
                                 {{end}}
-                                {{ if eq .Data.Status "Activation Pending"}}
-                                <div class="col"> <span class="badge  badge-danger">{{.Data.Status}}</span></div>
+                                {{ if eq .Data.User.Status "Activation Pending"}}
+                                <div class="col"> <span class="badge  badge-danger">{{.Data.User.Status}}</span></div>
                                 {{ end}}
                             </div>
                         </div>
