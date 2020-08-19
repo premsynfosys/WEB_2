@@ -41,7 +41,7 @@
                     <div class="form-group">
                         <label for="DOB">Date of birth:</label>
                         <input type="text" autocomplete="off" name="DOB" class="form-control datetimepicker-input"
-                            id="DOB" data-toggle="datetimepicker" data-target="#DOB">
+                            id="DOB" data-toggle="datetimepicker" data-target="#DOB" placeholder="yyyy-mm-dd">
                     </div>
                     <div class="row">
                         <div class="col-md-6">
@@ -135,7 +135,7 @@
                     <div class="form-group">
                         <label for="DOJ">Date of Joining:</label>
                         <input type="text" autocomplete="off" name="DOJ" class="form-control datetimepicker-input"
-                            id="DOJ" data-toggle="datetimepicker" data-target="#DOJ">
+                            id="DOJ" data-toggle="datetimepicker" data-target="#DOJ" placeholder="yyyy-mm-dd">
 
                     </div>
                     <div class="form-group">
@@ -246,6 +246,14 @@
 <script>
 
     $(document).ready(function () {
+        $("#FirstName,#LastName").blur(function (e) {
+            var str = this.value
+            str = str.toLowerCase()
+                .split(' ')
+                .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
+                .join(' ');
+                $(this).val(str)
+        })
         var data = getdata('/GetLocations')
         loadLocations(data)
         function loadLocations(data) {

@@ -167,8 +167,7 @@
                               return false;
                         return true
                   })
-                  $("input,textarea").not("input[type='email']").keyup(function (e) {
-
+                  $("input,textarea").not("input[type='email']").keydown(function (e) {
                         var str = this.value
                         var patt = new RegExp(/^[\w-_. ]*$/);
                         //  ^ Start of string
@@ -180,7 +179,24 @@
                         var res = patt.test(str);
                         if (!res) {
                               alert('Some special characters not allowed')
-                              this.value = str.slice(0, -1)
+                              this.value = str.replace(/[^a-zA-Z ]/g, "")
+                              return false
+                        }
+
+                  })
+                  $("input,textarea").not("input[type='email']").blur(function (e) {
+                        var str = this.value
+                        var patt = new RegExp(/^[\w-_. ]*$/);
+                        //  ^ Start of string
+                        // [...] Match characters inside
+                        // \w Any word character so 0-9 a-z A-Z
+                        // -_. Match - and _ and .
+                        // * Zero or more of pattern or unlimited
+                        // $ End of string
+                        var res = patt.test(str);
+                        if (!res) {
+                              alert('Some special characters not allowed')
+                              this.value = str.replace(/[^a-zA-Z ]/g, "")
                               return false
                         }
 
@@ -191,7 +207,7 @@
 
 
                   $(".sidebar-content").scroll(function () {
-                        console.log( $(this).scrollTop())
+                        console.log($(this).scrollTop())
                         sessionStorage.scrollTop = $(this).scrollTop();
                   });
                   if (sessionStorage.scrollTop != "undefined") {
@@ -379,17 +395,7 @@
                                           </div>
                                           {{end}}
                                           <!-- <div class="nav-lavel">Modules</div> -->
-                                          {{if .Auth.EmployeeList  }}
-                                          <div class="nav-item has-sub">
-                                                <a href="#"><i class="ik ik-users"></i><span>User</span></a>
-                                                <div class="submenu-content">
-
-                                                      <a href="/UsersList" class="menu-item"><i
-                                                                  class="ik ik-list"></i><span>List</span></a>
-
-                                                </div>
-                                          </div>
-                                          {{end}}
+                                         
                                           {{if or .Auth.EmployeeList  .Auth.AddEmployee  }}
                                           <div class="nav-item has-sub">
                                                 <a href="#"><i class="fa fa-users"></i><span>Employees</span>
@@ -397,7 +403,9 @@
                                                 <div class="submenu-content">
                                                       {{if .Auth.EmployeeList  }}
                                                       <a href="/employees" class="menu-item"><i
-                                                                  class="ik ik-list"></i><span>List</span></a>
+                                                                  class="ik ik-list"></i><span>All Employees</span></a>
+                                                      <a href="/UsersList" class="menu-item"><i
+                                                                  class="ik ik-list"></i><span>All Users</span></a>
                                                       {{end}}
                                                       {{if .Auth.AddEmployee}}
                                                       <a href="/employee/create" class="menu-item"><i
