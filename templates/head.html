@@ -49,8 +49,8 @@
       <script src="https://cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script>
       <script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.flash.min.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-      <script src=" https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-      <script src=" https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+      <!-- <script src=" https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+      <script src=" https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script> -->
       <script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.html5.min.js"></script>
       <script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.print.min.js"></script>
       <script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.colVis.min.js"></script>
@@ -186,6 +186,7 @@
                   })
                   $("input,textarea").not("input[type='email']").blur(function (e) {
                         var str = this.value
+                        this.value = str.trim()
                         var patt = new RegExp(/^[\w-_. ]*$/);
                         //  ^ Start of string
                         // [...] Match characters inside
@@ -195,7 +196,7 @@
                         // $ End of string
                         var res = patt.test(str);
                         if (!res) {
-                              alert('Some special characters not allowed')
+                              alert('Some special characters removed.')
                               this.value = str.replace(/[^a-zA-Z ]/g, "")
                               return false
                         }
@@ -369,17 +370,17 @@
                                           </div>
                                           <div class="nav-item"> <a href="/ITAssets/Request?LocID={{.User.LocationID}}">
                                                       <i class="ik ik-arrow-up-right"></i>
-                                                      <span>ITAsset Request</span></a>
+                                                      <span>IT Asset Request</span></a>
                                           </div>
 
                                           <div class="nav-item"> <a href="/MyITAssetRequestList"><i
-                                                            class="ik ik-monitor"></i><span>ITAsset
+                                                            class="ik ik-monitor"></i><span>IT Asset
                                                             Request
                                                             List</span></a></div>
 
                                           <div class="nav-item"> <a href="/NonITAssetRequest?LocID={{.User.LocationID}}"
-                                                      class="menu-item"><i
-                                                            class="ik ik-arrow-up-right"></i><span>NonITAsset
+                                                      class="menu-item"><i class="ik ik-arrow-up-right"></i><span>Non-IT
+                                                            Asset
                                                             Request</span></a></div>
 
                                           <div class="nav-item"> <a href="/MyNonITAssetRequestList"><i
@@ -395,7 +396,7 @@
                                           </div>
                                           {{end}}
                                           <!-- <div class="nav-lavel">Modules</div> -->
-                                         
+
                                           {{if or .Auth.EmployeeList  .Auth.AddEmployee  }}
                                           <div class="nav-item has-sub">
                                                 <a href="#"><i class="fa fa-users"></i><span>Employees</span>
@@ -416,7 +417,7 @@
                                           {{end}}
                                           {{if or .Auth.ITAssetList .Auth.AddITAsset  .Auth.RetiredITAssetsList}}
                                           <div class="nav-item has-sub">
-                                                <a href="#"><i class="ik ik-monitor"></i><span>ITAssets</span>
+                                                <a href="#"><i class="ik ik-monitor"></i><span>IT Assets</span>
                                                 </a>
                                                 <div class="submenu-content">
 
@@ -432,14 +433,14 @@
                                                       {{if .Auth.RetiredITAssetsList}}
                                                       <a href="/ITAssetRetiredList" class="menu-item"><i
                                                                   class="ik ik-list"></i><span>Retired
-                                                                  ITAssets</span></a>
+                                                                  IT Assets</span></a>
                                                       {{end}}
                                                 </div>
                                           </div>
                                           {{end}}
                                           {{if or .Auth.NonITAssetList .Auth.AddNonITAsset }}
                                           <div class="nav-item has-sub">
-                                                <a href="#"><i class="ik ik-airplay"></i><span>Non-ITAssets</span>
+                                                <a href="#"><i class="ik ik-airplay"></i><span>Non-IT Assets</span>
                                                 </a>
                                                 <div class="submenu-content">
                                                       {{if .Auth.NonITAssetList}}
@@ -478,17 +479,17 @@
                                                 <a href="#"><i class="fa fa-check-square"></i><span>Requests</span></a>
                                                 <div class="submenu-content">
                                                       {{if .Auth.ITAssetRequestList}}
-                                                      <a href="/ITAssets/RequestList" class="menu-item">ITAssets</a>
+                                                      <a href="/ITAssets/RequestList" class="menu-item">IT Assets</a>
                                                       {{end}}
 
                                                       {{if .Auth.ITAssetServiceRequestList}}
-                                                      <a href="/ITAsset_Service_Request_List" class="menu-item">ITAsset
+                                                      <a href="/ITAsset_Service_Request_List" class="menu-item">IT Asset
                                                             Services</a>
                                                       {{end}}
 
                                                       {{if .Auth.NonITAssetRequestList}}
-                                                      <a href="/NonITAssetRequestList" class="menu-item">Non
-                                                            ITAssets</a>
+                                                      <a href="/NonITAssetRequestList" class="menu-item">Non-IT
+                                                            Assets</a>
                                                       {{end}}
 
                                                 </div>
@@ -599,7 +600,8 @@
                                                 {{end}}
                                                 {{if .Auth.AddNonITAssetNames}}
                                                 <div class="submenu-content">
-                                                      <a href="/NonITAssetMasterAdd" class="menu-item"><span>NonITAsset
+                                                      <a href="/NonITAssetMasterAdd" class="menu-item"><span>Non-IT
+                                                                  Asset
                                                                   Names</span></a>
                                                 </div>
                                                 {{end}}

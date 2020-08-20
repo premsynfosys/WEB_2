@@ -80,6 +80,7 @@
                         <hr />
                         <div class="form-group row">
                             <div class="col">Status:</div>
+                            <input type="hidden" id="itassetstatus" value="{{.Data.Statusname}}">
                             {{if eq .Data.Statusname "Available"}}
                             <div class="col"> <span class="badge  badge-success">{{.Data.Statusname}}</span></div>
 
@@ -114,22 +115,11 @@
                             class="btn btn-info m-1 ">Check-In</button>
                         {{end}}
                         {{end}}
+                        {{if eq .Data.Statusname "Available"}}
                         {{if .Auth.Retire}}
                         <button data-toggle="modal" data-target="#retiremodal" class="btn btn-info m-1 ">Retire</button>
                         {{end}}
-
-                        <!-- <button class="btn btn-info m-1">
-                            <i class="fa fa-paperclip" aria-hidden="true"></i>
-                            <span class="">Upload Files</span>
-                        </button> -->
-                        {{if  or (eq .User.RoleName "Admin") (eq .User.RoleName "Super Admin")}}
-                        <button id="btnPrintQr" data-assetname="{{.Data.ITAssetName}}"
-                            data-Idnfctn="{{.Data.ITAssetIdentificationNo}}" class="btn btn-info m-1 ">
-                            <i class="fa fa-print" aria-hidden="true"></i>
-                            <span class="">Print QR</span>
-                        </button>
                         {{end}}
-
                         {{if  or (eq .User.RoleName "Admin") (eq .User.RoleName "Super Admin")}}
                         <div class="btn-group m-1 dropleft">
                             <button type="button" class="btn btn-info dropdown-toggle  " data-toggle="dropdown"
@@ -147,7 +137,21 @@
 
                             </div>
                         </div>
+                       
                         {{end}}
+                        <!-- <button class="btn btn-info m-1">
+                            <i class="fa fa-paperclip" aria-hidden="true"></i>
+                            <span class="">Upload Files</span>
+                        </button> -->
+                        {{if  or (eq .User.RoleName "Admin") (eq .User.RoleName "Super Admin")}}
+                        <button id="btnPrintQr" data-assetname="{{.Data.ITAssetName}}"
+                            data-Idnfctn="{{.Data.ITAssetIdentificationNo}}" class="btn btn-info m-1 ">
+                            <i class="fa fa-print" aria-hidden="true"></i>
+                            <span class="">Print QR</span>
+                        </button>
+                        {{end}}
+
+
                     </div>
                 </div>
                 <div class=" mt-2 row">
@@ -298,7 +302,7 @@
                     <div class="form-group row">
                         <label for="Reason" class="col-md-3 col-form-label ">Reason:</label>
                         <div class="col-md-9">
-                            <select name="Reason" id="Reason" class="form-control float-left">
+                            <select name="Reason" id="Reason" required class="form-control float-left">
                                 <option value="5">Damaged</option>
                                 <option value="6">Expired</option>
                                 <option value="7">Lost</option>
@@ -310,7 +314,7 @@
                     <div class="form-group row">
                         <label for="RetireDate" class="col-sm-3 col-form-label ">Retire Date:</label>
                         <div class="col-sm-9 form-inline">
-                            <input type="text" name="RetireDate" class="form-control datetimepicker-input"
+                            <input type="text" name="RetireDate" required class="form-control datetimepicker-input"
                                 data-toggle="datetimepicker" autocomplete="off" data-target="#RetireDate"
                                 id="RetireDate" placeholder="yyyy-mm-dd">
                         </div>
@@ -319,7 +323,7 @@
                     <div class="form-group row">
                         <label for="Commnets" class="col-md-3 col-form-label">Comments:</label>
                         <div class="col-md-9">
-                            <textarea name="Commnets" maxlength="500" class="form-control form-control-sm"
+                            <textarea name="Commnets" required maxlength="500" class="form-control form-control-sm"
                                 id="RetireComments" placeholder="Comments"></textarea>
                         </div>
                     </div>
@@ -450,10 +454,10 @@
 
         });
         $("#btnPrintQr").click(function () {
-          
+
             var ITAssetName = "{{.Data.ITAssetName}}";
-        
-            $("#modalbody").load("/QrGenerator?name=" + ITAssetName.replace(/ /g,'') + "&Idntfctn={{.Data.ITAssetIdentificationNo}}")
+
+            $("#modalbody").load("/QrGenerator?name=" + ITAssetName.replace(/ /g, '') + "&Idntfctn={{.Data.ITAssetIdentificationNo}}")
             $("#modal").modal('show')
         })
 

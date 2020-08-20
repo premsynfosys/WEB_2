@@ -29,8 +29,8 @@
         <div class="dt-responsive ">
           <table id="tblUsers" class="table table-bordered table-striped table-hover nowrap ">
             <thead>
-              <th>ID</th>
-              <th><input type="checkbox" id="chkSelectAll"></th>
+              <th class="notexport">ID</th>
+              <th class="notexport"><input type="checkbox" id="chkSelectAll"></th>
               <th>User Name</th>
               <th>Name</th>
               <th>Role</th>
@@ -40,7 +40,7 @@
               <th>Designation</th>
               <th>Date Of Joining</th>
               <th>Status</th>
-              <th>Actions</th>
+              <th class="notexport">Actions</th>
             </thead>
 
           </table>
@@ -279,24 +279,15 @@
 
       },
       buttons: [
-        {
-          text: 'PDF',
-          extend: "pdf",
-          title: "User Details",
-          className: ' dropdown-item',
-          exportOptions: {
-            columns: ':visible'
-            //columns: ':not(.notexport)'
-          }
-        },
+       
         {
           text: 'Print',
           extend: "print",
           title: "User Details",
           className: ' dropdown-item',
           exportOptions: {
-            columns: ':visible'
-            // columns: ':not(.notexport)'
+            columns: ':visible',
+            columns: ':not(.notexport)'
           }
         },
         {
@@ -305,8 +296,8 @@
           className: ' dropdown-item',
           title: "User Details",
           exportOptions: {
-            columns: ':visible'
-            // columns: ':not(.notexport)'
+            columns: ':visible',
+            columns: ':not(.notexport)'
           }
         }
       ]

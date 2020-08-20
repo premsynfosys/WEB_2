@@ -196,7 +196,7 @@
                     <div class="form-group row">
                         <label for="Reason" class="col-md-3 col-form-label ">Reason:</label>
                         <div class="col-md-9">
-                            <select name="StatusID" id="StatusID" class="form-control float-left">
+                            <select name="StatusID" id="StatusID" required class="form-control float-left">
                                 {{range .Data.ListStatus}}
                                 <option value="{{.IDStatus}}">{{.StatusName}}</option>
                                 {{end}}
@@ -225,7 +225,7 @@
                     <div class="form-group row">
                         <label for="Commnets" class="col-md-3 col-form-label">Comments:</label>
                         <div class="col-md-9">
-                            <textarea name="Comments" maxlength="500" class="form-control form-control-sm"
+                            <textarea name="Comments" required maxlength="500" class="form-control form-control-sm"
                                 id="RetireComments" placeholder="Comments"></textarea>
                         </div>
                     </div>

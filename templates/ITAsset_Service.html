@@ -32,11 +32,11 @@
         <div class=" form-group row">
             <div class="checkbox-fade fade-in-info ">
                 <label>
-                    <input type="checkbox" checked name="Is_Asset_UnAvailable" value="1" id="Is_Asset_UnAvailable">
+                    <input type="checkbox" name="Is_Asset_UnAvailable" value="1" id="Is_Asset_UnAvailable">
                     <span class="cr">
                         <i class="cr-icon ik ik-check txt-info"></i>
                     </span>
-                    <span>Make Asset UnAvailable after service start date (Maintenance)</span>
+                    <span>Make Asset UnAvailable after service start (Maintenance)</span>
                 </label>
             </div>
         </div>
@@ -110,7 +110,11 @@
 </div>
 <script>
     $(document).ready(function () {
-
+        '{{if eq .mode "start"}}'
+        if ($("#itassetstatus").val() == "Assigned") {
+            $("#Is_Asset_UnAvailable").attr("disabled", true)
+        }
+        '{{end}}'
         $(".divPerson").addClass("collapse")
         $('#Expected_Start_Date').datetimepicker({
             format: 'YYYY-MM-DD HH:mm',
@@ -143,7 +147,7 @@
             var data = getdata("/GetEmployeesList?LocID=" + $("#locationid").val())
             loadPersons(data)
         }
-       
+
         function loadPersons(data) {
             $("#ServiceBy_EmpID").empty().append('<option selected="selected" value="">--select--</option>');
             $.each(data, function (i, el) {
@@ -206,9 +210,9 @@
                 success: function (data) {
 
                     '{{if eq .mode "schedule"}}'
-                    Toast("success", "Service Scheduled.")
+                    alert("Service Scheduled.")
                     '{{else}}'
-                    Toast("success", "Service started.")
+                    alert("Service started.")
                     ' {{end}}'
                     window.location.reload()
                 }, error: function (data) {
