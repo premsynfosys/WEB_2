@@ -97,7 +97,7 @@
                     <div class="col-sm-9 form-inline">
                         <input type="text" name="ITAssetWarranty" class="form-control datetimepicker-input"
                             data-toggle="datetimepicker" autocomplete="off" data-target="#ITAssetWarranty"
-                            id="ITAssetWarranty" placeholder="yyyy-mm-dd">
+                            id="ITAssetWarranty" >
                         <span><text id="txtITAssetWarranty" class=""></text></span>
                     </div>
                 </div>
@@ -252,7 +252,7 @@
         loadVendors(data)
         //events
         $('#ITAssetWarranty').datetimepicker({
-            format: 'YYYY-MM-DD'
+            format: customDateFormate
         });
         $('#ITAssetWarranty').val("{{.Data.ITAssetWarranty}}")
 

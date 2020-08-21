@@ -41,7 +41,7 @@
                     <div class="form-group">
                         <label for="DOB">Date of birth:</label>
                         <input type="text" autocomplete="off" name="DOB" class="form-control datetimepicker-input"
-                            id="DOB" data-toggle="datetimepicker" data-target="#DOB" placeholder="yyyy-mm-dd">
+                            id="DOB" data-toggle="datetimepicker" data-target="#DOB" >
                     </div>
                     <div class="row">
                         <div class="col-md-6">
@@ -135,7 +135,7 @@
                     <div class="form-group">
                         <label for="DOJ">Date of Joining:</label>
                         <input type="text" autocomplete="off" name="DOJ" class="form-control datetimepicker-input"
-                            id="DOJ" data-toggle="datetimepicker" data-target="#DOJ" placeholder="yyyy-mm-dd">
+                            id="DOJ" data-toggle="datetimepicker" data-target="#DOJ" >
 
                     </div>
                     <div class="form-group">
@@ -286,10 +286,10 @@
             });
         })
         $('#DOB').datetimepicker({
-            format: 'YYYY-MM-DD'
+            format: customDateFormate
         });
         $('#DOJ').datetimepicker({
-            format: 'YYYY-MM-DD'
+            format: customDateFormate
         });
         $('#DOB').val("{{.Data.DOB}}")
         $('#DOJ').val("{{.Data.DOJ}}")

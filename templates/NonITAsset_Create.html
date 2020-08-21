@@ -62,7 +62,7 @@
             <label for="Warranty" class="col-sm-3 col-form-label ">Warranty:</label>
             <div class="col-sm-9 form-inline">
               <input type="text" name="Warranty" class="form-control datetimepicker-input" data-toggle="datetimepicker"
-                autocomplete="off" data-target="#Warranty" id="Warranty" placeholder="yyyy-mm-dd">
+                autocomplete="off" data-target="#Warranty" id="Warranty" >
               <span><text id="txtWarranty" class=""></text></span>
             </div>
           </div>
@@ -208,7 +208,7 @@
 <script>
   $(document).ready(function () {
     $('#Warranty').datetimepicker({
-      format: 'YYYY-MM-DD'
+      format: customDateFormate
     });
     // var id = getdata("/GenerateUniqueID/nonitassets")
     // $("#IdentificationNo").val(id)

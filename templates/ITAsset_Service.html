@@ -110,18 +110,24 @@
 </div>
 <script>
     $(document).ready(function () {
-      
+
         $(".divPerson").addClass("collapse")
         $('#Expected_Start_Date').datetimepicker({
-            format: 'YYYY-MM-DD HH:mm',
-            autclose: true,
+            // format: 'YYYY-MM-DD HH:mm',
+            format: customDateFormate + ' 10:00',
             minDate: new Date()
+
         });
+        // $("#Expected_Start_Date").on("change", function () {            
+        //     var selected = $(this).val();
+        //     alert(selected);
+        // });
+        // $('#Expected_Start_Date').on('dp.change', function(e){ console.log(e.date); })
         // $('#Expected_Start_Time').datetimepicker({
         //     format: 'LT'
         // });
         $('#Expected_End_Date').datetimepicker({
-            format: 'YYYY-MM-DD HH:mm',
+            format: customDateFormate +' 07:00',
             autclose: true,
             minDate: new Date()
         });
@@ -185,7 +191,7 @@
                 alert('Please enter Expected end date')
                 return false;
             }
-          //  obj.Is_Asset_UnAvailable = parseInt($("#Is_Asset_UnAvailable:checked").val())
+            //  obj.Is_Asset_UnAvailable = parseInt($("#Is_Asset_UnAvailable:checked").val())
             obj.ServiceBy_Type = $("input[name=ServiceBy_Type]:checked").val()
             obj.ServiceBy_EmpID = parseInt($("#ServiceBy_EmpID").val())
             obj.ServiceBy_VendorID = parseInt($("#ServiceBy_VendorID").val())

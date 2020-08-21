@@ -36,7 +36,7 @@
             <label for="ITAssetWarranty" class="col-md-3 col-form-label col-form-label-sm">Warranty:</label>
             <div class="col-md-9 form-inline">
                 <input type="text" name="ITAssetWarranty" autocomplete="off" class="form-control datetimepicker-input"
-                data-toggle="datetimepicker" data-target="#ITAssetWarranty" id="ITAssetWarranty" placeholder="yyyy-mm-dd">               
+                data-toggle="datetimepicker" data-target="#ITAssetWarranty" id="ITAssetWarranty" >               
             </div>
         </div>
 
@@ -71,7 +71,7 @@
 <script>
     $(document).ready(function () {
         $('#ITAssetWarranty').datetimepicker({
-             format: 'YYYY-MM-DD'
+             format: customDateFormate
         });
         var data = getdata('/GetLocations')
         loadLocations(data)

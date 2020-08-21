@@ -13,14 +13,14 @@
             <div class=" row ">
                 <div class="col-sm-auto col-lg-auto">
                     <input type="text" name="FromDate" class="form-control datetimepicker-input w-auto"
-                        data-toggle="datetimepicker" autocomplete="off" data-target="#FromDate" id="FromDate" placeholder="yyyy-mm-dd">
+                        data-toggle="datetimepicker" autocomplete="off" data-target="#FromDate" id="FromDate" >
                 </div>
                 <div class="col-sm-auto col-lg-auto align-self-center">
                     To
                 </div>
                 <div class="col-sm-auto col-lg-auto">
                     <input type="text" name="ToDate" class="form-control datetimepicker-input w-auto"
-                        data-toggle="datetimepicker" autocomplete="off" data-target="#ToDate" id="ToDate" placeholder="yyyy-mm-dd">
+                        data-toggle="datetimepicker" autocomplete="off" data-target="#ToDate" id="ToDate" >
                 </div>
                 <div class="col-sm-auto col-lg-auto">
                     <button id="dateGo" class="btn btn-info btn-sm">Go</button>
@@ -82,12 +82,12 @@
     $(document).ready(function () {
         var dateNow = new Date();
         $('#FromDate').datetimepicker({
-            format: 'YYYY-MM-DD',
+            format: customDateFormate,
             defaultDate: moment().subtract(10, 'days').hours(0).minutes(0).seconds(0).milliseconds(0),
 
         });
         $('#ToDate').datetimepicker({
-            format: 'YYYY-MM-DD',
+            format: customDateFormate,
             defaultDate: moment(dateNow).hours(0).minutes(0).seconds(0).milliseconds(0)
         });
         // var url;

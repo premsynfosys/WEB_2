@@ -65,7 +65,7 @@
               <label for="Actual_End_Date" class="col-sm-3 col-form-label ">Actual End Date Time:</label>
               <div class="col-sm-4">
                 <input type="text" autocomplete="off" class="form-control datetimepicker-input" id="Actual_End_Date"
-                  data-toggle="datetimepicker" data-target="#Actual_End_Date" placeholder="yyyy-mm-dd">
+                  data-toggle="datetimepicker" data-target="#Actual_End_Date" >
               </div>
               <!-- <div class="col-sm-3">
             <input type="text" class="form-control datetimepicker-input" id="Expected_End_Time"
@@ -108,7 +108,7 @@
 <script>
   $(document).ready(function () {
     $('#Actual_End_Date').datetimepicker({
-      format: 'YYYY-MM-DD HH:mm',
+      format: customDateFormate+' HH:mm',
       autclose: true,
       maxDate: new Date()
     });

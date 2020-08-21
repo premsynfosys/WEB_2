@@ -47,7 +47,7 @@
                         <label for="DOB">Date of Birth:</label>
                         <input type="text" maxlength="44" required class="form-control datetimepicker-input w-auto"
                             name="DOB" id="DOB" data-toggle="datetimepicker" autocomplete="off" data-target="#DOB"
-                            placeholder="yyyy-mm-dd">
+                            >
                     </div>
                     <div class="row">
                         <div class="col-md-6">
@@ -306,14 +306,15 @@
             }
         })
 
-        $('#DOB').datetimepicker({
-            format: 'YYYY-MM-DD',
+        $('#DOB,#DOJ').datetimepicker({
+            format: customDateFormate,
             maxDate: new Date()
+           
         });
-        $('#DOJ').datetimepicker({
-            format: 'YYYY-MM-DD',
-            maxDate: new Date()
-        });
+        // $('#DOJ').datetimepicker({
+        //     format: customDateFormate,
+        //     maxDate: new Date()
+        // });
 
         $("#ReadExcel").click(function () {
             $("#locationmodalTitle").html("Upload Excel Sheet")

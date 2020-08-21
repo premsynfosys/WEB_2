@@ -59,8 +59,8 @@
 
 
       <script>
-           
-         
+
+
             // if (window["WebSocket"]) {
             //       WSConn = new WebSocket("ws://" + document.location.host + "/echo");
             //       WSConn.onopen = function (evt) {
@@ -163,14 +163,14 @@
       </script>
       <script>
             $(document).ready(function () {
-                  $(document).on("keydown",".mobile",function (evt) {
+                  $(document).on("keydown", ".mobile", function (evt) {
                         var charCode = (evt.which) ? evt.which : event.keyCode
                         if (charCode > 31 && (charCode < 48 || charCode > 57))
                               return false;
                         return true
                   })
-                //  .not("input[type='email']"
-                  $(document).on("keydown", "textarea,input:not(input[type='email'])",function (e) {
+                  //  .not("input[type='email']"
+                  $(document).on("keydown", "textarea,input:not(input[type='email'])", function (e) {
                         debugger;
                         var str = this.value
                         var patt = new RegExp(/^[\w-_. ]*$/);
@@ -188,7 +188,7 @@
                         }
 
                   })
-                  $(document).on("blur", "textarea,input:not(input[type='email'])",function (e) {
+                  $(document).on("blur", "textarea,input:not(input[type='email'])", function (e) {
                         var str = this.value
                         this.value = str.trim()
                         var patt = new RegExp(/^[\w-_. ]*$/);
@@ -264,6 +264,12 @@
 
                   UpdateNotifications()
             })
+      </script>
+      <script>
+            var customDateFormate = 'DD-MM-YYYY';
+            $(document).ready(function () {
+                  $('.datetimepicker-input').attr('placeholder', customDateFormate);                
+            });
       </script>
 </head>
 

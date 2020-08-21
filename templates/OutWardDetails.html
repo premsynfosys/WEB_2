@@ -179,7 +179,7 @@
     $(document).ready(function () {
         var dateNow = new Date();
         $('#todaydate').datetimepicker({
-            format: 'YYYY-MM-DD',
+            format: customDateFormate,
             defaultDate: moment(dateNow).hours(0).minutes(0).seconds(0).milliseconds(0)
         });
 

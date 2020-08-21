@@ -410,8 +410,8 @@ func (p *IITAsset) GetITAssetsEditByID(w http.ResponseWriter, r *http.Request) {
 		LocationID, _ := strconv.Atoi(r.FormValue("Location"))
 		mdl.Location = LocationID
 
-			ITAssetStatus, _ := strconv.Atoi(r.FormValue("ITAssetStatus"))
-			mdl.ITAssetStatus = ITAssetStatus
+		ITAssetStatus, _ := strconv.Atoi(r.FormValue("ITAssetStatus"))
+		mdl.ITAssetStatus = ITAssetStatus
 		mdl.ITAssetFileUpld = r.FormValue("ITAssetFileUpld")
 		mdl.ITAssetImg = r.FormValue("ITAssetImg1")
 		img, handle, _ := r.FormFile("ITAssetImg")
@@ -817,6 +817,7 @@ func (p *IITAsset) ITAsset_Service(w http.ResponseWriter, r *http.Request) {
 //ITAssetRetire ..
 func (p *IITAsset) ITasset_services_Insert(w http.ResponseWriter, r *http.Request) {
 	mdl := ITAssetsmodel.ITasset_services{}
+
 	json.NewDecoder(r.Body).Decode(&mdl)
 	err := p.Irepo.ITasset_services_Insert(r.Context(), &mdl)
 	if err == nil {
