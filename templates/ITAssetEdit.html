@@ -52,7 +52,7 @@
                 <div class="form-group row ">
                     <label for="ITAssetModel" class="col-sm-3 col-form-label ">Model:</label>
                     <div class="col-sm-9">
-                        <input type="text" maxlength="45"  name="ITAssetModel" class="form-control "
+                        <input type="text" maxlength="45" required  name="ITAssetModel" class="form-control "
                             id="ITAssetModel" placeholder="Model" value="{{.Data.ITAssetModel}}">
                     </div>
                 </div>
@@ -60,7 +60,7 @@
                     <label for="ITAssetSerialNo" class="col-sm-3 col-form-label ">Serial
                         No:</label>
                     <div class="col-sm-9">
-                        <input type="text" maxlength="45" name="ITAssetSerialNo" class="form-control "
+                        <input type="text" maxlength="45" required name="ITAssetSerialNo" class="form-control "
                             id="ITAssetSerialNo" placeholder="Serial No." value="{{.Data.ITAssetSerialNo}}">
                     </div>
                 </div>
@@ -131,10 +131,12 @@
                             {{end}}
                         </div>
                     </div>
-                </div>
-                <div class="form-group row">
+                </div> 
+                <input type="hidden" name="ITAssetStatus" value="{{.Data.ITAssetStatus}}"  id="ITAssetStatus" >
+                <!-- <div class="form-group row">
                     <label for="ITAssetStatus" class="col-sm-3 col-form-label ">Status:</label>
                     <div class="col-sm-9">
+                        
                         <select name="ITAssetStatus" required id="ITAssetStatus" class="form-control">
                             <option value="">--select--</option>
                             {{ range .Data.ITAssetStatusList}}
@@ -142,7 +144,7 @@
                             {{end}}
                         </select>
                     </div>
-                </div>
+                </div> -->
 
                 <div class="form-group row">
                     <label for="ITAssetImg" class="col-sm-3 col-form-label ">Upload Image:</label>
@@ -320,9 +322,9 @@
             }
 
         }
-        if ("{{.Data.ITAssetStatus}}") {
-            $('#ITAssetStatus').val("{{.Data.ITAssetStatus}}");
-        }
+        // if ("{{.Data.ITAssetStatus}}") {
+        //     $('#ITAssetStatus').val("{{.Data.ITAssetStatus}}");
+        // }
         if ("{{.Data.ITAssetGroup}}") {
             $('#ITAssetGroup').val("{{.Data.ITAssetGroup}}");
         }

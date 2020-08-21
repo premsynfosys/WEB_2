@@ -68,8 +68,8 @@ func (p *IITAsset) CreateITAsset(w http.ResponseWriter, r *http.Request) {
 			data.ITAssetStatus = 1
 
 		} else {
-			status, _ := p.ICmnrepo.GetStatus(r.Context(), "itasset")
-			data.ITAssetStatusList = status
+			//status, _ := p.ICmnrepo.GetStatus(r.Context(), "itasset")
+			//data.ITAssetStatusList = status
 			data.ITAssetGroupList, _ = p.Irepo.GetITAssetGroups(r.Context())
 
 		}
@@ -103,8 +103,8 @@ func (p *IITAsset) CreateITAsset(w http.ResponseWriter, r *http.Request) {
 		LocationID, _ := strconv.Atoi(r.FormValue("Location"))
 		mdl.Location = LocationID
 
-		ITAssetStatus, _ := strconv.Atoi(r.FormValue("ITAssetStatus"))
-		mdl.ITAssetStatus = ITAssetStatus
+		//ITAssetStatus, _ := strconv.Atoi(r.FormValue("ITAssetStatus"))
+		mdl.ITAssetStatus = 1 //available
 		mdl.ITAssetFileUpld = r.FormValue("ITAssetFileUpld")
 
 		img, handle, err := r.FormFile("ITAssetImg")
@@ -378,8 +378,8 @@ func (p *IITAsset) GetITAssetsEditByID(w http.ResponseWriter, r *http.Request) {
 	usr, auth := utils.GetCookieUser(r)
 	if r.Method == "GET" {
 		item := p.returnITAssetsByID(r, id)
-		status, _ := p.ICmnrepo.GetStatus(r.Context(), "itasset")
-		item.ITAssetStatusList = status
+		//status, _ := p.ICmnrepo.GetStatus(r.Context(), "itasset")
+		//item.ITAssetStatusList = status
 		item.ITAssetGroupList, _ = p.Irepo.GetITAssetGroups(r.Context())
 
 		Mapdata := CmnModel.TemplateData{
@@ -410,8 +410,8 @@ func (p *IITAsset) GetITAssetsEditByID(w http.ResponseWriter, r *http.Request) {
 		LocationID, _ := strconv.Atoi(r.FormValue("Location"))
 		mdl.Location = LocationID
 
-		ITAssetStatus, _ := strconv.Atoi(r.FormValue("ITAssetStatus"))
-		mdl.ITAssetStatus = ITAssetStatus
+			ITAssetStatus, _ := strconv.Atoi(r.FormValue("ITAssetStatus"))
+			mdl.ITAssetStatus = ITAssetStatus
 		mdl.ITAssetFileUpld = r.FormValue("ITAssetFileUpld")
 		mdl.ITAssetImg = r.FormValue("ITAssetImg1")
 		img, handle, _ := r.FormFile("ITAssetImg")
@@ -450,7 +450,7 @@ func (p *IITAsset) GetITAssetsEditByID(w http.ResponseWriter, r *http.Request) {
 		}
 		mdl.ModifiedBy = usr.EmployeeID
 		_ = p.Irepo.UpadteITAsset(r.Context(), &mdl)
-		
+
 	}
 }
 
@@ -706,7 +706,7 @@ func (p *IITAsset) QrGenerator(w http.ResponseWriter, r *http.Request) {
 	dirRead, _ := os.Open("AppFiles/Images/QR/")
 	dirFiles, _ := dirRead.Readdir(0)
 	// Loop over the directory's files.
-	for index := range dirFiles { 
+	for index := range dirFiles {
 		fileHere := dirFiles[index]
 		nameHere := fileHere.Name()
 		fullPath := "AppFiles/Images/QR/" + nameHere
