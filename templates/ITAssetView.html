@@ -13,7 +13,7 @@
         <div class="col-lg-4">
             <div class="btn-group dropleft float-right">
                 <a class=" float-right  font-weight-bold btn btn-outline-primary btn-rounded dropdown-toggle"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Create Employee"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Actions"
                     href="javascript:void(0)"><span>Actions</span></a>
                 <div class="dropdown-menu">
                     <a class="dropdown-item" href="/ITAssets/edit/{{.Data.IDITAssets}}">
@@ -261,7 +261,7 @@
                     <div class="form-group row">
                         <label for="CheckInDate" class="col-md-4 col-form-label ">CheckIn Date:</label>
                         <div class="col-sm-8 form-inline">
-                            <input type="text" name="CheckInDate" class="form-control datetimepicker-input"
+                            <input type="text" required name="CheckInDate" class="form-control datetimepicker-input"
                                 data-toggle="datetimepicker" autocomplete="off" data-target="#CheckInDate"
                                 id="CheckInDate" placeholder="yyyy-mm-dd">
                         </div>
@@ -270,7 +270,7 @@
                     <div class="form-group row">
                         <label for="CheckInComments" class="col-md-4 col-form-label ">Comments:</label>
                         <div class="col-md-8">
-                            <textarea name="CheckInComments" maxlength="500" class="form-control form-control-sm"
+                            <textarea name="CheckInComments" required maxlength="500" class="form-control form-control-sm"
                                 id="CheckInComments" placeholder="Comments"></textarea>
 
                         </div>
@@ -386,12 +386,16 @@
         $('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
             var assetid = $("#AssetID").val()
             //  localStorage.setItem('activeTab', $(e.target).attr('href'));
-            if ($(e.target).attr('href') == "#Files") {
+            if ($(e.target).attr('href') == "#AssetDetails") {
+                $("#Maintenance").empty()
+               
+            }
+          else  if ($(e.target).attr('href') == "#Files") {
                 $("#Maintenance").empty()
                 $("#Files").load('/ITAssets/ITAssetView_Files/' + assetid + '', function () {
                 });
 
-            } if ($(e.target).attr('href') == "#Maintenance") {
+            } else if ($(e.target).attr('href') == "#Maintenance") {
                 $("#Files").empty()
 
                 $("#Maintenance").load('/ITAssetView_Maintenance/' + assetid + '', function () {
@@ -465,11 +469,13 @@
         $("#ServiceSchedule").click(function () {
             $("#modalService").modal("show")
             $("#modalService .modal-title").text("Schedule Service")
+            $("#modalService .modal-body").empty();
             $("#modalService .modal-body").load("/ITAsset_Service/" + $("#AssetID").val() + "?mode=schedule")
         })
         $("#ServiceStart").click(function () {
             $("#modalService").modal("show")
             $("#modalService .modal-title").text("Start Service")
+            $("#modalService .modal-body").empty();
             $("#modalService .modal-body").load("/ITAsset_Service/" + $("#AssetID").val() + "?mode=start")
         })
 

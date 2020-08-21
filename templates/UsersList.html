@@ -1,5 +1,5 @@
 {{  define "UsersList"}}
-{{template "head" .}}
+{{template "head" .}} 
 
 <div class="page-header">
   <div class="row align-items-end">
@@ -87,6 +87,7 @@
     var tbl = $('#tblUsers').DataTable({
       responsive: true,
       "processing": true,
+      scrollY: $(window).height() - 350,
       scrollCollapse: true,
       scrollX: true,
       destroy: true,
@@ -157,12 +158,12 @@
           render: function (dt) {
             var res;
             if (dt.ExperienceYear == 0) {
-              res = dt.ExperienceMonth + ' mnt(s)'
+              res = dt.ExperienceMonth + ' month(s)'
             } else {
               if (dt.ExperienceMonth == 0)
                 res = dt.ExperienceYear + ' yr(s)'
               else
-                res = dt.ExperienceYear + ' yr(s)  ' + dt.ExperienceMonth + ' mnt(s)'
+                res = dt.ExperienceYear + ' yr(s)  ' + dt.ExperienceMonth + ' month(s)'
             }
             return res
           }

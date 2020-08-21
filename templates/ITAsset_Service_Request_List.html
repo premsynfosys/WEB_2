@@ -399,7 +399,7 @@
       obj.OldITAssetID = parseInt($("#oldassetid").val())
       obj.AdminComments = $("#ApproverComments").val()
       obj.IDitasset_service_request = parseInt($("#IDitasset_service_request").val())
-      debugger;
+      
       $.ajax({
         url: "/ITAsset_Service_Request_Resolve",
         type: 'POST',
@@ -427,7 +427,7 @@
         rmv.removeClass('btn-danger').addClass(' btn-warning')
         rmv.removeClass('Remove').addClass('Assign')
         rmv.val("Assign")
-        debugger;
+        
 
         // $('#tblReqApprvList input:checkbox:checked').parents('tr').find('td:last').text($(this).attr('data-Assetname'));
         // $('#tblReqApprvList input:checkbox:checked').attr('data-AssetID', $(this).attr('data-AssetID'))

@@ -29,7 +29,7 @@
                 data-toggle="datetimepicker" data-target="#Expected_End_Time">
         </div> -->
         </div>
-        <div class=" form-group row">
+        <!-- <div class=" form-group row">
             <div class="checkbox-fade fade-in-info ">
                 <label>
                     <input type="checkbox" name="Is_Asset_UnAvailable" value="1" id="Is_Asset_UnAvailable">
@@ -39,7 +39,7 @@
                     <span>Make Asset UnAvailable after service start (Maintenance)</span>
                 </label>
             </div>
-        </div>
+        </div> -->
 
         <div class="form-group  row">
             <label for="Service_Type" class="col-sm-3 col-form-label ">Service Type:</label>
@@ -110,11 +110,7 @@
 </div>
 <script>
     $(document).ready(function () {
-        '{{if eq .mode "start"}}'
-        if ($("#itassetstatus").val() == "Assigned") {
-            $("#Is_Asset_UnAvailable").attr("disabled", true)
-        }
-        '{{end}}'
+      
         $(".divPerson").addClass("collapse")
         $('#Expected_Start_Date').datetimepicker({
             format: 'YYYY-MM-DD HH:mm',
@@ -189,7 +185,7 @@
                 alert('Please enter Expected end date')
                 return false;
             }
-            obj.Is_Asset_UnAvailable = parseInt($("#Is_Asset_UnAvailable:checked").val())
+          //  obj.Is_Asset_UnAvailable = parseInt($("#Is_Asset_UnAvailable:checked").val())
             obj.ServiceBy_Type = $("input[name=ServiceBy_Type]:checked").val()
             obj.ServiceBy_EmpID = parseInt($("#ServiceBy_EmpID").val())
             obj.ServiceBy_VendorID = parseInt($("#ServiceBy_VendorID").val())

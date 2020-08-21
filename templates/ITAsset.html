@@ -11,7 +11,7 @@
     </div>
     {{if .Auth.ITAssetList}}
     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-      <a class="add float-right  font-weight-bold btn btn-outline-primary btn-rounded" title="Create Employee"
+      <a class="add float-right  font-weight-bold btn btn-outline-primary btn-rounded" title="IT Asset List"
         href="/ITAssets"><i class="ik ik-list "></i><span>List</span></a>
     </div>
     {{end}}
@@ -30,7 +30,7 @@
             </div>
           </div>
           <div class="form-group row">
-            <label for="ITAssetGroup" class="col-sm-3  col-form-label">Group Name:</label>
+            <label for="ITAssetGroup" class="col-sm-3  col-form-label">Asset Type:</label>
             <div class="col-sm-9 ">
               <div class="input-group">
                 <select name="ITAssetGroup" required id="ITAssetGroup" class="form-control">
@@ -41,7 +41,7 @@
                 </select>
                 <span class="input-group-append ">
                   <label class="input-group-text bg-info"><a href="#" data-toggle="modal" data-target="#groupmodal"
-                      title="Create Group">Create</a></label>
+                      title="Create Asset Type">Create</a></label>
                 </span>
               </div>
             </div>
@@ -92,7 +92,7 @@
           <div class="form-group row">
             <label for="ITAssetWarranty" class="col-sm-3 col-form-label ">Warranty:</label>
             <div class="col-sm-9 form-inline">
-              <input type="text" name="ITAssetWarranty" class="form-control datetimepicker-input"
+              <input type="text" name="ITAssetWarranty"  class="form-control datetimepicker-input"
                 data-toggle="datetimepicker" autocomplete="off" data-target="#ITAssetWarranty" id="ITAssetWarranty" placeholder="yyyy-mm-dd">
               <span><text id="txtITAssetWarranty" class=""></text></span>
             </div>
@@ -179,7 +179,7 @@
   <div class="modal-dialog modal-dialog-scrollable" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="groupmodalTitle">Add Group</h5>
+        <h5 class="modal-title" id="groupmodalTitle">Add  Asset Type</h5>
         <button type="button" id="modalclose" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -188,10 +188,10 @@
         <form id="frmgroup">
           <input type="hidden" name="CreatedBy" id="CreatedBy" value="{{.User.EmployeeID}}">
           <div class="form-group row">
-            <label for="ITAssetDescription" class="col-md-3 col-form-label ">Group Name:</label>
+            <label for="ITAssetDescription" class="col-md-3 col-form-label ">Asset Type:</label>
             <div class="col-md-9">
-              <input type="text" maxlength="45" name="ITAssetgroupName" class="form-control " id="ITAssetgroupName"
-                placeholder="Group Name">
+              <input type="text" maxlength="45" required name="ITAssetgroupName" class="form-control " id="ITAssetgroupName"
+                placeholder="Asset Type">
 
             </div>
           </div>
@@ -205,7 +205,7 @@
         </div> -->
 
           <div class="form-group row justify-content-center">
-            <input type="submit" id="creategroup" class="btn btn-primary btn-sm" value="Create Group" />
+            <input type="submit" id="creategroup" class="btn btn-primary btn-sm" value="Create" />
           </div>
         </form>
       </div>
@@ -259,7 +259,7 @@
       var d = new Date(selected_date)
       var today = new Date()
       if (d < today) {
-        $("#txtITAssetWarranty").text("Product expired")
+        $("#txtITAssetWarranty").text("  (Product expired)")
         $("#txtITAssetWarranty").removeClass("text-success")
         $("#txtITAssetWarranty").addClass("text-danger")
       }
@@ -270,7 +270,7 @@
         var days = Math.floor(diff / day);
         var months = Math.floor(days / 31);
         var years = Math.floor(months / 12);
-        var message = days + " days " + months + " months " + years + " years"
+        var message = "  ("+days + " days " + months + " months " + years + " years left)"
         $("#txtITAssetWarranty").text(message)
         $("#txtITAssetWarranty").removeClass("text-danger")
         $("#txtITAssetWarranty").addClass("text-success")
@@ -358,7 +358,8 @@
         contentType: false,
         processData: false,
         success: function (data) {
-          //  $('#frm_ITAsset')[0].reset();       
+          //  $('#frm_ITAsset')[0].reset();   
+          alert('IT Asset created successfully.')    ;
           window.location = "http://" + document.location.host + "/ITAssets";
         }
       });

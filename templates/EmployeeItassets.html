@@ -219,7 +219,7 @@
                 return false;
             }
         var dt= tbl.row(chk.parents('tr')).data().IDITAssets
-        debugger;
+        
             $("#modalService").modal("show")
             $("#modalService .modal-title").text("Request Service")
             $("#modalService .modal-body").load("/ITAsset_Service_Request/" +dt)

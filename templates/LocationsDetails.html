@@ -20,6 +20,7 @@
         <div class="card">
             <div class="card-block">
                 <div class="dt-responsive">
+               
                     <table id="tblLocations" class="table table-striped table-bordered " width="100%">
                         <thead>
                             <th>IDLocations</th>
@@ -249,7 +250,7 @@
             $(".LocationBody").load("/Location?mode=edit&&id=" + id, null, function () {
             });
         });
-        $(".Locadd").on("click", function () {
+        $(".Locadd").on("click", function () { 
             $(".LocationEdit").modal("show")
             $(".modal-title").text("Add Location")
             $(".LocationBody").load("/Location", null, function () {

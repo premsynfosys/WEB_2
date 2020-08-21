@@ -364,7 +364,7 @@
             var price = $("#totalammount").text()
             if (price == "")
                 price = 0
-            debugger;
+            
             $("#totalammount").text(parseFloat(price) - parseFloat(tr.data().TotalPrice))
 
             tr.remove().draw();
@@ -389,7 +389,7 @@
             var array = new Array()
             tbl.rows().every(function (rowIdx, tableLoop, rowLoop) {
                 var data = this.data();
-                debugger;
+                
                 var objAssets = new Object()
                 objAssets.AssetName = data.AssetName;
                 objAssets.AssetID = parseInt(data.AssetID);
@@ -465,7 +465,7 @@
             var array = new Array()
             tbl.rows().every(function (rowIdx, tableLoop, rowLoop) {
                 var data = this.data();
-                debugger;
+                
                 var objAssets = new Object()
                 objAssets.AssetName = data.AssetName;
                 objAssets.AssetID = parseInt(data.AssetID);

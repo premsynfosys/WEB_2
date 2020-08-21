@@ -59,22 +59,22 @@
 
 
       <script>
-            if (window["WebSocket"]) {
-                  WSConn = new WebSocket("ws://" + document.location.host + "/echo");
-                  WSConn.onopen = function (evt) {
-                        console.log("Connection open")
-                  }
-                  WSConn.onclose = function (evt) {
-                        console.log("Connection closed")
+            // if (window["WebSocket"]) {
+            //       WSConn = new WebSocket("ws://" + document.location.host + "/echo");
+            //       WSConn.onopen = function (evt) {
+            //             console.log("Connection open")
+            //       }
+            //       WSConn.onclose = function (evt) {
+            //             console.log("Connection closed")
 
-                  };
-                  WSConn.onmessage = function (evt) {
-                        var msg = JSON.parse(evt.data)
-                        Toast('info', msg.Message)
-                  };
-            } else {
-                  console.log("Your browser does not support WebSockets")
-            };
+            //       };
+            //       WSConn.onmessage = function (evt) {
+            //             var msg = JSON.parse(evt.data)
+            //             Toast('info', msg.Message)
+            //       };
+            // } else {
+            //       console.log("Your browser does not support WebSockets")
+            // };
 
             function WsToast(msg, role, UserID) {
                   var WsData = new Object();
@@ -161,13 +161,15 @@
       </script>
       <script>
             $(document).ready(function () {
-                  $(".mobile").keydown(function (evt) {
+                  $(document).on("keydown",".mobile",function (evt) {
                         var charCode = (evt.which) ? evt.which : event.keyCode
                         if (charCode > 31 && (charCode < 48 || charCode > 57))
                               return false;
                         return true
                   })
-                  $("input,textarea").not("input[type='email']").keydown(function (e) {
+                //  .not("input[type='email']"
+                  $(document).on("keydown", "textarea,input:not(input[type='email'])",function (e) {
+                        debugger;
                         var str = this.value
                         var patt = new RegExp(/^[\w-_. ]*$/);
                         //  ^ Start of string
@@ -179,12 +181,12 @@
                         var res = patt.test(str);
                         if (!res) {
                               alert('Some special characters not allowed')
-                              this.value = str.replace(/[^a-zA-Z ]/g, "")
+                              this.value = str.replace(/^[\w-_. ]*$/g, "")
                               return false
                         }
 
                   })
-                  $("input,textarea").not("input[type='email']").blur(function (e) {
+                  $(document).on("blur", "textarea,input:not(input[type='email'])",function (e) {
                         var str = this.value
                         this.value = str.trim()
                         var patt = new RegExp(/^[\w-_. ]*$/);

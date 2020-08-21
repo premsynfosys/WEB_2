@@ -29,7 +29,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <label for="NonITAssets_GroupID" class="col-sm-3  col-form-label">Group Name:</label>
+                        <label for="NonITAssets_GroupID" class="col-sm-3  col-form-label">Asset Type:</label>
                         <div class="col-sm-9 ">
                             <div class="input-group">
                                 <input type="text" readonly name="NonITAssets_GroupID" id="NonITAssets_GroupID"
@@ -247,7 +247,7 @@
             })
 
             fd.append('customfields', JSON.stringify(cstm));
-            debugger;
+            
             $.ajax({
                 url: "/NonITAsset/Edit/{{.Data.IDNonITAsset}}",
                 type: 'POST',

@@ -572,7 +572,7 @@
             var divflow = $(".divflow")
             divflow.empty();
             var data = getdata("/IWOW_ApprovalStatusList/" + $(this).attr('data-value'))
-            debugger;
+            
             var totalGrades = data[0].Grade
             var leftgrades = totalGrades - data.length
             for (let i = 0; i < data.length; i++) {

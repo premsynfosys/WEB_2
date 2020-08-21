@@ -25,7 +25,7 @@ type Notificationss struct {
 //ICommonrep ..
 type ICommonrep struct {
 	Irepo CmnRep.CmnRepIntrfc
-}
+} 
 
 //NewCommonHandler ..
 func NewCommonHandler(api string) *ICommonrep {
@@ -47,7 +47,8 @@ func (p *ICommonrep) Dashboard(w http.ResponseWriter, r *http.Request) {
 	usr, Auth := utils.GetCookieUser(r)
 	in := CmnModel.AdminDashBoard{}
 	in.EmpID = usr.EmployeeID
-	in.LocID = usr.LocationID
+	if usr.RoleName=="Admin"{
+	in.LocID = usr.LocationID}
 
 	data, _ := p.Irepo.GetAdminDashBoard(r.Context(), in)
 
@@ -174,7 +175,7 @@ func (p *ICommonrep) Location(w http.ResponseWriter, r *http.Request) {
 		mdl.Zipcode = r.FormValue("Zipcode")
 		mdl.Description = r.FormValue("Description")
 
-		if r.FormValue("IDLocations") != "" {
+		if r.FormValue("IDLocations") != "0" {
 			mdl.IDLocations, _ = strconv.Atoi(r.FormValue("IDLocations"))
 			err := p.Irepo.UpdateLocations(r.Context(), &mdl)
 			if err != nil {

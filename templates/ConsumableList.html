@@ -48,7 +48,7 @@
               <th>Descrption</th>
               <th>Toatal Qnty.</th>
               <th>Threshold Qnty.</th>
-              <th>Reorder Stock Price</th>
+              <!-- <th>Reorder Stock Price</th> -->
               <th>Reorder Quantity</th>
               <th>Location Name</th>
             </thead>
@@ -161,13 +161,15 @@
         }, {
           "name": "ThresholdQnty",
           "data": "ThresholdQnty"
-        }, {
-          "name": "ReOrderStockPrice",
-          'data': null,
-          render: function (dt) {
-            return "₹ "+dt.ReOrderStockPrice;
-          }
         },
+        
+        // , {
+        //   "name": "ReOrderStockPrice",
+        //   'data': null,
+        //   render: function (dt) {
+        //     return "₹ "+dt.ReOrderStockPrice;
+        //   }
+        // },
         {
           "name": "ReOrderQuantity",
           'data': 'ReOrderQuantity'

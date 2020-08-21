@@ -97,7 +97,7 @@
               <thead>
                 <th>Select</th>
                 <th>Asset Name</th>
-                <th>Group Name</th>
+                <th>Asset Type</th>
                 <th>Model No.</th>
                 <th>Identification No</th>
                 <th>Description</th>
@@ -519,7 +519,7 @@
       var ListData = new Array();
       var ApproverComments = $("#ApproverComments").val()
       $('#tblReqApprvList tbody tr').each(function (ind, val) {
-        debugger;
+        
         var chk = $(this).find("input:checkbox")
         var AssignedQnty = $(this).find(".AssignedQnty").val()
 
@@ -547,7 +547,7 @@
         alert('Please assign respected NonITAsset as per the request.')
         return
       }
-      debugger;
+      
       $.ajax({
         url: "/NonITAssetReqApprove",
         type: 'POST',

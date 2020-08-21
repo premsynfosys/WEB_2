@@ -122,7 +122,7 @@
 
 
 
-        debugger;
+        
         var tbl = $('#tblNonITAssetsCheckIN').DataTable({
             responsive: true,
             "processing": true,
@@ -296,7 +296,7 @@
             obj.Checkin_Comments = $("#Checkin_Comments").val()
             obj.CheckIN_By = parseInt($("#employeeid").val())
             obj.NonITAssets_Checkout_CheckinID = parseInt($("#NonITAssets_Checkout_CheckinID").val())
-            debugger;
+            
             $.ajax({
                 url: "/NonITAssetCheckin",
                 type: 'POST',
@@ -313,7 +313,7 @@
 
         $("#tblNonITAssetsCheckIN").on("click", ".mdlCheckinHistory", function () {
             var data = getdata("/Getnonitassets_checkinByID/" + $(this).attr("data-CheckinID"))
-            debugger;
+            
             var tbl = $("#tblchkinHistory tbody")
             tbl.empty()
             $.each(data, function (i, el) {

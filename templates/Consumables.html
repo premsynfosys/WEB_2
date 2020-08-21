@@ -35,7 +35,7 @@
                     </div>
 
                     <div class="form-group row">
-                        <label for="GroupID" class="col-sm-3  col-form-label">Group Name:</label>
+                        <label for="GroupID" class="col-sm-3  col-form-label">Asset Type:</label>
                         <div class="col-sm-9 ">
                             <div class="input-group">
                                 <select disabled="true" name="GroupID" id="GroupID" class="form-control">
@@ -49,7 +49,7 @@
                         </div>
                     </div>
                     <!-- <div class="row">
-                        <label for="AssetSubGroup" class="col-sm-3  col-form-label">Sub Group Name:</label>
+                        <label for="AssetSubGroup" class="col-sm-3  col-form-label">Sub Asset Type:</label>
                         <div class="col-sm-9 ">
                             <div class="input-group">
                                 <select name="SubGroupID" required id="SubGroupID" class="form-control">
@@ -132,7 +132,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group row">
+                    <!-- <div class="form-group row">
                         <label class="col-sm-3 col-form-label">ReOrder Stock Price:</label>
                         <div class="col-sm-3 ">
                             <div class="input-group">
@@ -143,7 +143,7 @@
                                 </span>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
 
 
                     <!-- <div class="form-group row">
@@ -285,7 +285,7 @@
         // $("#ConsumableNames").val("{{.Data.IDconsumableMaster}}")
 
         $("#ConsumableNames").change(function () {
-            debugger;
+            
             if ($(this).val() != "") {
                 var id = parseInt($(this).val())
                 var loc = parseInt($("#locationid").val())

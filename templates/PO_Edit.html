@@ -453,7 +453,7 @@
             var price = $("#totalammount").text()
             if (price == "")
                 price = 0
-            debugger;
+            
             var assettotalprice = $(this).attr('data-totalprice')
             $("#totalammount").text(parseFloat(price) - assettotalprice)
 
@@ -479,7 +479,7 @@
             var array = new Array()
             tbl.rows().every(function (rowIdx, tableLoop, rowLoop) {
                 var data = this.data();
-                debugger;
+                
                 var objAssets = new Object()
                 objAssets.AssetName = data.AssetName;
                 objAssets.AssetID = parseInt(data.AssetID);
@@ -559,7 +559,7 @@
             var array = new Array()
             tbl.rows().every(function (rowIdx, tableLoop, rowLoop) {
                 var data = this.data();
-                debugger;
+                
                 var objAssets = new Object()
                 objAssets.AssetName = data.AssetName;
                 objAssets.AssetID = parseInt(data.AssetID);

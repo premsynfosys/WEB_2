@@ -254,7 +254,7 @@
 
 
     $("#Users").change(function () {
-        debugger;
+        
         $("#divUserAssets").empty();
 
         var data = getdata("/GetEmployeeITAssetsByID?EmpID=" + $(this).val() + "&isCheckin=0")

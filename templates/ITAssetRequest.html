@@ -179,7 +179,7 @@
         dataType: 'json',
         success: function (data) {
           var msg = $("#EmpID").val() + " requested " + RecArry.length + " - Asset(s)"
-          WsToast(msg, "Admin", $("#Approver").val())
+        //  WsToast(msg, "Admin", $("#Approver").val())
           window.location = "http://" + document.location.host + "/ITAssets";
         },
         error: function (data) {

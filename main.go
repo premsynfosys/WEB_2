@@ -47,7 +47,7 @@ func main() {
 	defer file.Close()
 	if err != nil {
 		fmt.Println("error:", err)
-	}
+	} 
 	log.Println("Web started on:" + configuration.WEBHost + ":" + configuration.WEBPORT + "")
 	APIURL := configuration.APIHost + ":" + configuration.APIPORT
 

@@ -8,7 +8,7 @@
         </div>
     </div>
     <div class=" row">
-        <label for="NonITAssets_GroupID" class="col-md-3 col-form-label ">Group Name</label>
+        <label for="NonITAssets_GroupID" class="col-md-3 col-form-label ">Asset Type</label>
         <div class="col-md-9">
             <div class="input-group">
                 <select name="NonITAssets_GroupID" id="NonITAssets_GroupID" class="form-control">
@@ -69,7 +69,7 @@
             e.preventDefault()
 
             if ($("#NonITAssets_GroupID").val() == 0 && $("#NonITAssets_GroupName").val() == "") {
-                Toast('warning', 'Please select Group name or Enter new Group Name')
+                Toast('warning', 'Please select Asset Type or Enter new Asset Type')
                 return false
             }
 
@@ -84,7 +84,7 @@
                 processData: false,
                 success: function (data) {
                     Toast("success", "Asset Name added successfully.")
-                    debugger;
+                    
                    window.location.reload()
                 }, error: function () {
                     alert('Internal error')

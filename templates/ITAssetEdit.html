@@ -31,7 +31,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <label for="ITAssetGroup" class="col-sm-3  col-form-label">Group Name:</label>
+                    <label for="ITAssetGroup" class="col-sm-3  col-form-label">Asset Type:</label>
                     <div class="col-sm-9 ">
                         <div class="input-group">
                             <select name="ITAssetGroup" required id="ITAssetGroup" class="form-control">
@@ -42,7 +42,7 @@
                             </select>
                             <span class="input-group-append ">
                                 <label class="input-group-text bg-info"><a href="#" data-toggle="modal"
-                                        data-target="#groupmodal" title="Create Group">Create</a></label>
+                                        data-target="#groupmodal" title="Create">Create</a></label>
                             </span>
                         </div>
                     </div>
@@ -52,7 +52,7 @@
                 <div class="form-group row ">
                     <label for="ITAssetModel" class="col-sm-3 col-form-label ">Model:</label>
                     <div class="col-sm-9">
-                        <input type="text" maxlength="45" required name="ITAssetModel" class="form-control "
+                        <input type="text" maxlength="45"  name="ITAssetModel" class="form-control "
                             id="ITAssetModel" placeholder="Model" value="{{.Data.ITAssetModel}}">
                     </div>
                 </div>
@@ -75,7 +75,7 @@
                 <div class="form-group row">
                     <label for="ITAssetDescription" class="col-sm-3 col-form-label ">Description:</label>
                     <div class="col-sm-9">
-                        <textarea name="ITAssetDescription" maxlength="500" required class="form-control "
+                        <textarea name="ITAssetDescription" maxlength="500"  class="form-control "
                             id="ITAssetDescription"
                             placeholder="ITAsset Description">{{.Data.ITAssetDescription}}</textarea>
                     </div>
@@ -186,7 +186,7 @@
     <div class="modal-dialog modal-dialog-scrollable" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="groupmodalTitle">Add Group</h5>
+                <h5 class="modal-title" id="groupmodalTitle">Add  Asset Type</h5>
                 <button type="button" id="modalclose" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -198,8 +198,8 @@
                         <label for="ITAssetDescription" class="col-sm-3 col-form-label ">Group
                             Name:</label>
                         <div class="col-sm-9">
-                            <input type="text" name="ITAssetgroupName" class="form-control " id="ITAssetgroupName"
-                                placeholder="Group Name">
+                            <input type="text" name="ITAssetgroupName" required class="form-control " id="ITAssetgroupName"
+                                placeholder="Asset Type">
 
                         </div>
                     </div>
@@ -212,7 +212,7 @@
                         </div>
                     </div> -->
                     <div class="form-group row justify-content-center">
-                        <input type="submit" class="btn btn-primary btn-sm" value="Create Group" />
+                        <input type="submit" class="btn btn-primary btn-sm" value="Create" />
                     </div>
                 </form>
             </div>
@@ -366,7 +366,7 @@
             })
 
             fd.append('customfields', JSON.stringify(cstm));
-            debugger;
+            
             $.ajax({
                 url: "/ITAssets/edit/{{.Data.IDITAssets}}",
                 type: 'POST',
@@ -375,6 +375,7 @@
                 contentType: false,
                 processData: false,
                 success: function (data) {
+                    alert('IT Asset updated successfully.')    ;
                     //  $('#frm_ITAsset')[0].reset();       
                     window.location.reload();
                 }

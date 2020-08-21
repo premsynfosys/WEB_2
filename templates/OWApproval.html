@@ -219,7 +219,7 @@
                 divflow.append(flowhtmll)
             }
             " {{end}}"
-            debugger;
+            
             IDInwardoutward_Approval = data[data.length - 1].IDInwardoutward_Approval
             //  if (data[data.length - 1].StatusName == "Outward Requested") {
             // $("#btnApprvRjct").show()
@@ -279,7 +279,7 @@
                     type: 'POST',
                     success: function () {
                         var msg = "Transaction #{{.Data.IwOw.TransactionID}} is Approved.."
-                        WsToast(msg, "Admin", null)
+                    //    WsToast(msg, "Admin", null)
                         //  alert( "Approved successfully.")
                         window.location.reload();
                         // window.location = "http://" + document.location.host + "/ITAssets";
@@ -307,7 +307,7 @@
                     data: JSON.stringify(obj),
                     success: function () {
                         var msg = "Transaction #{{.Data.IwOw.TransactionID}} is Approved and forwarded.."
-                        WsToast(msg, "Admin", null)
+                      //  WsToast(msg, "Admin", null)
                         window.location.reload();
 
                     },
@@ -337,7 +337,7 @@
                 type: 'POST',
                 success: function () {
                     var msg = "Transaction #{{.Data.IwOw.TransactionID}} is Rejected.."
-                    WsToast(msg, "Admin", null)
+                 //   WsToast(msg, "Admin", null)
                     //  alert( "Approved successfully.")
                     window.location.reload();
                     // window.location = "http://" + document.location.host + "/ITAssets";

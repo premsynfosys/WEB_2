@@ -270,7 +270,7 @@
         };
         LoadApprover(getdata("/GetApprovers/" + $("#locationid").val() + "/{{.Data.RoleID}}"))
         function LoadApprover(data) {
-            debugger;
+            
             $.each(data, function (i, el) {
                 $("#Approver").append($("<option />", { text: el.Employee.FirstName, value: el.Employee.IDEmployees }));
             });
