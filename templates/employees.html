@@ -1,5 +1,5 @@
 {{  define "EmployeesList"}}
-{{template "head" .}} 
+{{template "head" .}}
 <div class="page-header">
   <div class="row align-items-end">
     <div class="col-lg-8">
@@ -26,7 +26,7 @@
           <table id="tblEmployee" class="table table-striped table-bordered " width="100%">
             <thead>
               <th class="notexport">ID</th>
-              <th  class="notexport"><input type="checkbox" id="chkSelectAll"></th>
+
               <th>Name</th>
               <th>Date Of Birth</th>
               <th>Email</th>
@@ -34,13 +34,13 @@
               <th>Mobile</th>
               <th>Correspondence Address</th>
               <th>Permanent Address</th>
-             
               <th>Education</th>
               <th>Experience</th>
               <th>Role</th>
               <th>Designation</th>
               <th>Date Of Joining</th>
               <th>Status</th>
+              <th class="notexport">Actions</th>
             </thead>
           </table>
         </div>
@@ -120,7 +120,7 @@
         "dataSrc": ""//to read data from a plain array rather than an array in an object:
       },
       columnDefs: [
-        { visible: false, orderable: false, targets: 1 },
+        { orderable: false, targets: 14 },
         { visible: false, targets: 0 }
       ],
       "order": [
@@ -131,13 +131,6 @@
         {
           "name": "IDEmployees",
           'data': 'IDEmployees'
-        },
-        {
-          "name": "Select",
-          'data': null,
-          render: function (dt) {
-            return '<input type="checkbox" class="tblchk" data-name=' + dt.FirstName + ' value=' + dt.IDEmployees + '>';
-          }
         }, {
           "name": "Name",
           'data': null,
@@ -205,6 +198,21 @@
         }, {
           "name": "Status",
           "data": "Status"
+        }, 
+        {
+          "name": "Action",
+          'data': null,
+          render: function (dt) {
+            var res = ""
+            "{{if .Auth.UpdateEmployee}}"
+            res += '<a title="Edit"   href="/employee/' + dt.IDEmployees + '/mode/edit" class="text-warning "><i class= "fa fa-edit"></i></a>'
+            " {{end}}"
+            res += '<a title="View"   href="/employee/' + dt.IDEmployees + '/mode/view" class="text-warning  ml-2"><i class= "fa fa-eye"></i></a>'
+            "{{if .Auth.DeleteEmployee}}"
+            res += '<a href="#" title="Delete" class="text-warning  list-delete"><i class="ik ik-trash-2"></i><span></span></a>';
+            " {{end}}"
+            return res;
+          }
         }
       ]
       ,
@@ -281,7 +289,7 @@
 
 
     $("#chkSelectAll").click(function () {
-      
+
       if ($("#chkSelectAll").prop('checked'))
         $(".tblchk").prop('checked', true);
       else
@@ -297,6 +305,36 @@
       tbl.columns.adjust().draw();
       // tbl.ajax.reload()
     })
+
+
+    $("#tblEmployee tbody ").on('click', '.list-delete', function () {
+      debugger;
+      var tr = tbl.row($(this).parents('tr')).data();
+      swal({
+        title: "Are you sure?",
+        // text: "Do you really want to delete this item?",
+        icon: "warning",
+        buttons: ["Cancel", "Delete"],
+        dangerMode: true,
+      })
+        .then((willDelete) => {
+          if (willDelete) {
+            swal({
+              title: "Deleted",
+              text: "Employee  has been deleted!",
+              icon: "success",
+            });
+      
+            window.location = "http://" + document.location.host + "/employeeDelete/"+tr.IDEmployees;
+
+        //   tbl.ajax.reload();
+
+          } else {
+            swal("Employee is not deleted!");
+          }
+        });
+    });
+
   });
 
 

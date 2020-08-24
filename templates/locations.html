@@ -75,14 +75,14 @@
         $("#Country").on("change", function () {
          
             var id = $(this).val()
-            if (id == "0") {
+            if (id == "") {
                 $("#State").empty().append('<option selected="selected" value="">--select--</option>');
             }
             else {
                 $("#State").val("")
                 var data = getdata("/GetStatesByCountry/" + id + "")
                 LoadStates(data)
-                if ("{{.Data.State}}") {
+                if ("{{.Data.State}}"!=0) {
                     $("#State").val("{{.Data.State}}")
                 }
             }
@@ -111,9 +111,10 @@
             });
 
         });
-        if ("{{.Data.Country}}") {
+        if ("{{.Data.Country}}"!=0) {
             $("#Country").val("{{.Data.Country}}")
         }
+        if("{{.Data.Country}}"!=0)
         $("#Country").trigger("change")
 
 

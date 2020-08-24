@@ -24,7 +24,7 @@
                     <table id="tblLocations" class="table table-striped table-bordered " width="100%">
                         <thead>
                             <th>IDLocations</th>
-                            <th><input type="checkbox" id="chkSelectAll"></th>
+                            <th>Action</th>
                             <th>Name</th>
                             <th>Address 1</th>
                             <th>Address 2</th>
@@ -121,14 +121,14 @@
                     "name": "Select",
                     'data': null,
                     render: function (dt) {
-                        return '<input type="checkbox" class="tblchk"  value=' + dt.IDLocations + '>';
+                        var res = "<button  title='Edit Location'  data-value='" + dt.IDLocations + "'  class=' LocEdit btn btn-link text-warning '><i class='ik ik-edit btn-xs '></i></button>"
+                      //  res += "<button  title='Delete Vendor'  data-value='" + dt.IDLocations + "'  class='VendDelete btn btn-link text-warning '><i class='ik ik-delete btn-xs '></i></button>";
+                        return res;
                     }
                 }, {
                     "name": "Name",
-                    'data': null,
-                    render: function (dt) {
-                        return '<a class="font-weight-bold text-info LocEdit" data-value="' + dt.IDLocations + '"  href="#">' + dt.Name + '</a>';
-                    }
+                    'data': "Name"
+                   
 
                 }, {
                     "name": "Address1",
@@ -185,6 +185,7 @@
         $('.dt-button').removeClass('dt-button').addClass(' btn btn-light btn-sm ');
         $(".buttons-colvis").removeClass('btn-light').addClass('btn-info float-left ml-1').appendTo('#tblLocations_filter')
         $("#tblClmnbtn").prependTo('#tblLocations_filter')
+     
         var idx = 0;
         //show hide clmns
         tbl.columns().every(function () {
@@ -222,14 +223,6 @@
             }
         })
 
-
-        $("#chkSelectAll").click(function () {
-
-            if ($("#chkSelectAll").prop('checked'))
-                $(".tblchk").prop('checked', true);
-            else
-                $(".tblchk").prop('checked', false);
-        })
 
         $('.LocationEdit').on('hidden.bs.modal', function () {
             tbl.ajax.reload();

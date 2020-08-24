@@ -119,7 +119,7 @@
                             <label for="ExpectedCheckInDate" class="col-sm-3 col-form-label ">Expected Check-in
                                 Date:</label>
                             <div class="col-sm-9 form-inline">
-                                <input type="text" required name="ExpectedCheckInDate"
+                                <input type="text"  name="ExpectedCheckInDate"
                                     class="form-control datetimepicker-input" data-toggle="datetimepicker"
                                     autocomplete="off" data-target="#ExpectedCheckInDate" id="ExpectedCheckInDate" >
                             </div>
@@ -281,7 +281,7 @@
     $("#frm").submit(function () {
         if ($("input[name='AssignTo']:checked").length == 0) {
             $("#rdUser").focus();
-            alert('Please check it');
+            alert('Please choose Check-out To');
             return false;
         }
         if ($("input[name='AssignTo']:checked").val() == 'User' && $("#Users").val() == '0') {
@@ -295,7 +295,7 @@
             return false;
         }
         if ($("input[name='AssignTo']:checked").val() == 'Location' && ($("#Locations").val() == '0' || $("#Receiver").val() == '0' || $("#Approver").val() == '0')) {
-            alert('Please select user');
+            alert('Please select fields.');
             $("#Locations").focus()
             return false;
         }
