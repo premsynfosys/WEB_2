@@ -170,12 +170,7 @@
                         return true
                   })
                   //  .not("input[type='email']"
-                  $(document).on("keydown", "textarea,input:not(input[type='email'])", function (e) {
-<<<<<<< HEAD
-                        debugger;
-=======
-
->>>>>>> c7f1a46... added edit delete icon for tables
+                  $(document).on("keydown", "textarea,input:not(input[type='email'],.datetimepicker-input)", function (e) {
                         var str = this.value
                         var patt = new RegExp(/^[\w-_. ]*$/);
                         //  ^ Start of string
@@ -192,11 +187,7 @@
                         }
 
                   })
-<<<<<<< HEAD
-                  $(document).on("blur", "textarea,input:not(input[type='email'])", function (e) {
-=======
                   $(document).on("blur", "textarea,input:not(input[type='email'],.datetimepicker-input)", function (e) {
->>>>>>> c7f1a46... added edit delete icon for tables
                         var str = this.value
                         this.value = str.trim()
                         var patt = new RegExp(/^[\w-_. ]*$/);
@@ -221,7 +212,7 @@
                   $('.modal').on('shown.bs.modal', function (e) {
                         $('.modal input,.modal textarea,.modal select').filter("[required]").parents(".form-group").children("label").append("<span style='color:red'>*</span>")
                         $(".modal .lblrequired").append("<span style='color:red'>*</span>");
-
+                        $('.modal .datetimepicker-input').attr('placeholder', customDateFormate);  
                   })
                   $(".sidebar-content").scroll(function () {
                         console.log($(this).scrollTop())
