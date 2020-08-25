@@ -44,7 +44,7 @@
         <div class="form-group row">
             <label for="Phone" class="col-md-3 col-form-label">Phone:</label>
             <div class="col-md-9">
-                <input type="text" required value="{{.Phone}}" maxlength="10"  name="Phone" class="form-control mobile" id="Phone" placeholder="Phone">
+                <input type="text" required value="{{.Phone}}" pattern=".{10}" maxlength="10" title="Please enter 10 digits only" name="Phone" class="form-control mobile" id="Phone" placeholder="Phone">
             </div>
         </div>
 
