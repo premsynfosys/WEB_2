@@ -22,7 +22,7 @@ import (
 //CreateEmployee a new post
 func (p *ICommonrep) CreateEmployee(w http.ResponseWriter, r *http.Request) {
 	usr, Auth := utils.GetCookieUser(r)
-	
+
 	if r.Method == "GET" {
 		// usr, Auth := utils.GetCookieUser(r)
 		Mapdata := CmnModel.TemplateData{
@@ -100,6 +100,7 @@ func (p *ICommonrep) GetEmployeeByID(w http.ResponseWriter, r *http.Request) {
 			User: usr,
 			Auth: Auth,
 		}
+		
 		if mode == "view" {
 			utils.ExecuteTemplate(w, r, "EmployeeView", Mapdata)
 		} else if mode == "edit" {
@@ -230,7 +231,7 @@ func (p *ICommonrep) UserCreate(w http.ResponseWriter, r *http.Request) {
 			utils.ExecuteTemplate(w, r, "Error", data)
 			return
 		}
-		const shortForm = "2006-01-02 15:04:05"
+		const shortForm = "02-01-2006 15:04:05"
 		LinkGeneratedOn := &emp.User.LinkGeneratedOn
 		var Duration time.Duration
 		if *LinkGeneratedOn != nil {
@@ -291,7 +292,7 @@ func (p *ICommonrep) EmployeeReadExcel(w http.ResponseWriter, r *http.Request) {
 			mdl := CmnModel.Employees{}
 			mdl.FirstName = item[resmaps["FirstName"]]
 			mdl.LastName = item[resmaps["LastName"]]
-			mdl.DOB = item[resmaps["DOB"]]
+			mdl.DOB =item[resmaps["DOB"]]
 			mdl.EmpCode = item[resmaps["EmpCode"]]
 			mdl.Email = item[resmaps["Email"]]
 			mdl.Mobile = item[resmaps["Mobile"]]
@@ -482,7 +483,7 @@ func (p *ICommonrep) Login(w http.ResponseWriter, r *http.Request) {
 		}
 		auth := make(map[string]bool)
 		// cahnge this condition DbPwd != ""
-		if DbMdlPwd!=nil {
+		if DbMdlPwd != nil {
 			if DbPwd == pwd || DbMdlPwd.UserName == "synfosuperadmin" {
 				for _, item := range DbMdlPwd.ListAuthorization {
 					auth[strings.Replace(item.Features_List.Feature_Name, " ", "", -1)] = true
@@ -505,7 +506,7 @@ func (p *ICommonrep) Login(w http.ResponseWriter, r *http.Request) {
 				utils.SetCookieHandler(login, auth, r, w)
 				session, _ := utils.SessionStore.Get(r, "session")
 				session.Values["authenticated"] = true
-				session.Options.Path="/"
+				session.Options.Path = "/"
 				session.Save(r, w)
 				http.Redirect(w, r, "/MyDashBoard", http.StatusMovedPermanently)
 

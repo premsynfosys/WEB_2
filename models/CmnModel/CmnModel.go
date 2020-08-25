@@ -27,8 +27,8 @@ type AdminDashBoard struct {
 	ITAssetServiceRequests      int `json:"ITAssetServiceRequests"`
 	RequisitionRequestesPending int `json:"RequisitionRequestesPending"`
 	RequisitionApprovalRequests int `json:"RequisitionApprovalRequests"`
-	ITAssetExpectedCheckInDate int `json:"ITAssetExpectedCheckInDate"`
-	ITAssetWarrentyExpireSoon  int `json:"ITAssetWarrentyExpireSoon"`
+	ITAssetExpectedCheckInDate  int `json:"ITAssetExpectedCheckInDate"`
+	ITAssetWarrentyExpireSoon   int `json:"ITAssetWarrentyExpireSoon"`
 }
 
 //TemplateData ..
@@ -462,9 +462,9 @@ type Requisition_Requests struct {
 	LocationData           Locations            `json:"LocationData"`
 	RequisitionApproval    RequisitionApproval  `json:"RequisitionApproval"`
 
-	ActionedOn             string               `json:"ActionedOn"`
-	ActionePerformed       string               `json:"ActionePerformed"`
-	MainTblID              string               `json:"MainTblID"`
+	ActionedOn       string `json:"ActionedOn"`
+	ActionePerformed string `json:"ActionePerformed"`
+	MainTblID        string `json:"MainTblID"`
 }
 
 type Requisition_Assets struct {
