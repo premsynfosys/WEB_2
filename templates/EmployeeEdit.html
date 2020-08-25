@@ -291,6 +291,14 @@
         $('#DOJ').datetimepicker({
             format: customDateFormate
         });
+        $(document).on("blur", "#DOB", function (e) {          
+            if($(this).val()!="")          
+            $('#DOJ').data("datetimepicker").minDate($(this).val());
+        });
+        $(document).on("blur", "#DOJ", function (e) {
+            if($(this).val()!="")           
+            $('#DOB').data("datetimepicker").maxDate($(this).val());
+        });
         $('#DOB').val("{{.Data.DOB}}")
         $('#DOJ').val("{{.Data.DOJ}}")
         for (i = 0; i <= 100; i++) {

@@ -46,8 +46,7 @@
                     <div class="form-group">
                         <label for="DOB">Date of Birth:</label>
                         <input type="text" maxlength="44" required class="form-control datetimepicker-input w-auto"
-                            name="DOB" id="DOB" data-toggle="datetimepicker" autocomplete="off" data-target="#DOB"
-                            >
+                            name="DOB" id="DOB" data-toggle="datetimepicker" autocomplete="off" data-target="#DOB">
                     </div>
                     <div class="row">
                         <div class="col-md-6">
@@ -67,10 +66,10 @@
                                 </select>
                             </div>
                         </div>
-                    </div> 
+                    </div>
                     <div class="form-group ">
                         <label for="Mobile">Mobile:</label>
-                        <input type="text" pattern=".{10}" maxlength="10" title="Please enter 10 digits only" autocomplete="off" required name="Mobile"
+                        <input type="text" maxlength="10" autocomplete="off" required name="Mobile"
                             class="form-control mobile" id="Mobile" minlength="10" placeholder="Mobile">
 
                     </div>
@@ -128,7 +127,7 @@
                     <div class="form-group ">
                         <label for="DOJ">Date of Joining:</label>
                         <input type="text" required id="DOJ" name="DOJ" class="form-control datetimepicker-input"
-                            data-toggle="datetimepicker" autocomplete="off" data-target="#DOJ" >
+                            data-toggle="datetimepicker" autocomplete="off" data-target="#DOJ">
                     </div>
                     <div class="form-group">
                         <label for="Designation">Designation:</label>
@@ -295,7 +294,7 @@
             });
         })
         $("#AllowToLogin").change(function () {
-         
+
             if ($(this).prop('checked')) {
                 $("#divuser").find("select").removeAttr('disabled')
             }
@@ -306,10 +305,24 @@
             }
         })
 
-        $('#DOB,#DOJ').datetimepicker({
+        $('#DOB').datetimepicker({
             format: customDateFormate,
             maxDate: new Date()
-           
+
+        });
+
+        $('#DOJ').datetimepicker({
+            format: customDateFormate,
+            maxDate: new Date()
+
+        });
+        $(document).on("blur", "#DOB", function (e) {          
+            if($(this).val()!="")          
+            $('#DOJ').data("datetimepicker").minDate($(this).val());
+        });
+        $(document).on("blur", "#DOJ", function (e) {
+            if($(this).val()!="")           
+            $('#DOB').data("datetimepicker").maxDate($(this).val());
         });
         // $('#DOJ').datetimepicker({
         //     format: customDateFormate,
@@ -340,7 +353,7 @@
                 .split(' ')
                 .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
                 .join(' ');
-                $(this).val(str)
+            $(this).val(str)
         })
         $("#Email").blur(function (e) {
             var Data = new Object()
