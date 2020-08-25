@@ -197,7 +197,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="frmRemovestock" method="POST">
+                <form id="frmRemovestock" method="POST" autocomplete="off">
                     <input type="hidden" name="NonITAsset_ID" value="{{.Data.IDNonITAsset}}">
                     <input type="hidden" name="OrderedBy" value="{{.User.IDEmployees}}">
                     <div class="form-group row">
@@ -242,7 +242,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="frmAddstock" method="POST">
+                <form id="frmAddstock" method="POST" autocomplete="off">
                     <input type="hidden" name="NonITAsset_ID" value="{{.Data.IDNonITAsset}}">
                     <input type="hidden" name="OrderedBy" value="{{.User.IDEmployees}}">
                     <div class="form-group row">

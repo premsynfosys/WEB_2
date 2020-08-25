@@ -20,7 +20,7 @@
 
 <div class="row justify-content-center">
 
-    <form id="frm_ITAsset" method="POST" enctype="multipart/form-data">
+    <form id="frm_ITAsset" method="POST" enctype="multipart/form-data" autocomplete="off">
         <div class="card">
             <div class="card-body ">
                 <div class="form-group row">
@@ -194,7 +194,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="frmgroup">
+                <form id="frmgroup" autocomplete="off">
                     <input type="hidden" name="CreatedBy" id="CreatedBy" value="{{.User.EmployeeID}}">
                     <div class="form-group row">
                         <label for="ITAssetDescription" class="col-sm-3 col-form-label ">Group

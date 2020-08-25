@@ -16,7 +16,7 @@
     </div>
 </div>
 <form method="POST" action="/employee/{{.Data.IDEmployees}}/mode/edit" onsubmit="return validate(this);"
-    enctype="multipart/form-data">
+    enctype="multipart/form-data" autocomplete="off">
     <input type="hidden" name="IDEmployees" id="IDEmployees" value="{{.Data.IDEmployees}}">
     <div class="row">
         <div class="col-md-6">

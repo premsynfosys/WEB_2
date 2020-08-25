@@ -245,7 +245,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="frmCreateITAssetsCheckIn">
+                <form id="frmCreateITAssetsCheckIn" autocomplete="off">
                     <input type="hidden" name="IDITAssetCheckOutCheckIN"
                         value="{{.Data.ITassetCheckout.IDITAssetCheckOutCheckIN}}">
                     <div class="form-group row">
@@ -296,7 +296,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="/itassets/ITAssetRetire" id="frmRetire" method="POST">
+                <form action="/itassets/ITAssetRetire" id="frmRetire" method="POST" autocomplete="off">
 
                     <input type="hidden" id="AssetID" name="AssetID" value="{{.Data.IDITAssets}}">
                     <div class="form-group row">

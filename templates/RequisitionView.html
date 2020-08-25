@@ -182,7 +182,7 @@
 <div class="modal fade  bd-example-modal-lg" id="RcvStockmdl" tabindex="-1" role="dialog"
     aria-labelledby="RcvStockmdlLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
-        <form method="POST" id="frmRcv" enctype="multipart/form-data">
+        <form method="POST" id="frmRcv" enctype="multipart/form-data" autocomplete="off"> 
             <input type="hidden" name="IDRequisition_Requests" value="{{.Data.POR.IDRequisition_Requests}}">
             <input type="hidden" name="LocationID" value="{{.Data.POR.LocationID}}">
             <input type="hidden" name="VendorID" value="{{.Data.POR.VendorID}}">

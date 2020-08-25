@@ -190,7 +190,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="/Consumables/PostConsumableOprtnsRemovestock" id="frmRetire" method="POST">
+                <form action="/Consumables/PostConsumableOprtnsRemovestock" id="frmRetire" method="POST" autocomplete="off">
                     <input type="hidden" name="IDConsumables" value="{{.Data.IDConsumables}}">
                     <input type="hidden" name="OrderedBy" value="{{.User.IDEmployees}}">
                     <div class="form-group row">
@@ -249,7 +249,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="/Consumables/PostConsumableOprtnsAddStock" id="frmAddstock" method="POST">
+                <form action="/Consumables/PostConsumableOprtnsAddStock" id="frmAddstock" method="POST" autocomplete="off">
                     <input type="hidden" name="IDConsumables" value="{{.Data.IDConsumables}}">
                     <input type="hidden" name="OrderedBy" value="{{.User.IDEmployees}}">
                     <div class="form-group row">
@@ -326,7 +326,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="/Consumables/PostConsumableOprtnsRemovestock" id="frmRemovestock" method="POST">
+                <form action="/Consumables/PostConsumableOprtnsRemovestock" id="frmRemovestock" method="POST" autocomplete="off">
                     <input type="hidden" name="IDConsumables" value="{{.Data.IDConsumables}}">
                     <input type="hidden" name="StatusID" value="17">
                     <input type="hidden" name="OrderedBy" value="{{.User.IDEmployees}}">
