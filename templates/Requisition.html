@@ -15,121 +15,124 @@
 </div>
 <div class="row">
     <div class="col-md-12">
-        <div class="card">
-            <div class="card-body">
-                <div class="form-group  row  ">
-                    <input type="hidden" id="Grade" value="{{.Data.Grade}}">
-                    <input type="hidden" id="RoleID" value="{{.Data.RoleID}}">
-                    <div class="col-md-6">
-                        <div class=" row">
-                            <label for="LocationID" class="col-sm-4 col-form-label">Delivery Location</label>
-                            <div class="col-sm-6">
-                                <select name="LocationID" id="LocationID" class="form-control ">
-                                </select>
+        <form id="frm" >
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group  row  ">
+                        <input type="hidden" id="Grade" value="{{.Data.Grade}}">
+                        <input type="hidden" id="RoleID" value="{{.Data.RoleID}}">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label for="LocationID" class="col-sm-4 col-form-label">Delivery Location</label>
+                                <div class="col-sm-6">
+                                    <select name="LocationID" required id="LocationID" class="form-control ">
+                                    </select>
+                                </div>
                             </div>
-                        </div>
 
-                    </div>
-                    <div class="col-md-6">
-                        <div class="mt-0 row ">
-                            <text id="LocationsAddress" class="align-self-center col-form-label">--</text>
                         </div>
-                    </div>
-                </div>
-                <div class="form-group row  ">
-                    <div class="col-md-6">
-                        <div class=" row">
-                            <label for="VendorID" class="col-sm-4 col-form-label">Vendor Name</label>
-                            <div class="col-sm-6">
-                                <select name="VendorID" id="VendorID" class="form-control ">
-                                </select>
+                        <div class="col-md-6">
+                            <div class="mt-0 row ">
+                                <text id="LocationsAddress" class="align-self-center col-form-label">--</text>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="mt-0 row ">
-                            <label id="VendorsAddress" class="col-sm-3 col-form-label">--</label>
+                    <div class="form-group row  ">
+                        <div class="col-md-6">
+                            <div class=" row">
+                                <label for="VendorID" class="col-sm-4 col-form-label">Vendor Name</label>
+                                <div class="col-sm-6">
+                                    <select name="VendorID" required id="VendorID" class="form-control ">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mt-0 row ">
+                                <label id="VendorsAddress" class="col-sm-3 col-form-label">--</label>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="form-group row mt-2">
-                    <label class="col-sm-3 col-form-label">Approver:</label>
-                    <div class="col-sm-3 ">
-                        <select name="ApproverID" id="ApproverID" class="form-control ">
-                        </select>
-                    </div>
-                </div>
-                <div class=" form-group row">
-                    <label class="col-sm-3 col-form-label">RequestedBy:</label>
-                    <div class="col-sm-6 ">
-                        <label class="col-sm-3 col-form-label"> {{.User.FirstName}}</label>
-
-                    </div>
-                </div>
-                <div class=" form-group row">
-                    <label class="col-sm-3 col-form-label">Description:</label>
-                    <div class="col-sm-6 ">
-                        <textarea name="Description" maxlength="500" required placeholder="Description"
-                            title="Description" class="form-control " id="Description"></textarea>
-
-                    </div>
-                </div>
-                <div class=" form-group row">
-                    <label class="col-sm-3 col-form-label">Shipment Terms:</label>
-                    <div class="col-sm-6 ">
-                        <textarea name="ShipmentTerms" maxlength="500" required placeholder="Shipment Description"
-                            title="Shipment Description" class="form-control " id="ShipmentTerms"></textarea>
-
-                    </div>
-                </div>
-                <div class=" form-group row">
-                    <label class="col-sm-3 col-form-label">Payment Terms:</label>
-                    <div class="col-sm-6 ">
-                        <textarea name="PaymentTerms" maxlength="500" required placeholder="Payment Terms"
-                            title="PaymentTerms" class="form-control " id="PaymentTerms"></textarea>
-                    </div>
-                </div>
-                <hr>
-
-                <div id="divConsumable">
-                    <div class="form-group row ">
-                        <label for="IDConsumable_Master" class="col-sm-3 col-form-label">Consumable Name:</label>
-                        <div class="col-sm-6">
-                            <select name="IDConsumable_Master" class="form-control " id="IDConsumable_Master">
+                    <div class="form-group row mt-2">
+                        <label class="col-sm-3 col-form-label">Approver:</label>
+                        <div class="col-sm-3 ">
+                            <select name="ApproverID" required id="ApproverID" class="form-control ">
                             </select>
                         </div>
                     </div>
-                </div>
-                <div class="form-group row ">
-                    <label class="col-sm-3 col-form-label">Req Quantity:</label>
-                    <div class="col-sm-2">
-                        <input type="number" id="ReqQuantity" min="1" class="form-control">
-                    </div>
-                </div>
-                <div class="form-group row ">
-                    <label class="col-sm-3 col-form-label">Price/Unit:</label>
-                    <div class="col-sm-2 ">
-                        <div class="input-group">
-                            <input type="number" readonly id="PricePerUnit" min="0" class="form-control">
-                            <span class="input-group-append">
-                                <label class="input-group-text">₹</label>
-                            </span>
+                    <div class=" form-group row">
+                        <label class="col-sm-3 col-form-label">RequestedBy:</label>
+                        <div class="col-sm-6 ">
+                            <label class="col-sm-3 col-form-label"> {{.User.FirstName}}</label>
+
                         </div>
                     </div>
-                </div>
-                <div class=" form-group row">
-                    <label class="col-sm-3 col-form-label">Asset Comments:</label>
-                    <div class="col-sm-6 ">
-                        <textarea name="AssetComments" maxlength="500" required placeholder="Comments" title="Comments"
-                            class="form-control " id="AssetComments"></textarea>
+                    <div class=" form-group row">
+                        <label class="col-sm-3 col-form-label">Description:</label>
+                        <div class="col-sm-6 ">
+                            <textarea name="Description" maxlength="500" required placeholder="Description"
+                                title="Description" class="form-control " id="Description"></textarea>
 
+                        </div>
+                    </div>
+                    <div class=" form-group row">
+                        <label class="col-sm-3 col-form-label">Shipment Terms:</label>
+                        <div class="col-sm-6 ">
+                            <textarea name="ShipmentTerms" maxlength="500" required placeholder="Shipment Description"
+                                title="Shipment Description" class="form-control " id="ShipmentTerms"></textarea>
+
+                        </div>
+                    </div>
+                    <div class=" form-group row">
+                        <label class="col-sm-3 col-form-label">Payment Terms:</label>
+                        <div class="col-sm-6 ">
+                            <textarea name="PaymentTerms" maxlength="500" required placeholder="Payment Terms"
+                                title="PaymentTerms" class="form-control " id="PaymentTerms"></textarea>
+                        </div>
+                    </div>
+                    <hr>
+
+                    <div id="divConsumable">
+                        <div class="form-group row ">
+                            <label for="IDConsumable_Master" class="col-sm-3 col-form-label">Consumable Name:</label>
+                            <div class="col-sm-6">
+                                <select name="IDConsumable_Master" required class="form-control "
+                                    id="IDConsumable_Master">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row ">
+                        <label class="col-sm-3 col-form-label">Req Quantity:</label>
+                        <div class="col-sm-2">
+                            <input type="number" required id="ReqQuantity" min="1" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group row ">
+                        <label class="col-sm-3 col-form-label">Price/Unit:</label>
+                        <div class="col-sm-2 ">
+                            <div class="input-group">
+                                <input type="number" readonly id="PricePerUnit" min="0" class="form-control">
+                                <span class="input-group-append">
+                                    <label class="input-group-text">₹</label>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class=" form-group row">
+                        <label class="col-sm-3 col-form-label">Consumable Comments:</label>
+                        <div class="col-sm-6 ">
+                            <textarea name="AssetComments" maxlength="500" required placeholder="Comments"
+                                title="Comments" class="form-control " id="AssetComments"></textarea>
+
+                        </div>
+                    </div>
+                    <div class="row justify-content-center">
+                        <input type="submit" id="btnAddtoList" class="btn btn-primary btn-sm " value="Add to List" />
                     </div>
                 </div>
-                <div class="row justify-content-center">
-                    <input type="button" id="btnAddtoList" class="btn btn-primary btn-sm " value="Add to List" />
-                </div>
             </div>
-        </div>
+        </form>
         <div class="card">
             <div class="card-title ml-3">
                 Items List
@@ -284,7 +287,7 @@
                 $('#VendorsAddress').html("--")
                 return
             }
-            var html = "<p class='text-nowrap m-0 '> " + $("#VendorID option:selected").attr("data-Address") + "</p>"
+            var html = "<p class='text-nowrap m-0'> " + $("#VendorID option:selected").attr("data-Address") + "</p>"
             html += "<p class='text-nowrap m-0 '>" + $("#VendorID option:selected").attr("data-Email") + "," + $("#VendorID option:selected").attr("data-Phone") + "</p>"
             $('#VendorsAddress').html(html)
             var data = getdata('/GetConsumableMastersByVendors/' + $("#VendorID").val())
@@ -309,7 +312,8 @@
             $("#ReqQuantity").val('')
         });
 
-        $("#btnAddtoList").click(function () {
+        $("#frm").submit(function (e) {
+            e.preventDefault();
             var PricePerUnit = $("#PricePerUnit").val();
             var AssetComments = $("#AssetComments").val();
             var ReqQuantity = $("#ReqQuantity").val();
@@ -324,7 +328,7 @@
                 AssetID = $("#IDConsumable_Master").val()
                 AssetName = $("#IDConsumable_Master option:selected").text()
                 if (AssetID == "") {
-                    Toast('warning', 'Please select an Asset')
+                    Toast('warning', 'Please select Consumable')
                     return
                 }
             }
@@ -347,7 +351,7 @@
                 "PriceperUnit": PricePerUnit,
                 "TotalPrice": parseFloat(ReqQuantity) * parseFloat(PricePerUnit),
                 "AssetComments": AssetComments,
-               
+
                 "Actions": "<button  title='Delete'  class='rowDelete btn btn-link text-red '><i class='ik ik-trash btn-md '></i></button>"
             }).draw();
 
@@ -364,7 +368,7 @@
             var price = $("#totalammount").text()
             if (price == "")
                 price = 0
-            
+
             $("#totalammount").text(parseFloat(price) - parseFloat(tr.data().TotalPrice))
 
             tr.remove().draw();
@@ -389,7 +393,7 @@
             var array = new Array()
             tbl.rows().every(function (rowIdx, tableLoop, rowLoop) {
                 var data = this.data();
-                
+
                 var objAssets = new Object()
                 objAssets.AssetName = data.AssetName;
                 objAssets.AssetID = parseInt(data.AssetID);
@@ -465,7 +469,7 @@
             var array = new Array()
             tbl.rows().every(function (rowIdx, tableLoop, rowLoop) {
                 var data = this.data();
-                
+
                 var objAssets = new Object()
                 objAssets.AssetName = data.AssetName;
                 objAssets.AssetID = parseInt(data.AssetID);
