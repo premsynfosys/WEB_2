@@ -173,7 +173,7 @@
                   $(document).on("keydown", "textarea,input:not(input[type='email'],.datetimepicker-input)", function (e) {
                         debugger;
                         var str = this.value
-                        var patt = new RegExp(/^[\w-_.\n ]*$/);
+                        var patt = new RegExp(/^[\w-_.:\n ]*$/);
                         //  ^ Start of string
                         // [...] Match characters inside
                         // \w Any word character so 0-9 a-z A-Z
@@ -183,7 +183,7 @@
                         var res = patt.test(str);
                         if (!res) {
                               alert('Some special characters not allowed')
-                              this.value = str.replace(/^[\w-_.\n ]*$/g, "")
+                              this.value = str.replace(/^[\w-_.:\n ]*$/g, "")
                               return false
                         }
 
@@ -191,7 +191,7 @@
                   $(document).on("blur", "textarea,input:not(input[type='email'],.datetimepicker-input)", function (e) {
                         var str = this.value
                         this.value = str.trim()
-                        var patt = new RegExp(/^[\w-_.\n ]*$/);
+                        var patt = new RegExp(/^[\w-_.:\n ]*$/);
                         //  ^ Start of string
                         // [...] Match characters inside
                         // \w Any word character so 0-9 a-z A-Z
@@ -202,7 +202,7 @@
                         if (!res) {
                               alert('Some special characters removed.')
                               // this.value = str.replace(/[^a-zA-Z ]/g, "")
-                              this.value = str.replace(/[^a-zA-Z-_.\n ]/g, "")
+                              this.value = str.replace(/[^a-zA-Z-_.:\n ]/g, "")
                               return false
                         }
 
