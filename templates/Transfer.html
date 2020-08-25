@@ -137,7 +137,7 @@
                             return "IT Asset";
                         else if (dt == "consumable")
                             return "Consumable";
-                            else
+                        else
                             return "Non-IT Assets";
 
                     }
@@ -193,7 +193,13 @@
 
         // }
 
-
+        $("#Locations").change(function(){
+            if ($("#Locations").val() != "")
+                LoadReceivers(getdata("/GetApprovers/" + $("#Locations").val() + "/2"))
+            else {
+                $("#Receiver").empty();
+            }
+        })
 
         $("#frm").submit(function (e) {
             e.preventDefault();
@@ -252,15 +258,16 @@
 
         loadLocations(getdata('/GetLocations'))
         function loadLocations(data) {
-            $("#Location").empty().append('<option  value="0">--select--</option>');
+            $("#Location").empty().append('<option  value="">--select--</option>');
             $.each(data, function (i, el) {
                 $("#Locations").append($("<option />", { text: el.Name + "\n" + el.Address1 + "\n" + el.Address2 + "\n" + el.Countryname + "\n" + el.Statename + "\n" + el.Zipcode, value: el.IDLocations }));
             });
-
+           
             $('#Locations option[value="' + $("#locationid").val() + '"]').prop('disabled', true);
         }
-        LoadReceivers(getdata("/GetApprovers/0/2"))
+        // LoadReceivers(getdata("/GetApprovers/0/2"))
         function LoadReceivers(data) {
+            $("#Receiver").empty().append('<option selected="selected" value="">--select--</option>');
             $.each(data, function (i, el) {
                 if (el.Employee.Location != $("#locationid").val()) {
                     $("#Receiver").append($("<option />", { text: el.Employee.FirstName, value: el.Employee.IDEmployees }));
@@ -270,7 +277,7 @@
         };
         LoadApprover(getdata("/GetApprovers/" + $("#locationid").val() + "/{{.Data.RoleID}}"))
         function LoadApprover(data) {
-            
+
             $.each(data, function (i, el) {
                 $("#Approver").append($("<option />", { text: el.Employee.FirstName, value: el.Employee.IDEmployees }));
             });

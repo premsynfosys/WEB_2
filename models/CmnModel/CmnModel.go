@@ -28,6 +28,7 @@ type AdminDashBoard struct {
 	RequisitionRequestesPending int `json:"RequisitionRequestesPending"`
 	RequisitionApprovalRequests int `json:"RequisitionApprovalRequests"`
 	ITAssetExpectedCheckInDate int `json:"ITAssetExpectedCheckInDate"`
+	ITAssetWarrentyExpireSoon  int `json:"ITAssetWarrentyExpireSoon"`
 }
 
 //TemplateData ..

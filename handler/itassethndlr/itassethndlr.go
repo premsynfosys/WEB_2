@@ -888,6 +888,21 @@ func (p *IITAsset) GetITAssetservices_List(w http.ResponseWriter, r *http.Reques
 
 }
 
+
+
+func (p *IITAsset) GetITAssetservices_List_ByLoc(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	LocID := params["LocID"]
+	id, _ := strconv.Atoi(LocID)
+
+	body, err := p.Irepo.GetITAssetservices_List_ByLoc(r.Context(), id)
+	if err == nil {
+		utils.RespondwithJSON(w, r, http.StatusOK, body)
+	} else {
+		utils.RespondwithJSON(w, r, http.StatusBadRequest, nil)
+	}
+
+}
 func (p *IITAsset) GetITAssetToCheckoutToITasset(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	LocID := params["LocID"]
@@ -981,6 +996,15 @@ func (p *IITAsset) ITAssetRetiredList(w http.ResponseWriter, r *http.Request) {
 
 }
 
+func (p *IITAsset) ITAssetMaintenanceList(w http.ResponseWriter, r *http.Request) {
+	usr, auth := utils.GetCookieUser(r)
+	Mapdata := CmnModel.TemplateData{
+		Auth: auth,
+		User: usr,
+	}
+	utils.ExecuteTemplate(w, r, "ITAssetMaintenanceList", Mapdata)
+
+}
 //EmployeesHistory ..
 func (p *IITAsset) ITAssetHistory(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)

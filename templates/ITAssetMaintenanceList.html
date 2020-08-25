@@ -1,0 +1,370 @@
+{{  define "ITAssetMaintenanceList"}}
+{{template "head" .}}
+
+<div class="page-header">
+  <div class="row align-items-end">
+    <div class="col-lg-8">
+      <div class="page-header-title">
+        <div class="d-inline">
+          <h5>ITAsset Maintenance Details</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+
+  <div class="col-md-12">
+    <div class="dt-responsive">
+      <table class="table table-striped table-bordered table-hover  " id="tblITAsset_Maintenance">
+        <thead>
+          <th>IDITAsset Services</th>
+          <th>IT Asset Name</th>
+          <th>IT Asset Identification No</th>
+          <th>Service Status</th>
+          <th>Service type</th>
+          <th>Expected Start Date</th>
+          <th>Expected End Date</th>
+          <th>Actual Start Date</th>
+          <th>Actual End Date</th>
+          <th>Service By Type</th>
+          <th>Service By</th>
+
+
+          <th>Description</th>
+          <th>Cost</th>
+          <th>Comments</th>
+
+        </thead>
+      </table>
+    </div>
+  </div>
+
+  <div id="tblbtn" class="btn-group dropright float-left ">
+    <button type="button" class="btn btn-info dropdown-toggle  " data-toggle="dropdown" aria-haspopup="true"
+      aria-expanded="false">
+      Export </button>
+    <div id="tblbtnList" class="dropdown-menu">
+    </div>
+  </div>
+  <div id="tblClmnbtn" class="btn-group dropright float-left mr-1 ">
+    <button type="button" class="btn btn-info dropdown-toggle btn-sm " data-toggle="dropdown" aria-haspopup="true"
+      aria-expanded="false">
+      Fields </button>
+    <div id="tblClmnbtnList" class="dropdown-menu">
+      <div class="form-check form-check-inline dropdown-item">
+        <input class="form-check-input chkClmn" type="checkbox" checked id="chkAll">
+        <label class="form-check-label " for="chkAll">(Select All)</label></div>
+
+
+    </div>
+
+  </div>
+</div>
+
+<div id="modalService" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="classInfo"
+  aria-hidden="true">
+  <div class="modal-dialog mdl-cstm modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalServiceLabel">Complete Service</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+      </div>
+      <div id="modalServiceBody" class="modal-tblbody modal-body">
+        <form id="frmservice_Completed" method="POST">
+          <div>
+            <input type="hidden" id="IDITAsset_Services" name="IDITAsset_Services">
+            <div class="form-group row ">
+              <label for="Actual_End_Date" class="col-sm-3 col-form-label ">Actual End Date Time:</label>
+              <div class="col-sm-4">
+                <input type="text" autocomplete="off" class="form-control datetimepicker-input" id="Actual_End_Date"
+                  data-toggle="datetimepicker" data-target="#Actual_End_Date">
+              </div>
+              <!-- <div class="col-sm-3">
+                <input type="text" class="form-control datetimepicker-input" id="Expected_End_Time"
+                    data-toggle="datetimepicker" data-target="#Expected_End_Time">
+            </div> -->
+            </div>
+            <div class="row">
+              <label class="col-sm-3 col-form-label">Cost:</label>
+              <div class="col-sm-3 ">
+                <div class="input-group">
+                  <input type="number" required title="Cost" min="0" id="Cost" name="Cost" class="form-control">
+                  <span class="input-group-append">
+                    <label class="input-group-text">&#8377;</label>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="Description" class="col-sm-3 col-form-label ">Comments:</label>
+              <div class="col-sm-9">
+                <textarea required name="Comments" maxlength="500" placeholder="Comments" title="Comments"
+                  class="form-control " id="Comments"></textarea>
+
+              </div>
+            </div>
+            <div class="form-group row justify-content-center">
+              <input type="submit" class="btn btn-primary btn-sm" value="Completed" />
+            </div>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+
+<script>
+  $(document).ready(function () {
+    $('#Actual_End_Date').datetimepicker({
+      format: customDateFormate + ' HH:mm',
+      autclose: true,
+      maxDate: new Date()
+    });
+    var LocID = $("#locationid").val()
+    var _url = ""
+    if ("{{.Auth.Accesstoalllocations}}") {
+      _url = '/GetITAssetservices_List_ByLoc/0'
+    }
+    else {
+      _url = '/GetITAssetservices_List_ByLoc/' + LocID + ''
+    }
+
+
+    var tbl = $('#tblITAsset_Maintenance').DataTable({
+      responsive: true,
+      "processing": true,
+      scrollY: $(window).height() - 350,
+      scrollCollapse: true,
+      scrollX: true,
+      destroy: true,
+      dom: 'Bfrtip',
+      ajax: {
+        "url": _url,
+        "type": "GET",
+        "datatype": "json",
+        "dataSrc": ""//to read data from a plain array rather than an array in an object:
+      }, columnDefs: [
+        { orderable: false, targets: 1 },
+        { visible: false, targets: 0 }
+      ], order: [[0, 'desc']],
+      "columns": [
+        {
+          "name": "IDITAsset_Services",
+          'data': 'IDITAsset_Services'
+        },
+        {
+          "name": "ITAssetName",
+          'data': 'ITAssetModel.ITAssetName'
+        },
+        {
+          "name": "ITAssetIdentificationNo",
+          'data': 'ITAssetModel.ITAssetIdentificationNo'
+        }, {
+          "name": "Service_status",
+          className: "text-center",
+          'data': null,
+          render: function (dt) {
+            if (dt.Service_status.IDServiceStatus == 2) {//scheduled
+              return dt.Service_status.StatusName + "<br>" + '<button type="button" class="ServiceStart btn btn-link"  data-value="' + dt.IDITAsset_Services + '">(Start Service)</button>'
+            } else if (dt.Service_status.IDServiceStatus == 1) {//started
+              return dt.Service_status.StatusName + "<br>" + '<button type="button" class="ServiceComplte btn btn-link"  data-value="' + dt.IDITAsset_Services + '">(Complete)</button>'
+            } else {
+              return dt.Service_status.StatusName
+            }
+          }
+        }, {
+          "name": "Service_type",
+          'data': "Service_type.TypeName",
+        },
+
+        {
+          "name": "Expected_Start_Date",
+          'data': "Expected_Start_Date"
+        }, {
+          "name": "Expected_End_Date",
+          'data': "Expected_End_Date"
+        }, {
+          "name": "Actual_Start_Date",
+          'data': "Actual_Start_Date"
+        }, {
+          "name": "Actual_End_Date",
+          'data': "Actual_End_Date"
+        }, {
+          "name": "ServiceBy_Type",
+          'data': "ServiceBy_Type",
+        }, {
+          "name": "ServicedBy",
+
+          'data': null,
+          render: function (dt) {
+            if (dt.ServiceBy_Type == "Vendor") {
+              return dt.Vendors.Name + "<br>" + dt.Vendors.Phone + "<br>" + dt.Vendors.Email;
+            } else if (dt.ServiceBy_Type == "Person") {
+              return dt.Employees.FirstName + " " + dt.Employees.LastName + "<br>" + dt.Employees.Email;
+            }
+          }
+        }, {
+          "name": "Description",
+          'data': "Description",
+        }, {
+          "name": "Cost",
+          'data': "Cost",
+          render: function (dt) {
+            if (dt != null)
+              return "&#8377; " + dt
+            else
+              return ""
+          }
+        }, {
+          "name": "Comments",
+          'data': "Comments",
+        }
+      ],
+      buttons: [
+
+        {
+          text: 'Print',
+          extend: "print",
+          title: "ITAsset Maintenance Details",
+          className: ' dropdown-item',
+          exportOptions: {
+            columns: ':visible'
+            // columns: ':not(.notexport)'
+          }
+        },
+        {
+          text: 'Excel',
+          extend: "excel",
+          className: ' dropdown-item',
+          title: "ITAsset Maintenance Details",
+          exportOptions: {
+            columns: ':visible'
+            // columns: ':not(.notexport)'
+          }
+        }
+      ]
+
+    });
+
+
+    $("#tblbtn").prependTo('#tblITAsset_Maintenance_filter')
+    tbl.buttons().containers().prependTo('#tblbtnList')
+    $('.dt-button').removeClass('dt-button').addClass(' btn btn-light btn-sm ');
+    $(".buttons-colvis").removeClass('btn-light').addClass('btn-info float-left ml-1').appendTo('#tblITAsset_Maintenance_filter')
+
+    //columns hide /show
+    $("#tblClmnbtn").prependTo('#tblITAsset_Maintenance_filter')
+
+    var idx = 0;
+    //show hide clmns
+    tbl.columns().every(function () {
+      if (idx != 0) {
+        var html = '<div class="form-check form-check-inline dropdown-item">'
+        html += '<input class="form-check-input chkClmn" type="checkbox" checked id="chk' + idx + '" value="' + idx + '">'
+        html += '<label class="form-check-label " for="chk' + idx + '">' + this.header().innerHTML + '</label></div>'
+        $("#tblClmnbtnList").append(html)
+      }
+      idx++;
+
+    });
+
+    $("input.chkClmn").click(function (e) {
+
+      // Get the column API object
+      if ($(this).attr('id') == "chkAll") {
+        if ($(this).prop("checked")) {
+          for (var i = 1; i < tbl.init().columns.length; i++) {
+            tbl.column(i).visible(true, true)
+          }
+          $("input.chkClmn").prop("checked", true)
+          tbl.columns.adjust().draw();
+        }
+      }
+      else {
+        var column = tbl.column($(this).val());
+        // Toggle the visibility
+        if ($(this).prop("checked"))
+          column.visible(true);
+        else {
+          column.visible(false);
+          $("#chkAll").prop("checked", false)
+        }
+      }
+
+    })
+
+    $("#tblITAsset_Maintenance ").on("click", ".ServiceStart", function () {
+      var IDITAsset_Services = $(this).attr('data-value')
+      var obj = new Object()
+
+      obj.IDITAsset_Services = parseInt(IDITAsset_Services.trim())
+      $.ajax({
+        url: "/ITasset_services_start_Update",
+        type: 'POST',
+        data: JSON.stringify(obj),
+        dataType: 'json',
+        async: false,
+        success: function (data) {
+          Toast("success", "Service started.")
+          tbl.ajax.reload();
+          window.location.reload()
+        }, error: function (data) {
+          alert('Internal Error')
+        }
+      });
+    })
+
+    $("#tblITAsset_Maintenance ").on("click", ".ServiceComplte", function () {
+      $("#modalService").modal("show")
+      $("#IDITAsset_Services").val($(this).attr('data-value').trim())
+    });
+
+    $("#frmservice_Completed").submit(function (e) {
+      e.preventDefault()
+      var IDITAsset_Services = $("#IDITAsset_Services").val()
+      var AssetID = $("#AssetID").val()
+      var obj = new Object()
+
+      obj.ITAssetID = parseInt(AssetID)
+      obj.Actual_End_Date = $("#Actual_End_Date").val();;
+      obj.Cost = parseFloat($("#Cost").val());
+      obj.IDITAsset_Services = parseInt(IDITAsset_Services.trim())
+      obj.Comments = $("#Comments").val();
+      obj.CreatedBy = $("#employeeid").val();
+
+      $.ajax({
+        url: "/ITasset_services_Complete_Update",
+        type: 'POST',
+        data: JSON.stringify(obj),
+        dataType: 'json',
+        async: false,
+        success: function (data) {
+          Toast("success", "Service Completed.")
+          tbl.ajax.reload();
+          window.location.reload()
+        }, error: function (data) {
+          alert('Internal Error')
+        }
+      });
+    })
+
+
+  });
+
+</script>
+
+
+
+
+
+
+
+
+{{template "footer"}}
+{{end}}

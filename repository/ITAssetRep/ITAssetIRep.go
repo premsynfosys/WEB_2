@@ -37,6 +37,7 @@ type ITAssetIntrfc interface {
 	ITasset_services_start_Update(ctx context.Context, itm *ITAssetsmodel.ITasset_services) error
 	ITasset_services_Complete_Update(ctx context.Context, itm *ITAssetsmodel.ITasset_services) error
 	ITasset_services_Extend_Update(ctx context.Context, itm *ITAssetsmodel.ITasset_services) error 
+	GetITAssetservices_List_ByLoc(ctx context.Context,_LocID int) ([]*ITAssetsmodel.ITasset_services, error)
 	GetITAssetservices_List(ctx context.Context,ITAssetID int) ([]*ITAssetsmodel.ITasset_services, error)
 	ITAsset_Service_Request(ctx context.Context, usr *ITAssetsmodel.ITAsset_service_request) error
 	GetITAsset_service_request_List(ctx context.Context, EmpID int) ([]*ITAssetsmodel.ITAsset_service_request, error)

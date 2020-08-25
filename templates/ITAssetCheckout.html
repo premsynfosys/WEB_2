@@ -111,7 +111,7 @@
                             <div class="col-sm-9 form-inline">
                                 <input type="text" name="CheckOutDate" required
                                     class="form-control datetimepicker-input" data-toggle="datetimepicker"
-                                    autocomplete="off" data-target="#CheckOutDate" id="CheckOutDate" >
+                                    autocomplete="off" data-target="#CheckOutDate" id="CheckOutDate">
 
                             </div>
                         </div>
@@ -119,9 +119,9 @@
                             <label for="ExpectedCheckInDate" class="col-sm-3 col-form-label ">Expected Check-in
                                 Date:</label>
                             <div class="col-sm-9 form-inline">
-                                <input type="text"  name="ExpectedCheckInDate"
-                                    class="form-control datetimepicker-input" data-toggle="datetimepicker"
-                                    autocomplete="off" data-target="#ExpectedCheckInDate" id="ExpectedCheckInDate" >
+                                <input type="text" name="ExpectedCheckInDate" class="form-control datetimepicker-input"
+                                    data-toggle="datetimepicker" autocomplete="off" data-target="#ExpectedCheckInDate"
+                                    id="ExpectedCheckInDate">
                             </div>
                         </div>
                     </div>
@@ -167,13 +167,13 @@
             });
         };
         function loadLocations(data) {
-            $("#Location").empty().append('<option selected="selected" value="0">--select--</option>');
+            $("#Location").empty().append('<option selected="selected" value="">--select--</option>');
             $.each(data, function (i, el) {
                 $("#Locations").append($("<option />", { text: el.Name + "\n" + el.Address1 + "\n" + el.Address2 + "\n" + el.Countryname + "\n" + el.Statename + "\n" + el.Zipcode, value: el.IDLocations }));
             });
             //$('#Location option[value="{{.Data.Mdl.Location}}"]').prop('disabled', true);
         }
-      
+
         $('#CheckOutDate,#ExpectedCheckInDate').datetimepicker({
             format: customDateFormate,
             maxDate: new Date()
@@ -190,7 +190,7 @@
                 $("#divUsers").removeClass("collapse")
                 $("#divAssets,#divLocations").addClass("collapse")
                 $("#Users,#Locations,#Assets").empty();
-                $("#Users").append('<option selected="selected" value="0">--select--</option>');
+                $("#Users").append('<option selected="selected" value="">--select--</option>');
                 var data
                 if ("{{.Auth.Accesstoalllocations}}") {
                     data = getdata("/GetEmployeesList")
@@ -207,7 +207,7 @@
                 $("#divAssets").removeClass("collapse")
                 $("#divUsers,#divLocations").addClass("collapse")
                 $("#Users,#Locations,#Assets").empty();
-                $("#Assets").append('<option selected="selected" value="0">--select--</option>');
+                $("#Assets").append('<option selected="selected" value="">--select--</option>');
 
                 data = getdata("/GetITAssetToCheckoutToITasset/" + $("#locationid").val() + "/{{.Data.Mdl.IDITAssets}}")
                 LoadAssets(data)
@@ -217,11 +217,18 @@
                 $("#divLocations").removeClass("collapse")
                 $("#divUsers,#divAssets").addClass("collapse")
                 $("#Users,#Locations,#Assets").empty();
-                $("#Locations").append('<option selected="selected" value="0">--select--</option>');
+                $("#Locations").append('<option selected="selected" value="">--select--</option>');
                 var data = getdata('/GetLocations')
                 loadLocations(data)
-                $("#Receiver").empty().append('<option selected="selected" value="0">--select--</option>');
-                $("#Approver").empty().append('<option selected="selected" value="0">--select--</option>');
+                $("#Receiver").empty().append('<option selected="selected" value="">--select--</option>');
+                $("#Approver").empty().append('<option selected="selected" value="">--select--</option>');
+                $("#Locations").change(function () {
+                    if ($("#Locations").val() != "")
+                        LoadReceivers(getdata("/GetApprovers/" + $("#Locations").val() + "/2"))
+                    else {
+                        $("#Receiver").empty();
+                    }
+                })
 
                 // if ("{{.Auth.Accesstoalllocations}}") {
                 //     data = getdata("/GetEmployeesList")
@@ -236,8 +243,9 @@
                     //  $("#Receiver").append($("<option />", { text: el.FirstName, value: el.IDEmployees }));
                     $("#Approver").append($("<option />", { text: el.Employee.FirstName, value: el.Employee.IDEmployees }));
                 });
-                LoadReceivers(getdata("/GetApprovers/0/2"))
+                //      LoadReceivers(getdata("/GetApprovers/0/2"))
                 function LoadReceivers(data) {
+                    $("#Receiver").empty().append('<option selected="selected" value="">--select--</option>');
                     $.each(data, function (i, el) {
                         if (el.Employee.Location != $("#locationid").val()) {
                             $("#Receiver").append($("<option />", { text: el.Employee.FirstName, value: el.Employee.IDEmployees }));
@@ -255,7 +263,7 @@
 
 
     $("#Users").change(function () {
-        
+
         $("#divUserAssets").empty();
 
         var data = getdata("/GetEmployeeITAssetsByID?EmpID=" + $(this).val() + "&isCheckin=0")
@@ -275,7 +283,7 @@
 
         if ($(this).val() == $("#AssetLocation").val()) {
             Toast('warning', "you can't checkout to same location.")
-            $(this).val("0")
+            $(this).val("")
         }
     })
     $("#frm").submit(function () {

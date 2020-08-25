@@ -333,6 +333,20 @@ func (m *APIRepo) GetITAssetservices_List(ctx context.Context, ITAssetID int) ([
 	}
 	return data, nil
 }
+func (m *APIRepo) GetITAssetservices_List_ByLoc(ctx context.Context, LocID int) ([]*ITAssetsmodel.ITasset_services, error) {
+	url := fmt.Sprintf(m.APIConn+"/GetITAssetservices_List_ByLoc/%d", LocID)
+	bytes, err := utils.GetRequest(url)
+	if err != nil {
+		return nil, err
+	}
+	data := make([]*ITAssetsmodel.ITasset_services, 0)
+	err = json.Unmarshal(bytes, &data)
+	if err != nil {
+		return nil, err
+	}
+	return data, nil
+}
+
 
 //ITAsset_Service_Request" ..
 func (m *APIRepo) ITAsset_Service_Request(ctx context.Context, usr *ITAssetsmodel.ITAsset_service_request) error {

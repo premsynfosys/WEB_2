@@ -171,6 +171,10 @@
                   })
                   //  .not("input[type='email']"
                   $(document).on("keydown", "textarea,input:not(input[type='email'],.datetimepicker-input)", function (e) {
+<<<<<<< HEAD
+=======
+                        debugger;
+>>>>>>> 1190d5a... date fileds
                         var str = this.value
                         var patt = new RegExp(/^[\w-_.\n ]*$/);
                         //  ^ Start of string
@@ -270,9 +274,9 @@
             })
       </script>
       <script>
-            var customDateFormate = 'DD-MM-YYYY';
+            var customDateFormate = 'YYYY-MM-DD';
             $(document).ready(function () {
-                  $('.datetimepicker-input').attr('placeholder', customDateFormate);                
+                  $('.datetimepicker-input').attr('placeholder', customDateFormate);
             });
       </script>
 </head>
@@ -449,6 +453,8 @@
                                                                   class="ik ik-list"></i><span>Retired
                                                                   IT Assets</span></a>
                                                       {{end}}
+                                                      <a href="/ITAssetMaintenanceList" class="menu-item"><i
+                                                            class="ik ik-list"></i><span>Maintenance List</span></a>
                                                 </div>
                                           </div>
                                           {{end}}

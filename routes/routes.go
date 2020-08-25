@@ -57,6 +57,7 @@ func ITAssetsRoutings(r *mux.Router, hndl *itassethndlr.IITAsset) {
 	r.HandleFunc("/ITAssetGroups_Create", utils.AuthRequired(hndl.ITAssetGroups_Create))
 	r.HandleFunc("/ITAssetHistory/{AssetID}", utils.AuthRequired(hndl.ITAssetHistory))
 	r.HandleFunc("/ITAssetRetiredList", utils.AuthRequired(hndl.ITAssetRetiredList))
+	r.HandleFunc("/ITAssetMaintenanceList", utils.AuthRequired(hndl.ITAssetMaintenanceList))
 	r.HandleFunc("/GetITAsset_Retired", utils.AuthRequired(hndl.GetITAsset_Retired))
 	r.HandleFunc("/ITAssets", utils.AuthRequired(hndl.ITAssets))
 	r.HandleFunc("/ITAssets/edit/{id:[0-9]+}", utils.AuthRequired(hndl.GetITAssetsEditByID))
@@ -89,6 +90,8 @@ func ITAssetsRoutings(r *mux.Router, hndl *itassethndlr.IITAsset) {
 	r.HandleFunc("/ITasset_services_start_Update", utils.AuthRequired(hndl.ITasset_services_start_Update))
 	r.HandleFunc("/ITAssetView_Maintenance/{ITAssetID}", utils.AuthRequired(hndl.ITAssetView_Maintenance))
 	r.HandleFunc("/GetITAssetservices_List/{ITAssetID:[0-9]+}", utils.AuthRequired(hndl.GetITAssetservices_List))
+
+	r.HandleFunc("/GetITAssetservices_List_ByLoc/{LocID:[0-9]+}", utils.AuthRequired(hndl.GetITAssetservices_List_ByLoc))
 	r.HandleFunc("/ITAsset_Service_Request/{ITAssetID}", utils.AuthRequired(hndl.ITAsset_Service_Request))
 
 	r.HandleFunc("/ITAsset_Service_Request_List", utils.AuthRequired(hndl.ITAsset_Service_Request_List))
