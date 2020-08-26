@@ -1,6 +1,7 @@
 {{define "head"}}
 <!doctype html>
 <html class="no-js" lang="en">
+
 <head>
       <meta charset="utf-8">
       <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -58,7 +59,7 @@
 
 
       <script>
-//abc def
+            //abc def d
 
             // if (window["WebSocket"]) {
             //       WSConn = new WebSocket("ws://" + document.location.host + "/echo");
@@ -88,7 +89,7 @@
             }
 
             function jsondate(date) {
-debugger;
+                  debugger;
                   if (date != null && date != "" && date != "0000-00-00 00:00:00" && date != "0001-01-01T00:00:00Z") {
                         var currentTime = new Date(date);
                         var month = ("0" + (currentTime.getDate())).slice(-2);
@@ -170,7 +171,7 @@ debugger;
                   })
                   //  .not("input[type='email']"
                   $(document).on("keydown", "textarea,input:not(input[type='email'],.datetimepicker-input)", function (e) {
-                      
+
                         var str = this.value
                         var patt = new RegExp(/^[\w-_.:\n ]*$/);
                         //  ^ Start of string
@@ -207,16 +208,17 @@ debugger;
 
                   })
                   // $('input,textarea,select').filter("[required]").prev("label").append("<span style='color:red'>*</span>")                 
-                  $('input,textarea,select').filter("[required]").parents(".form-group").children("label").append("<span style='color:red'>*</span>")
-                  $(".lblrequired").append("<span style='color:red'>*</span>");
+                  $('input,textarea,select').filter("[required]").parents(".form-group").children("label").append("<span class='spanMandator' style='color:red'>*</span>")
+                  $(".lblrequired").append("<span class='spanMandator' style='color:red'>*</span>");
 
                   $('.modal').on('shown.bs.modal', function (e) {
-                         $('.modal input,.modal textarea,.modal select').filter("[required]").parents(".form-group").children("label").append("<span class='spanMandator' style='color:red'>*</span>")
+                        $('.modal input,.modal textarea,.modal select').filter("[required]").parents(".form-group").children("label").find("span.spanMandator").remove()
+                        $('.modal input,.modal textarea,.modal select').filter("[required]").parents(".form-group").children("label").append("<span class='spanMandator' style='color:red'>*</span>")
                         $(".modal .lblrequired").append("<span class='spanMandator' style='color:red'>*</span>");
-                        $('.modal .datetimepicker-input').attr('placeholder', customDateFormate);  
+                        $('.modal .datetimepicker-input').attr('placeholder', customDateFormate);
                   })
                   $(".sidebar-content").scroll(function () {
-                       
+
                         sessionStorage.scrollTop = $(this).scrollTop();
                   });
                   if (sessionStorage.scrollTop != "undefined") {
@@ -270,8 +272,8 @@ debugger;
             })
       </script> -->
       <script>
-           // var customDateFormate = 'YYYY-MM-DD';
-           var customDateFormate = 'DD-MM-YYYY';
+            // var customDateFormate = 'YYYY-MM-DD';
+            var customDateFormate = 'DD-MM-YYYY';
             $(document).ready(function () {
                   $('.datetimepicker-input').attr('placeholder', customDateFormate);
             });
@@ -451,7 +453,8 @@ debugger;
                                                                   IT Assets</span></a>
                                                       {{end}}
                                                       <a href="/ITAssetMaintenanceList" class="menu-item"><i
-                                                            class="ik ik-list"></i><span>Maintenance List</span></a>
+                                                                  class="ik ik-list"></i><span>Maintenance
+                                                                  List</span></a>
                                                 </div>
                                           </div>
                                           {{end}}
