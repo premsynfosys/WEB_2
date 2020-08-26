@@ -263,7 +263,7 @@
 
         $("#Approve").click(function () {
             if ($('#Approver').val() == "") {
-                Toast('warning', "Please select Approver")
+                Toast('warning', "Please select Approver/ForwardTo")
                 //alert("Please select Approver.")
                 $('#Approver').focus();
                 return false;
@@ -326,7 +326,7 @@
                 return false;
             }
             if ($('#Approver').val() != "") {
-                Toast('warning', "Please Unselect Approver")
+                Toast('warning', "Please Unselect Approver/ForwardTo")
                 //alert("Please select Approver.")
                 $('#Approver').focus();
                 return;

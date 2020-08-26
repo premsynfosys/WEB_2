@@ -42,7 +42,7 @@
                 <div class="form-group row  ">
                     <div class="col-md-6">
                         <div class=" row">
-                            <label for="VendorID" class="col-sm-4 col-form-label">Vendor Name</label>
+                            <label for="VendorID" class="col-sm-4 col-form-label lblrequired">Vendor Name</label>
                             <div class="col-sm-6">
                                 <select name="VendorID" id="VendorID" class="form-control ">
                                 </select>
@@ -51,26 +51,26 @@
                     </div>
                     <div class="col-md-6">
                         <div class="mt-0 row ">
-                            <label id="VendorsAddress" class="col-sm-3 col-form-label">--</label>
+                            <label id="VendorsAddress" class="align-self-center col-form-label">--</label>
                         </div>
                     </div>
                 </div>
                 <div class="form-group row mt-2">
-                    <label class="col-sm-3 col-form-label">PO Approver:</label>
+                    <label class="col-sm-2 col-form-label">PO Approver:</label>
                     <div class="col-sm-3 ">
                         <select name="POApproverID" id="POApproverID" class="form-control ">
                         </select>
                     </div>
                 </div>
                 <div class=" form-group row">
-                    <label class="col-sm-3 col-form-label">PO RequestedBy:</label>
+                    <label class="col-sm-2 col-form-label">PO RequestedBy:</label>
                     <div class="col-sm-6 ">
                         <label class="col-sm-3 col-form-label"> {{.User.FirstName}}</label>
 
                     </div>
                 </div>
                 <div class=" form-group row">
-                    <label class="col-sm-3 col-form-label">PO Description:</label>
+                    <label class="col-sm-2 col-form-label">PO Description:</label>
                     <div class="col-sm-6 ">
                         <textarea name="PODescription" maxlength="500" required placeholder="PO Description"
                             title="Description" class="form-control " id="PODescription"></textarea>
@@ -78,7 +78,7 @@
                     </div>
                 </div>
                 <div class=" form-group row">
-                    <label class="col-sm-3 col-form-label">Shipment Terms:</label>
+                    <label class="col-sm-2 col-form-label">Shipment Terms:</label>
                     <div class="col-sm-6 ">
                         <textarea name="ShipmentTerms" maxlength="500" required placeholder="Shipment Description"
                             title="Shipment Description" class="form-control " id="ShipmentTerms"></textarea>
@@ -86,7 +86,7 @@
                     </div>
                 </div>
                 <div class=" form-group row">
-                    <label class="col-sm-3 col-form-label">Payment Terms:</label>
+                    <label class="col-sm-2 col-form-label">Payment Terms:</label>
                     <div class="col-sm-6 ">
                         <textarea name="PaymentTerms" maxlength="500" required placeholder="Payment Terms"
                             title="PaymentTerms" class="form-control " id="PaymentTerms"></textarea>
@@ -94,7 +94,7 @@
                 </div>
                 <hr>
                 <div class="form-group row">
-                    <label for="AssignTo" class="col-md-3 col-form-label ">Asset Type:</label>
+                    <label for="AssignTo" class="col-md-2 col-form-label lblrequired">Asset Type:</label>
                     <div class="col-md-9">
                         <div class="btn-group btn-group-toggle" data-toggle="buttons">
                             <label class="btn btn-light btn-sm ">
@@ -111,7 +111,7 @@
                 </div>
                 <div class="collapse" id="divNonITAsset">
                     <div class="form-group row ">
-                        <label for="IDNonITAssets_Master" class="col-sm-3 col-form-label">Non-IT Asset Name:</label>
+                        <label for="IDNonITAssets_Master" class="col-sm-2 col-form-label lblrequired">Non-IT Asset Name:</label>
                         <div class="col-sm-6">
                             <select name="IDNonITAssets_Master" class="form-control " id="IDNonITAssets_Master">
                             </select>
@@ -120,7 +120,7 @@
                 </div>
                 <div class="collapse" id="divITAsset">
                     <div class="form-group row ">
-                        <label for="IDITAssets_Master" class="col-sm-3 col-form-label">IT Asset Name:</label>
+                        <label for="IDITAssets_Master" class="col-sm-2 col-form-label lblrequired">IT Asset Name:</label>
                         <div class="col-sm-6">
                             <input type="text" maxlength="45" name="ITAssetName" class="form-control " id="ITAssetName" />
                         </div>
@@ -128,7 +128,7 @@
                 </div>
                 <div class="collapse" id="divConsumable">
                     <div class="form-group row ">
-                        <label for="IDConsumable_Master" class="col-sm-3 col-form-label">Consumable Name:</label>
+                        <label for="IDConsumable_Master" class="col-sm-2 col-form-label">Consumable Name:</label>
                         <div class="col-sm-6">
                             <select name="IDConsumable_Master" class="form-control " id="IDConsumable_Master">
                             </select>
@@ -136,13 +136,13 @@
                     </div>
                 </div>
                 <div class="form-group row ">
-                    <label class="col-sm-3 col-form-label">Quantity:</label>
+                    <label class="col-sm-2 col-form-label">Quantity:</label>
                     <div class="col-sm-2">
                         <input type="number" id="Quantity" min="1" class="form-control">
                     </div>
                 </div>
                 <div class="form-group row ">
-                    <label class="col-sm-3 col-form-label">Price/Unit:</label>
+                    <label class="col-sm-2 col-form-label lblrequired">Price/Unit:</label>
                     <div class="col-sm-2 ">
                         <div class="input-group">
                             <input type="number" id="PricePerUnit" min="0" class="form-control">
@@ -153,7 +153,7 @@
                     </div>
                 </div>
                 <div class=" form-group row">
-                    <label class="col-sm-3 col-form-label">Asset Comments:</label>
+                    <label class="col-sm-2 col-form-label">Asset Comments:</label>
                     <div class="col-sm-6 ">
                         <textarea name="AssetComments" maxlength="500" required placeholder="Comments" title="Comments"
                             class="form-control " id="AssetComments"></textarea>
