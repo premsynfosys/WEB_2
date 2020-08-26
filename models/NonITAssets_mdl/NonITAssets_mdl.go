@@ -1,6 +1,8 @@
 package NonITAssets_mdl
 
 import (
+	"time"
+
 	CmnModel "github.com/premsynfosys/AMS_WEB/models/CmnModel"
 )
 
@@ -20,8 +22,8 @@ type NonITAssets struct {
 	ReOrderQuantity              int                           `json:"ReOrderQuantity"`
 	StatusID                     int                           `json:"StatusID"`
 	LocationID                   int                           `json:"LocationID"`
-	Created_On                   string                        `json:"Created_On"`
-	Modified_On                  string                        `json:"Modified_On"`
+	Created_On                   time.Time                     `json:"Created_On"`
+	Modified_On                  time.Time                     `json:"Modified_On"`
 	Created_By                   int                           `json:"Created_By"`
 	Modified_By                  int                           `json:"Modified_By"`
 	CustomFields1                string                        `json:"CustomFields1"`
@@ -57,8 +59,8 @@ type NonITAssets_Master struct {
 	NonITAssets_GroupName  string             `json:"NonITAssets_GroupName"`
 	NonITAssets_SubGroupID int                `json:"NonITAssets_SubGroupID"`
 	Description            string             `json:"Description"`
-	Created_On             string             `json:"Created_On"`
-	Modified_On            string             `json:"Modified_On"`
+	Created_On             time.Time          `json:"Created_On"`
+	Modified_On            time.Time          `json:"Modified_On"`
 	Created_By             int                `json:"Created_By"`
 	Modified_By            int                `json:"Modified_By"`
 	Record_Status          string             `json:"Record_Status"`
@@ -67,12 +69,12 @@ type NonITAssets_Master struct {
 
 // NonITAssets_Groups ..
 type NonITAssets_Groups struct {
-	IDNonITAssets_Groups  int    `json:"IDNonITAssets_Groups"`
-	NonITAssets_GroupName string `json:"NonITAssets_GroupName"`
-	CreatedOn             string `json:"CreatedOn"`
-	CreatedBy             int    `json:"CreatedBy"`
-	ModifiedOn            string `json:"ModifiedOn"`
-	ModifiedBy            int    `json:"ModifiedBy"`
+	IDNonITAssets_Groups  int       `json:"IDNonITAssets_Groups"`
+	NonITAssets_GroupName string    `json:"NonITAssets_GroupName"`
+	CreatedOn             time.Time `json:"CreatedOn"`
+	CreatedBy             int       `json:"CreatedBy"`
+	ModifiedOn            time.Time `json:"ModifiedOn"`
+	ModifiedBy            int       `json:"ModifiedBy"`
 }
 
 //NonITAssets_checkout_checkin ..
@@ -83,12 +85,12 @@ type NonITAssets_checkout_checkin struct {
 	CheckedOutTo                   string       `json:"CheckedOutTo"`
 	CheckedOutUserID               int          `json:"CheckedOutUserID"`
 	CheckedOutPlace                string       `json:"CheckedOutPlace"`
-	CheckedOutDate                 string       `json:"CheckedOutDate"`
+	CheckedOutDate                 time.Time    `json:"CheckedOutDate"`
 	CheckOut_Qnty                  int          `json:"CheckOut_Qnty"`
 	InUse                          int          `json:"InUse"`
 	CheckOut_Comments              string       `json:"CheckOut_Comments"`
 	Record_Status                  string       `json:"Record_Status"`
-	Created_On                     string       `json:"Created_On"`
+	Created_On                     time.Time    `json:"Created_On"`
 	Created_By                     int          `json:"Created_By"`
 	CheckOut_By                    int          `json:"CheckOut_By"`
 	Created_ByName                 string       `json:"Created_ByName"`
@@ -98,13 +100,13 @@ type NonITAssets_checkout_checkin struct {
 }
 
 type NonITAssets_checkin struct {
-	IDnonitassets_checkin          int    `json:"IDnonitassets_checkin"`
-	NonITAssets_Checkout_CheckinID int    `json:"NonITAssets_Checkout_CheckinID"`
-	CheckIN_By                     int    `json:"CheckIN_By"`
-	CheckIN_ByName                 string `json:"CheckIN_ByName"`
-	CheckIn_Qnty                   int    `json:"CheckIn_Qnty"`
-	CheckinDate                    string `json:"CheckinDate"`
-	Checkin_Comments               string `json:"Checkin_Comments"`
+	IDnonitassets_checkin          int       `json:"IDnonitassets_checkin"`
+	NonITAssets_Checkout_CheckinID int       `json:"NonITAssets_Checkout_CheckinID"`
+	CheckIN_By                     int       `json:"CheckIN_By"`
+	CheckIN_ByName                 string    `json:"CheckIN_ByName"`
+	CheckIn_Qnty                   int       `json:"CheckIn_Qnty"`
+	CheckinDate                    time.Time `json:"CheckinDate"`
+	Checkin_Comments               string    `json:"Checkin_Comments"`
 }
 
 //NonITAssets_Oprtns ..
@@ -112,13 +114,13 @@ type NonITAssets_Oprtns struct {
 	IDnonitassets_Oprtns int              `json:"IDnonitassets_Oprtns"`
 	NonITAsset_ID        int              `json:"NonITAsset_ID"`
 	Quantity             int              `json:"Quantity"`
-	Warranty             string           `json:"Warranty"`
+	Warranty             time.Time        `json:"Warranty"`
 	UnitPrice            float64          `json:"UnitPrice"`
 	VendorID             int              `json:"VendorID"`
 	OrderedBy            int              `json:"OrderedBy"`
 	Comments             string           `json:"Comments"`
 	StatusID             int              `json:"StatusID"`
-	Created_On           string           `json:"Created_On"`
+	Created_On           time.Time        `json:"Created_On"`
 	Created_By           int              `json:"Created_By"`
 	CreatedByName        string           `json:"CreatedByName"`
 	Vendor               CmnModel.Vendors `json:"Vendor"`
@@ -132,12 +134,12 @@ type NonITAssetRequest struct {
 	AssetID                   int                       `json:"AssetID"`
 	AssignedQnty              int                       `json:"AssignedQnty"`
 	Description               string                    `json:"Description"`
-	RequestedOn               string                    `json:"RequestedOn"`
+	RequestedOn               time.Time                 `json:"RequestedOn"`
 	Priority                  string                    `json:"Priority"`
 	ReqStatus                 string                    `json:"ReqStatus"`
 	ReqGroupID                int                       `json:"ReqGroupID"`
 	CreatedBy                 int                       `json:"CreatedBy"`
-	CreatedOn                 string                    `json:"CreatedOn"`
+	CreatedOn                 time.Time                 `json:"CreatedOn"`
 	NonITAssetRequestApproval NonITAssetRequestApproval `json:"NonITAssetRequestApproval"`
 }
 type NonITAssetRequestApproval struct {
@@ -146,10 +148,10 @@ type NonITAssetRequestApproval struct {
 	RoleID                     int                `json:"RoleID"`
 	ApproverID                 int                `json:"ApproverID"`
 	Grade                      int                `json:"Grade"`
-	CreatedOn                  string             `json:"CreatedOn"`
+	CreatedOn                  time.Time          `json:"CreatedOn"`
 	Status                     string             `json:"Status"`
 	Comments                   string             `json:"Comments"`
-	ActionedOn                 string             `json:"ActionedOn"`
+	ActionedOn                 time.Time          `json:"ActionedOn"`
 	CreatedBy                  int                `json:"CreatedBy"`
 	Employee                   CmnModel.Employees `json:"Employee"`
 	RoleName                   string             `json:"RoleName"`

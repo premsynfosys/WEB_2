@@ -254,7 +254,7 @@
         $('#ITAssetWarranty').datetimepicker({
             format: customDateFormate
         });
-        $('#ITAssetWarranty').val("{{.Data.ITAssetWarranty}}")
+        $('#ITAssetWarranty').val('{{.Data.ITAssetWarranty.Format "02-01-2006"}}')
 
         $(".custom-file-input").on("change", function () {
             var fileName = $(this).val().split("\\").pop();

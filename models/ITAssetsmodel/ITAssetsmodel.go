@@ -1,32 +1,33 @@
 package ITAssetsmodel
 
 import (
+	"time"
+
 	CmnModel "github.com/premsynfosys/AMS_WEB/models/CmnModel"
 )
 
 // ITAssetGroup type details
 type ITAssetGroup struct {
-	IDITAssetgroups  int    `json:"IDITAssetgroups"`
-	ITAssetgroupName string `json:"ITAssetgroupName"`
-	CreatedBy        int    `json:"CreatedBy"`
-	CreatedOn        string `json:"CreatedOn"`
-	RecordStatus     string `json:"RecordStatus"`
+	IDITAssetgroups  int       `json:"IDITAssetgroups"`
+	ITAssetgroupName string    `json:"ITAssetgroupName"`
+	CreatedBy        int       `json:"CreatedBy"`
+	CreatedOn        time.Time `json:"CreatedOn"`
+	RecordStatus     string    `json:"RecordStatus"`
 }
 
 //ITAssetRequest ..
 type ITAssetRequest struct {
-	IDITAssetrequest int    `json:"IDITAssetrequest"`
-	RequestedBy      int    `json:"RequestedBy"`
-	AssetType        string `json:"AssetType"`
-	AssetID          int    `json:"AssetID"`
-	Description      string `json:"Description"`
-	RequestedOn      string `json:"RequestedOn"`
-	Priority         string `json:"Priority"`
-	ReqStatus        string `json:"ReqStatus"`
-
+	IDITAssetrequest       int                    `json:"IDITAssetrequest"`
+	RequestedBy            int                    `json:"RequestedBy"`
+	AssetType              string                 `json:"AssetType"`
+	AssetID                int                    `json:"AssetID"`
+	Description            string                 `json:"Description"`
+	RequestedOn            time.Time              `json:"RequestedOn"`
+	Priority               string                 `json:"Priority"`
+	ReqStatus              string                 `json:"ReqStatus"`
 	ReqGroupID             int                    `json:"ReqGroupID"`
 	CreatedBy              int                    `json:"CreatedBy"`
-	CreatedOn              string                 `json:"CreatedOn"`
+	CreatedOn              time.Time              `json:"CreatedOn"`
 	ITAssetRequestApproval ITAssetRequestApproval `json:"ITAssetRequestApproval"`
 }
 type ITAssetRequestApproval struct {
@@ -35,17 +36,16 @@ type ITAssetRequestApproval struct {
 	RoleID                  int                `json:"RoleID"`
 	ApproverID              int                `json:"ApproverID"`
 	Grade                   int                `json:"Grade"`
-	CreatedOn               string             `json:"CreatedOn"`
+	CreatedOn               time.Time          `json:"CreatedOn"`
 	Status                  string             `json:"Status"`
 	Comments                string             `json:"Comments"`
-	ActionedOn              string             `json:"ActionedOn"`
+	ActionedOn              time.Time          `json:"ActionedOn"`
 	CreatedBy               int                `json:"CreatedBy"`
 	Employee                CmnModel.Employees `json:"Employee"`
 	RoleName                string             `json:"RoleName"`
 	NextRoleID              int                `json:"NextRoleID"`
 	NextApproverID          int                `json:"NextApproverID"`
 	NextGrade               int                `json:"NextGrade"`
-	
 }
 
 //ITAssetReqList ..
@@ -69,7 +69,7 @@ type ITAssetModel struct {
 	ITAssetDescription      string             `json:"ITAssetDescription"`
 	ITAssetAssignTo         string             `json:"ITAssetAssignTo"`
 	ITAssetPrice            float64            `json:"ITAssetPrice"`
-	ITAssetWarranty         string             `json:"ITAssetWarranty"`
+	ITAssetWarranty         time.Time          `json:"ITAssetWarranty"`
 	ITAssetStatus           int                `json:"ITAssetStatus"`
 	Statusname              string             `json:"Statusname"`
 	ITAssetFileUpld         string             `json:"ITAssetFileUpld"`
@@ -101,77 +101,73 @@ type ITAssetModel struct {
 	VendorData              CmnModel.Vendors   `json:"VendorData"`
 	ModifiedBy              int                `json:"ModifiedBy"`
 	CreatedBy               int                `json:"CreatedBy"`
-	CreatedOn               string             `json:"CreatedOn"`
-	ModifiedOn              string             `json:"ModifiedOn"`
-
-	ActionePerformed   string `json:"ActionePerformed"`
-	MainTblID          string `json:"MainTblID"`
-	IDitassets_history string `json:"IDitassets_history"`
+	CreatedOn               time.Time          `json:"CreatedOn"`
+	ModifiedOn              time.Time          `json:"ModifiedOn"`
+	ActionePerformed        string             `json:"ActionePerformed"`
+	MainTblID               string             `json:"MainTblID"`
+	IDitassets_history      string             `json:"IDitassets_history"`
 }
 
 //ITassetCheckout ..
 type ITassetCheckout struct {
-	IDITAssetCheckOutCheckIN int    `json:"IDITAssetCheckOutCheckIN"`
-	AssetID                  int    `json:"AssetID"`
-	CheckedOutTo             string `json:"CheckedOutTo"`
-	CheckedOutUserID         int    `json:"CheckedOutUserID"`
-	CheckedOutAssetID        int    `json:"CheckedOutAssetID"`
-	CheckedOutDate           string `json:"CheckedOutDate"`
-	ExpectedCheckInDate      string `json:"ExpectedCheckInDate"`
-	CheckinDate              string `json:"CheckinDate"`
-	Comments                 string `json:"Comments"`
-	CheckInComments          string `json:"CheckinComments"`
-	RecordStatsus            string `json:"RecordStatsus"`
-	IsCheckin                bool   `json:"isCheckin"`
-	CheckIN_By               int    `json:"CheckIN_By"`
-	CheckOut_By              int    `json:"CheckOut_By"`
-	CreatedBy                int    `json:"CreatedBy"`
+	IDITAssetCheckOutCheckIN int       `json:"IDITAssetCheckOutCheckIN"`
+	AssetID                  int       `json:"AssetID"`
+	CheckedOutTo             string    `json:"CheckedOutTo"`
+	CheckedOutUserID         int       `json:"CheckedOutUserID"`
+	CheckedOutAssetID        int       `json:"CheckedOutAssetID"`
+	CheckedOutDate           time.Time `json:"CheckedOutDate"`
+	ExpectedCheckInDate      time.Time `json:"ExpectedCheckInDate"`
+	CheckinDate              time.Time `json:"CheckinDate"`
+	Comments                 string    `json:"Comments"`
+	CheckInComments          string    `json:"CheckinComments"`
+	RecordStatsus            string    `json:"RecordStatsus"`
+	IsCheckin                bool      `json:"isCheckin"`
+	CheckIN_By               int       `json:"CheckIN_By"`
+	CheckOut_By              int       `json:"CheckOut_By"`
+	CreatedBy                int       `json:"CreatedBy"`
 }
 
 //ITassetsFiles ..
 type ITassetsFiles struct {
-	IDITAssetsFiles int    `json:"IDITAssetsFiles"`
-	Name            string `json:"Name"`
-	Descrption      string `json:"Descrption"`
-	Path            string `json:"Path"`
-	AssetID         int    `json:"AssetID"`
-	FileType        string `json:"FileType"`
-	Size            string `json:"Size"`
-	UploadedOn      string `json:"UploadedOn"`
-	CreatedBy       int    `json:"CreatedBy"`
-	CreatedOn       string `json:"CreatedOn"`
-	RecordStatus    string `json:"RecordStatus"`
+	IDITAssetsFiles int       `json:"IDITAssetsFiles"`
+	Name            string    `json:"Name"`
+	Descrption      string    `json:"Descrption"`
+	Path            string    `json:"Path"`
+	AssetID         int       `json:"AssetID"`
+	FileType        string    `json:"FileType"`
+	Size            string    `json:"Size"`
+	UploadedOn      time.Time `json:"UploadedOn"`
+	CreatedBy       int       `json:"CreatedBy"`
+	CreatedOn       time.Time `json:"CreatedOn"`
+	RecordStatus    string    `json:"RecordStatus"`
 }
 
 //itasset_services ..
-
 type ITasset_services struct {
-	IDITAsset_Services  *int    `json:"IDITAsset_Services"`
-	ITAssetID           *int    `json:"ITAssetID"`
-	Expected_Start_Date *string `json:"Expected_Start_Date"`
-	Expected_End_Date   *string `json:"Expected_End_Date"`
-	Actual_Start_Date   *string `json:"Actual_Start_Date"`
-	Actual_End_Date     *string `json:"Actual_End_Date"`
-	ServiceBy_Type      *string `json:"ServiceBy_Type"`
-
-	ServiceBy_EmpID      *int     `json:"ServiceBy_EmpID"`
-	ServiceBy_VendorID   *int     `json:"ServiceBy_VendorID"`
-	Service_Type         *int     `json:"Service_Type"`
-	Status               *int     `json:"Status"`
-	Comments             *string  `json:"Comments"`
-	Description          *string  `json:"Description"`
-	Is_Asset_UnAvailable *int     `json:"Is_Asset_UnAvailable"`
-	Cost                 *float64 `json:"Cost"`
-	CreatedBy            *int     `json:"CreatedBy"`
-	ModifiedBy           *int     `json:"ModifiedBy"`
-
-	CreatedOn           *string             `json:"CreatedOn"`
-	Vendors             *CmnModel.Vendors   `json:"Vendors"`
-	Employees           *CmnModel.Employees `json:"Employees"`
-	ITAssetModel        *ITAssetModel       `json:"ITAssetModel"`
-	Service_type        *Service_type       `json:"Service_type"`
-	Service_status      *Service_status     `json:"Service_status"`
-	Employees_CreatedBy *CmnModel.Employees `json:"Employees_CreatedBy"`
+	IDITAsset_Services   *int                `json:"IDITAsset_Services"`
+	ITAssetID            *int                `json:"ITAssetID"`
+	Expected_Start_Date  *time.Time          `json:"Expected_Start_Date"`
+	Expected_End_Date    *time.Time          `json:"Expected_End_Date"`
+	Actual_Start_Date    *time.Time          `json:"Actual_Start_Date"`
+	Actual_End_Date      *time.Time          `json:"Actual_End_Date"`
+	ServiceBy_Type       *string             `json:"ServiceBy_Type"`
+	ServiceBy_EmpID      *int                `json:"ServiceBy_EmpID"`
+	ServiceBy_VendorID   *int                `json:"ServiceBy_VendorID"`
+	Service_Type         *int                `json:"Service_Type"`
+	Status               *int                `json:"Status"`
+	Comments             *string             `json:"Comments"`
+	Description          *string             `json:"Description"`
+	Is_Asset_UnAvailable *int                `json:"Is_Asset_UnAvailable"`
+	Cost                 *float64            `json:"Cost"`
+	CreatedBy            *int                `json:"CreatedBy"`
+	ModifiedBy           *int                `json:"ModifiedBy"`
+	CreatedOn            *time.Time          `json:"CreatedOn"`
+	Vendors              *CmnModel.Vendors   `json:"Vendors"`
+	Employees            *CmnModel.Employees `json:"Employees"`
+	ITAssetModel         *ITAssetModel       `json:"ITAssetModel"`
+	Service_type         *Service_type       `json:"Service_type"`
+	Service_status       *Service_status     `json:"Service_status"`
+	Employees_CreatedBy  *CmnModel.Employees `json:"Employees_CreatedBy"`
 }
 
 type Service_type struct {
@@ -185,9 +181,9 @@ type Service_status struct {
 }
 type ITAsset_service_request struct {
 	IDitasset_service_request *int                `json:"IDitasset_service_request"`
-	DateOfReq                 *string             `json:"DateOfReq"`
+	DateOfReq                 *time.Time          `json:"DateOfReq"`
 	ITAssetID                 *int                `json:"ITAssetID"`
-	OldITAssetID                 *int              `json:"OldITAssetID"`
+	OldITAssetID              *int                `json:"OldITAssetID"`
 	Admin_EmpID               *int                `json:"Admin_EmpID"`
 	Emp_EmpID                 *int                `json:"Emp_EmpID"`
 	Issue_Description         *string             `json:"Issue_Description"`

@@ -97,7 +97,7 @@ func (p *IITAsset) CreateITAsset(w http.ResponseWriter, r *http.Request) {
 		mdl.ITAssetAssignTo = r.FormValue("CanITAssetAssignTo")
 		ITAssetPrice, _ := strconv.ParseFloat(r.FormValue("ITAssetPrice"), 32)
 		mdl.ITAssetPrice = ITAssetPrice
-		mdl.ITAssetWarranty = r.FormValue("ITAssetWarranty")
+		mdl.ITAssetWarranty, _ = time.Parse("02-01-2006", r.FormValue("ITAssetWarranty"))
 		VendorID, _ := strconv.Atoi(r.FormValue("Vendor"))
 		mdl.Vendor = VendorID
 		LocationID, _ := strconv.Atoi(r.FormValue("Location"))
@@ -404,7 +404,7 @@ func (p *IITAsset) GetITAssetsEditByID(w http.ResponseWriter, r *http.Request) {
 		//mdl.ITAssetAssignTo = r.FormValue("CanITAssetAssignTo")
 		ITAssetPrice, _ := strconv.ParseFloat(r.FormValue("ITAssetPrice"), 32)
 		mdl.ITAssetPrice = ITAssetPrice
-		mdl.ITAssetWarranty = r.FormValue("ITAssetWarranty")
+		mdl.ITAssetWarranty, _ = time.Parse("02-01-2006", r.FormValue("ITAssetWarranty"))
 		VendorID, _ := strconv.Atoi(r.FormValue("Vendor"))
 		mdl.Vendor = VendorID
 		LocationID, _ := strconv.Atoi(r.FormValue("Location"))
@@ -478,7 +478,7 @@ func (p *IITAsset) ITAssetsBulkEdit(w http.ResponseWriter, r *http.Request) {
 		mdl.ITAssetDescription = data["ITAssetDescription"]
 
 		if data["ITAssetWarranty"] != "" {
-			mdl.ITAssetWarranty = data["ITAssetWarranty"]
+			mdl.ITAssetWarranty, _ = time.Parse("02-01-2006", data["ITAssetWarranty"])
 		}
 		VendorID, _ := strconv.Atoi(data["Vendor"])
 		mdl.Vendor = VendorID
@@ -541,14 +541,14 @@ func (p *IITAsset) ITAssetsCheckout(w http.ResponseWriter, r *http.Request) {
 		CheckedOutUserID, err := strconv.Atoi(r.FormValue("Users"))
 		if CheckedOutUserID != 0 {
 			mdl.CheckedOutUserID = CheckedOutUserID
-			mdl.CheckedOutDate = r.FormValue("CheckOutDate")
-			mdl.ExpectedCheckInDate = r.FormValue("ExpectedCheckInDate")
+			mdl.CheckedOutDate, _ = time.Parse("02-01-2006", r.FormValue("CheckOutDate"))
+			mdl.ExpectedCheckInDate, _ = time.Parse("02-01-2006", r.FormValue("ExpectedCheckInDate"))
 		}
 		CheckedOutAssetID, err := strconv.Atoi(r.FormValue("Assets"))
 		if CheckedOutAssetID != 0 {
 			mdl.CheckedOutAssetID = CheckedOutAssetID
-			mdl.CheckedOutDate = r.FormValue("CheckOutDate")
-			mdl.ExpectedCheckInDate = r.FormValue("ExpectedCheckInDate")
+			mdl.CheckedOutDate, _ = time.Parse("02-01-2006", r.FormValue("CheckOutDate"))
+			mdl.ExpectedCheckInDate, _ = time.Parse("02-01-2006", r.FormValue("ExpectedCheckInDate"))
 		}
 
 		mdl.Comments = r.FormValue("Description")
@@ -624,7 +624,7 @@ func (p *IITAsset) ITAssetRetire(w http.ResponseWriter, r *http.Request) {
 	mdl := CmnModel.Retire{}
 	mdl.AssetID, _ = strconv.Atoi(r.FormValue("AssetID"))
 	mdl.Reason, _ = strconv.Atoi(r.FormValue("Reason"))
-	mdl.RetireDate = r.FormValue("RetireDate")
+	mdl.RetireDate, _ = time.Parse("02-01-2006", r.FormValue("RetireDate"))
 	mdl.Commnets = r.FormValue("Commnets")
 	mdl.RetiredBy, _ = strconv.Atoi(r.FormValue("RetiredBy"))
 	body := p.Irepo.ITAssetRetire(r.Context(), &mdl)
@@ -645,7 +645,7 @@ func (p *IITAsset) GetCustomFields(w http.ResponseWriter, r *http.Request) {
 func (p *IITAsset) CreateITAssetsCheckIn(w http.ResponseWriter, r *http.Request) {
 
 	mdl := ITAssetsmodel.ITassetCheckout{}
-	mdl.CheckinDate = r.FormValue("CheckInDate")
+	mdl.CheckinDate, _ = time.Parse("02-01-2006", r.FormValue("CheckInDate"))
 	mdl.CheckInComments = r.FormValue("CheckInComments")
 	IDITAssetCheckOutCheckIN, err := strconv.Atoi(r.FormValue("IDITAssetCheckOutCheckIN"))
 	mdl.IDITAssetCheckOutCheckIN = IDITAssetCheckOutCheckIN
@@ -888,8 +888,6 @@ func (p *IITAsset) GetITAssetservices_List(w http.ResponseWriter, r *http.Reques
 
 }
 
-
-
 func (p *IITAsset) GetITAssetservices_List_ByLoc(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	LocID := params["LocID"]
@@ -1005,6 +1003,7 @@ func (p *IITAsset) ITAssetMaintenanceList(w http.ResponseWriter, r *http.Request
 	utils.ExecuteTemplate(w, r, "ITAssetMaintenanceList", Mapdata)
 
 }
+
 //EmployeesHistory ..
 func (p *IITAsset) ITAssetHistory(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)

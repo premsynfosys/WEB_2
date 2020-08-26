@@ -1,6 +1,8 @@
 package ConsumableModel
 
 import (
+	"time"
+
 	CmnModel "github.com/premsynfosys/AMS_WEB/models/CmnModel"
 )
 
@@ -13,8 +15,8 @@ type Consumablemaster struct {
 	ConsumableGroups   []*ConsumableGroup `json:"ConsumableGroup"`
 	SubGroupID         int                `json:"SubGroupID"`
 	Description        string             `json:"Description"`
-	CreatedOn          string             `json:"CreatedOn"`
-	ModifiedOn         string             `json:"ModifiedOn"`
+	CreatedOn          time.Time          `json:"CreatedOn"`
+	ModifiedOn         time.Time          `json:"ModifiedOn"`
 }
 
 //Consumables ..
@@ -28,12 +30,12 @@ type Consumables struct {
 	ThresholdQnty      int                `json:"ThresholdQnty"`
 	ReOrderStockPrice  float64            `json:"ReOrderStockPrice"`
 	ReOrderQuantity    int                `json:"ReOrderQuantity"`
-	Warranty           string             `json:"Warranty"`
+	Warranty           time.Time             `json:"Warranty"`
 	StatusID           int                `json:"StatusID"`
 	LocationID         int                `json:"LocationID"`
-	CreatedOn          string             `json:"CreatedOn"`
+	CreatedOn          time.Time             `json:"CreatedOn"`
 	CreatedByName      string             `json:"CreatedByName"`
-	ModifiedOn         string             `json:"ModifiedOn"`
+	ModifiedOn         time.Time             `json:"ModifiedOn"`
 	CreatedBy          int                `json:"CreatedBy"`
 	ModifiedBy         int                `json:"ModifiedBy"`
 	CustomFields1      string             `json:"CustomFields1"`
@@ -67,7 +69,7 @@ type ConsumableOprtns struct {
 	VendorID           int              `json:"VendorID"`
 	OrderedBy          int              `json:"OrderedBy"`
 	Comments           string           `json:"Comments"`
-	CreataedOn         string           `json:"CreataedOn"`
+	CreataedOn         time.Time           `json:"CreataedOn"`
 	StatusID           int              `json:"StatusID"`
 	Vendor             CmnModel.Vendors `json:"Vendor"`
 	Status             *CmnModel.Status `json:"Status"`
@@ -85,6 +87,6 @@ type Consumables_Retire struct {
 	IDConsumables_Retire int    `json:"IDConsumables_Retire"`
 	AssetID              int    `json:"AssetID"`
 	ReasonID             int    `json:"ReasonID"`
-	RetireDate           string `json:"RetireDate"`
+	RetireDate           time.Time `json:"RetireDate"`
 	Comments             string `json:"Comments"`
 }

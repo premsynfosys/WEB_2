@@ -89,8 +89,8 @@
             }
 
             function jsondate(date) {
-
-                  if (date != null && date != "" && date != "0000-00-00 00:00:00" && date != "0000-00-00") {
+debugger;
+                  if (date != null && date != "" && date != "0000-00-00 00:00:00" && date != "0001-01-01T00:00:00Z") {
                         var currentTime = new Date(date);
                         var month = ("0" + (currentTime.getDate())).slice(-2);
                         var day = ("0" + (currentTime.getMonth() + 1)).slice(-2);
@@ -171,7 +171,7 @@
                   })
                   //  .not("input[type='email']"
                   $(document).on("keydown", "textarea,input:not(input[type='email'],.datetimepicker-input)", function (e) {
-                        debugger;
+                      
                         var str = this.value
                         var patt = new RegExp(/^[\w-_.:\n ]*$/);
                         //  ^ Start of string
@@ -218,7 +218,7 @@
                         $('.modal .datetimepicker-input').attr('placeholder', customDateFormate);  
                   })
                   $(".sidebar-content").scroll(function () {
-                        console.log($(this).scrollTop())
+                       
                         sessionStorage.scrollTop = $(this).scrollTop();
                   });
                   if (sessionStorage.scrollTop != "undefined") {

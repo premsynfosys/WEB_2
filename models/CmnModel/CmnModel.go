@@ -1,5 +1,7 @@
 package CmnModel
 
+import "time"
+
 type EmployeeDashboard struct {
 	EmpID                  int `json:"EmpID"`
 	LocID                  int `json:"LocID"`
@@ -51,16 +53,16 @@ type Role struct {
 
 //Designation ..
 type Designation struct {
-	IDDesignation   int    `json:"IDDesignation"`
-	DesignationName string `json:"DesignationName"`
-	CreatedOn       string `json:"CreatedOn"`
+	IDDesignation   int       `json:"IDDesignation"`
+	DesignationName string    `json:"DesignationName"`
+	CreatedOn       time.Time `json:"CreatedOn"`
 }
 
 //Educations ..
 type Educations struct {
-	IDEducations int    `json:"IDEducations"`
-	Name         string `json:"Name"`
-	CreatedOn    string `json:"CreatedOn"`
+	IDEducations int       `json:"IDEducations"`
+	Name         string    `json:"Name"`
+	CreatedOn    time.Time `json:"CreatedOn"`
 }
 
 //Authorization ..
@@ -68,7 +70,7 @@ type Authorization struct {
 	IDAuthorization  *int           `json:"IDAuthorization"`
 	RoleID           *int           `json:"RoleID"`
 	Features_List_ID *int           `json:"Features_List_ID"`
-	CreatedOn        *string        `json:"CreatedOn"`
+	CreatedOn        *time.Time     `json:"CreatedOn"`
 	CreatedBy        *int           `json:"CreatedBy"`
 	Features_List    *Features_List `json:"Features_List"`
 	Role             *Role          `json:"Role"`
@@ -76,10 +78,10 @@ type Authorization struct {
 
 //Features_List ..
 type Features_List struct {
-	IDFeatures_list int    `json:"IDFeatures_list"`
-	Feature_Name    string `json:"Feature_Name"`
-	Module          string `json:"Module"`
-	CreatedOn       string `json:"CreatedOn"`
+	IDFeatures_list int       `json:"IDFeatures_list"`
+	Feature_Name    string    `json:"Feature_Name"`
+	Module          string    `json:"Module"`
+	CreatedOn       time.Time `json:"CreatedOn"`
 }
 
 // Employees type details
@@ -87,7 +89,7 @@ type Employees struct {
 	IDEmployees     int         `json:"IDEmployees"`
 	FirstName       string      `json:"FirstName"`
 	LastName        string      `json:"LastName"`
-	DOB             string      `json:"DOB"`
+	DOB             time.Time   `json:"DOB"`
 	Email           string      `json:"Email"`
 	EmpCode         string      `json:"EmpCode"`
 	Mobile          string      `json:"Mobile"`
@@ -99,13 +101,13 @@ type Employees struct {
 	ExperienceMonth int         `json:"ExperienceMonth"`
 	ExperienceYear  int         `json:"ExperienceYear"`
 	Designation     int         `json:"Designation"`
-	DOJ             string      `json:"DOJ"`
+	DOJ             time.Time   `json:"DOJ"`
 	User            *User       `json:"User"`
 	Location        int         `json:"Location"`
 	Gender          string      `json:"Gender"`
 	ModifiedBy      int         `json:"ModifiedBy"`
 	CreatedBy       int         `json:"CreatedBy"`
-	CreatedOn       string      `json:"CreatedOn"`
+	CreatedOn       time.Time   `json:"CreatedOn"`
 	EducationData   Educations  `json:"EducationData"`
 	DesignationData Designation `json:"DesignationData"`
 	CreatedByData   *Employees  `json:"CreatedByData"`
@@ -125,18 +127,6 @@ type LoginModel struct {
 	LocationID  int
 	Image       string
 }
-type ActivityLog struct {
-	IDHistory           int    `json:"IDHistory"`
-	IDMaintable         int    `json:"IDMaintable"`
-	CreatedOn           string `json:"CreatedOn"`
-	ActionPerformed     string `json:"ActionPerformed"`
-	CreatedBy           int    `json:"CreatedBy"`
-	Module              string `json:"Module"`
-	Name                string `json:"Name"`
-	ActionedByFirstName string `json:"ActionedByFirstName"`
-	ActionedByLastName  string `json:"ActionedByLastName"`
-}
-
 //User ..
 type User struct {
 	IDUsers           int             `json:"IDUsers"`
@@ -147,14 +137,28 @@ type User struct {
 	RoleID            int             `json:"RoleID"`
 	Employee          Employees       `json:"Employee"`
 	ListAuthorization []Authorization `json:"ListAuthorization"`
-	LinkGeneratedOn   *string         `json:"LinkGeneratedOn"`
+	LinkGeneratedOn   time.Time       `json:"LinkGeneratedOn"`
 	Role              *Role           `json:"Role"`
 	Educations        Educations      `json:"Educations"`
 	Designation       Designation     `json:"Designation"`
 	ModifiedBy        int             `json:"ModifiedBy"`
 	CreatedBy         int             `json:"CreatedBy"`
-	CreatedOn         string          `json:"CreatedOn"`
+	CreatedOn         time.Time       `json:"CreatedOn"`
 }
+
+type ActivityLog struct {
+	IDHistory           int       `json:"IDHistory"`
+	IDMaintable         int       `json:"IDMaintable"`
+	CreatedOn           time.Time `json:"CreatedOn"`
+	ActionPerformed     string    `json:"ActionPerformed"`
+	CreatedBy           int       `json:"CreatedBy"`
+	Module              string    `json:"Module"`
+	Name                string    `json:"Name"`
+	ActionedByFirstName string    `json:"ActionedByFirstName"`
+	ActionedByLastName  string    `json:"ActionedByLastName"`
+}
+
+
 
 // Status type details
 type Status struct {
@@ -165,12 +169,12 @@ type Status struct {
 
 //Retire ..
 type Retire struct {
-	IDRetire   int    `json:"IDRetire"`
-	AssetID    int    `json:"AssetID"`
-	Reason     int    `json:"Reason"`
-	RetireDate string `json:"RetireDate"`
-	Commnets   string `json:"Commnets"`
-	RetiredBy  int    `json:"RetiredBy"`
+	IDRetire   int       `json:"IDRetire"`
+	AssetID    int       `json:"AssetID"`
+	Reason     int       `json:"Reason"`
+	RetireDate time.Time `json:"RetireDate"`
+	Commnets   string    `json:"Commnets"`
+	RetiredBy  int       `json:"RetiredBy"`
 }
 
 //Countries ..
@@ -189,19 +193,19 @@ type States struct {
 
 //Vendors ..
 type Vendors struct {
-	Idvendors         int    `json:"Idvendors"`
-	Name              string `json:"Name"`
-	Description       string `json:"Description"`
-	Websites          string `json:"Websites"`
-	Address           string `json:"Address"`
-	Email             string `json:"Email"`
-	ContactPersonName string `json:"ContactPersonName"`
-	Phone             string `json:"Phone"`
-	Status            string `json:"Status"`
-	CreatedBy         int    `json:"CreatedBy"`
-	CreatedOn         string `json:"CreatedOn"`
-	ModifiedBy        int    `json:"ModifiedBy"`
-	ModifiedOn        string `json:"ModifiedOn"`
+	Idvendors         int       `json:"Idvendors"`
+	Name              string    `json:"Name"`
+	Description       string    `json:"Description"`
+	Websites          string    `json:"Websites"`
+	Address           string    `json:"Address"`
+	Email             string    `json:"Email"`
+	ContactPersonName string    `json:"ContactPersonName"`
+	Phone             string    `json:"Phone"`
+	Status            string    `json:"Status"`
+	CreatedBy         int       `json:"CreatedBy"`
+	CreatedOn         time.Time `json:"CreatedOn"`
+	ModifiedBy        int       `json:"ModifiedBy"`
+	ModifiedOn        time.Time `json:"ModifiedOn"`
 }
 
 //Locations ..
@@ -219,9 +223,9 @@ type Locations struct {
 	Countryname string `json:"Countryname"`
 	Statename   string `json:"Statename"`
 	CreatedBy   int
-	CreatedOn   string
+	CreatedOn   time.Time
 	ModifiedBy  int
-	ModifiedOn  string
+	ModifiedOn  time.Time
 	Status      string `json:"Status"`
 }
 
@@ -238,17 +242,16 @@ type Notifications struct {
 
 //InWardOutWard ..
 type InWardOutWard struct {
-	IDInWardOutWard int    `json:"IDInWardOutWard"`
-	TransactionID   string `json:"TransactionID"`
-	ToLocationID    int    `json:"ToLocationID"`
-	FromLocationID  int    `json:"FromLocationID"`
-	SenderEmpID     int    `json:"SenderEmpID"`
-	ReceiverEmpID   int    `json:"ReceiverEmpID"`
-
+	IDInWardOutWard        int                   `json:"IDInWardOutWard"`
+	TransactionID          string                `json:"TransactionID"`
+	ToLocationID           int                   `json:"ToLocationID"`
+	FromLocationID         int                   `json:"FromLocationID"`
+	SenderEmpID            int                   `json:"SenderEmpID"`
+	ReceiverEmpID          int                   `json:"ReceiverEmpID"`
 	Description            string                `json:"Description"`
 	TransferStatus         int                   `json:"TransferStatus"`
-	CreatedOn              string                `json:"CreatedOn"`
-	StatusUpdatedOn        string                `json:"StatusUpdatedOn"`
+	CreatedOn              time.Time             `json:"CreatedOn"`
+	StatusUpdatedOn        time.Time             `json:"StatusUpdatedOn"`
 	ListInWardOutWardAsset []*InWardOutWardAsset `json:"ListInWardOutWardAsset"`
 	TotalItems             int                   `json:"TotalItems"`
 	IsMsngStcksRslvdMain   []uint8               `json:"IsMsngStcksRslvdMain"`
@@ -263,21 +266,21 @@ type InWardOutWard struct {
 }
 
 type InWardOutWardApproval struct {
-	IDInwardoutward_Approval int    `json:"IDInwardoutward_Approval"`
-	IDinwardoutward          int    `json:"IDinwardoutward"`
-	RoleID                   int    `json:"RoleID"`
-	RoleName                 string `json:"RoleName"`
-	ApproverID               int    `json:"ApproverID"`
-	ApproverName             string `json:"ApproverName"`
-	Grade                    int    `json:"Grade"`
-	Comments                 string `json:"Comments"`
-	Status                   int    `json:"Status"`
-	StatusName               string `json:"StatusName"`
-	CreatedOn                string `json:"CreatedOn"`
-	ActionedOn               string `json:"ActionedOn"`
-	NextRoleID               int    `json:"NextRoleID"`
-	NextApproverID           int    `json:"NextApproverID"`
-	NextGrade                int    `json:"NextGrade"`
+	IDInwardoutward_Approval int       `json:"IDInwardoutward_Approval"`
+	IDinwardoutward          int       `json:"IDinwardoutward"`
+	RoleID                   int       `json:"RoleID"`
+	RoleName                 string    `json:"RoleName"`
+	ApproverID               int       `json:"ApproverID"`
+	ApproverName             string    `json:"ApproverName"`
+	Grade                    int       `json:"Grade"`
+	Comments                 string    `json:"Comments"`
+	Status                   int       `json:"Status"`
+	StatusName               string    `json:"StatusName"`
+	CreatedOn                time.Time `json:"CreatedOn"`
+	ActionedOn               time.Time `json:"ActionedOn"`
+	NextRoleID               int       `json:"NextRoleID"`
+	NextApproverID           int       `json:"NextApproverID"`
+	NextGrade                int       `json:"NextGrade"`
 }
 
 //InWardOutWardAsset ..
@@ -290,25 +293,25 @@ type InWardOutWardAsset struct {
 	ReceivedQuantity      int         `json:"ReceivedQuantity"`
 	Description           string      `json:"Description"`
 	TransferStatus        int         `json:"TransferStatus"`
-	UpdatedOn             string      `json:"UpdatedOn"`
+	UpdatedOn             time.Time   `json:"UpdatedOn"`
 	IsMsngStcksRslvd      bool        `json:"IsMsngStcksRslvd"`
 	ITAsset               interface{} `json:"ITAsset"`
 	Consumable            interface{} `json:"Consumable"`
 	NonITAsset            interface{} `json:"NonITAsset"`
 	Status                Status      `json:"Status"`
 	CreatedBy             int         `json:"CreatedBy"`
-	CreatedOn             string      `json:"CreatedOn"`
+	CreatedOn             time.Time   `json:"CreatedOn"`
 }
 
 //OutWardCart  ..
 type OutWardCart struct {
-	IDOutWardCart int    `json:"IDOutWardCart"`
-	AssetID       int    `json:"AssetID"`
-	AssetType     string `json:"AssetType"`
-	AssetName     string `json:"AssetName"`
-	SenderEmpID   int    `json:"SenderEmpID"`
-	CreatedOn     string `json:"CreatedOn"`
-	CreatedBy     int    `json:"CreatedBy"`
+	IDOutWardCart int       `json:"IDOutWardCart"`
+	AssetID       int       `json:"AssetID"`
+	AssetType     string    `json:"AssetType"`
+	AssetName     string    `json:"AssetName"`
+	SenderEmpID   int       `json:"SenderEmpID"`
+	CreatedOn     time.Time `json:"CreatedOn"`
+	CreatedBy     int       `json:"CreatedBy"`
 }
 
 //Transfer ..
@@ -324,20 +327,20 @@ type MultiLevelApproval_Main struct {
 	Module                      string                    `json:"Module"`
 	Levels                      int                       `json:"Levels"`
 	CreatedBy                   int                       `json:"CreatedBy"`
-	CreatedOn                   string                    `json:"CreatedOn"`
+	CreatedOn                   time.Time                 `json:"CreatedOn"`
 	RoleList                    []Role                    `json:"RoleList"`
 	MultiLevelApproval_Map_List []*MultiLevelApproval_Map `json:"MultiLevelApproval_Map_List"`
 	MultiLevelApproval_Map      *MultiLevelApproval_Map   `json:"MultiLevelApproval_Map"`
 }
 
 type MultiLevelApproval_Map struct {
-	IDMultiLevelApproval_Map   int    `json:"IDMultiLevelApproval_Map"`
-	MultiLevelApproval_Main_ID int    `json:"MultiLevelApproval_Main_ID"`
-	RoleID                     int    `json:"RoleID"`
-	Grade                      int    `json:"Grade"`
-	CreatedOn                  string `json:"CreatedOn"`
-	CreatedBy                  int    `json:"CreatedBy"`
-	Role                       Role   `json:"Role"`
+	IDMultiLevelApproval_Map   int       `json:"IDMultiLevelApproval_Map"`
+	MultiLevelApproval_Main_ID int       `json:"MultiLevelApproval_Main_ID"`
+	RoleID                     int       `json:"RoleID"`
+	Grade                      int       `json:"Grade"`
+	CreatedOn                  time.Time `json:"CreatedOn"`
+	CreatedBy                  int       `json:"CreatedBy"`
+	Role                       Role      `json:"Role"`
 }
 
 type VendorsAssetDetails struct {
@@ -348,14 +351,14 @@ type VendorsAssetDetails struct {
 	CreatedBy                    string                       `json:"CreatedBy"`
 }
 type Vendors_consumablemaster_map struct {
-	IDVendors_ConsumableMaster_Map int     `json:"IDVendors_ConsumableMaster_Map"`
-	ConsumableMasterID             int     `json:"ConsumableMasterID"`
-	VendorsID                      int     `json:"VendorsID"`
-	PriceperUnit                   float64 `json:"PriceperUnit"`
-	ItemType                       string  `json:"ItemType"`
-	VendorRfrdAssetName            string  `json:"VendorRfrdAssetName"`
-	CreatedBy                      int     `json:"CreatedBy"`
-	CreatedOn                      string  `json:"CreatedOn"`
+	IDVendors_ConsumableMaster_Map int       `json:"IDVendors_ConsumableMaster_Map"`
+	ConsumableMasterID             int       `json:"ConsumableMasterID"`
+	VendorsID                      int       `json:"VendorsID"`
+	PriceperUnit                   float64   `json:"PriceperUnit"`
+	ItemType                       string    `json:"ItemType"`
+	VendorRfrdAssetName            string    `json:"VendorRfrdAssetName"`
+	CreatedBy                      int       `json:"CreatedBy"`
+	CreatedOn                      time.Time `json:"CreatedOn"`
 }
 
 type PurchaseOrders_Requests struct {
@@ -372,8 +375,8 @@ type PurchaseOrders_Requests struct {
 	StatusID                  int                     `json:"StatusID"`
 	CreatedBy                 int                     `json:"CreatedBy"`
 	ModifiedBy                int                     `json:"ModifiedBy"`
-	CreatedOn                 string                  `json:"CreatedOn"`
-	ModifiedOn                string                  `json:"ModifiedOn"`
+	CreatedOn                 time.Time               `json:"CreatedOn"`
+	ModifiedOn                time.Time               `json:"ModifiedOn"`
 	RecordStatus              string                  `json:"RecordStatus"`
 	PORequestedByName         string                  `json:"PORequestedByName"`
 	StatusName                string                  `json:"StatusName"`
@@ -384,51 +387,50 @@ type PurchaseOrders_Requests struct {
 }
 
 type PurchaseOrders_Assets struct {
-	IDpurchaseorders_Assets    int     `json:"IDpurchaseorders_Assets"`
-	Purchaseorders_requests_ID int     `json:"Purchaseorders_requests_ID"`
-	AssetType                  string  `json:"AssetType"`
-	AssetName                  string  `json:"AssetName"`
-	AssetID                    int     `json:"AssetID"`
-	PriceperUnit               float64 `json:"PriceperUnit"`
-	Quantity                   int     `json:"Quantity"`
-	AssetComments              string  `json:"AssetComments"`
-	CreatedBy                  int     `json:"CreatedBy"`
-	CreatedOn                  string  `json:"CreatedOn"`
-	ModifiedOn                 string  `json:"ModifiedOn"`
-	ModifiedBy                 int     `json:"ModifiedBy"`
+	IDpurchaseorders_Assets    int       `json:"IDpurchaseorders_Assets"`
+	Purchaseorders_requests_ID int       `json:"Purchaseorders_requests_ID"`
+	AssetType                  string    `json:"AssetType"`
+	AssetName                  string    `json:"AssetName"`
+	AssetID                    int       `json:"AssetID"`
+	PriceperUnit               float64   `json:"PriceperUnit"`
+	Quantity                   int       `json:"Quantity"`
+	AssetComments              string    `json:"AssetComments"`
+	CreatedBy                  int       `json:"CreatedBy"`
+	CreatedOn                  time.Time `json:"CreatedOn"`
+	ModifiedOn                 time.Time `json:"ModifiedOn"`
+	ModifiedBy                 int       `json:"ModifiedBy"`
 }
 
 type POApproval struct {
-	IDPO_approval             int    `json:"IDPO_approval"`
-	PurchaseOrders_RequestsID int    `json:"PurchaseOrders_RequestsID"`
-	RoleID                    int    `json:"RoleID"`
-	RoleName                  string `json:"RoleName"`
-	ApproverID                int    `json:"ApproverID"`
-	ApproverName              string `json:"ApproverName"`
-	Grade                     int    `json:"Grade"`
-	Comments                  string `json:"Comments"`
-
-	StatusName     string `json:"StatusName"`
-	CreatedOn      string `json:"CreatedOn"`
-	ActionedOn     string `json:"ActionedOn"`
-	NextRoleID     int    `json:"NextRoleID"`
-	NextApproverID int    `json:"NextApproverID"`
-	NextGrade      int    `json:"NextGrade"`
+	IDPO_approval             int       `json:"IDPO_approval"`
+	PurchaseOrders_RequestsID int       `json:"PurchaseOrders_RequestsID"`
+	RoleID                    int       `json:"RoleID"`
+	RoleName                  string    `json:"RoleName"`
+	ApproverID                int       `json:"ApproverID"`
+	ApproverName              string    `json:"ApproverName"`
+	Grade                     int       `json:"Grade"`
+	Comments                  string    `json:"Comments"`
+	StatusName                string    `json:"StatusName"`
+	CreatedOn                 time.Time `json:"CreatedOn"`
+	ActionedOn                time.Time `json:"ActionedOn"`
+	NextRoleID                int       `json:"NextRoleID"`
+	NextApproverID            int       `json:"NextApproverID"`
+	NextGrade                 int       `json:"NextGrade"`
 }
 
 type PurchaseOrders_Assets_Received struct {
-	IDpurchaseorders_Assets_Received int     `json:"IDpurchaseorders_Assets_Received"`
-	Purchaseorders_requests_ID       int     `json:"Purchaseorders_requests_ID"`
-	AssetType                        string  `json:"AssetType"`
-	AssetName                        string  `json:"AssetName"`
-	AssetID                          int     `json:"AssetID"`
-	PriceperUnit                     float64 `json:"PriceperUnit"`
-	Quantity                         int     `json:"Quantity"`
-	AssetComments                    string  `json:"AssetComments"`
-	CreatedBy                        int     `json:"CreatedBy"`
-	CreatedOn                        string  `json:"CreatedOn"`
-	ModelNo                          string  `json:"ModelNo"`
-	SerialNo                         string  `json:"SerialNo"`
+	IDpurchaseorders_Assets_Received int       `json:"IDpurchaseorders_Assets_Received"`
+	Purchaseorders_requests_ID       int       `json:"Purchaseorders_requests_ID"`
+	AssetType                        string    `json:"AssetType"`
+	AssetName                        string    `json:"AssetName"`
+	AssetID                          int       `json:"AssetID"`
+	PriceperUnit                     float64   `json:"PriceperUnit"`
+	Quantity                         int       `json:"Quantity"`
+	AssetComments                    string    `json:"AssetComments"`
+	CreatedBy                        int       `json:"CreatedBy"`
+	CreatedOn                        time.Time `json:"CreatedOn"`
+	ModelNo                          string    `json:"ModelNo"`
+	SerialNo                         string    `json:"SerialNo"`
 }
 
 type PO_Bills struct {
@@ -452,8 +454,8 @@ type Requisition_Requests struct {
 	StatusID               int                  `json:"StatusID"`
 	CreatedBy              int                  `json:"CreatedBy"`
 	ModifiedBy             int                  `json:"ModifiedBy"`
-	CreatedOn              string               `json:"CreatedOn"`
-	ModifiedOn             string               `json:"ModifiedOn"`
+	CreatedOn              time.Time            `json:"CreatedOn"`
+	ModifiedOn             time.Time            `json:"ModifiedOn"`
 	RecordStatus           string               `json:"RecordStatus"`
 	RequestedByName        string               `json:"RequestedByName"`
 	StatusName             string               `json:"StatusName"`
@@ -462,40 +464,40 @@ type Requisition_Requests struct {
 	LocationData           Locations            `json:"LocationData"`
 	RequisitionApproval    RequisitionApproval  `json:"RequisitionApproval"`
 
-	ActionedOn       string `json:"ActionedOn"`
-	ActionePerformed string `json:"ActionePerformed"`
-	MainTblID        string `json:"MainTblID"`
+	ActionedOn       time.Time `json:"ActionedOn"`
+	ActionePerformed string    `json:"ActionePerformed"`
+	MainTblID        string    `json:"MainTblID"`
 }
 
 type Requisition_Assets struct {
-	IDRequisition_assets   int     `json:"IDRequisition_assets"`
-	Requisition_RequestsID int     `json:"Requisition_RequestsID"`
-	AssetType              string  `json:"AssetType"`
-	AssetName              string  `json:"AssetName"`
-	AssetID                int     `json:"AssetID"`
-	PriceperUnit           float64 `json:"PriceperUnit"`
-	ReqQuantity            int     `json:"ReqQuantity"`
-	RecvQuantity           int     `json:"RecvQuantity"`
-	AssetComments          string  `json:"AssetComments"`
-	CreatedBy              int     `json:"CreatedBy"`
-	CreatedOn              string  `json:"CreatedOn"`
-	ModifiedOn             string  `json:"ModifiedOn"`
-	ModifiedBy             int     `json:"ModifiedBy"`
+	IDRequisition_assets   int       `json:"IDRequisition_assets"`
+	Requisition_RequestsID int       `json:"Requisition_RequestsID"`
+	AssetType              string    `json:"AssetType"`
+	AssetName              string    `json:"AssetName"`
+	AssetID                int       `json:"AssetID"`
+	PriceperUnit           float64   `json:"PriceperUnit"`
+	ReqQuantity            int       `json:"ReqQuantity"`
+	RecvQuantity           int       `json:"RecvQuantity"`
+	AssetComments          string    `json:"AssetComments"`
+	CreatedBy              int       `json:"CreatedBy"`
+	CreatedOn              time.Time `json:"CreatedOn"`
+	ModifiedOn             time.Time `json:"ModifiedOn"`
+	ModifiedBy             int       `json:"ModifiedBy"`
 }
 type RequisitionApproval struct {
-	IDRequisition_approval int    `json:"IDRequisition_approval"`
-	Requisition_RequestsID int    `json:"Requisition_RequestsID"`
-	RoleID                 int    `json:"RoleID"`
-	RoleName               string `json:"RoleName"`
-	ApproverID             int    `json:"ApproverID"`
-	ApproverName           string `json:"ApproverName"`
-	Grade                  int    `json:"Grade"`
-	Comments               string `json:"Comments"`
-	Status                 int    `json:"Status"`
-	StatusName             string `json:"StatusName"`
-	CreatedOn              string `json:"CreatedOn"`
-	ActionedOn             string `json:"ActionedOn"`
-	NextRoleID             int    `json:"NextRoleID"`
-	NextApproverID         int    `json:"NextApproverID"`
-	NextGrade              int    `json:"NextGrade"`
+	IDRequisition_approval int       `json:"IDRequisition_approval"`
+	Requisition_RequestsID int       `json:"Requisition_RequestsID"`
+	RoleID                 int       `json:"RoleID"`
+	RoleName               string    `json:"RoleName"`
+	ApproverID             int       `json:"ApproverID"`
+	ApproverName           string    `json:"ApproverName"`
+	Grade                  int       `json:"Grade"`
+	Comments               string    `json:"Comments"`
+	Status                 int       `json:"Status"`
+	StatusName             string    `json:"StatusName"`
+	CreatedOn              time.Time `json:"CreatedOn"`
+	ActionedOn             time.Time `json:"ActionedOn"`
+	NextRoleID             int       `json:"NextRoleID"`
+	NextApproverID         int       `json:"NextApproverID"`
+	NextGrade              int       `json:"NextGrade"`
 }

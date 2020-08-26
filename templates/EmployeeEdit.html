@@ -47,7 +47,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="Email">Email:</label>
-                                {{if .Data.User.LinkGeneratedOn}}
+                                {{if .Data.User.LinkGeneratedOn.IsZero}}
                                 <input type="email" name="Email" autocomplete="off" required value="{{.Data.Email}}"
                                     class="form-control " id="Email" placeholder="Email">
                                 {{else}}
@@ -299,8 +299,8 @@
             if($(this).val()!="")           
             $('#DOB').data("datetimepicker").maxDate($(this).val());
         });
-        $('#DOB').val("{{.Data.DOB}}")
-        $('#DOJ').val("{{.Data.DOJ}}")
+        $('#DOB').val('{{.Data.DOB.Format "02-01-2006"}}')
+        $('#DOJ').val('{{.Data.DOJ.Format "02-01-2006"}}')
         for (i = 0; i <= 100; i++) {
             $("#ExperienceYear").append('<option value=' + i + '  >' + i + ' yr(s)</option>')
             if (i < 12)
