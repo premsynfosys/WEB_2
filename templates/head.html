@@ -209,7 +209,7 @@
                   })
                   // $('input,textarea,select').filter("[required]").prev("label").append("<span style='color:red'>*</span>")                 
                   $('input,textarea,select').filter("[required]").parents(".form-group").children("label").append("<span style='color:red'>*</span>")
-                  $(".lblrequired").append("<span class='spanMandator' style='color:red'>*</span>");
+                  $(".lblrequired").append("<span style='color:red'>*</span>");
 
                   $('.modal').on('shown.bs.modal', function (e) {
                         $('input,textarea,select').filter("[required]").parents(".form-group").children("label").find("span.spanMandator").remove()
