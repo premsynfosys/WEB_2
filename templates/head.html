@@ -58,7 +58,7 @@
 
 
       <script>
-//abc
+//abc def
 
             // if (window["WebSocket"]) {
             //       WSConn = new WebSocket("ws://" + document.location.host + "/echo");
@@ -211,7 +211,7 @@ debugger;
                   $(".lblrequired").append("<span style='color:red'>*</span>");
 
                   $('.modal').on('shown.bs.modal', function (e) {
-                          $('.modal input,.modal textarea,.modal select').filter("[required]").parents(".form-group").children("label").append("<span class='spanMandator' style='color:red'>*</span>")
+                         $('.modal input,.modal textarea,.modal select').filter("[required]").parents(".form-group").children("label").append("<span class='spanMandator' style='color:red'>*</span>")
                         $(".modal .lblrequired").append("<span class='spanMandator' style='color:red'>*</span>");
                         $('.modal .datetimepicker-input').attr('placeholder', customDateFormate);  
                   })
