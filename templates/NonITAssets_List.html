@@ -322,6 +322,7 @@
           success: function (data) {
 
             Toast("success", "NonITAssets are ready for request.")
+            $("#tblNonITAssets td input[type='checkbox']:checked").each(function () { this.checked=false;})
           }
         });
     })

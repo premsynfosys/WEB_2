@@ -170,7 +170,7 @@
                         return true
                   })
                   //  .not("input[type='email']"
-                  $(document).on("keydown", "textarea,input:not(input[type='email'],.datetimepicker-input)", function (e) {
+                  $(document).on("keydown", "textarea,input:not(input[type='email'],.datetimepicker-input,input[readonly])", function (e) {
 
                         var str = this.value
                         var patt = new RegExp(/^[\w-_.:\n ]*$/);
@@ -188,7 +188,7 @@
                         }
 
                   })
-                  $(document).on("blur", "textarea,input:not(input[type='email'],.datetimepicker-input)", function (e) {
+                  $(document).on("blur", "textarea,input:not(input[type='email'],.datetimepicker-input,input[readonly])", function (e) {
                         var str = this.value
                         this.value = str.trim()
                         var patt = new RegExp(/^[\w-_.:\n ]*$/);

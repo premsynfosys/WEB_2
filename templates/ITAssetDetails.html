@@ -391,6 +391,7 @@
           success: function (data) {
 
             Toast("success", "ITAssets are ready for request.")
+            $("#tblITAssets td input[type='checkbox']:checked").each(function () {  this.checked=false;})
           }
         });
     })

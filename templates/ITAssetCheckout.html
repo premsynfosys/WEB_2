@@ -48,7 +48,7 @@
                             To:</label>
                         <div class="col-md-9">
                             <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                                <label class="btn btn-light btn-sm ">
+                                <label class="btn btn-light btn-sm active">
                                     <input type="radio" name="AssignTo" value="User" id="rdUser">
                                     User
                                 </label>
@@ -258,7 +258,9 @@
                 $("#divdates").find('input').removeAttr('required')
             }
         })
-
+        $("#rdUser").trigger("change");
+        
+        
     });
 
 
