@@ -11,7 +11,7 @@
                 </div>
             </div>
         </div>
-        
+
     </div>
 </div>
 <div class="row">
@@ -109,7 +109,7 @@
                     "name": "UnitPrice",
                     'data': "ConsumableOprtns.UnitPrice",
                     render: function (dt) {
-                        return dt+" ₹";
+                        return dt + " ₹";
                     }
                 }, {
                     "name": "Vendor",
@@ -122,7 +122,10 @@
                     'data': "ConsumableOprtns.Comments"
                 }, {
                     "name": "Date",
-                    'data': "ConsumableOprtns.CreataedOn"
+                    'data': "ConsumableOprtns.CreataedOn",
+                    render: function (dt) {
+                        return jsondate(dt);
+                    }
                 }, {
                     "name": "Action",
                     'data': "ConsumableOprtns.Status.StatusName"

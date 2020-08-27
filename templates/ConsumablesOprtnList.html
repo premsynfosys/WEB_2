@@ -103,7 +103,10 @@
                     'data': "ConsumableOprtns.Comments"
                 },{
                     "name": "Date",
-                    'data': "ConsumableOprtns.CreataedOn"
+                    'data': "ConsumableOprtns.CreataedOn",
+                    render: function (dt) {
+                        return jsondate(dt);
+                    }
                 }, {
                     "name": "Action",
                     'data': "ConsumableOprtns.Status.StatusName"

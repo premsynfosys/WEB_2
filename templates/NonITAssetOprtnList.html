@@ -95,7 +95,10 @@
                     'data': "NonITAssets_Oprtns.UnitPrice"
                 }, {
                     "name": "UnitPrice",
-                    'data': "NonITAssets_Oprtns.Warranty"
+                    'data': "NonITAssets_Oprtns.Warranty",
+                    render: function (dt) {
+                        return jsondate(dt);
+                    }
                 }, {
                     "name": "Vendor",
                     'data': "NonITAssets_Oprtns.Vendor",
@@ -107,7 +110,10 @@
                     'data': "NonITAssets_Oprtns.Comments"
                 },{
                     "name": "Date",
-                    'data': "NonITAssets_Oprtns.Created_On"
+                    'data': "NonITAssets_Oprtns.Created_On",
+                    render: function (dt) {
+                        return jsondate(dt);
+                    }
                 }, {
                     "name": "Action",
                     'data': "NonITAssets_Oprtns.Status.StatusName"
