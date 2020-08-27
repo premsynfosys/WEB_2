@@ -371,10 +371,10 @@
         $("#Warranty").blur(function () {
 
             var selected_date = $(this).val()
-            var d = new Date(selected_date)
+            var d = new Date(moment(selected_date, "DD-MM-YYYY").format())
             var today = new Date()
             if (d < today) {
-                $("#txtWarranty").text("Warranty expired")
+                $("#txtWarranty").text("  (Warranty expired)")
                 $("#txtWarranty").removeClass("text-success")
                 $("#txtWarranty").addClass("text-danger")
             }
@@ -385,7 +385,7 @@
                 var days = Math.floor(diff / day);
                 var months = Math.floor(days / 31);
                 var years = Math.floor(months / 12);
-                var message = days + " days " + months + " months " + years + " years"
+                var message = "("+days + " days " + months + " months " + years + " years left)"
                 $("#txtWarranty").text(message)
                 $("#txtWarranty").removeClass("text-danger")
                 $("#txtWarranty").addClass("text-success")

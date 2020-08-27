@@ -36,7 +36,7 @@
             <label for="ITAssetWarranty" class="col-md-3 col-form-label col-form-label-sm">Warranty:</label>
             <div class="col-md-9 form-inline">
                 <input type="text" name="ITAssetWarranty" autocomplete="off" class="form-control datetimepicker-input"
-                data-toggle="datetimepicker" data-target="#ITAssetWarranty" id="ITAssetWarranty" >               
+                    data-toggle="datetimepicker" data-target="#ITAssetWarranty" id="ITAssetWarranty">
             </div>
         </div>
 
@@ -45,7 +45,7 @@
             <div class="col-md-9  ">
                 <select name="Vendor" id="Vendor" class="form-control">
                 </select>
-                
+
             </div>
         </div>
         <div class="form-group row">
@@ -53,7 +53,7 @@
             <div class="col-md-9  ">
                 <select name="Location" id="Location" class="form-control">
                 </select>
-               
+
             </div>
         </div>
 
@@ -71,7 +71,7 @@
 <script>
     $(document).ready(function () {
         $('#ITAssetWarranty').datetimepicker({
-             format: customDateFormate
+            format: customDateFormate
         });
         var data = getdata('/GetLocations')
         loadLocations(data)
@@ -88,7 +88,7 @@
         //     });
         // })
         // $("#btnVendor").click(function () {
-           
+
         //     $("#locationmodalTitle").html("Add Vendor")
         //     $("#divLocation").load("/Vendors", null, function () {
         //     });
@@ -99,13 +99,13 @@
         $("#btn1").click(function (e) {
 
             var obj = new Object()
-           
+
             // '{{ range $id, $element :=  .}}'
             // ids['{{$id}}'] = '{{$element}}'
 
             // '{{end}}'
             obj['ITAssetDescription'] = $("#ITAssetDescription").val()
-            obj['ITAssetWarranty'] = $("#ITAssetWarranty").val()
+            obj['ITAssetWarranty'] = moment($("#ITAssetWarranty").val(), "DD-MM-YYYY").format();
             obj['Vendor'] = $("#Vendor").val()
             obj['Location'] = $("#Location").val()
 
@@ -115,7 +115,7 @@
             "{{end}}"
 
             obj['IDS'] = ids
-           
+
             $.ajax({
                 url: "/ITAssets/BulkEdit",
                 type: 'POST',

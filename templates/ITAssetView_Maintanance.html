@@ -156,16 +156,28 @@
 
         {
           "name": "Expected_Start_Date",
-          'data': "Expected_Start_Date"
+          'data': "Expected_Start_Date",
+          render: function (dt) {
+            return jsondatetime(dt);
+          }
         }, {
           "name": "Expected_End_Date",
-          'data': "Expected_End_Date"
+          'data': "Expected_End_Date",
+          render: function (dt) {
+            return jsondatetime(dt);
+          }
         }, {
           "name": "Actual_Start_Date",
-          'data': "Actual_Start_Date"
+          'data': "Actual_Start_Date",
+          render: function (dt) {
+            return jsondatetime(dt);
+          }
         }, {
           "name": "Actual_End_Date",
-          'data': "Actual_End_Date"
+          'data': "Actual_End_Date",
+          render: function (dt) {
+            return jsondatetime(dt);
+          }
         }, {
           "name": "ServiceBy_Type",
           'data': "ServiceBy_Type",
@@ -303,7 +315,7 @@
       var obj = new Object()
 
       obj.ITAssetID = parseInt(AssetID)
-      obj.Actual_End_Date = $("#Actual_End_Date").val();;
+      obj.Actual_End_Date = moment($("#Actual_End_Date").val(), "DD-MM-YYYY HH:mm:ss").format();
       obj.Cost = parseFloat($("#Cost").val());
       obj.IDITAsset_Services = parseInt(IDITAsset_Services.trim())
       obj.Comments = $("#Comments").val();

@@ -256,7 +256,7 @@
     $("#ITAssetWarranty").blur(function () {
 
       var selected_date = $(this).val()
-      var d = new Date(selected_date)
+      var d = new Date(moment(selected_date, "DD-MM-YYYY").format())
       var today = new Date()
       if (d < today) {
         $("#txtITAssetWarranty").text("  (Warranty expired)")

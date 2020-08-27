@@ -89,13 +89,30 @@
             }
 
             function jsondate(date) {
-                  debugger;
+                 
                   if (date != null && date != "" && date != "0000-00-00 00:00:00" && date != "0001-01-01T00:00:00Z") {
+                      
                         var currentTime = new Date(date);
-                        var month = ("0" + (currentTime.getDate())).slice(-2);
-                        var day = ("0" + (currentTime.getMonth() + 1)).slice(-2);
+                        var month = ("0" + (currentTime.getMonth()+ 1)).slice(-2);
+                        var day = ("0" + (currentTime.getDate() )).slice(-2);
                         var year = currentTime.getFullYear();
-                        var date1 = month + '/' + day + '/' + year;
+                        var date1 = day + '/' + month + '/' + year;
+                        return date1;
+                  } else {
+                        return "";
+                  }
+            }
+            function jsondatetime(date) {
+                
+                  if (date != null && date != "" && date != "0000-00-00 00:00:00" && date != "0001-01-01T00:00:00Z") {
+                        
+                        var currentTime = new Date(date);
+                        var month = ("0" + (currentTime.getMonth()+ 1)).slice(-2);
+                        var day = ("0" + (currentTime.getDate() )).slice(-2);
+                        var year = currentTime.getFullYear();
+                        var hour = currentTime.getHours();
+                        var mnts = currentTime.getMinutes();
+                        var date1 = day + '/' + month + '/' + year+' '+hour+":"+mnts;
                         return date1;
                   } else {
                         return "";
