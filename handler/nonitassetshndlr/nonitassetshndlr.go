@@ -83,7 +83,7 @@ func (p *INonITAsset) NonITAsset_Create(w http.ResponseWriter, r *http.Request) 
 
 		VendorID, _ := strconv.Atoi(r.FormValue("VendorID"))
 		mdlOprtn.VendorID = VendorID
-		mdlOprtn.Warranty ,_ = time.Parse("02-01-2006",r.FormValue("Warranty"))
+		mdlOprtn.Warranty ,_ = time.Parse(time.RFC3339,r.FormValue("Warranty"))
 		mdlOprtn.Quantity, _ = strconv.Atoi(r.FormValue("Quantity"))
 		mdlOprtn.UnitPrice, _ = strconv.ParseFloat(r.FormValue("UnitPrice"), 64)
 		mdlOprtn.OrderedBy = usr.IDEmployees
@@ -286,7 +286,7 @@ func (p *INonITAsset) PostNonITAssets_oprtns_AddStock(w http.ResponseWriter, r *
 	mdlOprtn := NonITAssets_mdl.NonITAssets_Oprtns{}
 	VendorID, _ := strconv.Atoi(r.FormValue("VendorID"))
 	mdlOprtn.VendorID = VendorID
-	mdlOprtn.Warranty ,_ = time.Parse("02-01-2006", r.FormValue("Warranty"))
+	mdlOprtn.Warranty ,_ = time.Parse(time.RFC3339, r.FormValue("Warranty"))
 	mdlOprtn.Comments = r.FormValue("Comments")
 	mdlOprtn.NonITAsset_ID, _ = strconv.Atoi(r.FormValue("NonITAsset_ID"))
 	mdlOprtn.Quantity, _ = strconv.Atoi(r.FormValue("Quantity"))
@@ -352,12 +352,12 @@ func (p *INonITAsset) NonITAssetsCheckout(w http.ResponseWriter, r *http.Request
 		mdl.CheckOut_By = usr.EmployeeID
 		if CheckedOutUserID, err := strconv.Atoi(r.FormValue("Users")); CheckedOutUserID != 0 && err == nil {
 			mdl.CheckedOutUserID = CheckedOutUserID
-			mdl.CheckedOutDate ,_ = time.Parse("02-01-2006",r.FormValue("CheckOutDate"))
+			mdl.CheckedOutDate ,_ = time.Parse(time.RFC3339,r.FormValue("CheckOutDate"))
 			mdl.CheckOut_Qnty, _ = strconv.Atoi(r.FormValue("CheckOut_Qnty"))
 		}
 		if r.FormValue("CheckedOutPlace") != "" {
 			mdl.CheckedOutPlace = r.FormValue("CheckedOutPlace")
-			mdl.CheckedOutDate ,_ = time.Parse("02-01-2006",r.FormValue("CheckOutDate"))
+			mdl.CheckedOutDate ,_ = time.Parse(time.RFC3339,r.FormValue("CheckOutDate"))
 			mdl.CheckOut_Qnty, _ = strconv.Atoi(r.FormValue("CheckOut_Qnty"))
 		}
 		var err error
@@ -370,7 +370,7 @@ func (p *INonITAsset) NonITAssetsCheckout(w http.ResponseWriter, r *http.Request
 			IW.ToLocationID, _ = strconv.Atoi(r.FormValue("Locations"))
 			IW.Description = r.FormValue("CheckOut_Comments")
 			IW.TransferStatus = 9
-			transactionid := "TR" + time.Now().Format("2006-01-02 15:04:05")
+			transactionid := "TR" + time.Now().Format("02-01-2006 15:04:05")
 			rpl := strings.NewReplacer(":", "",
 				"-", "",
 				" ", "")

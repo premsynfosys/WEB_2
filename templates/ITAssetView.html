@@ -116,7 +116,7 @@
                         {{end}}
                         {{end}}
                         {{if eq .Data.Statusname "Available"}}
-                       
+
                         {{if .Auth.Retire}}
                         <button data-toggle="modal" data-target="#retiremodal" class="btn btn-info m-1 ">Retire</button>
                         {{end}}
@@ -138,7 +138,7 @@
 
                             </div>
                         </div>
-                       
+
                         {{end}}
                         <!-- <button class="btn btn-info m-1">
                             <i class="fa fa-paperclip" aria-hidden="true"></i>
@@ -264,15 +264,16 @@
                         <div class="col-sm-8 form-inline">
                             <input type="text" required name="CheckInDate" class="form-control datetimepicker-input"
                                 data-toggle="datetimepicker" autocomplete="off" data-target="#CheckInDate"
-                                id="CheckInDate" >
+                                id="CheckInDate">
                         </div>
 
                     </div>
                     <div class="form-group row">
                         <label for="CheckInComments" class="col-md-4 col-form-label ">Comments:</label>
                         <div class="col-md-8">
-                            <textarea name="CheckInComments" required maxlength="500" class="form-control form-control-sm"
-                                id="CheckInComments" placeholder="Comments"></textarea>
+                            <textarea name="CheckInComments" required maxlength="500"
+                                class="form-control form-control-sm" id="CheckInComments"
+                                placeholder="Comments"></textarea>
 
                         </div>
                     </div>
@@ -380,7 +381,7 @@
         });
         $('#CheckInDate').datetimepicker({
             format: customDateFormate,
-            useCurrent:false
+            useCurrent: false
 
         });
 
@@ -390,9 +391,9 @@
             //  localStorage.setItem('activeTab', $(e.target).attr('href'));
             if ($(e.target).attr('href') == "#AssetDetails") {
                 $("#Maintenance").empty()
-               
+
             }
-          else  if ($(e.target).attr('href') == "#Files") {
+            else if ($(e.target).attr('href') == "#Files") {
                 $("#Maintenance").empty()
                 $("#Files").load('/ITAssets/ITAssetView_Files/' + assetid + '', function () {
                 });
@@ -422,7 +423,7 @@
             var d = new Date(selected_date)
             var today = new Date()
             if (d < today) {
-                $("#txtITAssetWarranty").text("Warranty expired")
+                $("#txtITAssetWarranty").text("   (Warranty expired)")
                 $("#txtITAssetWarranty").removeClass("text-success")
                 $("#txtITAssetWarranty").addClass("text-danger")
             }
@@ -433,7 +434,7 @@
                 var days = Math.floor(diff / day);
                 var months = Math.floor(days / 31);
                 var years = Math.floor(months / 12);
-                var message = days + " days " + months + " months " + years + " years"
+                var message ="  (" +days + " days " + months + " months " + years + " years left)"
                 $("#txtITAssetWarranty").text(message)
                 $("#txtITAssetWarranty").removeClass("text-danger")
                 $("#txtITAssetWarranty").addClass("text-success")
@@ -494,11 +495,10 @@
         event.preventDefault();
         var obj = new Object();
         obj.AssetID = parseInt($("#frmRetire #AssetID").val())
-        obj.Reason = parseInt($("#frmRetire #Reason").val())
-        obj.RetireDate = $("#frmRetire #RetireDate").val()
-        obj.Commnets = $("#frmRetire #RetireComments").val()
+        obj.Reason = parseInt($("#frmRetire #Reason").val());
+        obj.RetireDate = moment($("#frmRetire #RetireDate").val(), "DD-MM-YYYY").format();// $("#frmRetire #RetireDate").val()
+        obj.Commnets = $("#frmRetire #RetireComments").val();
         obj.RetiredBy = $("#employeeid").val()
-
         $.ajax({
             url: "/itassets/ITAssetRetire",
             type: 'POST',

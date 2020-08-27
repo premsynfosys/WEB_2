@@ -558,7 +558,7 @@ func (p *ICommonrep) CreateInWardOutWard(w http.ResponseWriter, r *http.Request)
 	IW.ToLocationID, _ = strconv.Atoi(r.FormValue("Locations"))
 	IW.Description = r.FormValue("Description")
 	IW.TransferStatus = 9
-	transactionid := "TR" + time.Now().Format("2006-01-02 15:04:05")
+	transactionid := "TR" + time.Now().Format("02-01-2006 15:04:05")
 	rpl := strings.NewReplacer(":", "",
 		"-", "",
 		" ", "")

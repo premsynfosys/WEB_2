@@ -271,7 +271,7 @@
                 }
             ]
             , buttons: [
-               
+
                 {
                     text: 'Print',
                     extend: "print",
@@ -505,7 +505,7 @@
                     var obj = new Object();
                     obj.AssetID = parseInt($(this).find(".AssetID").text())
                     obj.Reason = parseInt($(this).find(".IDStatus").val().trim())
-                    obj.RetireDate = $('#todaydate').val();
+                    obj.RetireDate = moment($('#todaydate').val(), "DD-MM-YYYY").format();
                     obj.Commnets = $(this).find(".Description").val().trim()
                     RetireAsset.push(obj)
                 }
@@ -572,7 +572,7 @@
             var divflow = $(".divflow")
             divflow.empty();
             var data = getdata("/IWOW_ApprovalStatusList/" + $(this).attr('data-value'))
-            
+
             var totalGrades = data[0].Grade
             var leftgrades = totalGrades - data.length
             for (let i = 0; i < data.length; i++) {
