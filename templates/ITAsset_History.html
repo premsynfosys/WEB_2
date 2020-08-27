@@ -78,7 +78,10 @@
           'data': "ITAssetIdentificationNo"
         }, {
           "name": "CreatedOn",
-          'data': "CreatedOn"
+          'data': "CreatedOn",
+                    render: function (dt) {
+                        return jsondate(dt);
+                    }
         }, {
           "name": "ActionePerformed",
           'data': "ActionePerformed"

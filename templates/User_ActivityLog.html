@@ -141,7 +141,10 @@
                     'data': 'ActionPerformed'
                 }, {
                     "name": "ActionPerformedOn",
-                    'data': "CreatedOn"
+                    'data': "CreatedOn",
+                    render: function (dt) {
+                        return jsondate(dt);
+                    }
 
                 }, {
                     "name": "Module",
