@@ -73,16 +73,22 @@
 
         $("#frmAuthorization").submit(function (e) {
             e.preventDefault()
+            if ($(".Role option[value='']:selected").length > 0) {
+              alert('Please select an Approver.')
+              return
+            }
+
             //var obj = new Object();
             var mainArry = new Array();
             $(".module").each(function () {
-                
+
                 var main = new Object()
                 main.CreatedBy = parseInt($("#employeeid").val())
                 main.Levels = parseInt($(this).find(".levels").val())
                 main.IDMultiLevelApproval_Main = parseInt($(this).find(".levels").attr('data-id'))
                 var mapArry = new Array();
                 $(this).find(".Role").each(function () {
+
                     var map = new Object();
                     map.CreatedBy = parseInt($("#employeeid").val())
                     map.MultiLevelApproval_Main_ID = main.IDMultiLevelApproval_Main
@@ -126,12 +132,12 @@
         function fill(dt) {
             $(".levels").trigger("change")
             $(".module").each(function () {
-              
+
                 var mainid = parseInt($(this).attr("data-id"))
                 let filter = dt.filter(function (e) {
                     return e.IDMultiLevelApproval_Main == mainid;
                 });
-              
+
                 for (i = 0; i < filter.length; i++) {
                     $(this).find('.Role:eq(' + i + ')').val(filter[i].MultiLevelApproval_Map.RoleID)
                 }

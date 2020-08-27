@@ -30,7 +30,7 @@
                             id="ITAssetName" placeholder="ITAsset Name" value="{{.Data.ITAssetName}}">
                     </div>
                 </div>
-                <div class="row">
+                <div class="form-group row">
                     <label for="ITAssetGroup" class="col-sm-3  col-form-label">Asset Type:</label>
                     <div class="col-sm-9 ">
                         <div class="input-group">
@@ -108,10 +108,10 @@
                             <select name="Vendor" required id="Vendor" class="form-control">
                                 <option value="">--select--</option>
                             </select>
-                            <span class="input-group-append ">
+                            <!-- <span class="input-group-append ">
                                 <label class="input-group-text bg-info"><a href="#" id="btnVendor" data-toggle="modal"
                                         data-target="#locationmodal" title="Add Vendor">Add</a></label>
-                            </span>
+                            </span> -->
                         </div>
                     </div>
                 </div>
@@ -123,11 +123,11 @@
                                 <option value="">--select--</option>
                             </select>
                             {{if .Auth.Accesstoalllocations}}
-                            <span class="input-group-append ">
+                            <!-- <span class="input-group-append ">
                                 <label class="input-group-text bg-info"> <a href="#" id="btnlocation"
                                         data-toggle="modal" data-target="#locationmodal"
                                         title="Add Location">Add</a></label>
-                            </span>
+                            </span> -->
                             {{end}}
                         </div>
                     </div>
