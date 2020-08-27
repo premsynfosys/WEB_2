@@ -93,7 +93,6 @@ func (p *IITAsset) CreateITAsset(w http.ResponseWriter, r *http.Request) {
 		mdl.ITAssetSerialNo = r.FormValue("ITAssetSerialNo")
 		//mdl.ITAssetIdentificationNo = r.FormValue("ITAssetIdentificationNo")
 		mdl.ITAssetDescription = r.FormValue("ITAssetDescription")
-
 		mdl.ITAssetAssignTo = r.FormValue("CanITAssetAssignTo")
 		ITAssetPrice, _ := strconv.ParseFloat(r.FormValue("ITAssetPrice"), 32)
 		mdl.ITAssetPrice = ITAssetPrice
