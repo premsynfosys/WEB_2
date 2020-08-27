@@ -39,13 +39,13 @@
                 <div class="col-sm-4 invoice-col">
                     <address class="mt-2">
                         {{if eq .Data.POR.StatusID 44}}
-                        <strong>Total Paid Ammount:</strong> ₹ <span>{{.Data.POR.TotalPaidAmmount}} </span><text
+                        <strong>Total Paid Amount:</strong> ₹ <span>{{.Data.POR.TotalPaidAmmount}} </span><text
                             class="text-muted">(as per bill)</text><br>
                         <strong>Bill Invoice No:</strong><a
                             href="/AppFiles/Images/RequisitionBIlls/{{.Data.POR.BillImagePath}}"
                             class="btn btn-sm  text-warning"> {{.Data.POR.BillInvoiceNo}}</a><br>
                         {{end}}
-                        <strong>Total Payable Ammount:</strong> ₹ <span>{{.Data.POR.TotalAmmount}}</span><br>
+                        <strong>Total Payable Amount:</strong> ₹ <span>{{.Data.POR.TotalAmmount}}</span><br>
                         <strong>Requested By:</strong> <span> {{.Data.POR.RequestedByName}}</span><br>
                         <strong>Requested On:</strong> <span> {{.Data.POR.CreatedOn.Format "02-01-2006"}}</span>
                     </address>
@@ -95,7 +95,7 @@
         {{if ne .Data.POR.StatusID 44}}
         <div class="row justify-content-end">
 
-            <label class="col-sm-3 col-form-label text-bold"><strong>Total Payable Ammount:</strong> ₹ <span
+            <label class="col-sm-3 col-form-label text-bold"><strong>Total Payable Amount:</strong> ₹ <span
                     id="totalammount">{{.Data.POR.TotalAmmount}}</span></label>
 
         </div>
@@ -218,7 +218,7 @@
                         </div>
                     </div>
                     <div class="form-group row ">
-                        <label class="col-sm-3 col-form-label">Paid Bill Ammount:</label>
+                        <label class="col-sm-3 col-form-label">Paid Bill Amount:</label>
                         <div class="col-sm-4 ">
                             <div class="input-group">
                                 <input type="number" required name="TotalPaidAmmount" id="TotalPaidAmmount" min="0"
