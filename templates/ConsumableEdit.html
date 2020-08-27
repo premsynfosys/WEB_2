@@ -26,7 +26,7 @@
                         <div class="col-sm-9">
                             <!-- <input type="text" name="ConsumableName"  required
                                 class="form-control " id="ConsumableName" placeholder="Consumable Name"> -->
-                            <select class="form-control" name="IDconsumableMaster"
+                            <select required  class="form-control w-auto" name="IDconsumableMaster"
                                 data-size="5" id="ConsumableNames" tabindex="-98">
                             </select>
 
@@ -70,7 +70,7 @@
                     <div class="form-group row">
                         <label for="Description" class="col-sm-3 col-form-label ">Description:</label>
                         <div class="col-sm-9">
-                            <textarea name="Description" maxlength="500" placeholder="Description" title="Description"
+                            <textarea name="Description" required maxlength="500" placeholder="Description" title="Description"
                                 class="form-control " id="Description">{{.Data.Description}}</textarea>
                         </div>
                     </div>
@@ -210,9 +210,9 @@
             });
         }
         function loadConsumableNames(data) {
-            $("#ConsumableNames").empty().append('<option selected="selected" value="0">--select--</option>');
+            $("#ConsumableNames").empty().append('<option selected="selected" value="">--select--</option>');
             $.each(data, function (i, el) {
-                $("#ConsumableNames").append($("<option />", { text: el.ConsumableName + "\n" + el.Description + "\n", value: el.IDconsumableMaster, 'data-groupid': el.GroupID }));
+                $("#ConsumableNames").append($("<option />", { text: el.ConsumableName, value: el.IDconsumableMaster, 'data-groupid': el.GroupID }));
             });
         }
 

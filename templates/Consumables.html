@@ -25,9 +25,9 @@
                 <div class="card-body ">
                     <div class="form-group row">
                         <label for="Name" class="col-sm-3 col-form-label">Asset Name:</label>
-                        <div class="col-sm-9">
+                        <div class="col-sm-4">
 
-                            <select required name="IDconsumableMaster"
+                            <select required name="IDconsumableMaster" class="form-control "
                                 data-size="5" id="ConsumableNames" tabindex="-98">
                             </select>
 
@@ -36,10 +36,10 @@
 
                     <div class="form-group row">
                         <label for="GroupID" class="col-sm-3  col-form-label">Asset Type:</label>
-                        <div class="col-sm-9 ">
+                        <div class="col-sm-4 ">
                             <div class="input-group">
                                 <select disabled="true" name="GroupID" id="GroupID" class="form-control">
-                                    <option value="">--select--</option>
+                                    <option value=""></option>
                                     {{range .Data.Consumablemaster.ConsumableGroups}}
                                     <option value="{{.IDconsumablegroups}}">{{.ConsumableGroupName}}</option>
                                     {{end}}
