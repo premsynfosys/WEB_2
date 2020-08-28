@@ -175,8 +175,8 @@
         }
 
         $('#CheckOutDate,#ExpectedCheckInDate').datetimepicker({
-            format: customDateFormate,
-            maxDate: new Date()
+            format: customDateFormate
+           // maxDate: new Date()
         });
         // $('#ExpectedCheckInDate').datetimepicker({
         //     format: customDateFormate,
@@ -258,7 +258,7 @@
                 $("#divdates").find('input').removeAttr('required')
             }
         })
-        $("#rdUser").trigger("change");
+        $("#rdUser").trigger("click");
         
         
     });

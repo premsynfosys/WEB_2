@@ -96,7 +96,7 @@ func (p *IITAsset) CreateITAsset(w http.ResponseWriter, r *http.Request) {
 		mdl.ITAssetAssignTo = r.FormValue("CanITAssetAssignTo")
 		ITAssetPrice, _ := strconv.ParseFloat(r.FormValue("ITAssetPrice"), 32)
 		mdl.ITAssetPrice = ITAssetPrice
-		mdl.ITAssetWarranty, _ = time.Parse(time.RFC3339, r.FormValue("ITAssetWarranty"))
+		mdl.ITAssetWarranty, _ = time.ParseInLocation("02-01-2006", r.FormValue("ITAssetWarranty"),time.Local)
 		VendorID, _ := strconv.Atoi(r.FormValue("Vendor"))
 		mdl.Vendor = VendorID
 		LocationID, _ := strconv.Atoi(r.FormValue("Location"))
@@ -403,7 +403,7 @@ func (p *IITAsset) GetITAssetsEditByID(w http.ResponseWriter, r *http.Request) {
 		//mdl.ITAssetAssignTo = r.FormValue("CanITAssetAssignTo")
 		ITAssetPrice, _ := strconv.ParseFloat(r.FormValue("ITAssetPrice"), 32)
 		mdl.ITAssetPrice = ITAssetPrice
-		mdl.ITAssetWarranty, _ = time.Parse(time.RFC3339, r.FormValue("ITAssetWarranty"))
+		mdl.ITAssetWarranty, _ = time.ParseInLocation("02-01-2006", r.FormValue("ITAssetWarranty"),time.Local)
 		VendorID, _ := strconv.Atoi(r.FormValue("Vendor"))
 		mdl.Vendor = VendorID
 		LocationID, _ := strconv.Atoi(r.FormValue("Location"))
@@ -477,7 +477,7 @@ func (p *IITAsset) ITAssetsBulkEdit(w http.ResponseWriter, r *http.Request) {
 		mdl.ITAssetDescription = data["ITAssetDescription"]
 
 		if data["ITAssetWarranty"] != "" {
-			mdl.ITAssetWarranty, _ = time.Parse(time.RFC3339, data["ITAssetWarranty"])
+			mdl.ITAssetWarranty, _ = time.ParseInLocation("02-01-2006", data["ITAssetWarranty"],time.Local)
 		}
 		VendorID, _ := strconv.Atoi(data["Vendor"])
 		mdl.Vendor = VendorID
@@ -540,14 +540,21 @@ func (p *IITAsset) ITAssetsCheckout(w http.ResponseWriter, r *http.Request) {
 		CheckedOutUserID, err := strconv.Atoi(r.FormValue("Users"))
 		if CheckedOutUserID != 0 {
 			mdl.CheckedOutUserID = CheckedOutUserID
-			mdl.CheckedOutDate, _ = time.Parse(time.RFC3339, r.FormValue("CheckOutDate"))
-			mdl.ExpectedCheckInDate, _ = time.Parse(time.RFC3339, r.FormValue("ExpectedCheckInDate"))
-		}
+			mdl.CheckedOutDate, err = time.ParseInLocation("02-01-2006", r.FormValue("CheckOutDate"),time.Local)
+			if err != nil {
+				fmt.Println(err.Error())
+			}
+			mdl.ExpectedCheckInDate, err = time.ParseInLocation("02-01-2006", r.FormValue("ExpectedCheckInDate"),time.Local)
+			if err != nil {
+				fmt.Println(err.Error())
+			}
+		}  
+		
 		CheckedOutAssetID, err := strconv.Atoi(r.FormValue("Assets"))
 		if CheckedOutAssetID != 0 {
 			mdl.CheckedOutAssetID = CheckedOutAssetID
-			mdl.CheckedOutDate, _ = time.Parse(time.RFC3339, r.FormValue("CheckOutDate"))
-			mdl.ExpectedCheckInDate, _ = time.Parse(time.RFC3339, r.FormValue("ExpectedCheckInDate"))
+			mdl.CheckedOutDate, _ = time.ParseInLocation("02-01-2006", r.FormValue("CheckOutDate"),time.Local)
+			mdl.ExpectedCheckInDate, _ = time.ParseInLocation("02-01-2006", r.FormValue("ExpectedCheckInDate"),time.Local)
 		}
 
 		mdl.Comments = r.FormValue("Description")
@@ -586,11 +593,11 @@ func (p *IITAsset) ITAssetsCheckout(w http.ResponseWriter, r *http.Request) {
 
 			aprvl.Status = 9
 			IW.InWardOutWardApproval = aprvl
-			err = p.ICmnrepo.CreateInWardOutWard(r.Context(), &IW)
+				err = p.ICmnrepo.CreateInWardOutWard(r.Context(), &IW)
 		} else {
 			mdl.CheckOut_By = usr.EmployeeID
 			mdl.CreatedBy = usr.EmployeeID
-			err = p.Irepo.CreateITAssetsCheckout(r.Context(), &mdl)
+				err = p.Irepo.CreateITAssetsCheckout(r.Context(), &mdl)
 		}
 
 		if err == nil {
@@ -623,7 +630,7 @@ func (p *IITAsset) ITAssetRetire(w http.ResponseWriter, r *http.Request) {
 	mdl := CmnModel.Retire{}
 	mdl.AssetID, _ = strconv.Atoi(r.FormValue("AssetID"))
 	mdl.Reason, _ = strconv.Atoi(r.FormValue("Reason"))
-	mdl.RetireDate, _ = time.Parse(time.RFC3339, r.FormValue("RetireDate"))
+	mdl.RetireDate, _ = time.ParseInLocation("02-01-2006", r.FormValue("RetireDate"),time.Local)
 	mdl.Commnets = r.FormValue("Commnets")
 	mdl.RetiredBy, _ = strconv.Atoi(r.FormValue("RetiredBy"))
 	body := p.Irepo.ITAssetRetire(r.Context(), &mdl)
@@ -644,7 +651,7 @@ func (p *IITAsset) GetCustomFields(w http.ResponseWriter, r *http.Request) {
 func (p *IITAsset) CreateITAssetsCheckIn(w http.ResponseWriter, r *http.Request) {
 
 	mdl := ITAssetsmodel.ITassetCheckout{}
-	mdl.CheckinDate, _ = time.Parse(time.RFC3339, r.FormValue("CheckInDate"))
+	mdl.CheckinDate, _ = time.ParseInLocation("02-01-2006", r.FormValue("CheckInDate"),time.Local)
 	mdl.CheckInComments = r.FormValue("CheckInComments")
 	IDITAssetCheckOutCheckIN, err := strconv.Atoi(r.FormValue("IDITAssetCheckOutCheckIN"))
 	mdl.IDITAssetCheckOutCheckIN = IDITAssetCheckOutCheckIN
@@ -817,7 +824,7 @@ func (p *IITAsset) ITAsset_Service(w http.ResponseWriter, r *http.Request) {
 func (p *IITAsset) ITasset_services_Insert(w http.ResponseWriter, r *http.Request) {
 	mdl := ITAssetsmodel.ITasset_services{}
 	json.NewDecoder(r.Body).Decode(&mdl)
-
+	
 	err := p.Irepo.ITasset_services_Insert(r.Context(), &mdl)
 	if err == nil {
 		utils.RespondwithJSON(w, r, http.StatusOK, nil)

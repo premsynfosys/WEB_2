@@ -83,7 +83,7 @@ func (p *INonITAsset) NonITAsset_Create(w http.ResponseWriter, r *http.Request) 
 
 		VendorID, _ := strconv.Atoi(r.FormValue("VendorID"))
 		mdlOprtn.VendorID = VendorID
-		mdlOprtn.Warranty ,_ = time.Parse(time.RFC3339,r.FormValue("Warranty"))
+		mdlOprtn.Warranty, _ = time.ParseInLocation("02-01-2006", r.FormValue("Warranty"),time.Local)
 		mdlOprtn.Quantity, _ = strconv.Atoi(r.FormValue("Quantity"))
 		mdlOprtn.UnitPrice, _ = strconv.ParseFloat(r.FormValue("UnitPrice"), 64)
 		mdlOprtn.OrderedBy = usr.IDEmployees
@@ -286,7 +286,7 @@ func (p *INonITAsset) PostNonITAssets_oprtns_AddStock(w http.ResponseWriter, r *
 	mdlOprtn := NonITAssets_mdl.NonITAssets_Oprtns{}
 	VendorID, _ := strconv.Atoi(r.FormValue("VendorID"))
 	mdlOprtn.VendorID = VendorID
-	mdlOprtn.Warranty ,_ = time.Parse(time.RFC3339, r.FormValue("Warranty"))
+	mdlOprtn.Warranty, _ = time.ParseInLocation("02-01-2006", r.FormValue("Warranty"),time.Local)
 	mdlOprtn.Comments = r.FormValue("Comments")
 	mdlOprtn.NonITAsset_ID, _ = strconv.Atoi(r.FormValue("NonITAsset_ID"))
 	mdlOprtn.Quantity, _ = strconv.Atoi(r.FormValue("Quantity"))
@@ -352,12 +352,12 @@ func (p *INonITAsset) NonITAssetsCheckout(w http.ResponseWriter, r *http.Request
 		mdl.CheckOut_By = usr.EmployeeID
 		if CheckedOutUserID, err := strconv.Atoi(r.FormValue("Users")); CheckedOutUserID != 0 && err == nil {
 			mdl.CheckedOutUserID = CheckedOutUserID
-			mdl.CheckedOutDate ,_ = time.Parse(time.RFC3339,r.FormValue("CheckOutDate"))
+			mdl.CheckedOutDate, _ = time.ParseInLocation("02-01-2006", r.FormValue("CheckOutDate"),time.Local)
 			mdl.CheckOut_Qnty, _ = strconv.Atoi(r.FormValue("CheckOut_Qnty"))
 		}
 		if r.FormValue("CheckedOutPlace") != "" {
 			mdl.CheckedOutPlace = r.FormValue("CheckedOutPlace")
-			mdl.CheckedOutDate ,_ = time.Parse(time.RFC3339,r.FormValue("CheckOutDate"))
+			mdl.CheckedOutDate, _ = time.ParseInLocation("02-01-2006", r.FormValue("CheckOutDate"),time.Local)
 			mdl.CheckOut_Qnty, _ = strconv.Atoi(r.FormValue("CheckOut_Qnty"))
 		}
 		var err error
@@ -748,7 +748,6 @@ func (p *INonITAsset) MyNonITAssetRequestList(w http.ResponseWriter, r *http.Req
 	}
 	utils.ExecuteTemplate(w, r, "MyNonITAssetRequestList", Mapdata)
 }
-
 
 func (p *INonITAsset) NonITAssetDelete(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)

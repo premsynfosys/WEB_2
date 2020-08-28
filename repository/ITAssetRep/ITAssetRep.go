@@ -277,6 +277,7 @@ func (m *APIRepo) ITAssetsBulkEdit(ctx context.Context, usr *ITAssetsmodel.ITAss
 
 //ITasset_services_Insert" ..
 func (m *APIRepo) ITasset_services_Insert(ctx context.Context, usr *ITAssetsmodel.ITasset_services) error {
+
 	url := fmt.Sprintf(m.APIConn + "/ITasset_services_Insert")
 	j, err := json.Marshal(usr)
 	if err != nil {
