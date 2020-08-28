@@ -113,10 +113,9 @@
 
         $(".divPerson").addClass("collapse")
         $('#Expected_Start_Date').datetimepicker({
-
-            useCurrent: false,
+         
             format: customDateFormate + ' 10:00'
-            // minDate: new Date()
+            // maxDate: new Date()
 
         });
         // $('#Expected_Start_Date').data("datetimepicker").minDate(new Date());
@@ -129,12 +128,21 @@
         //     format: 'LT'
         // });
         $('#Expected_End_Date').datetimepicker({
-            format: customDateFormate + ' 19:00',
-            autclose: true,
-            //  minDate: new Date(),
-            useCurrent: false
+            format: customDateFormate + ' 19:00'
+           // autclose: true,
+            //  minDate: new Date()
+            //useCurrent: false
 
         });
+        $(document).on("blur", "#Expected_Start_Date", function (e) {          
+            if($(this).val()!="")          
+            $('#Expected_End_Date').data("datetimepicker").minDate($(this).val());
+        });
+        $(document).on("blur", "#Expected_End_Date", function (e) {
+            if($(this).val()!="")           
+            $('#Expected_Start_Date').data("datetimepicker").maxDate($(this).val());
+        });
+
         //   $('#Expected_End_Date').data("datetimepicker").minDate(new Date());
         // $('#Expected_End_Time').datetimepicker({
         //     format: 'LT'
@@ -182,7 +190,7 @@
 
             obj.IDITAsset_Services = parseInt($("#IDITAsset_Services").val())
             obj.ITAssetID = parseInt($("#ITAssetID").val())
-            obj.Expected_Start_Date = moment($("#Expected_Start_Date").val(), "DD-MM-YYYY HH:mm:ss").format()
+
             '{{if eq .mode "schedule"}}'
             obj.Expected_Start_Date = moment($("#Expected_Start_Date").val(), "DD-MM-YYYY HH:mm:ss").format()
             if ($("#Expected_Start_Date").val() == "") {
@@ -191,7 +199,7 @@
                 return false;
             }
             ' {{end}}'
-            obj.Expected_End_Date =moment($("#Expected_End_Date").val(), "DD-MM-YYYY HH:mm:ss").format() 
+            obj.Expected_End_Date = $("#Expected_End_Date").val()
 
             if ($("#Expected_End_Date").val() == "") {
                 alert('Please enter Expected end date')

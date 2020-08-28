@@ -379,10 +379,12 @@
             format: customDateFormate
         });
         $('#CheckInDate').datetimepicker({
-            format: customDateFormate,
-            useCurrent: false
+            format: customDateFormate
+            //useCurrent: false
 
         });
+        if ($('#CheckOutDate').val() != "")
+            $('#CheckInDate').data("datetimepicker").minDate($('#CheckOutDate').val());
 
 
         $('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
