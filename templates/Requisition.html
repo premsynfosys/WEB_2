@@ -263,7 +263,7 @@
             else {
                 if ($("#LocationID").val() != "") {
                     if ($("#LocationID").val() != $("#locationid").val()) {
-                        Toast("warning", "you are not access to select other locations")
+                        Toast("warning", "you are not authorized to select other locations")
                         $("#LocationID").val("")
                         $('#LocationsAddress').html("--")
                         return

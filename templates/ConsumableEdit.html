@@ -111,7 +111,7 @@
                         <label for="LocationID" class="col-sm-3 col-form-label ">Location:</label>
                         <div class="col-sm-9 ">
                             <div class="input-group">
-                                <select name="LocationID" id="LocationID" class="form-control">
+                                <select name="LocationID" required id="LocationID" class="form-control">
                                     <option value="">--select--</option>
                                 </select>
                                 {{if .Auth.Accesstoalllocations}}
@@ -198,13 +198,13 @@
         var data = getdata('/Consumables/GetConsumableMasterList')
         loadConsumableNames(data)
         function loadLocations(data) {
-            $("#LocationID").empty().append('<option selected="selected" value="0">--select--</option>');
+            $("#LocationID").empty().append('<option selected="selected" value="">--select--</option>');
             $.each(data, function (i, el) {
                 $("#LocationID").append($("<option />", { text: el.Name + "\n" + el.Address1 + "\n" + el.Address2 + "\n" + el.Countryname + "\n" + el.Statename + "\n" + el.Zipcode, value: el.IDLocations }));
             });
         }
         function loadVendors(data) {
-            $("#Vendor").empty().append('<option selected="selected" value="0">--select--</option>');
+            $("#Vendor").empty().append('<option selected="selected" value="">--select--</option>');
             $.each(data, function (i, el) {
                 $("#VendorID").append($("<option />", { text: el.Name + "\n" + el.Address + "\n" + el.Email + "\n" + el.ContactPersonName + "\n" + el.Phone + "\n", value: el.Idvendors }));
             });
@@ -223,6 +223,7 @@
         //   $("#GroupID").val("")
         $("#LocationID").val("{{.Data.LocationID}}")
         $("#ConsumableNames").val("{{.Data.Consumablemaster.IDconsumableMaster}}")
+        $("#ConsumableNames").trigger('change')
         //  $("#GroupID").val("{{.Data.Consumablemaster.GroupID}}")
 
         // $("#LocationID").val("{{.Data.LocationID}}")

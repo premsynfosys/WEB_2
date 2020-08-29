@@ -12,7 +12,7 @@
         <label for="FieldType" class="col-md-3 col-form-label ">Field Type:</label>
         <div class="col-md-9 ">
             <select name="FieldType" id="FieldType" class="form-control">
-                <option value="0">--select--</option>
+                <option value="">--select--</option>
                 <option value="text">Text Box</option>
                 <option value="textarea">Comment Box</option>
                 <!-- <option value="checkbox">Check Box</option> -->
@@ -105,7 +105,7 @@
                 alert('Please select Field Name');
                 return;
             }
-            if ($("#FieldType").val() == 0) {
+            if ($("#FieldType").val() == "") {
                 $("#FieldType").focus();
                 alert('Please select Field Type');
                 return;
@@ -148,7 +148,7 @@
                     break;
             }
             $("#divCustm").append(html)
-            $("#FieldType").val(0)
+            $("#FieldType").val("")
             $("#FieldName").val("")
         })
     </script>

@@ -1,7 +1,7 @@
 {{define "NonITAssetAdd_Partial"}}
 <form id="mstrForm">
     <div class="form-group row ">
-        <label for="NonITAssets_Name" class="col-md-3 col-form-label ">Asset Name:</label>
+        <label for="NonITAssets_Name" class="col-md-3 col-form-label ">Asset Name:<span class="text-red">*</span></label>
 
         <input type="text" required maxlength="45" name="NonITAssets_Name" class="form-control  col-md-3 "
             id="NonITAssets_Name" placeholder="Asset Name">
@@ -35,7 +35,7 @@
         var data = getdata('/GetNonITAssetGroups')
         loadLocations(data)
         function loadLocations(data) {
-            $("#NonITAssets_GroupID").empty().append('<option value="0">--select--</option>');
+            $("#NonITAssets_GroupID").empty().append('<option value="">--select--</option>');
             $.each(data, function (i, el) {
                 $("#NonITAssets_GroupID").append($("<option />", { text: el.NonITAssets_GroupName, value: el.IDNonITAssets_Groups }));
             });
@@ -47,7 +47,7 @@
         })
         $("#NonITAssets_GroupName").change(function () {
             if ($("#NonITAssets_GroupName").length > 0) {
-                $("#NonITAssets_GroupID").val("0")
+                $("#NonITAssets_GroupID").val("")
             }
         })
 

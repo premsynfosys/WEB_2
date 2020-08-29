@@ -64,7 +64,7 @@
                         </div>
                     </div>
                     <div class="form-group row collapse" id="divUsers">
-                        <label for="Users" class="col-md-3 col-form-label ">Users:</label>
+                        <label for="Users" class="col-md-3 col-form-label lblrequired">Users:</label>
                         <div class="col-md-9">
                             <select name="Users" id="Users" class="form-control float-left">
                             </select>
@@ -72,7 +72,7 @@
                     </div>
                     <div class="form-group row collapse" id="divAssets">
 
-                        <label for="Assets" class="col-md-3 col-form-label ">Assets:</label>
+                        <label for="Assets" class="col-md-3 col-form-label lblrequired">Assets:</label>
                         <div class="col-md-9">
                             <select name="Assets" id="Assets" class="form-control float-left">
                             </select>
@@ -83,21 +83,21 @@
 
                         <input type="hidden" name="AssetLocation" id="AssetLocation" value="{{.Data.Mdl.Location}}">
                         <div class="form-group row ">
-                            <label for="Locations" class="col-md-3 col-form-label ">Locations:</label>
+                            <label for="Locations" class="col-md-3 col-form-label lblrequired">Locations:</label>
                             <div class="col-md-9">
                                 <select name="Locations" id="Locations" class="form-control float-left">
                                 </select>
                             </div>
                         </div>
                         <div class="form-group row ">
-                            <label for="Receiver" class="col-md-3 col-form-label ">Receiver:</label>
+                            <label for="Receiver" class="col-md-3 col-form-label lblrequired">Receiver:</label>
                             <div class="col-md-9">
                                 <select name="Receiver" id="Receiver" class="form-control float-left">
                                 </select>
                             </div>
                         </div>
                         <div class="form-group row ">
-                            <label for="Approver" class="col-md-3 col-form-label ">Approver:</label>
+                            <label for="Approver" class="col-md-3 col-form-label lblrequired">Approver:</label>
                             <div class="col-md-9">
                                 <select name="Approver" id="Approver" class="form-control float-left">
                                 </select>
@@ -302,18 +302,18 @@
             alert('Please choose Check-out To');
             return false;
         }
-        if ($("input[name='AssignTo']:checked").val() == 'User' && $("#Users").val() == '0') {
+        if ($("input[name='AssignTo']:checked").val() == 'User' && $("#Users").val() == '') {
             alert('Please select user');
             $("#Users").focus()
             return false;
         }
-        if ($("input[name='AssignTo']:checked").val() == 'Asset' && $("#Assets").val() == '0') {
+        if ($("input[name='AssignTo']:checked").val() == 'Asset' && $("#Assets").val() == '') {
             alert('Please select Assets');
             $("#Assets").focus()
             return false;
         }
-        if ($("input[name='AssignTo']:checked").val() == 'Location' && ($("#Locations").val() == '0' || $("#Receiver").val() == '0' || $("#Approver").val() == '0')) {
-            alert('Please select fields.');
+        if ($("input[name='AssignTo']:checked").val() == 'Location' && ($("#Locations").val() == '' || $("#Receiver").val() == '' || $("#Approver").val() == '')) {
+            alert('Please select all mandatory fields.');
             $("#Locations").focus()
             return false;
         }

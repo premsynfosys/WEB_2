@@ -51,7 +51,7 @@
         <div class="form-group row">
             <label for="Location" class="col-md-3 col-form-label col-form-label-sm">Location:</label>
             <div class="col-md-9  ">
-                <select name="Location" id="Location" class="form-control">
+                <select name="Location" required id="Location" class="form-control">
                 </select>
 
             </div>
@@ -135,7 +135,7 @@
 
 
     function loadLocations(data) {
-        $("#Location").empty().append('<option selected="selected" value="0">--select--</option>');
+        $("#Location").empty().append('<option selected="selected" value="">--select--</option>');
         $.each(data, function (i, el) {
             $("#Location").append($("<option />", { text: el.Name + "\n" + el.Address1 + "\n" + el.Address2 + "\n" + el.Countryname + "\n" + el.Statename + "\n" + el.Zipcode, value: el.IDLocations }));
         });
@@ -143,7 +143,7 @@
 
     }
     function loadVendors(data) {
-        $("#Vendor").empty().append('<option selected="selected" value="0">--select--</option>');
+        $("#Vendor").empty().append('<option selected="selected" value="">--select--</option>');
         $.each(data, function (i, el) {
             $("#Vendor").append($("<option />", { text: el.Name + "\n" + el.Address + "\n" + el.Email + "\n" + el.ContactPersonName + "\n" + el.Phone + "\n", value: el.Idvendors }));
         });

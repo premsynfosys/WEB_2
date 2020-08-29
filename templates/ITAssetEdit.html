@@ -80,7 +80,7 @@
                             placeholder="ITAsset Description">{{.Data.ITAssetDescription}}</textarea>
                     </div>
                 </div>
-                <div class="row">
+                <div class="form-group row">
                     <label class="col-sm-3 col-form-label">Price:</label>
                     <div class="col-sm-3 ">
                         <div class="input-group">
@@ -101,11 +101,11 @@
                         <span><text id="txtITAssetWarranty" class=""></text></span>
                     </div>
                 </div>
-                <div class="row">
+                <div class="form-group row">
                     <label for="Vendor" class="col-sm-3 col-form-label ">Vendor:</label>
                     <div class="col-sm-9 ">
                         <div class="input-group">
-                            <select name="Vendor" required id="Vendor" class="form-control">
+                            <select name="Vendor"  id="Vendor" class="form-control">
                                 <option value="">--select--</option>
                             </select>
                             <!-- <span class="input-group-append ">
@@ -115,7 +115,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
+                <div class="form-group row">
                     <label for="Location" class="col-sm-3 col-form-label ">Location:</label>
                     <div class="col-sm-9 ">
                         <div class="input-group">
@@ -390,7 +390,7 @@
 
 
     function loadLocations(data) {
-        $("#Location").empty().append('<option selected="selected" value="0">--select--</option>');
+        $("#Location").empty().append('<option selected="selected" value="">--select--</option>');
         $.each(data, function (i, el) {
             $("#Location").append($("<option />", { text: el.Name + "\n" + el.Address1 + "\n" + el.Address2 + "\n" + el.Countryname + "\n" + el.Statename + "\n" + el.Zipcode, value: el.IDLocations }));
         });
@@ -406,7 +406,7 @@
         });
     }
     function loadVendors(data) {
-        $("#Vendor").empty().append('<option selected="selected" value="0">--select--</option>');
+        $("#Vendor").empty().append('<option selected="selected" value="">--select--</option>');
         $.each(data, function (i, el) {
             $("#Vendor").append($("<option />", { text: el.Name + "\n" + el.Address + "\n" + el.Email + "\n" + el.ContactPersonName + "\n" + el.Phone + "\n", value: el.Idvendors }));
         });

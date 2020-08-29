@@ -19,7 +19,7 @@
   <div class="card">
     <div class="card-body">
       <div class="row">
-        <label for="Vendor" class="col-sm-3 col-form-label ">Vendor:</label>
+        <label for="Vendor" class="col-sm-3 col-form-label lblrequired ">Vendor:</label>
         <div class="col-sm-9 ">
           <div class="input-group">
             <select name="Vendor" id="Vendor" class="form-control">
@@ -39,7 +39,7 @@
 
       </div>
       <div class="row">
-        <label for="ConsumableNames" class="col-sm-3 col-form-label ">Consumables:</label>
+        <label for="ConsumableNames" class="col-sm-3 col-form-label lblrequired">Consumables:</label>
         <div class="col-sm-9 ">
           <div class="input-group">
             <select name="ConsumableNames" id="ConsumableNames" class="form-control">
@@ -51,12 +51,12 @@
           </div>
         </div>
       </div>
-      <div class="row">
-        <label class="col-sm-3 col-form-label">Price per each:</label>
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label lblrequired">Price per each:</label>
         <div class="col-sm-3 ">
           <div class="input-group">
             <input type="number" title="Asset Price" min="0" id="AssetPriceEach" name="AssetPriceEach"
-              class="form-control">
+              class="form-control ">
             <span class="input-group-append">
               <label class="input-group-text">&#8377;</label>
             </span>
@@ -167,7 +167,7 @@
     data = getdata('/GetVendors')
     loadVendors(data)
     function loadVendors(data) {
-      $("#Vendor").empty().append('<option value="0">--select--</option>');
+      $("#Vendor").empty().append('<option value="">--select--</option>');
       $.each(data, function (i, el) {
         $("#Vendor").append($("<option />", { 'data-Address': el.Address, 'data-Email': el.Email, 'data-ContactPersonName': el.ContactPersonName, 'data-Phone': el.Phone, text: el.Name, value: el.Idvendors }));
       });
@@ -183,7 +183,12 @@
     var data = getdata('/Consumables/GetConsumableMasterList')
     loadConsumableNames(data)
 
-
+debugger;
+    var url;
+    if ($("#Vendor").val() == "")
+      url = '/GetVendorsAssetDetails/0';
+    else
+      url = '/GetVendorsAssetDetails/' + $("#Vendor").val()
 
     var tbl = $('#tblVendorAsset').DataTable({
       responsive: true,
@@ -194,7 +199,7 @@
       destroy: true,
       dom: 'Bfrtip',
       ajax: {
-        "url": '/GetVendorsAssetDetails/' + $("#Vendor").val(),
+        "url": url,
         "type": "GET",
         "datatype": "json",
         "dataSrc": ""//to read data from a plain array rather than an array in an object:
@@ -336,7 +341,7 @@
 
       var id;
       var column = tbl.column(2);
-      if ($(this).val() == "0") {
+      if ($(this).val() == "") {
         $("#tbltitle").text("Asset Deatils")
         id = 0
         column.visible(true)
@@ -360,9 +365,9 @@
 
       // tbl.columns.adjust().draw();
     })
-    RemapVendorAsset
+    
     $("#mapVendorAsset").click(function () {
-      if ($("#Vendor").val() == "0") {
+      if ($("#Vendor").val() == "") {
         Toast("warning", "Please select Vendor")
         $("#Vendor").focus()
         return false;
@@ -373,6 +378,10 @@
       }
       else if ($("#AssetPriceEach").val() == "") {
         Toast("warning", "Please select Price for each")
+        $("#AssetPriceEach").focus(); return false;
+      }
+      else if ($("#AssetPriceEach").val() == "0") {
+        Toast("warning", "Please enter price above 0/-")
         $("#AssetPriceEach").focus(); return false;
       }
       var obj = new Object()
@@ -411,7 +420,7 @@
     })
 
     $("#RemapVendorAsset").click(function () {
-      if ($("#Vendor").val() == "0") {
+      if ($("#Vendor").val() == "") {
         Toast("warning", "Please select Vendor")
         $("#Vendor").focus()
         return false;
@@ -422,6 +431,10 @@
       }
       else if ($("#AssetPriceEach").val() == "") {
         Toast("warning", "Please select Price for each")
+        $("#AssetPriceEach").focus(); return false;
+      }
+      else if ($("#AssetPriceEach").val() == "0") {
+        Toast("warning", "Please enter price above 0/-")
         $("#AssetPriceEach").focus(); return false;
       }
       var obj = new Object()
@@ -472,7 +485,7 @@
       $("#Vendor").focus()
     })
     $("#VendorAssetClear").click(function () {
-      $("#Vendor").val("0")
+      $("#Vendor").val("")
       $("#ConsumableNames").val("")
       $("#AssetPriceEach").val("")
       $("#AssetType").val("")

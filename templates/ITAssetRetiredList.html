@@ -20,7 +20,7 @@
                     <table class="table table-striped table-hover  table-bordered nowrap " id="tblITAssets">
                         <thead>
                             <th>ID</th>
-                            <th><input type="checkbox" id="chkSelectAll"></th>
+
                             <th>IT Asset</th>
                             <th>Asset Type</th>
                             <th>Model No.</th>
@@ -91,7 +91,7 @@
                 "dataSrc": ""//to read data from a plain array rather than an array in an object:
             },
             columnDefs: [
-                { orderable: false, targets: 1 },
+             //   { orderable: false, targets: 1 },
                 { visible: false, targets: 0 }
             ],
             order: [[0, 'desc']],
@@ -102,13 +102,7 @@
                     "name": "IDITAssets",
                     'data': 'IDITAssets'
                 },
-                {
-                    "name": "Select",
-                    'data': null,
-                    render: function (dt) {
-                        return '<input type="checkbox" class="tblchk" data-name=' + dt.ITAssetName + ' value=' + dt.IDITAssets + '>';
-                    }
-                }, {
+               {
                     "name": "ITAssetName",
                     'data': "ITAssetName"
 

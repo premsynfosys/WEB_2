@@ -38,8 +38,8 @@
           <table class="table table-striped table-hover  table-bordered nowrap " id="tblITAssets">
             <thead>
               <th class="notexport">ID</th>
-              <th  class="notexport"><input type="checkbox" id="chkSelectAll"></th>
-             
+              <th class="notexport"><input type="checkbox" id="chkSelectAll"></th>
+
               <th>IT Asset</th>
               <th>Status</th>
               <th>Group</th>
@@ -48,9 +48,11 @@
               <th>Identification No</th>
               <th>Description</th>
               <th>Assigned To</th>
+              <th>CheckedOut On</th>
+              <th>Exp CheckIn</th>
               <th>Price</th>
               <th>Warranty </th>
-              <th  class="notexport">Actions</th>
+              <th class="notexport">Actions</th>
             </thead>
           </table>
         </div>
@@ -125,7 +127,7 @@
         "dataSrc": ""//to read data from a plain array rather than an array in an object:
       },
       columnDefs: [
-        { orderable: false, targets: [1,12] },
+        { orderable: false, targets: [1, 14] },
         { visible: false, targets: 0 }
       ],
       order: [[0, 'desc']],
@@ -144,7 +146,7 @@
         }, {
           "name": "ITAssetName",
           'data': null,
-          render: function (dt) {return '<a  href="/ITAssets/view/' + dt.IDITAssets + '" class="text-warning font-weight-bold">'+dt.ITAssetName+'</a>' }
+          render: function (dt) { return '<a  href="/ITAssets/view/' + dt.IDITAssets + '" class="text-warning font-weight-bold">' + dt.ITAssetName + '</a>' }
         }, {
           "name": "Statusname",
           'data': "Statusname",
@@ -180,8 +182,22 @@
 
             if (dt.FirstName == null || dt.FirstName == undefined)
               return null
-            else
+            else {
+           
               return dt.FirstName;
+            }
+          }
+        }, {
+          "name": "Name",
+          "data": "ITassetCheckout",
+          render: function (dt) {
+            return jsondate(dt.CheckedOutDate);
+          }
+        }, {
+          "name": "Name",
+          "data": "ITassetCheckout",
+          render: function (dt) {
+            return jsondate(dt.ExpectedCheckInDate);
           }
         }, {
           "name": "ITAssetPrice",
@@ -197,12 +213,12 @@
           "name": "Action",
           'data': null,
           render: function (dt) {
-          
+
             var res = '<a title="View"  href="/ITAssets/view/' + dt.IDITAssets + '" class="text-warning font-weight-bold"><i class= "fa fa-eye"></i></a>'
             res += '<a  title="Edit" href="/ITAssets/edit/' + dt.IDITAssets + '" class="text-warning font-weight-bold ml-2"><i class= "ik ik-edit"></i></a>'
-          if(dt.Statusname=="Available"){
-             res += "<a  title='Delete'  data-value='" + dt.IDITAssets + "'  class='list-delete text-warning ml-2 '><i class='ik ik-trash-2  '></i></a>";
-            }  return res;
+            if (dt.Statusname == "Available") {
+              res += "<a  title='Delete'  data-value='" + dt.IDITAssets + "'  class='list-delete text-warning ml-2 '><i class='ik ik-trash-2  '></i></a>";
+            } return res;
           }
         }
       ],
@@ -318,29 +334,29 @@
 
     $("#tblITAssets tbody ").on('click', '.list-delete', function () {
       var tr = tbl.row($(this).parents('tr')).data();
+      swal({
+        title: "Are you sure?",
+        text: "Record will be delete Permanently.",
+        icon: "warning",
+        buttons: ["Cancel", "Delete"],
+        dangerMode: true,
+      })
+        .then((willDelete) => {
+          if (willDelete) {
             swal({
-                title: "Are you sure?",
-                text: "Record will be delete Permanently.",
-                icon: "warning",
-                buttons: ["Cancel", "Delete"],
-                dangerMode: true,
-            })
-                .then((willDelete) => {
-                    if (willDelete) {
-                        swal({
-                            title: "Deleted",
-                            text: "ITAsset  has been deleted!",
-                            icon: "success",
-                        });
+              title: "Deleted",
+              text: "ITAsset  has been deleted!",
+              icon: "success",
+            });
 
-                        window.location = "http://" + document.location.host + "/ITAssetDelete/"+tr.IDITAssets;
+            window.location = "http://" + document.location.host + "/ITAssetDelete/" + tr.IDITAssets;
 
 
-                    } else {
-                        swal("ITAsset is not deleted!");
-                    }
-                });
+          } else {
+            swal("ITAsset is not deleted!");
+          }
         });
+    });
 
 
 
@@ -391,7 +407,7 @@
           success: function (data) {
 
             Toast("success", "ITAssets are ready for request.")
-            $("#tblITAssets td input[type='checkbox']:checked").each(function () {  this.checked=false;})
+            $("#tblITAssets td input[type='checkbox']:checked").each(function () { this.checked = false; })
           }
         });
     })

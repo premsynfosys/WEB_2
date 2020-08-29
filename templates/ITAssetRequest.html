@@ -27,7 +27,7 @@
             <label for="AssetType" class="col-md-3 col-form-label  ">IT Asset Type:</label>
             <div class="col-md-9">
               <select name="AssetType" id="AssetType" class="custom-select w-auto  float-left">
-                <option value="0">--select--</option>
+                <option value="">--select--</option>
                 {{ range .Data.ITAssetGroups}}
                 <option value="{{.ITAssetgroupName}}"> {{.ITAssetgroupName}}</option>
                 {{end}}
@@ -91,7 +91,7 @@
             <label for="Approver" class="col-md-3 col-form-label  ">Approver:</label>
             <div class="col-md-9">
               <select name="Approver" id="Approver" class="form-control w-auto ">
-                <option value="0">--select--</option>
+                <option value="">--select--</option>
                 {{ range .Data.UsersEmployees}}
                 <option value="{{.EmployeeID}}"> {{.Employee.FirstName}}</option>
                 {{end}}
@@ -119,7 +119,7 @@
         Toast('warning','max 3 Assets can Request')
         return;
       }
-      if ($("#AssetType").val() == "0") {
+      if ($("#AssetType").val() == "") {
         Toast('warning','Please select Asset Type')
         $("#AssetType").focus();
         return;
@@ -133,7 +133,7 @@
 
       html += '<td><a href="javascript:void(0)" class="DeleteReqAsset" ><i class="fa fa-trash text-danger" aria-hidden="true"></a></i></td></tr>'
       $("#tblRecords tbody").append(html);
-      $("#AssetType").val(0)
+      $("#AssetType").val("")
       $("#Description").val("")
     })
 
@@ -144,7 +144,7 @@
 
     $("#AssetReq").on("click", function (e) {
 
-      if ($("#Approver").val() == "0") {
+      if ($("#Approver").val() == "") {
         Toast('warning', "Please select Approver")
 
         $("#Approver").focus()

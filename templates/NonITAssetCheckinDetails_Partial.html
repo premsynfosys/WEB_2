@@ -59,13 +59,13 @@
                 <input type="hidden" id="valditationINUSE">
 
                 <div class="form-group row">
-                    <label for="CheckIn_Qnty" class="col-sm-3 col-form-label ">CheckIn Quantity:</label>
+                    <label for="CheckIn_Qnty" class="col-sm-3 col-form-label  ">CheckIn Quantity: <span class="text-red">*</span></label>
                     <div class="col-sm-9 ">
                         <input type="number" min="1" name="CheckIn_Qnty" class="form-control  mb-1" id="CheckIn_Qnty">
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="Checkin_Comments" class="col-sm-3 col-form-label ">Comments:</label>
+                    <label for="Checkin_Comments" class="col-sm-3 col-form-label  ">Comments:<span class="text-red">*</span></label>
                     <div class="col-sm-9">
                         <textarea name="Checkin_Comments" maxlength="500" required placeholder="Description"
                             title="Description" class="form-control " id="Checkin_Comments"></textarea>
@@ -172,7 +172,7 @@
                     "data": null,
                     render: function (dt) {
                         if (dt.CheckedOutPlace != "")
-                            return dt.CheckedOutPlace + "( " + dt.CheckOut_UserName + " )"
+                            return dt.CheckedOutPlace //+ "( " + dt.CheckOut_UserName + " )"
                         else
                             return dt.CheckOut_UserName
                     }
@@ -286,8 +286,13 @@
         });
 
         $("#btnCheckin").click(function () {
+            debugger
+            if($("#CheckIn_Qnty").val()==""){
+                alert('Please enter quantity')
+                return
+            }
             if (parseInt($("#CheckIn_Qnty").val()) > parseInt($("#valditationINUSE").val())) {
-                Toast('danger', 'Please check stock In Use')
+                Toast('danger', 'Please check Quantity In Use')
                 return false;
             }
 

@@ -23,7 +23,7 @@
                         id="tblConsumableOprtn">
                         <thead>
                             <th>ID</th>
-                            <th><input type="checkbox" id="chkSelectAll"></th>
+                            
                             <th>Consumable Name</th>
                             <th>Quantity</th>
                             <th>Unit Price</th>
@@ -82,7 +82,7 @@
                 "dataSrc": ""//to read data from a plain array rather than an array in an object:
             },
             columnDefs: [
-                { orderable: false, targets: 1 },
+              //  { orderable: false, targets: 1 },
                 { visible: false, targets: 0 }
             ],
             order: [[0, 'desc']],
@@ -93,12 +93,6 @@
                     'data': 'ConsumableOprtns.IDconsumableOprtns'
                 },
                 {
-                    "name": "Select",
-                    'data': "ConsumableOprtns.IDconsumableOprtns",
-                    render: function (dt) {
-                        return '<input type="checkbox" class="tblchk"  value=' + dt + '>';
-                    }
-                }, {
                     "name": "ConsumableName",
                     'data': "Consumablemaster.ConsumableName"
                 }, {

@@ -33,7 +33,7 @@
         var data = getdata('/GetConsumableGroups')
         loadLocations(data)
         function loadLocations(data) {
-            $("#GroupID").empty().append('<option value="0">--select--</option>');
+            $("#GroupID").empty().append('<option value="">--select--</option>');
             $.each(data, function (i, el) {
                 $("#GroupID").append($("<option />", { text: el.ConsumableGroupName, value: el.IDconsumablegroups }));
             });
@@ -45,7 +45,7 @@
         })
         $("#GroupName").change(function () {
             if ($("#GroupName").length > 0) {
-                $("#GroupID").val("0")
+                $("#GroupID").val("")
             }
         })
 

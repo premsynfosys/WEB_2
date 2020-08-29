@@ -142,7 +142,7 @@
           'data': null,
           render: function (dt) {
             if (dt.Service_status.IDServiceStatus == 2) {//scheduled
-              return dt.Service_status.StatusName + "<br>" + '<button type="button" class="ServiceStart btn btn-link"  data-value="' + dt.IDITAsset_Services + '">(Start Service)</button>'
+              return dt.Service_status.StatusName + "<br>" + '<button type="button" class="ServiceStart btn btn-link" data-id="' + dt.ITAssetID + '"  data-value="' + dt.IDITAsset_Services + '">(Start Service)</button>'
             } else if (dt.Service_status.IDServiceStatus == 1) {//started
               return dt.Service_status.StatusName + "<br>" + '<button type="button" class="ServiceComplte btn btn-link"  data-value="' + dt.IDITAsset_Services + '">(Complete)</button>'
             } else {
@@ -284,9 +284,11 @@
 
     $("#tblITAssetView_Maintenance ").on("click", ".ServiceStart", function () {
       var IDITAsset_Services = $(this).attr('data-value')
+      var  ITAssetID= $(this).attr('data-id')
       var obj = new Object()
 
       obj.IDITAsset_Services = parseInt(IDITAsset_Services.trim())
+      obj.ITAssetID = parseInt(ITAssetID.trim())
       $.ajax({
         url: "/ITasset_services_start_Update",
         type: 'POST',

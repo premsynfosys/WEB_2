@@ -102,7 +102,8 @@
 
                         <button data-toggle="modal" data-target="#addstockmodal" class="btn btn-info m-1 ">Add
                             Stock</button>
-                        <a href="/NonITAssets/Checkout/{{.Data.IDNonITAsset}}" class="btn btn-info m-1 ">Check-Out</a>
+                            
+                        <a href="/NonITAssets/Checkout/{{.Data.IDNonITAsset}}" onclick="if(parseInt('{{.Data.AvailableQnty}}')<1){alert('Quantity not available.');return false;}" class="btn btn-info m-1 ">Check-Out</a>
 
                         <button data-toggle="modal" data-target="#retiremodal" class="btn btn-info m-1 ">Retire
                             Stock</button>
@@ -487,7 +488,7 @@
 
     });
     function LoadStatus(data) {
-        $("#StatusID").empty().append('<option selected="selected" value="0">--select--</option>');
+        $("#StatusID").empty().append('<option selected="selected" value="">--select--</option>');
         $.each(data, function (i, el) {
             $("#StatusID").append($("<option />", { text: el.StatusName, value: el.IDStatus }));
         });
@@ -506,7 +507,7 @@
         window.open("/PrintQr?url=" + url + "")
     }
     function loadVendors(data) {
-        $("#Vendor").empty().append('<option selected="selected" value="0">--select--</option>');
+        $("#Vendor").empty().append('<option selected="selected" value="">--select--</option>');
         $.each(data, function (i, el) {
             $("#VendorID").append($("<option />", { text: el.Name + "\n" + el.Address + "\n" + el.Email + "\n" + el.ContactPersonName + "\n" + el.Phone + "\n", value: el.Idvendors }));
         });
