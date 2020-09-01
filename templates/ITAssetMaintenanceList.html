@@ -349,7 +349,7 @@
       if($("#Actual_End_Date").val()==""){
         alert("Please select Actual end.")
       }
-      obj.Actual_End_Date = moment($("#Actual_End_Date").val(), "DD-MM-YYYY HH:mm:ss").format(); 
+      obj.Actual_End_Date = moment($("#Actual_End_Date").val(), "DD-MM-YYYY HH:mm").format(); 
       obj.Cost = parseFloat($("#Cost").val());
       obj.IDITAsset_Services = parseInt(IDITAsset_Services.trim())
       obj.Comments = $("#Comments").val();

@@ -190,16 +190,16 @@
 
             obj.IDITAsset_Services = parseInt($("#IDITAsset_Services").val())
             obj.ITAssetID = parseInt($("#ITAssetID").val())
-            obj.Expected_Start_Date = moment($("#Expected_Start_Date").val(), "DD-MM-YYYY HH:mm:ss").format()
+           // obj.Expected_Start_Date = moment($("#Expected_Start_Date").val(), "DD-MM-YYYY HH:mm").format()
             '{{if eq .mode "schedule"}}'
-            obj.Expected_Start_Date = moment($("#Expected_Start_Date").val(), "DD-MM-YYYY HH:mm:ss").format()
+            obj.Expected_Start_Date = moment($("#Expected_Start_Date").val(), "DD-MM-YYYY HH:mm").format()
             if ($("#Expected_Start_Date").val() == "") {
                 alert('Please enter Expected start date')
 
                 return false;
             }
             ' {{end}}'
-            obj.Expected_End_Date =moment($("#Expected_End_Date").val(), "DD-MM-YYYY HH:mm:ss").format() 
+            obj.Expected_End_Date =moment($("#Expected_End_Date").val(), "DD-MM-YYYY HH:mm").format() 
             
 
             if ($("#Expected_End_Date").val() == "") {

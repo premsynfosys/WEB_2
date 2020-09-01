@@ -57,7 +57,13 @@
       <script src="/static/plugins/sweetalert/dist/sweetalert.min.js"></script>
 
 
-
+      <script>
+            // var customDateFormate = 'YYYY-MM-DD';
+            var customDateFormate = 'DD-MM-YYYY';
+            $(document).ready(function () {
+                  $('.datetimepicker-input').attr('placeholder', customDateFormate);
+            });
+      </script>
       <script>
             //abc def d
 
@@ -87,33 +93,35 @@
                         WsData.UserID = parseInt(UserID)
                   WSConn.send(JSON.stringify(WsData))
             }
-
+ 
             function jsondate(date) {
-                 
+                
                   if (date != null && date != "" && date != "0000-00-00 00:00:00" && date != "0001-01-01T00:00:00Z") {
                       
                         var currentTime = new Date(date);
-                        var month = ("0" + (currentTime.getMonth()+ 1)).slice(-2);
-                        var day = ("0" + (currentTime.getDate() )).slice(-2);
-                        var year = currentTime.getFullYear();
-                        var date1 = day + '/' + month + '/' + year;
-                        return date1;
+                        return moment(currentTime, customDateFormate).format(customDateFormate)
+                        // var month = ("0" + (currentTime.getMonth()+ 1)).slice(-2);
+                        // var day = ("0" + (currentTime.getDate() )).slice(-2);
+                        // var year = currentTime.getFullYear();
+                        // var date1 = day + '/' + month + '/' + year;
+                        // return date1;
                   } else {
                         return "";
                   }
             }
             function jsondatetime(date) {
-                
+                  debugger;
                   if (date != null && date != "" && date != "0000-00-00 00:00:00" && date != "0001-01-01T00:00:00Z") {
-                        
-                        var currentTime = new Date(date);
-                        var month = ("0" + (currentTime.getMonth()+ 1)).slice(-2);
-                        var day = ("0" + (currentTime.getDate() )).slice(-2);
-                        var year = currentTime.getFullYear();
-                        var hour = currentTime.getHours();
-                        var mnts = currentTime.getMinutes();
-                        var date1 = day + '/' + month + '/' + year+' '+hour+":"+mnts;
-                        return date1;
+                     
+                         var currentTime = new Date(date);
+                         return moment(currentTime, customDateFormate+ " HH:mm").format(customDateFormate+" HH:mm")
+                        // var month = ("0" + (currentTime.getMonth()+ 1)).slice(-2);
+                        // var day = ("0" + (currentTime.getDate() )).slice(-2);
+                        // var year = currentTime.getFullYear();
+                        // var hour = currentTime.getHours();
+                        // var mnts = ("0" + (currentTime.getMinutes() )).slice(-2);
+                        // var date1 = day + '/' + month + '/' + year+' '+hour+":"+mnts;
+                        // return date1;
                   } else {
                         return "";
                   }
@@ -288,13 +296,7 @@
                   UpdateNotifications()
             })
       </script> -->
-      <script>
-            // var customDateFormate = 'YYYY-MM-DD';
-            var customDateFormate = 'DD-MM-YYYY';
-            $(document).ready(function () {
-                  $('.datetimepicker-input').attr('placeholder', customDateFormate);
-            });
-      </script>
+    
 </head>
 
 <body>

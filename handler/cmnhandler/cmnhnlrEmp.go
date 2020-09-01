@@ -232,7 +232,7 @@ func (p *ICommonrep) UserCreate(w http.ResponseWriter, r *http.Request) {
 			utils.ExecuteTemplate(w, r, "Error", data)
 			return
 		}
-		const shortForm = "02-01-2006 15:04:05"
+	//	const shortForm = "02-01-2006 15:04:05"
 		LinkGeneratedOn := &emp.User.LinkGeneratedOn
 		var Duration time.Duration
 		if !LinkGeneratedOn.IsZero() {
