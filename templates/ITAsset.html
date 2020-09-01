@@ -57,8 +57,8 @@
           <div class="form-group row">
             <label for="ITAssetSerialNo" class="col-md-3 col-form-label ">Serial No:</label>
             <div class="col-sm-9">
-              <input type="text" maxlength="45" required name="ITAssetSerialNo" class="form-control " id="ITAssetSerialNo"
-                placeholder="Serial No.">
+              <input type="text" maxlength="45" required name="ITAssetSerialNo" class="form-control "
+                id="ITAssetSerialNo" placeholder="Serial No.">
             </div>
           </div>
           <!-- <div class="form-group row">
@@ -92,8 +92,8 @@
           <div class="form-group row">
             <label for="ITAssetWarranty" class="col-sm-3 col-form-label ">Warranty:</label>
             <div class="col-sm-9 form-inline">
-              <input type="text" name="ITAssetWarranty"  class="form-control datetimepicker-input"
-                data-toggle="datetimepicker" autocomplete="off" data-target="#ITAssetWarranty" id="ITAssetWarranty" >
+              <input type="text" name="ITAssetWarranty" class="form-control datetimepicker-input"
+                data-toggle="datetimepicker" autocomplete="off" data-target="#ITAssetWarranty" id="ITAssetWarranty">
               <span><text id="txtITAssetWarranty" class=""></text></span>
             </div>
           </div>
@@ -179,7 +179,7 @@
   <div class="modal-dialog modal-dialog-scrollable" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="groupmodalTitle">Add  Asset Type</h5>
+        <h5 class="modal-title" id="groupmodalTitle">Add Asset Type</h5>
         <button type="button" id="modalclose" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -190,8 +190,8 @@
           <div class="form-group row">
             <label for="ITAssetDescription" class="col-md-3 col-form-label ">Asset Type:</label>
             <div class="col-md-9">
-              <input type="text" maxlength="45" required name="ITAssetgroupName" class="form-control " id="ITAssetgroupName"
-                placeholder="Asset Type">
+              <input type="text" maxlength="45" required name="ITAssetgroupName" class="form-control "
+                id="ITAssetgroupName" placeholder="Asset Type">
 
             </div>
           </div>
@@ -258,23 +258,25 @@
       var selected_date = $(this).val()
       var d = new Date(moment(selected_date, "DD-MM-YYYY").format())
       var today = new Date()
-      if (d < today) {
-        $("#txtITAssetWarranty").text("  (Warranty expired)")
-        $("#txtITAssetWarranty").removeClass("text-success")
-        $("#txtITAssetWarranty").addClass("text-danger")
-      }
-      else {
+      $("#txtITAssetWarranty").text("")
+      if ($(this).val() != "")
+        if (d < today) {
+          $("#txtITAssetWarranty").text("  (Warranty expired)")
+          $("#txtITAssetWarranty").removeClass("text-success")
+          $("#txtITAssetWarranty").addClass("text-danger")
+        }
+        else {
 
-        var diff = Math.floor(d.getTime() - today.getTime());
-        var day = 1000 * 60 * 60 * 24;
-        var days = Math.floor(diff / day);
-        var months = Math.floor(days / 31);
-        var years = Math.floor(months / 12);
-        var message = "  ("+days + " days " + months + " months " + years + " years left)"
-        $("#txtITAssetWarranty").text(message)
-        $("#txtITAssetWarranty").removeClass("text-danger")
-        $("#txtITAssetWarranty").addClass("text-success")
-      }
+          var diff = Math.floor(d.getTime() - today.getTime());
+          var day = 1000 * 60 * 60 * 24;
+          var days = Math.floor(diff / day);
+          var months = Math.floor(days / 31);
+          var years = Math.floor(months / 12);
+          var message = "  (" + days + " days " + months + " months " + years + " years left)"
+          $("#txtITAssetWarranty").text(message)
+          $("#txtITAssetWarranty").removeClass("text-danger")
+          $("#txtITAssetWarranty").addClass("text-success")
+        }
 
     });
 
@@ -359,7 +361,7 @@
         processData: false,
         success: function (data) {
           //  $('#frm_ITAsset')[0].reset();   
-          alert('IT Asset created successfully.')    ;
+          alert('IT Asset created successfully.');
           window.location = "http://" + document.location.host + "/ITAssets";
         }
       });

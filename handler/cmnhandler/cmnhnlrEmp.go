@@ -35,7 +35,7 @@ func (p *ICommonrep) CreateEmployee(w http.ResponseWriter, r *http.Request) {
 		mdl := CmnModel.Employees{}
 		mdl.FirstName = r.FormValue("FirstName")
 		mdl.LastName = r.FormValue("LastName")
-		mdl.DOB, _ = time.ParseInLocation("02-01-2006", r.FormValue("DOB"),time.Local)
+		mdl.DOB, _ = time.ParseInLocation("02-01-2006", r.FormValue("DOB"), time.Local)
 		mdl.Email = r.FormValue("Email")
 		mdl.Mobile = r.FormValue("Mobile")
 		mdl.Address = r.FormValue("Address")
@@ -49,7 +49,7 @@ func (p *ICommonrep) CreateEmployee(w http.ResponseWriter, r *http.Request) {
 			mdl.Location, _ = strconv.Atoi(r.FormValue("Location"))
 		}
 		mdl.Gender = r.FormValue("Gender")
-		mdl.DOJ, _ = time.ParseInLocation("02-01-2006", r.FormValue("DOJ"),time.Local)
+		mdl.DOJ, _ = time.ParseInLocation("02-01-2006", r.FormValue("DOJ"), time.Local)
 		mdl.Designation, _ = strconv.Atoi(r.FormValue("Designation"))
 		img, handle, err := r.FormFile("EmployeeImg")
 		if err == nil {
@@ -113,8 +113,8 @@ func (p *ICommonrep) GetEmployeeByID(w http.ResponseWriter, r *http.Request) {
 		mdl.IDEmployees = empid
 		mdl.FirstName = r.FormValue("FirstName")
 		mdl.LastName = r.FormValue("LastName")
-		mdl.DOB, _ = time.ParseInLocation("02-01-2006", r.FormValue("DOB"),time.Local)
-	
+		mdl.DOB, _ = time.ParseInLocation("02-01-2006", r.FormValue("DOB"), time.Local)
+
 		mdl.EmpCode = r.FormValue("EmpCode")
 		mdl.Email = r.FormValue("Email")
 		mdl.Mobile = r.FormValue("Mobile")
@@ -123,7 +123,7 @@ func (p *ICommonrep) GetEmployeeByID(w http.ResponseWriter, r *http.Request) {
 		mdl.Education, _ = strconv.Atoi(r.FormValue("Education"))
 		mdl.ExperienceYear, _ = strconv.Atoi(r.FormValue("ExperienceYear"))
 		mdl.ExperienceMonth, _ = strconv.Atoi(r.FormValue("ExperienceMonth"))
-		mdl.DOJ, _ = time.ParseInLocation("02-01-2006", r.FormValue("DOJ"),time.Local)
+		mdl.DOJ, _ = time.ParseInLocation("02-01-2006", r.FormValue("DOJ"), time.Local)
 		mdl.Designation, _ = strconv.Atoi(r.FormValue("Designation"))
 		if r.FormValue("Location") != "" {
 			mdl.Location, _ = strconv.Atoi(r.FormValue("Location"))
@@ -294,13 +294,13 @@ func (p *ICommonrep) EmployeeReadExcel(w http.ResponseWriter, r *http.Request) {
 			mdl := CmnModel.Employees{}
 			mdl.FirstName = item[resmaps["FirstName"]]
 			mdl.LastName = item[resmaps["LastName"]]
-			mdl.DOB, _ = time.ParseInLocation("02-01-2006", item[resmaps["DOB"]],time.Local)
+			mdl.DOB, _ = time.ParseInLocation("02-01-2006", item[resmaps["DOB"]], time.Local)
 			mdl.EmpCode = item[resmaps["EmpCode"]]
 			mdl.Email = item[resmaps["Email"]]
 			mdl.Mobile = item[resmaps["Mobile"]]
 			mdl.PrmntAddress = item[resmaps["PrmntAddress"]]
 			mdl.Address = item[resmaps["Address"]]
-			mdl.DOJ, _ = time.ParseInLocation("02-01-2006", item[resmaps["DOJ"]],time.Local)
+			mdl.DOJ, _ = time.ParseInLocation("02-01-2006", item[resmaps["DOJ"]], time.Local)
 			mdl.Mobile = item[resmaps["Mobile"]]
 			Listmdl = append(Listmdl, &mdl)
 		}

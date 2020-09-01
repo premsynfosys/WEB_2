@@ -17,8 +17,7 @@
 </div>
 <div class="row">
     <div class="col-lg-10 col-md-10">
-        <form method="POST" id="frm_Consumable" 
-            enctype="multipart/form-data" autocomplete="off">
+        <form method="POST" id="frm_Consumable" enctype="multipart/form-data" autocomplete="off">
             <div class="card">
                 <div class="card-body ">
                     <div class="form-group row">
@@ -26,8 +25,8 @@
                         <div class="col-sm-9">
                             <!-- <input type="text" name="ConsumableName"  required
                                 class="form-control " id="ConsumableName" placeholder="Consumable Name"> -->
-                            <select required  class="form-control w-auto" name="IDconsumableMaster"
-                                data-size="5" id="ConsumableNames" tabindex="-98">
+                            <select required class="form-control w-auto" name="IDconsumableMaster" data-size="5"
+                                id="ConsumableNames" tabindex="-98">
                             </select>
 
                         </div>
@@ -70,8 +69,9 @@
                     <div class="form-group row">
                         <label for="Description" class="col-sm-3 col-form-label ">Description:</label>
                         <div class="col-sm-9">
-                            <textarea name="Description" required maxlength="500" placeholder="Description" title="Description"
-                                class="form-control " id="Description">{{.Data.Description}}</textarea>
+                            <textarea name="Description" required maxlength="500" placeholder="Description"
+                                title="Description" class="form-control "
+                                id="Description">{{.Data.Description}}</textarea>
                         </div>
                     </div>
 
@@ -147,7 +147,7 @@
 
 
                     <hr />
-                   
+
                     <h5>Custom Fields</h5>
                     <div class=" row border  m-3" id="custm">
                     </div>
@@ -255,7 +255,13 @@
 
         })
 
+        if ("{{.Auth.Accesstoalllocations}}") {
 
+        }
+        else {
+            $("#LocationID").val($("#locationid").val())
+            $('#LocationID option:not(:selected)').prop('disabled', true);
+        }
 
         $("#frm_Consumable").on("submit", function (event) {
             event.preventDefault();
@@ -278,7 +284,7 @@
             })
 
             fd.append('customfields', JSON.stringify(cstm));
-            
+
             $.ajax({
                 url: "/Consumables/ConsumableEdit/{{.Data.IDConsumables}}",
                 type: 'POST',
@@ -288,7 +294,7 @@
                 processData: false,
                 success: function (data) {
                     //  $('#frm_ITAsset')[0].reset();  
-                    Toast("success","Updated sucessfully")     
+                    Toast("success", "Updated sucessfully")
                     window.location.reload();
                 }
             });

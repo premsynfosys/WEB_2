@@ -423,6 +423,8 @@
             var selected_date = $(this).val()
             var d = new Date(selected_date)
             var today = new Date()
+            $("#txtITAssetWarranty").text("")
+      if ($(this).val() != "")
             if (d < today) {
                 $("#txtITAssetWarranty").text("   (Warranty expired)")
                 $("#txtITAssetWarranty").removeClass("text-success")
