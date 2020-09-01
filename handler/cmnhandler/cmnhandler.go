@@ -600,7 +600,7 @@ func (p *ICommonrep) UpdateIsMsngStcksRslvdMain(w http.ResponseWriter, r *http.R
 	}
 }
 
-// OWApprovalDeatils ..
+
 func (p *ICommonrep) MultiApproval(w http.ResponseWriter, r *http.Request) {
 	usr, Auth := utils.GetCookieUser(r)
 	data, _ := p.Irepo.GetMultiLevelApproval(r.Context())

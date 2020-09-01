@@ -1,4 +1,4 @@
-{{define "ITAsset_Service"}}
+added pare location{{define "ITAsset_Service"}}
 <div class="container">
     <form id="frm_service" autocomplete="off">
         <input type="hidden" id="ITAssetID" name="ITAssetID" value="{{.ITAssetID}}">
@@ -199,7 +199,7 @@
                 return false;
             }
             ' {{end}}'
-            obj.Expected_End_Date =moment($("#Expected_End_Date").val(), "DD-MM-YYYY HH:mm").format() 
+            obj.Expected_End_Date =moment($("#Expected_End_Date").val(), "DD-MM-YYYY HH:mm").format()
             
 
             if ($("#Expected_End_Date").val() == "") {

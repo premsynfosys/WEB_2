@@ -342,7 +342,7 @@ debugger;
       var id;
       var column = tbl.column(2);
       if ($(this).val() == "") {
-        $("#tbltitle").text("Asset Deatils")
+        $("#tbltitle").text("Asset Details")
         id = 0
         column.visible(true)
         $("#VendorAddress").text("")
@@ -352,7 +352,7 @@ debugger;
       }
       else {
         var optn = $('#Vendor option:selected')
-        $("#tbltitle").text(optn.text() + " - " + "Asset Deatils")
+        $("#tbltitle").text(optn.text() + " - " + "Asset details")
         id = $(this).val()
         column.visible(false)
         //  'data-Address': el.Address, 'data-Email': el.Email, 'data-ContactPersonName': el.ContactPersonName, 'data-Phone': el.Phone, 
@@ -415,7 +415,7 @@ debugger;
           }
         });
       } else {
-        Toast('danger', 'Record existed with these deatils.Please Update.')
+        Toast('danger', 'Record existed with these details.Please Update.')
       }
     })
 
@@ -469,7 +469,7 @@ debugger;
           }
         });
       } else {
-        Toast('danger', 'Record not existed with these deatils.Please Add.')
+        Toast('danger', 'Record not existed with these details.Please Add.')
       }
     })
     $("#tblVendorAsset").on("click", ".VendmapEdit", function () {

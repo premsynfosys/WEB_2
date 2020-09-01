@@ -52,7 +52,7 @@
                 <div class="form-group row ">
                     <label for="ITAssetModel" class="col-sm-3 col-form-label ">Model:</label>
                     <div class="col-sm-9">
-                        <input type="text" maxlength="45" required  name="ITAssetModel" class="form-control "
+                        <input type="text" maxlength="45" required name="ITAssetModel" class="form-control "
                             id="ITAssetModel" placeholder="Model" value="{{.Data.ITAssetModel}}">
                     </div>
                 </div>
@@ -75,7 +75,7 @@
                 <div class="form-group row">
                     <label for="ITAssetDescription" class="col-sm-3 col-form-label ">Description:</label>
                     <div class="col-sm-9">
-                        <textarea name="ITAssetDescription" maxlength="500"  class="form-control "
+                        <textarea name="ITAssetDescription" maxlength="500" class="form-control "
                             id="ITAssetDescription"
                             placeholder="ITAsset Description">{{.Data.ITAssetDescription}}</textarea>
                     </div>
@@ -97,7 +97,7 @@
                     <div class="col-sm-9 form-inline">
                         <input type="text" name="ITAssetWarranty" class="form-control datetimepicker-input"
                             data-toggle="datetimepicker" autocomplete="off" data-target="#ITAssetWarranty"
-                            id="ITAssetWarranty" >
+                            id="ITAssetWarranty">
                         <span><text id="txtITAssetWarranty" class=""></text></span>
                     </div>
                 </div>
@@ -105,7 +105,7 @@
                     <label for="Vendor" class="col-sm-3 col-form-label ">Vendor:</label>
                     <div class="col-sm-9 ">
                         <div class="input-group">
-                            <select name="Vendor"  id="Vendor" class="form-control">
+                            <select name="Vendor" id="Vendor" class="form-control">
                                 <option value="">--select--</option>
                             </select>
                             <!-- <span class="input-group-append ">
@@ -131,8 +131,8 @@
                             {{end}}
                         </div>
                     </div>
-                </div> 
-                <input type="hidden" name="ITAssetStatus" value="{{.Data.ITAssetStatus}}"  id="ITAssetStatus" >
+                </div>
+                <input type="hidden" name="ITAssetStatus" value="{{.Data.ITAssetStatus}}" id="ITAssetStatus">
                 <!-- <div class="form-group row">
                     <label for="ITAssetStatus" class="col-sm-3 col-form-label ">Status:</label>
                     <div class="col-sm-9">
@@ -188,7 +188,7 @@
     <div class="modal-dialog modal-dialog-scrollable" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="groupmodalTitle">Add  Asset Type</h5>
+                <h5 class="modal-title" id="groupmodalTitle">Add Asset Type</h5>
                 <button type="button" id="modalclose" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -200,8 +200,8 @@
                         <label for="ITAssetDescription" class="col-sm-3 col-form-label ">Group
                             Name:</label>
                         <div class="col-sm-9">
-                            <input type="text" name="ITAssetgroupName" required class="form-control " id="ITAssetgroupName"
-                                placeholder="Asset Type">
+                            <input type="text" name="ITAssetgroupName" required class="form-control "
+                                id="ITAssetgroupName" placeholder="Asset Type">
 
                         </div>
                     </div>
@@ -252,7 +252,7 @@
         loadVendors(data)
         //events
         $('#ITAssetWarranty').datetimepicker({
-            format: customDateFormate 
+            format: customDateFormate
         });
         $('#ITAssetWarranty').val('{{.Data.ITAssetWarranty.Format "02-01-2006"}}')
 
@@ -266,23 +266,23 @@
             var d = new Date(moment(selected_date, "DD-MM-YYYY").format())
             var today = new Date()
             $("#txtITAssetWarranty").text("")
-      if ($(this).val() != "")
-            if (d < today) {
-                $("#txtITAssetWarranty").text("  (Warranty expired)")
-                $("#txtITAssetWarranty").removeClass("text-success")
-                $("#txtITAssetWarranty").addClass("text-danger")
-            }
-            else {
-                var diff = Math.floor(d.getTime() - today.getTime());
-                var day = 1000 * 60 * 60 * 24;
-                var days = Math.floor(diff / day);
-                var months = Math.floor(days / 31);
-                var years = Math.floor(months / 12);
-                var message ="  (" +days + " days " + months + " months " + years + " years left)"
-                $("#txtITAssetWarranty").text(message)
-                $("#txtITAssetWarranty").removeClass("text-danger")
-                $("#txtITAssetWarranty").addClass("text-success")
-            }
+            if ($(this).val() != "")
+                if (d < today) {
+                    $("#txtITAssetWarranty").text("  (Warranty expired)")
+                    $("#txtITAssetWarranty").removeClass("text-success")
+                    $("#txtITAssetWarranty").addClass("text-danger")
+                }
+                else {
+                    var diff = Math.floor(d.getTime() - today.getTime());
+                    var day = 1000 * 60 * 60 * 24;
+                    var days = Math.floor(diff / day);
+                    var months = Math.floor(days / 31);
+                    var years = Math.floor(months / 12);
+                    var message = "  (" + days + " days " + months + " months " + years + " years left)"
+                    $("#txtITAssetWarranty").text(message)
+                    $("#txtITAssetWarranty").removeClass("text-danger")
+                    $("#txtITAssetWarranty").addClass("text-success")
+                }
 
         });
 
@@ -370,7 +370,7 @@
             })
 
             fd.append('customfields', JSON.stringify(cstm));
-            
+
             $.ajax({
                 url: "/ITAssets/edit/{{.Data.IDITAssets}}",
                 type: 'POST',
@@ -379,7 +379,7 @@
                 contentType: false,
                 processData: false,
                 success: function (data) {
-                    alert('IT Asset updated successfully.')    ;
+                    alert('IT Asset updated successfully.');
                     //  $('#frm_ITAsset')[0].reset();       
                     window.location.reload();
                 }

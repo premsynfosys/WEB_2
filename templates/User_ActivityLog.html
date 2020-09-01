@@ -13,14 +13,14 @@
             <div class=" row ">
                 <div class="col-sm-auto col-lg-auto">
                     <input type="text" name="FromDate" class="form-control datetimepicker-input w-auto"
-                        data-toggle="datetimepicker" autocomplete="off" data-target="#FromDate" id="FromDate" >
+                        data-toggle="datetimepicker" autocomplete="off" data-target="#FromDate" id="FromDate">
                 </div>
                 <div class="col-sm-auto col-lg-auto align-self-center">
                     To
                 </div>
                 <div class="col-sm-auto col-lg-auto">
                     <input type="text" name="ToDate" class="form-control datetimepicker-input w-auto"
-                        data-toggle="datetimepicker" autocomplete="off" data-target="#ToDate" id="ToDate" >
+                        data-toggle="datetimepicker" autocomplete="off" data-target="#ToDate" id="ToDate">
                 </div>
                 <div class="col-sm-auto col-lg-auto">
                     <button id="dateGo" class="btn btn-info btn-sm">Go</button>
@@ -80,6 +80,7 @@
 <script>
 
     $(document).ready(function () {
+
         var dateNow = new Date();
         $('#FromDate').datetimepicker({
             format: customDateFormate,
@@ -90,6 +91,16 @@
             format: customDateFormate,
             defaultDate: moment(dateNow).hours(0).minutes(0).seconds(0).milliseconds(0)
         });
+        $('#FromDate').data("datetimepicker").maxDate(new Date());
+        $('#ToDate').data("datetimepicker").maxDate(new Date());
+        $("#FromDate").blur(function (e) {
+            if ($(this).val() != "")
+                $('#ToDate').data("datetimepicker").minDate($(this).val());
+        });
+        $("#ToDate").blur(function (e) {
+            if ($(this).val() != "")
+                $('#FromDate').data("datetimepicker").maxDate($(this).val());
+        });
         // var url;
         // function data() {
         //     var data = new Object();
@@ -97,6 +108,8 @@
         //     data.ToDate = $('#ToDate').val()
         //     return data
         // }
+        var Fromdate = moment($('#FromDate').val(), "DD-MM-YYYY").format("YYYY-MM-DD");
+        var Todate = moment($('#ToDate').val(), "DD-MM-YYYY").format("YYYY-MM-DD");
 
         var tbl = $('#tblEmployee').DataTable({
             responsive: true,
@@ -107,14 +120,14 @@
             destroy: true,
             dom: 'Bfrtip',
             ajax: {
-                "url": '/Activivty_Log_List/' + $("#EmpID").val() + '?FromDate=' + $('#FromDate').val() + ' 00:00:00 &ToDate=' + $('#ToDate').val()+' 23:59:59',
+                "url": '/Activivty_Log_List/' + $("#EmpID").val() + '?FromDate=' + Fromdate + ' 00:00:00&ToDate=' + Todate + ' 23:59:59',
                 // "data": data(),
                 "type": "POST",
                 "datatype": "json",
                 "dataSrc": ""//to read data from a plain array rather than an array in an object:
             },
             columnDefs: [
-             
+
                 { visible: false, targets: 0 },
                 { visible: false, targets: 1 }
 
@@ -122,7 +135,7 @@
             "order": [
                 [4, 'desc']
             ],
-           
+
 
             "columns": [
                 {
@@ -211,7 +224,9 @@
         })
 
         $("#dateGo").click(function () {
-            tbl.ajax.url('/Activivty_Log_List/' + $("#EmpID").val() + '?FromDate=' + $('#FromDate').val() + ' 00:00:00 &ToDate=' + $('#ToDate').val()+' 23:59:59').load()
+            var Fromdate1 = moment($('#FromDate').val(), "DD-MM-YYYY").format("YYYY-MM-DD");
+            var Todate1 = moment($('#ToDate').val(), "DD-MM-YYYY").format("YYYY-MM-DD");
+            tbl.ajax.url('/Activivty_Log_List/' + $("#EmpID").val() + '?FromDate=' + Fromdate1 + ' 00:00:00&ToDate=' + Todate1 + ' 23:59:59').load();
         })
 
 
