@@ -96,9 +96,11 @@ func (p *IITAsset) CreateITAsset(w http.ResponseWriter, r *http.Request) {
 		mdl.ITAssetAssignTo = r.FormValue("CanITAssetAssignTo")
 		ITAssetPrice, _ := strconv.ParseFloat(r.FormValue("ITAssetPrice"), 32)
 		mdl.ITAssetPrice = ITAssetPrice
+	
 		if r.FormValue("ITAssetWarranty") != "" {
 			mdl.ITAssetWarranty, _ = time.ParseInLocation("02-01-2006", r.FormValue("ITAssetWarranty"), time.Local)
-		}
+		} 
+		
 		VendorID, _ := strconv.Atoi(r.FormValue("Vendor"))
 		mdl.Vendor = VendorID
 		LocationID, _ := strconv.Atoi(r.FormValue("Location"))
@@ -144,7 +146,7 @@ func (p *IITAsset) CreateITAsset(w http.ResponseWriter, r *http.Request) {
 			mdl.CustomFields4Type = customfields["CustomFields4"][1]
 		}
 		mdl.CreatedBy = usr.EmployeeID
-		_, _ = p.Irepo.CreateITAsset(r.Context(), &mdl)
+			_, _ = p.Irepo.CreateITAsset(r.Context(), &mdl)
 		//http.Redirect(w, r, "/ITAssets", 301)
 	}
 }
