@@ -24,7 +24,8 @@
                         <i class="fa fa-clone" aria-hidden="true"></i><span> Clone</span>
                     </a> -->
                     {{if .Auth.DeleteConsumable }}
-                    <a class="dropdown-item list-delete" id="bulkdelete" href="#"> <i class="ik ik-trash " aria-hidden="true"></i>
+                    <a class="dropdown-item list-delete" id="bulkdelete" href="#"> <i class="ik ik-trash "
+                            aria-hidden="true"></i>
                         <span>Delete</span>
                     </a>
                     {{end}}
@@ -190,7 +191,8 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="/Consumables/PostConsumableOprtnsRemovestock" id="frmRetire" method="POST" autocomplete="off">
+                <form action="/Consumables/PostConsumableOprtnsRemovestock" id="frmRetire" method="POST"
+                    autocomplete="off">
                     <input type="hidden" name="IDConsumables" value="{{.Data.IDConsumables}}">
                     <input type="hidden" name="OrderedBy" value="{{.User.IDEmployees}}">
                     <div class="form-group row">
@@ -206,8 +208,8 @@
                     <div class="form-group row">
                         <label class="col-sm-3 col-form-label">Retire Stock Quantity:</label>
                         <div class="col-sm-9 ">
-                            <input type="number" required id="Quantity" title="Retire Stock Quantity" min="1" max="{{.Data.TotalQnty}}"
-                                name="Quantity" class="form-control">
+                            <input type="number" required id="Quantity" title="Retire Stock Quantity" min="1"
+                                max="{{.Data.TotalQnty}}" name="Quantity" class="form-control">
                         </div>
                     </div>
                     <!-- <div class="form-group row">
@@ -249,7 +251,8 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="/Consumables/PostConsumableOprtnsAddStock" id="frmAddstock" method="POST" autocomplete="off">
+                <form action="/Consumables/PostConsumableOprtnsAddStock" id="frmAddstock" method="POST"
+                    autocomplete="off">
                     <input type="hidden" name="IDConsumables" value="{{.Data.IDConsumables}}">
                     <input type="hidden" name="OrderedBy" value="{{.User.IDEmployees}}">
                     <div class="form-group row">
@@ -278,7 +281,7 @@
                         <label class="col-sm-3 col-form-label">Price / Unit:</label>
                         <div class="col-sm-6 ">
                             <div class="input-group">
-                                <input type="number"  readonly id="UnitPrice" title="Asset Price" min="0"
+                                <input type="number" readonly id="UnitPrice" title="Asset Price" min="0"
                                     name="UnitPrice" class="form-control">
                                 <span class="input-group-append">
                                     <label class="input-group-text">₹</label>
@@ -326,7 +329,8 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="/Consumables/PostConsumableOprtnsRemovestock" id="frmRemovestock" method="POST" autocomplete="off">
+                <form action="/Consumables/PostConsumableOprtnsRemovestock" id="frmRemovestock" method="POST"
+                    autocomplete="off">
                     <input type="hidden" name="IDConsumables" value="{{.Data.IDConsumables}}">
                     <input type="hidden" name="StatusID" value="17">
                     <input type="hidden" name="OrderedBy" value="{{.User.IDEmployees}}">
@@ -477,7 +481,7 @@
         })
 
         $('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
-           // localStorage.setItem('activeTab', $(e.target).attr('href'));
+            // localStorage.setItem('activeTab', $(e.target).attr('href'));
             if ($(e.target).attr('href') == "#ConsumableHistory") {
                 $("#divConsumableHistory").load('/Consumables/ConsumableOprtnListByID/{{.Data.IDConsumables}}', function () {
                 });
@@ -502,6 +506,17 @@
             }
             $("#frmRemovestock input[name='TotalStockPrice']").val($("#frmRemovestock input[name='Quantity']").val() * $("#frmRemovestock input[name='UnitPrice']").val())
         })
+
+        $("#frmRetire input[name='Quantity']").change(function () {
+            if (parseInt("{{.Data.TotalQnty}}") == 0) {
+                if (parseInt($("#frmRetire input[name='Quantity']").val()) >= parseInt("{{.Data.TotalQnty}}")) {
+                    alert("Retire stock should be less than Total stock");
+                    $("#frmRetire input[name='Quantity']").val("")
+                }
+            }
+
+        })
+
 
 
         data = getdata('/GetVendorsByConsumable/{{.Data.Consumablemaster.IDconsumableMaster}}')
