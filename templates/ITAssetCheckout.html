@@ -176,20 +176,20 @@
 
         $('#CheckOutDate').datetimepicker({
             format: customDateFormate,
-            maxDate: new Date()
+         //   maxDate: new Date()
         });
         $('#ExpectedCheckInDate').datetimepicker({
             format: customDateFormate,
-            minDate: new Date()
+        //    minDate: new Date()
         });
-        $(document).on("blur", "#CheckOutDate", function (e) {          
-            if($(this).val()!="")          
-            $('#ExpectedCheckInDate').data("datetimepicker").minDate($(this).val());
-        });
-        $(document).on("blur", "#ExpectedCheckInDate", function (e) {
-            if($(this).val()!="")           
-            $('#CheckOutDate').data("datetimepicker").maxDate($(this).val());
-        });
+        // $(document).on("blur", "#CheckOutDate", function (e) {          
+        //     if($(this).val()!="")          
+        //     $('#ExpectedCheckInDate').data("datetimepicker").minDate($(this).val());
+        // });
+        // $(document).on("blur", "#ExpectedCheckInDate", function (e) {
+        //     if($(this).val()!="")           
+        //     $('#CheckOutDate').data("datetimepicker").maxDate($(this).val());
+        // });
         
         $("input[name='AssignTo']").change(function () {
             $("#divdates").show();

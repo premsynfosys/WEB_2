@@ -316,14 +316,14 @@
         });
         $('#DOJ').data("datetimepicker").maxDate(new Date());
         $('#DOB').data("datetimepicker").maxDate(new Date());
-        $(document).on("blur", "#DOB", function (e) {          
-            if($(this).val()!="")          
-            $('#DOJ').data("datetimepicker").minDate($(this).val());
-        });
-        $(document).on("blur", "#DOJ", function (e) {
-            if($(this).val()!="")           
-            $('#DOB').data("datetimepicker").maxDate($(this).val());
-        });
+        // $(document).on("blur", "#DOB", function (e) {          
+        //     if($(this).val()!="")          
+        //     $('#DOJ').data("datetimepicker").minDate($(this).val());
+        // });
+        // $(document).on("blur", "#DOJ", function (e) {
+        //     if($(this).val()!="")           
+        //     $('#DOB').data("datetimepicker").maxDate($(this).val());
+        // });
         // $('#DOJ').datetimepicker({
         //     format: customDateFormate,
         //     maxDate: new Date()

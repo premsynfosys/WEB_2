@@ -2,7 +2,7 @@
     "IsTesting": true,
     "Test": {
         "APIPORT": "9000",
-        "APIHost": "http://localhost",
+        "APIHost": "http://13.126.31.40",
         "WEBPORT": "9001",
         "WEBHost": "http://localhost"
         
