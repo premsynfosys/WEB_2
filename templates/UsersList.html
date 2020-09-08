@@ -39,6 +39,7 @@
               <th>Experience</th>
               <th>Designation</th>
               <th>Date Of Joining</th>
+              <th>Location</th>
               <th>Status</th>
               <th class="notexport">Actions</th>
             </thead>
@@ -180,6 +181,9 @@
           render: function (dt) {
             return jsondate(dt);
           }
+        }, {
+          "name": "LocationName",
+          'data': 'Employee.LocationName'
         }, {
           "name": "Status",
           "data": null,

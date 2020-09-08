@@ -104,6 +104,7 @@ type Employees struct {
 	DOJ             time.Time   `json:"DOJ"`
 	User            *User       `json:"User"`
 	Location        int         `json:"Location"`
+	LocationName        string         `json:"LocationName"`
 	Gender          string      `json:"Gender"`
 	ModifiedBy      int         `json:"ModifiedBy"`
 	CreatedBy       int         `json:"CreatedBy"`

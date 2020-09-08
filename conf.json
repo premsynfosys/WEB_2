@@ -1,5 +1,5 @@
 {
-    "IsTesting": false,
+    "IsTesting": true,
     "Test": {
         "APIPORT": "9000",
         "APIHost": "http://localhost",
@@ -8,9 +8,9 @@
         
     },
     "Production": {
-        "APIPORT": "9002",
+        "APIPORT": "9000",
         "APIHost": "http://localhost",
-        "WEBPORT": "9003",
+        "WEBPORT": "9001",
         "WEBHost": "http://localhost"
     } 
 }

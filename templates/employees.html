@@ -38,7 +38,9 @@
               <th>Experience</th>
               <th>Role</th>
               <th>Designation</th>
+              
               <th>Date Of Joining</th>
+              <th>Location</th>
               <th>Status</th>
               <th class="notexport">Actions</th>
             </thead>
@@ -120,7 +122,7 @@
         "dataSrc": ""//to read data from a plain array rather than an array in an object:
       },
       columnDefs: [
-        { orderable: false, targets: 14 },
+        { orderable: false, targets: 15 },
         { visible: false, targets: 0 }
       ],
       "order": [
@@ -195,6 +197,9 @@
           render: function (dt) {
             return jsondate(dt);
           }
+        }, {
+          "name": "LocationName",
+          'data': 'LocationName'
         }, {
           "name": "Status",
           "data": "Status"

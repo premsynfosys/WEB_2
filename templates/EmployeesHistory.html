@@ -9,7 +9,7 @@
         </div>
       </div>
     </div>
-  
+
   </div>
 </div>
 <div class="row">
@@ -56,7 +56,7 @@
         <div class="form-check form-check-inline dropdown-item">
           <input class="form-check-input chkClmn" type="checkbox" checked id="chkAll">
           <label class="form-check-label " for="chkAll">( Select All )</label></div>
-<!-- 
+        <!-- 
         <div class="dropdown-divider"></div> -->
       </div>
     </div>
@@ -80,7 +80,9 @@
         "type": "GET",
         "datatype": "json",
         "dataSrc": ""//to read data from a plain array rather than an array in an object:
-      },
+      }, "order": [
+        [13, 'desc']
+      ],
       "columns": [
         {
           "name": "FirstName",
@@ -186,49 +188,49 @@
     $("#tblClmnbtn").prependTo('#tblEmployeeHistory_filter')
 
     var idx = 0;
-        //show hide clmns
-        tbl.columns().every(function () {
-         
-                var html = '<div class="form-check form-check-inline dropdown-item">'
-                html += '<input class="form-check-input chkClmn" type="checkbox" checked id="chk' + idx + '" value="' + idx + '">'
-                html += '<label class="form-check-label " for="chk' + idx + '">' + this.header().innerHTML + '</label></div>'
-                $("#tblClmnbtnList").append(html)
-           
-            idx++;
+    //show hide clmns
+    tbl.columns().every(function () {
 
-        });
+      var html = '<div class="form-check form-check-inline dropdown-item">'
+      html += '<input class="form-check-input chkClmn" type="checkbox" checked id="chk' + idx + '" value="' + idx + '">'
+      html += '<label class="form-check-label " for="chk' + idx + '">' + this.header().innerHTML + '</label></div>'
+      $("#tblClmnbtnList").append(html)
 
-        $("input.chkClmn").click(function (e) {
-            // Get the column API object
-            if ($(this).attr('id') == "chkAll") {
-                if ($(this).prop("checked")) {
-                    for (var i = 1; i < tbl.init().columns.length; i++) {
-                        tbl.column(i).visible(true, true)
-                    }
-                    $("input.chkClmn").prop("checked", true)
-                    tbl.columns.adjust().draw();
-                }
-            }
-            else {
-                var column = tbl.column($(this).val());
-                // Toggle the visibility
-                if ($(this).prop("checked"))
-                    column.visible(true);
-                else {
-                    column.visible(false);
-                    $("#chkAll").prop("checked", false)
-                }
-            }
+      idx++;
 
-        })
+    });
 
-        $("#chkSelectAll").click(function () {
+    $("input.chkClmn").click(function (e) {
+      // Get the column API object
+      if ($(this).attr('id') == "chkAll") {
+        if ($(this).prop("checked")) {
+          for (var i = 1; i < tbl.init().columns.length; i++) {
+            tbl.column(i).visible(true, true)
+          }
+          $("input.chkClmn").prop("checked", true)
+          tbl.columns.adjust().draw();
+        }
+      }
+      else {
+        var column = tbl.column($(this).val());
+        // Toggle the visibility
+        if ($(this).prop("checked"))
+          column.visible(true);
+        else {
+          column.visible(false);
+          $("#chkAll").prop("checked", false)
+        }
+      }
 
-            if ($("#chkSelectAll").prop('checked'))
-                $(".tblchk").prop('checked', true);
-            else
-                $(".tblchk").prop('checked', false);
-        })
+    })
+
+    $("#chkSelectAll").click(function () {
+
+      if ($("#chkSelectAll").prop('checked'))
+        $(".tblchk").prop('checked', true);
+      else
+        $(".tblchk").prop('checked', false);
+    })
 
 
   });
