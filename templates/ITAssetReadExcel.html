@@ -4,20 +4,41 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/xlsx.js"></script> -->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.13.5/xlsx.full.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.13.5/jszip.js"></script>
-
+ 
 <div>
     <form id="frm" action="/ITAssets/ReadExcel" method="POST" enctype="multipart/form-data" autocomplete="off">
-        
-        <div class="form-group row">
-            <label for="ITAssetfile" class="col-md-3 col-form-label ">Upload file:</label>
-            <div class="input-group col-md-9">
+        <div class="float-right"> <a href="/AppFiles/Images/Logo/ITAssetBulkInsert.xlsx"
+                class="btn btn-link">Excel Sheet Temaplate</a></div>
+
+        <div class="form-group row justify-content-center">
+            <label for="ITAssetfile" class="col-md-2 col-form-label ">Upload file:</label>
+            <div class="input-group col-md-6">
                 <div class="custom-file">
-                    <input type="file" class="custom-file-input " id="ITAssetfile" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
+                    <input type="file" class="custom-file-input " id="ITAssetfile"
+                        accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
                     <label class="custom-file-label " for="ITAssetfile">Choose file</label>
                 </div>
 
             </div>
+          
         </div>
+        <div class="container row  justify-content-center" style="height: 150px; overflow:auto;">
+            <div class="col-md-3">
+                 <button type="button" id="btnGroup" class="btn btn-info m-1">Group</button>
+                <button type="button" id="btnVendor" class=" btn btn-info m-1">Vendor</button>
+            </div>
+            <div class="col-md-6 fieldTable ">
+                  <table class="table table-sm table-bordered w-auto ">
+                    <thead class="bg-dark">
+                        <th>ID</th>
+                        <th>Name</th>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <hr>
         <div id="divMap" class="container bg-light col-8 col-md-6 col-sm-8 justify-content-center">
 
         </div>
@@ -27,9 +48,31 @@
     </form>
 </div>
 
+
 <script>
+    $(document).ready(function () {
+        $("#btnGroup").click(function () {
+            $(".fieldTable tbody").empty()
+            var data = getdata('/GetITAssetGroups')
+            $.each(data, function (i, el) {
+                $(".fieldTable tbody").append("<tr><td>" + el.IDITAssetgroups + "</td><td>" + el.ITAssetgroupName + "</td></tr>")
+            });
+        })
+        $("#btnVendor").click(function () {
+            $(".fieldTable tbody").empty()
+            var data = getdata('/GetVendors')
+            $.each(data, function (i, el) {
+                $(".fieldTable tbody").append("<tr><td>" + el.Idvendors + "</td><td>" + el.Name + "\n" + el.Address + "</td></tr>")
+            });
+        })
+        $("#btnGroup").trigger("click")
+
+    })
+</script>
+<script>
+    debugger
     $(".custom-file-input").on("change", function () {
-       
+
         var fileName = $(this).val().split("\\").pop();
         $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
     });
@@ -37,34 +80,40 @@
     document.getElementById('ITAssetfile').addEventListener('change', getHeaders, false);
     // Object.keys(XL_row_object[0])
 
-    function ProcessExcel(data) {     
+    function ProcessExcel(data) {
+        var map = __getMapdata();
+
         //Read the Excel File data.
         var workbook = XLSX.read(data, {
             type: 'binary'
         });
-        var jsonData = "";       
+        var jsonData = "";
         workbook.SheetNames.forEach(function (sheetName) {
             // Here is your object
-            var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);          
+            var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
             var json_object = JSON.stringify(XL_row_object);
             jsonData += json_object
         })
-        var exceldata= JSON.parse(jsonData);
+        var exceldata = JSON.parse(jsonData);
 
-        var map = __getMapdata();
        
         // var res= new Object();
         // res.exceldata=exceldata;
         // res.map=map;
         //
-         $.ajax({
-            url: "/ITAssets/ReadExcel",
+        $.ajax({
+            url: "/ITAssets/ReadExcel?createdby=" + $("#employeeid").val()+ "&locationid=" + $("#locationid").val(),
             type: 'POST',
-            data: {map:JSON.stringify(map),exceldata:JSON.stringify(exceldata)},
+            data: { map: JSON.stringify(map), exceldata: JSON.stringify(exceldata) },
             dataType: 'json',
             async: false,
             success: function (data) {
-
+                alert("Data uploaded successfully.")
+                window.location.reload()
+            },
+            error: function (data) {
+                alert(data.responseJSON)
+                return false;
             }
         });
     };
@@ -73,8 +122,8 @@
 
     function getJsonData() {
         var file = document.getElementById('ITAssetfile');
-        var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.xls|.xlsx)$/;
-        if (regex.test(file.value.toLowerCase())) {
+        // var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.xls|.xlsx)$/;
+        // if (regex.test(file.value.toLowerCase())) {
             if (typeof (FileReader) != "undefined") {
                 var reader = new FileReader();
                 //For Browsers other than IE.
@@ -98,14 +147,14 @@
             } else {
                 alert("This browser does not support HTML5.");
             }
-        } else {
-            alert("Please upload a valid Excel file.");
-        }
+        // } else {
+        //     alert("Please upload a valid Excel file.");
+        // }
     };
 
 
     function getHeaders(evt) {
-       
+        $("#divMap").empty()
         var files = evt.target.files;
         var reader = new FileReader();
         reader.readAsBinaryString(files[0]);
@@ -128,8 +177,11 @@
                 var html = ' <div  class="form-group row "><label for="ddlMap' + s + '" class="col-md-3 col-form-label ">' + column[s] + '</label>'
                 html += ' <div class="col-md-9"><select data-column="' + column[s] + '" name="ddlMap' + s + '" id="ddlMap' + s + '" class="custom-select ddlMap ">'
                 html += '   <option value="">--select-- </option><option value="ITAssetName">ITAsset Name </option>'
+                html += '   <option value="ITAssetGroup">Asset Type ID</option>'
                 html += '  <option value="ITAssetModel">ITAsset Model</option><option value="ITAssetSerialNo">SerialNo</option>'
                 html += '  <option value="ITAssetDescription">ITAsset Description</option><option value="ITAssetPrice">ITAsset Price</option>'
+                html += '  <option value="ITAssetWarranty">Warranty</option><option value="Vendor">Vendor ID</option>'
+               
                 html += '  </select></div></div>'
                 $("#divMap").append(html)
             }
@@ -142,7 +194,7 @@
 
 
     function __getMapdata() {
-       
+
         var obj = new Object();
         $(".ddlMap").each(function () {
             if ($(this).val() != 0 && $(this).val() != undefined) {
@@ -154,7 +206,33 @@
     };
 
     $("#btn").click(function () {
-         getJsonData();       
+        var file = document.getElementById('ITAssetfile');
+        if (file.value == "") {
+            alert('Please upload file.')
+            return;
+        }
+        if ($("#divMap select").length == 0) {
+            alert('Invalid data in excel sheet')
+            return false;
+        }
+        if ($("#divMap select option[value='ITAssetName']:selected").length == 0) {
+            alert('Please map ITAssetName from dropdown')
+            return false;
+        }
+        if ($("#divMap select option[value='ITAssetGroup']:selected").length == 0) {
+            alert('Please map Asset Type ID from dropdown')
+            return false;
+        }
+        if ($("#divMap select option[value='ITAssetModel']:selected").length == 0) {
+            alert('Please map ITAssetModel from dropdown')
+            return false;
+        }
+        if ($("#divMap select option[value='ITAssetSerialNo']:selected").length == 0) {
+            alert('Please map ITAssetSerialNo from dropdown')
+            return false;
+        }
+        getJsonData();
+       // $(this).parents(".modal").modal('hide');
     });
 </script>
 

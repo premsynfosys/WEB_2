@@ -289,24 +289,57 @@ func (p *ICommonrep) EmployeeReadExcel(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(maps, &resmaps)
 
 		Listmdl := []*CmnModel.Employees{}
-
+		if len(resexceldata) == 0 || len(resmaps) == 0 {
+			utils.RespondwithJSON(w, r, http.StatusBadRequest, "No data available in sheet")
+			return
+		}
+		var err error
 		for _, item := range resexceldata {
 			mdl := CmnModel.Employees{}
 			mdl.FirstName = item[resmaps["FirstName"]]
 			mdl.LastName = item[resmaps["LastName"]]
-			mdl.DOB, _ = time.ParseInLocation("02-01-2006", item[resmaps["DOB"]], time.Local)
-			mdl.EmpCode = item[resmaps["EmpCode"]]
+			mdl.DOB, err = time.ParseInLocation("02/01/2006", item[resmaps["DOB"]], time.Local)
+			if err != nil {
+				utils.RespondwithJSON(w, r, http.StatusBadRequest, "Invalid Date of Birth in sheet ")
+				return
+			}
 			mdl.Email = item[resmaps["Email"]]
+			mdl.Gender = item[resmaps["Gender"]]
 			mdl.Mobile = item[resmaps["Mobile"]]
 			mdl.PrmntAddress = item[resmaps["PrmntAddress"]]
 			mdl.Address = item[resmaps["Address"]]
-			mdl.DOJ, _ = time.ParseInLocation("02-01-2006", item[resmaps["DOJ"]], time.Local)
-			mdl.Mobile = item[resmaps["Mobile"]]
+			mdl.EmpCode = item[resmaps["EmpCode"]]
+			mdl.Education, err = strconv.Atoi(item[resmaps["Education"]])
+			if err != nil {
+				utils.RespondwithJSON(w, r, http.StatusBadRequest, "Please use Education ID  in sheet")
+				return
+			}
+			mdl.ExperienceYear, _ = strconv.Atoi(item[resmaps["ExperienceYear"]])
+			mdl.ExperienceMonth, _ = strconv.Atoi(item[resmaps["ExperienceMonth"]])
+			mdl.DOJ, err = time.ParseInLocation("02/01/2006", item[resmaps["DOJ"]], time.Local)
+			if err != nil {
+				utils.RespondwithJSON(w, r, http.StatusBadRequest, "Invalid Date of Join  in sheet")
+				return
+			}
+			mdl.Designation, err = strconv.Atoi(item[resmaps["Designation"]])
+			if err != nil {
+				utils.RespondwithJSON(w, r, http.StatusBadRequest, "Please use Designation ID  in sheet")
+				return
+			}
+			// mdl.Location, err = strconv.Atoi(item[resmaps["Location"]])
+			// if err != nil {
+			// 	utils.RespondwithJSON(w, r, http.StatusBadRequest, "Please use Location ID  in sheet")
+			// 	return
+			// }
+			mdl.CreatedBy, err = strconv.Atoi(r.URL.Query().Get("createdby"))
+			mdl.Location, err = strconv.Atoi(r.URL.Query().Get("locationid"))
 			Listmdl = append(Listmdl, &mdl)
 		}
-		err := p.Irepo.Employees_Bulk_Insert(r.Context(), Listmdl)
-		if err != nil {
+		err = p.Irepo.Employees_Bulk_Insert(r.Context(), Listmdl)
+		if err == nil {
 			utils.RespondwithJSON(w, r, http.StatusOK, nil)
+		} else {
+			utils.RespondwithJSON(w, r, http.StatusBadRequest, err.Error())
 		}
 
 	}

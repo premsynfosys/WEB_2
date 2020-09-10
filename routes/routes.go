@@ -100,11 +100,11 @@ func ITAssetsRoutings(r *mux.Router, hndl *itassethndlr.IITAsset) {
 
 //CommonRoutings ..
 func CommonRoutings(r *mux.Router, hndl *cmnhandler.ICommonrep) {
-	hub := utils.NewHub()
-	go hub.Run()
-	r.HandleFunc("/echo", func(w http.ResponseWriter, r *http.Request) {
-		utils.ServeWs(hub, w, r)
-	})
+	// hub := utils.NewHub()
+	// go hub.Run()
+	// r.HandleFunc("/echo", func(w http.ResponseWriter, r *http.Request) {
+	// 	utils.ServeWs(hub, w, r)
+	// })
 	r.HandleFunc("/Requisition", utils.AuthRequired(hndl.Requisition))
 	r.HandleFunc("/RequisitionReceivedStock", utils.AuthRequired(hndl.RequisitionReceivedStock))
 	r.HandleFunc("/POStatusChange/{IDPO}/{Status}", utils.AuthRequired(hndl.POStatusChange))

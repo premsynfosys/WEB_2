@@ -7,10 +7,11 @@
 
 <div>
     <form id="frm" action="/ITAssets/ReadExcel" method="POST" enctype="multipart/form-data" autocomplete="off">
-
-        <div class="form-group row">
-            <label for="Empfile" class="col-md-3 col-form-label ">Upload file:</label>
-            <div class="input-group col-md-9">
+        <div class="float-right"> <a href="/AppFiles/Images/Logo/EmployeeBulkUploadTemplate.xlsx"
+                class="btn btn-link">Excel Sheet Temaplate</a></div>
+        <div class="container row  justify-content-center">
+            <label for="Empfile" class="col-md-2 col-form-label ">Upload file:</label>
+            <div class="input-group col-md-6">
                 <div class="custom-file">
                     <input type="file" class="custom-file-input " id="Empfile"
                         accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
@@ -18,27 +19,82 @@
                 </div>
 
             </div>
+            <!-- <div>
+                <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button"
+                    aria-expanded="false" aria-controls="collapseExample"> Get IDs</a>
+            </div> -->
         </div>
+
+        <div class="container row  justify-content-center" style="height: 150px; overflow:auto;">
+            <div class="col-md-3">
+                <!-- <button type="button" id="btnLoc" class="col btn btn-info m-1">Location Details</button> -->
+                <button type="button" id="btnEdu" class="col btn btn-info m-1">Education Details</button>
+                <button type="button" id="btnDesg" class="col btn btn-info m-1">Designation Details</button>
+            </div>
+            <div class="col-md-6 fieldTable ">
+                <table class="table table-sm table-bordered w-auto">
+                    <thead class="bg-dark">
+                        <th>ID</th>
+                        <th>Name</th>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+        <hr>
         <div id="divMap" class="container bg-light col-8 col-md-6 col-sm-8 justify-content-center">
 
         </div>
-        <div class="form-group row justify-content-center">
-            <input type="button" id="btn" class="btn btn-primary btn-sm" value="Insert" />
+        <div class="form-group row justify-content-center mt-5">
+            <input type="button" id="btn" class="btn btn-primary btn-sm" value="Upload" />
         </div>
     </form>
 </div>
 
 <script>
+    $(document).ready(function () {
+
+        // $("#btnLoc").click(function () {
+        //     $(".fieldTable tbody").empty()
+        //     var data = getdata('/GetLocations')
+        //     $.each(data, function (i, el) {
+        //         $(".fieldTable tbody").append("<tr><td>" + el.IDLocations + "</td><td>" + el.Name + "</td></tr>")
+        //     });
+        // })
+        $("#btnEdu").click(function () {
+            $(".fieldTable tbody").empty()
+            var data = getdata('/GetEducations')
+            $.each(data, function (i, el) {
+                $(".fieldTable tbody").append("<tr><td>" + el.IDEducations + "</td><td>" + el.Name + "</td></tr>")
+            });
+        })
+        $("#btnDesg").click(function () {
+            $(".fieldTable tbody").empty()
+            var data = getdata('/GetDesignations')
+            $.each(data, function (i, el) {
+                $(".fieldTable tbody").append("<tr><td>" + el.IDDesignation + "</td><td>" + el.DesignationName + "</td></tr>")
+            });
+        })
+        $("#btnEdu").trigger("click")
+    })
+</script>
+
+<script>
     $(".custom-file-input").on("change", function () {
-      
         var fileName = $(this).val().split("\\").pop();
         $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
     });
-
+    
     document.getElementById('Empfile').addEventListener('change', getHeaders, false);
     // Object.keys(XL_row_object[0])
 
     function ProcessExcel(data) {
+
+        var map = __getMapdata();
+
         //Read the Excel File data.
         var workbook = XLSX.read(data, {
             type: 'binary'
@@ -52,21 +108,20 @@
         })
         var exceldata = JSON.parse(jsonData);
 
-        var map = __getMapdata();
-      
-        // var res= new Object();
-        // res.exceldata=exceldata;
-        // res.map=map;
-     
         $.ajax({
-            url: "/employee/ReadExcel",
+            url: "/employee/ReadExcel?createdby=" + $("#employeeid").val() + "&locationid=" + $("#locationid").val(),
             type: 'POST',
             data: { map: JSON.stringify(map), exceldata: JSON.stringify(exceldata) },
             dataType: 'json',
             async: false,
             success: function (data) {
-               
+                alert("Data uploaded successfully.")
                 window.location.reload()
+            },
+            error: function (data) {
+
+                alert(data.responseJSON)
+                return false;
             }
         });
     };
@@ -79,7 +134,7 @@
             alert('Please upload file.')
             return;
         }
-      
+
         // if (regex.test(file.value.toLowerCase())) {
         if (typeof (FileReader) != "undefined") {
             var reader = new FileReader();
@@ -111,7 +166,7 @@
 
 
     function getHeaders(evt) {
-  
+        $("#divMap").empty()
         var files = evt.target.files;
         var reader = new FileReader();
         reader.readAsBinaryString(files[0]);
@@ -129,7 +184,12 @@
                     column.push(worksheet[z].v);
                 }
             }
- 
+
+            if (column.length <= 5) {
+                alert('Invalid data in excel sheet')
+                return false;
+
+            }
             for (let s in column) {
                 var html = ' <div  class="form-group row "><label for="ddlMap' + s + '" class="col-md-4 col-form-label ">' + column[s] + '</label>'
                 html += ' <div class="col-md-8"><select data-column="' + column[s] + '" name="ddlMap' + s + '" id="ddlMap' + s + '" class="custom-select ddlMap ">'
@@ -137,13 +197,17 @@
                 html += ' <option value="FirstName">First Name</option>'
                 html += ' <option value="LastName">Last Name</option>'
                 html += ' <option value="DOB">Date of Birth</option>'
-                html += ' <option value="EmpCode">Employee code</option>'
                 html += ' <option value="Email">Email</option>'
+                html += ' <option value="Gender">Gender</option>'
                 html += ' <option value="Mobile">Mobile</option>'
                 html += ' <option value="PrmntAddress">Permanent Address</option>'
                 html += ' <option value="Address">Correspondence Address</option>'
+                html += ' <option value="EmpCode">Employee code</option>'
+                html += ' <option value="Education">Education Id</option>'
+                html += ' <option value="ExperienceYear">Experience in Year</option>'
+                html += ' <option value="ExperienceMonth">Experience in Month</option>'
                 html += ' <option value="DOJ">Date of Joining</option>'
-                html += ' <option value="Mobile">Mobile</option>'
+                html += ' <option value="Designation">Designation ID</option>'
                 html += ' </select></div></div>'
                 $("#divMap").append(html)
             }
@@ -156,7 +220,7 @@
 
 
     function __getMapdata() {
-      
+
         var obj = new Object();
         $(".ddlMap").each(function () {
             if ($(this).val() != 0 && $(this).val() != undefined) {
@@ -168,9 +232,31 @@
     };
 
     $("#btn").click(function () {
-        getJsonData();
-       
-        $(this).parents(".modal").modal('hide');
+
+        var file = document.getElementById('Empfile');
+        if (file.value == "") {
+            alert('Please upload file.')
+            return;
+        }
+        if ($("#divMap select").length == 0) {
+            alert('Invalid data in excel sheet')
+            return false;
+        }
+        if ($("#divMap select option[value='FirstName']:selected").length == 0) {
+            alert('Please map FirstName from dropdown')
+            return false;
+        }
+        if ($("#divMap select option[value='Email']:selected").length == 0) {
+            alert('Please map Email from dropdown')
+            return false;
+        }
+        if ($("#divMap select option[value='EmpCode']:selected").length == 0) {
+            alert('Please map EmpCode from dropdown')
+            return false;
+        }
+        
+        getJsonData()
+
     });
 </script>
 

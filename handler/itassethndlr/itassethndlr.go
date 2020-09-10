@@ -96,11 +96,11 @@ func (p *IITAsset) CreateITAsset(w http.ResponseWriter, r *http.Request) {
 		mdl.ITAssetAssignTo = r.FormValue("CanITAssetAssignTo")
 		ITAssetPrice, _ := strconv.ParseFloat(r.FormValue("ITAssetPrice"), 32)
 		mdl.ITAssetPrice = ITAssetPrice
-	
+
 		if r.FormValue("ITAssetWarranty") != "" {
 			mdl.ITAssetWarranty, _ = time.ParseInLocation("02-01-2006", r.FormValue("ITAssetWarranty"), time.Local)
-		} 
-		
+		}
+
 		VendorID, _ := strconv.Atoi(r.FormValue("Vendor"))
 		mdl.Vendor = VendorID
 		LocationID, _ := strconv.Atoi(r.FormValue("Location"))
@@ -146,7 +146,7 @@ func (p *IITAsset) CreateITAsset(w http.ResponseWriter, r *http.Request) {
 			mdl.CustomFields4Type = customfields["CustomFields4"][1]
 		}
 		mdl.CreatedBy = usr.EmployeeID
-			_, _ = p.Irepo.CreateITAsset(r.Context(), &mdl)
+		_, _ = p.Irepo.CreateITAsset(r.Context(), &mdl)
 		//http.Redirect(w, r, "/ITAssets", 301)
 	}
 }
@@ -785,24 +785,41 @@ func (p *IITAsset) ITAssetReadExcel(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(maps, &resmaps)
 
 		ListITassetmodel := []*ITAssetsmodel.ITAssetModel{}
-
+		if len(resexceldata) == 0 || len(resmaps) == 0 {
+			utils.RespondwithJSON(w, r, http.StatusBadRequest, "No data available in sheet")
+			return
+		}
+		var err error
 		for _, item := range resexceldata {
 			ITassetmodel := ITAssetsmodel.ITAssetModel{}
 			ITassetmodel.ITAssetName = item[resmaps["ITAssetName"]]
+			ITassetmodel.ITAssetGroup, err = strconv.Atoi(item[resmaps["ITAssetGroup"]])
+			if err != nil {
+				utils.RespondwithJSON(w, r, http.StatusBadRequest, "Invalid ITAssetGroup ID  in sheet")
+				return
+			}
 			ITassetmodel.ITAssetModel = item[resmaps["ITAssetModel"]]
 			ITassetmodel.ITAssetSerialNo = item[resmaps["ITAssetSerialNo"]]
 			ITassetmodel.ITAssetDescription = item[resmaps["ITAssetDescription"]]
-
-			price, err := strconv.ParseFloat(item[resmaps["ITAssetPrice"]], 32)
-			if err == nil {
-				ITassetmodel.ITAssetPrice = price
+			ITassetmodel.ITAssetPrice, _ = strconv.ParseFloat(item[resmaps["ITAssetPrice"]], 32)
+			ITassetmodel.ITAssetWarranty, err = time.ParseInLocation("02/01/2006", item[resmaps["ITAssetWarranty"]], time.Local)
+			if item[resmaps["ITAssetWarranty"]] != "" {
+				if err != nil {
+					utils.RespondwithJSON(w, r, http.StatusBadRequest, "Invalid Warranty in sheet")
+					return
+				}
 			}
-
+			ITassetmodel.Vendor, _ = strconv.Atoi(item[resmaps["Vendor"]])
+			ITassetmodel.CreatedBy, err = strconv.Atoi(r.URL.Query().Get("createdby"))
+			ITassetmodel.Location, err = strconv.Atoi(r.URL.Query().Get("locationid"))
+			ITassetmodel.ITAssetStatus = 1
 			ListITassetmodel = append(ListITassetmodel, &ITassetmodel)
 		}
-		err := p.Irepo.BulkCreateITAsset(r.Context(), ListITassetmodel)
-		if err != nil {
+		err = p.Irepo.BulkCreateITAsset(r.Context(), ListITassetmodel)
+		if err == nil {
 			utils.RespondwithJSON(w, r, http.StatusOK, nil)
+		} else {
+			utils.RespondwithJSON(w, r, http.StatusBadRequest, "Internal error")
 		}
 
 	}

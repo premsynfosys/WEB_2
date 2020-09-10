@@ -104,7 +104,7 @@ type Employees struct {
 	DOJ             time.Time   `json:"DOJ"`
 	User            *User       `json:"User"`
 	Location        int         `json:"Location"`
-	LocationName        string         `json:"LocationName"`
+	LocationName    string      `json:"LocationName"`
 	Gender          string      `json:"Gender"`
 	ModifiedBy      int         `json:"ModifiedBy"`
 	CreatedBy       int         `json:"CreatedBy"`
@@ -128,6 +128,7 @@ type LoginModel struct {
 	LocationID  int
 	Image       string
 }
+
 //User ..
 type User struct {
 	IDUsers           int             `json:"IDUsers"`
@@ -158,8 +159,6 @@ type ActivityLog struct {
 	ActionedByFirstName string    `json:"ActionedByFirstName"`
 	ActionedByLastName  string    `json:"ActionedByLastName"`
 }
-
-
 
 // Status type details
 type Status struct {
