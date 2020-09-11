@@ -33,6 +33,7 @@ func AuthRequired(handler http.HandlerFunc) http.HandlerFunc {
 		auth, ok := session.Values["authenticated"].(bool)
 		if !ok || !auth {
 			http.Redirect(w, r, "/", 302)
+			//	w.Write([]byte("<script>alert('Please login')</script>"))
 			return
 		}
 		handler.ServeHTTP(w, r)
@@ -68,6 +69,9 @@ func ExecuteTemplate(w http.ResponseWriter, r *http.Request, tmplName string, da
 		tmpl.ExecuteTemplate(buf, "Error", err.Error())
 	}
 	w.Write(buf.Bytes())
+	// if err := tmpl.ExecuteTemplate(w, tmplName, data); err != nil {
+	// 	tmpl.ExecuteTemplate(w, "Error", err.Error())
+	// }
 }
 
 //GetCookieUser ..
