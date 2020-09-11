@@ -224,7 +224,6 @@ func CommonRoutings(r *mux.Router, hndl *cmnhandler.ICommonrep) {
 
 //NonITAssetsRoutings ..
 func NonITAssetsRoutings(r *mux.Router, hndl *nonitassetshndlr.INonITAsset) {
-bi	
 	r.HandleFunc("/NonITAssetDelete/{AssetID}", utils.AuthRequired(hndl.NonITAssetDelete))
 	r.HandleFunc("/CheckDuplicateNonITAssetEntry/{MasterID:[0-9]+}/{LocID:[0-9]+}", utils.AuthRequired(hndl.CheckDuplicateNonITAssetEntry))
 	r.HandleFunc("/Check_Unique_NonITAsset/{NonITAssetName}", utils.AuthRequired(hndl.Check_Unique_NonITAsset))
