@@ -17,22 +17,22 @@
 </div>
 <div class="row">
   <div class="col-lg-10 col-md-10">
-    <form method="POST" id="frm_NonITAsset" action="/NonITAsset/create" enctype="multipart/form-data" autocomplete="off">
+    <form method="POST" id="frm_NonITAsset" action="/NonITAsset/create" enctype="multipart/form-data"
+      autocomplete="off">
       <div class="card">
         <div class="card-body ">
           <div class="form-group row">
             <label for="IDNonITAssets_Master" class="col-sm-3 col-form-label">Asset Name:</label>
             <div class="col-sm-5">
-              <select class="form-control" required name="IDNonITAssets_Master" data-size="5"
-                id="IDNonITAssets_Master" tabindex="-98">
+              <select class="form-control" required name="IDNonITAssets_Master" data-size="5" id="IDNonITAssets_Master"
+                tabindex="-98">
               </select>
             </div>
           </div>
           <div class="form-group row">
             <label for="NonITAssets_GroupID" class="col-sm-3  col-form-label">Asset Type:</label>
             <div class="col-sm-5">
-              <input type="text" readonly name="NonITAssets_GroupID" id="NonITAssets_GroupID"
-                class="form-control">
+              <input type="text" readonly name="NonITAssets_GroupID" id="NonITAssets_GroupID" class="form-control">
             </div>
           </div>
           <div class="form-group row ">
@@ -62,7 +62,7 @@
             <label for="Warranty" class="col-sm-3 col-form-label ">Warranty:</label>
             <div class="col-sm-9 form-inline">
               <input type="text" name="Warranty" class="form-control datetimepicker-input" data-toggle="datetimepicker"
-                autocomplete="off" data-target="#Warranty" id="Warranty" >
+                autocomplete="off" data-target="#Warranty" id="Warranty">
               <span><text id="txtWarranty" class=""></text></span>
             </div>
           </div>
@@ -174,12 +174,12 @@
       </div>
     </form>
   </div>
-  <!-- <div class="col-lg-2 col-md-2 ">
+  <div class="col-lg-2 col-md-2 ">
     <div class="btn-group  btn-group-vertical  ">
-      <button data-toggle="modal" data-target="#locationmodal" id="ReadExcel" class="btn btn-info btn-sm">Upload
+      <button data-toggle="modal" data-target="#divmodal" id="ReadExcel" class="btn btn-info btn-sm">Upload
         Excel</button>
     </div>
-  </div> -->
+  </div>
 
 </div>
 
@@ -209,7 +209,7 @@
   $(document).ready(function () {
     $('#Warranty').datetimepicker({
       format: customDateFormate,
-      useCurrent:false
+      useCurrent: false
     });
     // var id = getdata("/GenerateUniqueID/nonitassets")
     // $("#IdentificationNo").val(id)
@@ -261,23 +261,23 @@
       var today = new Date()
       $("#txtWarranty").text("")
       if ($(this).val() != "")
-      if (d < today) {
-        $("#txtWarranty").text("  (Warranty expired)")
-        $("#txtWarranty").removeClass("text-success")
-        $("#txtWarranty").addClass("text-danger")
-      }
-      else {
+        if (d < today) {
+          $("#txtWarranty").text("  (Warranty expired)")
+          $("#txtWarranty").removeClass("text-success")
+          $("#txtWarranty").addClass("text-danger")
+        }
+        else {
 
-        var diff = Math.floor(d.getTime() - today.getTime());
-        var day = 1000 * 60 * 60 * 24;
-        var days = Math.floor(diff / day);
-        var months = Math.floor(days / 31);
-        var years = Math.floor(months / 12);
-        var message = "  ("+days + " days " + months + " months " + years + " years left)"
-        $("#txtWarranty").text(message)
-        $("#txtWarranty").removeClass("text-danger")
-        $("#txtWarranty").addClass("text-success")
-      }
+          var diff = Math.floor(d.getTime() - today.getTime());
+          var day = 1000 * 60 * 60 * 24;
+          var days = Math.floor(diff / day);
+          var months = Math.floor(days / 31);
+          var years = Math.floor(months / 12);
+          var message = "  (" + days + " days " + months + " months " + years + " years left)"
+          $("#txtWarranty").text(message)
+          $("#txtWarranty").removeClass("text-danger")
+          $("#txtWarranty").addClass("text-success")
+        }
 
     });
 
@@ -291,16 +291,14 @@
       $("#divmodalTitle").html("Add Vendor")
       $("#divmodalBody").load("/Vendors", null, function () {
       });
-    })
+    });
 
-    // $("#ReadExcel").click(function () {
+    $("#ReadExcel").click(function () {
+      $("#divmodalTitle").html("Upload Excel Sheet")
+      $("#divmodalBody").load("/NonITAsset/ReadExcel", null, function () {
+      });
 
-    //   $("#divmodalTitle").html("Upload Excel Sheet")
-    //   $("#divmodalBody").load("/ITAssets/ReadExcel", null, function () {
-    //   });
-
-
-    // })
+    });
 
     $("#frm_NonITAsset").on("submit", function (event) {
       event.preventDefault();
@@ -368,26 +366,26 @@
 
 
     $("#IDNonITAssets_Master").change(function () {
-          
-            if ($(this).val() != "") {
-                var id = parseInt($(this).val())
-                var loc = parseInt($("#locationid").val())
-                var data = getdata('/CheckDuplicateNonITAssetEntry/' + id + '/' + loc)
-                if (data == $(this).val()) {
-                    Toast('warning', 'Record alredy existed with the seleceted Asset.')
-                    $(this).val("")
-                    $("#GroupID").val("")
-                    return
-                }
-                // var gid = $('#ConsumableNames option:selected').attr('data-groupid')
-                // $("#GroupID").val(gid)
-                // data = getdata('/GetVendorsByConsumable/' + $(this).val())
-                // loadVendors(data)
-            } else {
-                $("#GroupID").val("")
-            }
-        })
-       
+
+      if ($(this).val() != "") {
+        var id = parseInt($(this).val())
+        var loc = parseInt($("#locationid").val())
+        var data = getdata('/CheckDuplicateNonITAssetEntry/' + id + '/' + loc)
+        if (data == $(this).val()) {
+          Toast('warning', 'Record alredy existed with the seleceted Asset.')
+          $(this).val("")
+          $("#GroupID").val("")
+          return
+        }
+        // var gid = $('#ConsumableNames option:selected').attr('data-groupid')
+        // $("#GroupID").val(gid)
+        // data = getdata('/GetVendorsByConsumable/' + $(this).val())
+        // loadVendors(data)
+      } else {
+        $("#GroupID").val("")
+      }
+    })
+
   });
 
 </script>

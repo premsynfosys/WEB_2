@@ -763,3 +763,68 @@ func (p *INonITAsset) NonITAssetDelete(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/NonITAsset/List", 301)
 
 }
+
+//NonITAssetReadExcel ..
+func (p *INonITAsset) NonITAssetReadExcel(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "GET" {
+		utils.ExecuteTemplate(w, r, "NonITAssetReadExcel", nil)
+	}
+	if r.Method == "POST" {
+		r.ParseForm()
+		resexceldata := make([]map[string]string, 1, 1)
+		resmaps := make(map[string]string)
+		exceldata := []byte(` ` + r.FormValue("exceldata") + ``)
+		maps := []byte(`` + r.FormValue("map") + ``)
+		json.Unmarshal(exceldata, &resexceldata)
+		json.Unmarshal(maps, &resmaps)
+
+		ListITassetmodel := []*NonITAssets_mdl.NonITAssets{}
+		if len(resexceldata) == 0 || len(resmaps) == 0 {
+			utils.RespondwithJSON(w, r, http.StatusBadRequest, "No data available in sheet")
+			return
+		}
+		var err error
+		for _, item := range resexceldata {
+			asset := NonITAssets_mdl.NonITAssets{}
+			opr := NonITAssets_mdl.NonITAssets_Oprtns{}
+			asset.NonITAssets_Master_ID, err = strconv.Atoi(item[resmaps["NonITAssets_Master_ID"]])
+			if err != nil {
+				utils.RespondwithJSON(w, r, http.StatusBadRequest, "Invalid Asset ID  in sheet")
+				return
+			}
+			asset.ModelNo = item[resmaps["ModelNo"]]
+			asset.Description = item[resmaps["Description"]]
+			asset.TotalQnty = 0
+			asset.InUseQnty = 0
+			asset.AvailableQnty = 0
+			asset.ThresholdQnty, _ = strconv.Atoi(item[resmaps["ThresholdQnty"]])
+			asset.ReOrderQuantity, _ = strconv.Atoi(item[resmaps["ReOrderQuantity"]])
+			asset.ReOrderStockPrice, _ = strconv.ParseFloat(item[resmaps["ReOrderStockPrice"]], 32)
+			asset.StatusID = 25 //purchased
+			asset.LocationID, err = strconv.Atoi(r.URL.Query().Get("locationid"))
+			asset.Created_By, err = strconv.Atoi(r.URL.Query().Get("createdby"))
+
+			if item[resmaps["Quantity"]] != "" {
+				asset.TotalQnty, _ = strconv.Atoi(item[resmaps["Quantity"]])
+				asset.AvailableQnty, _ = strconv.Atoi(item[resmaps["Quantity"]])
+				opr.Quantity, _ = strconv.Atoi(item[resmaps["Quantity"]])
+				opr.UnitPrice, _ = strconv.ParseFloat(item[resmaps["UnitPrice"]], 32)
+				opr.VendorID, _ = strconv.Atoi(item[resmaps["VendorID"]])
+				opr.Warranty, err = time.ParseInLocation("02/Jan/2006", item[resmaps["Warranty"]], time.Local)
+				opr.OrderedBy, err = strconv.Atoi(r.URL.Query().Get("createdby"))
+				opr.Created_By, err = strconv.Atoi(r.URL.Query().Get("createdby"))
+				opr.StatusID = 25
+
+			}
+			asset.NonITAssets_Oprtns = opr
+			ListITassetmodel = append(ListITassetmodel, &asset)
+		}
+		err = p.Irepo.BulkCreateNonITAsset(r.Context(), ListITassetmodel)
+		if err == nil {
+			utils.RespondwithJSON(w, r, http.StatusOK, nil)
+		} else {
+			utils.RespondwithJSON(w, r, http.StatusBadRequest, err.Error())
+		}
+
+	}
+}

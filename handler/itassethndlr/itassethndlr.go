@@ -802,7 +802,7 @@ func (p *IITAsset) ITAssetReadExcel(w http.ResponseWriter, r *http.Request) {
 			ITassetmodel.ITAssetSerialNo = item[resmaps["ITAssetSerialNo"]]
 			ITassetmodel.ITAssetDescription = item[resmaps["ITAssetDescription"]]
 			ITassetmodel.ITAssetPrice, _ = strconv.ParseFloat(item[resmaps["ITAssetPrice"]], 32)
-			ITassetmodel.ITAssetWarranty, err = time.ParseInLocation("02/01/2006", item[resmaps["ITAssetWarranty"]], time.Local)
+			ITassetmodel.ITAssetWarranty, err = time.ParseInLocation("02/Jan/2006", item[resmaps["ITAssetWarranty"]], time.Local)
 			if item[resmaps["ITAssetWarranty"]] != "" {
 				if err != nil {
 					utils.RespondwithJSON(w, r, http.StatusBadRequest, "Invalid Warranty in sheet")
@@ -819,7 +819,7 @@ func (p *IITAsset) ITAssetReadExcel(w http.ResponseWriter, r *http.Request) {
 		if err == nil {
 			utils.RespondwithJSON(w, r, http.StatusOK, nil)
 		} else {
-			utils.RespondwithJSON(w, r, http.StatusBadRequest, "Internal error")
+			utils.RespondwithJSON(w, r, http.StatusBadRequest, err.Error())
 		}
 
 	}

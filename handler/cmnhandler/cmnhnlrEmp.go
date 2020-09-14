@@ -298,7 +298,7 @@ func (p *ICommonrep) EmployeeReadExcel(w http.ResponseWriter, r *http.Request) {
 			mdl := CmnModel.Employees{}
 			mdl.FirstName = item[resmaps["FirstName"]]
 			mdl.LastName = item[resmaps["LastName"]]
-			mdl.DOB, err = time.ParseInLocation("02/01/2006", item[resmaps["DOB"]], time.Local)
+			mdl.DOB, err = time.ParseInLocation("02/Jan/2006", item[resmaps["DOB"]], time.Local)
 			if err != nil {
 				utils.RespondwithJSON(w, r, http.StatusBadRequest, "Invalid Date of Birth in sheet ")
 				return
@@ -316,7 +316,7 @@ func (p *ICommonrep) EmployeeReadExcel(w http.ResponseWriter, r *http.Request) {
 			}
 			mdl.ExperienceYear, _ = strconv.Atoi(item[resmaps["ExperienceYear"]])
 			mdl.ExperienceMonth, _ = strconv.Atoi(item[resmaps["ExperienceMonth"]])
-			mdl.DOJ, err = time.ParseInLocation("02/01/2006", item[resmaps["DOJ"]], time.Local)
+			mdl.DOJ, err = time.ParseInLocation("02/Jan/2006", item[resmaps["DOJ"]], time.Local)
 			if err != nil {
 				utils.RespondwithJSON(w, r, http.StatusBadRequest, "Invalid Date of Join  in sheet")
 				return

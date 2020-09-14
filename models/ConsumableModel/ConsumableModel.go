@@ -82,7 +82,7 @@ type ConsumableGroup struct {
 	ConsumableGroupName string `json:"ConsumableGroupName"`
 }
 
-//Consumables_Retire ..
+//Consumables_Retire .. 
 type Consumables_Retire struct {
 	IDConsumables_Retire int    `json:"IDConsumables_Retire"`
 	AssetID              int    `json:"AssetID"`

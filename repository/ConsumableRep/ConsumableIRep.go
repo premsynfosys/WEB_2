@@ -8,6 +8,7 @@ import (
 
 // ConsumableIntrfc explain method def...
 type ConsumableIntrfc interface {
+	BulkCreateConsumables(ctx context.Context, mdl []*ConsumableModel.Consumables) error
 	GetConsumableMastersByVendors(ctx context.Context,VendorID int) ([]*CmnModel.VendorsAssetDetails, error) 
 	ConsumableDelete(ctx context.Context, AssetID int) (error)
 	CreateConsumable(ctx context.Context, mdl *ConsumableModel.Consumables) error

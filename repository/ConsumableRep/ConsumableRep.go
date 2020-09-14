@@ -275,3 +275,14 @@ func (m *APIRepo) GetConsumableMastersByVendors(ctx context.Context,VendorID int
 	}
 	return data, nil
 }
+
+
+//BulkCreateConsumables ..
+func (m *APIRepo) BulkCreateConsumables(ctx context.Context, mdl []*ConsumableModel.Consumables) error {
+	url := fmt.Sprintf(m.APIConn + "/Consumables/BulkCreate")
+	j, err := json.Marshal(mdl)
+	_, err = utils.PostRequest(url, j)
+	return err
+
+}
+

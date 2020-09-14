@@ -391,3 +391,13 @@ func (m *APIRepo) NonITAssetDelete(ctx context.Context, AssetID int) (error) {
 	err = json.Unmarshal(bytes, nil)
 	return  nil
 }
+
+
+//BulkCreateNonITAsset ..
+func (m *APIRepo) BulkCreateNonITAsset(ctx context.Context, mdl []*NonITAssets_mdl.NonITAssets) error {
+	url := fmt.Sprintf(m.APIConn + "/NonITAsset/BulkCreateNonITAsset")
+	j, err := json.Marshal(mdl)
+	_, err = utils.PostRequest(url, j)
+	return err
+
+}
