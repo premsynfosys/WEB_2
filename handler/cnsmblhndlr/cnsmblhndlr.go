@@ -551,7 +551,7 @@ func (p *IConsumables) GetConsumableMastersByVendors(w http.ResponseWriter, r *h
 
 func (p *IConsumables) ConsumablesReadExcel(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
-		utils.ExecuteTemplate(w, r, "NonITAssetReadExcel", nil)
+		utils.ExecuteTemplate(w, r, "ConsumableReadExcel", nil)
 	}
 	if r.Method == "POST" {
 		r.ParseForm()
@@ -577,12 +577,20 @@ func (p *IConsumables) ConsumablesReadExcel(w http.ResponseWriter, r *http.Reque
 			}
 			asset.Description = item[resmaps["Description"]]
 			asset.TotalQnty = 0
-			asset.ThresholdQnty, _ = strconv.Atoi(item[resmaps["ThresholdQnty"]])
-			asset.ReOrderQuantity, _ = strconv.Atoi(item[resmaps["ReOrderQuantity"]])
+			asset.ThresholdQnty, err = strconv.Atoi(item[resmaps["ThresholdQnty"]])
+			if err != nil {
+				utils.RespondwithJSON(w, r, http.StatusBadRequest, "Invalid Threshold Quantity "+item[resmaps["ThresholdQnty"]]+" in sheet")
+				return
+			}
+			asset.ReOrderQuantity, err = strconv.Atoi(item[resmaps["ReOrderQuantity"]])
+			if err != nil {
+				utils.RespondwithJSON(w, r, http.StatusBadRequest, "Invalid ReOrder Quantity "+item[resmaps["ReOrderQuantity"]]+" in sheet")
+				return
+			}
 			asset.StatusID = 16 //purchased
 			asset.LocationID, err = strconv.Atoi(r.URL.Query().Get("locationid"))
 			asset.CreatedBy, err = strconv.Atoi(r.URL.Query().Get("createdby"))
-
+			ListITassetmodel = append(ListITassetmodel, &asset)
 		}
 		err = p.Irepo.BulkCreateConsumables(r.Context(), ListITassetmodel)
 		if err == nil {

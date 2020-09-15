@@ -13,6 +13,7 @@ import (
 
 //ConsumablesRoutings ..s
 func ConsumablesRoutings(r *mux.Router, hndl *cnsmblhndlr.IConsumables) {
+	r.HandleFunc("/Consumables/ReadExcel", utils.AuthRequired(hndl.ConsumablesReadExcel))
 	r.HandleFunc("/GetConsumableMastersByVendors/{VendorID}", utils.AuthRequired(hndl.GetConsumableMastersByVendors))
 	r.HandleFunc("/ConsumableDelete/{AssetID}", utils.AuthRequired(hndl.ConsumableDelete))
 	r.HandleFunc("/ConsumableBulkDelete", utils.AuthRequired(hndl.ConsumableBulkDelete))

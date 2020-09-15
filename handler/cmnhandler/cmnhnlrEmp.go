@@ -300,7 +300,7 @@ func (p *ICommonrep) EmployeeReadExcel(w http.ResponseWriter, r *http.Request) {
 			mdl.LastName = item[resmaps["LastName"]]
 			mdl.DOB, err = time.ParseInLocation("02/Jan/2006", item[resmaps["DOB"]], time.Local)
 			if err != nil {
-				utils.RespondwithJSON(w, r, http.StatusBadRequest, "Invalid Date of Birth in sheet ")
+				utils.RespondwithJSON(w, r, http.StatusBadRequest, "Invalid Date of Birth in sheet Ex:02/Jan/2006")
 				return
 			}
 			mdl.Email = item[resmaps["Email"]]
@@ -318,7 +318,7 @@ func (p *ICommonrep) EmployeeReadExcel(w http.ResponseWriter, r *http.Request) {
 			mdl.ExperienceMonth, _ = strconv.Atoi(item[resmaps["ExperienceMonth"]])
 			mdl.DOJ, err = time.ParseInLocation("02/Jan/2006", item[resmaps["DOJ"]], time.Local)
 			if err != nil {
-				utils.RespondwithJSON(w, r, http.StatusBadRequest, "Invalid Date of Join  in sheet")
+				utils.RespondwithJSON(w, r, http.StatusBadRequest, "Invalid Date of Join in sheet Ex:02/Jan/2006")
 				return
 			}
 			mdl.Designation, err = strconv.Atoi(item[resmaps["Designation"]])

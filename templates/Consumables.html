@@ -208,12 +208,12 @@
             </div>
         </form>
     </div>
-    <!-- <div class="col-lg-2 col-md-2 ">
+    <div class="col-lg-2 col-md-2 ">
         <div class="btn-group  btn-group-vertical  ">
             <button data-toggle="modal" data-target="#locationmodal" id="ReadExcel" class="btn btn-info btn-sm">Upload
                 Excel</button>
         </div>
-    </div> -->
+    </div>
 
 </div>
 
@@ -268,7 +268,7 @@
         }
 
 
-
+ 
 
         var data = getdata('/GetLocations')
         loadLocations(data)
@@ -330,7 +330,7 @@
         $("#ReadExcel").click(function () {
 
             $("#locationmodalTitle").html("Upload Excel Sheet")
-            $("#divLocation").load("/Assets/ReadExcel", null, function () {
+            $("#divLocation").load("/Consumables/ReadExcel", null, function () {
             });
 
         })

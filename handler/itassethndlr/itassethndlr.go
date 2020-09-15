@@ -805,7 +805,7 @@ func (p *IITAsset) ITAssetReadExcel(w http.ResponseWriter, r *http.Request) {
 			ITassetmodel.ITAssetWarranty, err = time.ParseInLocation("02/Jan/2006", item[resmaps["ITAssetWarranty"]], time.Local)
 			if item[resmaps["ITAssetWarranty"]] != "" {
 				if err != nil {
-					utils.RespondwithJSON(w, r, http.StatusBadRequest, "Invalid Warranty in sheet")
+					utils.RespondwithJSON(w, r, http.StatusBadRequest, "Invalid Warranty in sheet ex:02/Jan/2006")
 					return
 				}
 			}

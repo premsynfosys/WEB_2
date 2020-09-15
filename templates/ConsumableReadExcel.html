@@ -1,0 +1,236 @@
+{{  define "ConsumableReadExcel"}}
+ 
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/jszip.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/xlsx.js"></script> -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.13.5/xlsx.full.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.13.5/jszip.js"></script>
+
+<div>
+    <form id="frm" method="POST" enctype="multipart/form-data" autocomplete="off">
+        <div class="float-right"> <a href="/AppFiles/Images/Logo/ConsumableBulkUpload.xlsx"
+                class="btn btn-link">Excel Sheet Temaplate</a></div>
+
+        <div class="form-group row justify-content-center">
+            <label for="ITAssetfile" class="col-md-2 col-form-label ">Upload file:</label>
+            <div class="input-group col-md-6">
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input " id="ITAssetfile"
+                        accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
+                    <label class="custom-file-label " for="ITAssetfile">Choose file</label>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="container row  justify-content-center" style="height: 150px; overflow:auto;">
+            <div class="col-md-3">
+                <button type="button" id="btnVendor" class=" btn btn-info m-1 hidden">Vendor</button>
+            </div>
+            <div class="col-md-6 fieldTable ">
+                <table class="table table-sm table-bordered w-auto ">
+                    <thead class="bg-dark">
+                        <th>ID</th>
+                        <th>Name</th>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <hr>
+        <div id="divMap" class="container bg-light col-8 col-md-6 col-sm-8 justify-content-center">
+
+        </div>
+        <div class="form-group row justify-content-center">
+            <input type="button" id="btn" class="btn btn-primary btn-sm" value="Insert" />
+        </div>
+    </form>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+
+        $("#btnVendor").click(function () {
+            $(".fieldTable tbody").empty()
+            var data = getdata('/Consumables/GetConsumableMasterList')
+            $.each(data, function (i, el) {
+                $(".fieldTable tbody").append("<tr><td>" + el.IDconsumableMaster + "</td><td>" + el.ConsumableName+ "</td></tr>")
+            });
+        })
+        $("#btnVendor").trigger("click")
+
+    })
+</script>
+<script>
+    debugger
+    $(".custom-file-input").on("change", function () {
+
+        var fileName = $(this).val().split("\\").pop();
+        $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+    });
+
+    document.getElementById('ITAssetfile').addEventListener('change', getHeaders, false);
+    // Object.keys(XL_row_object[0])
+
+    function ProcessExcel(data) {
+        var map = __getMapdata();
+
+        //Read the Excel File data.
+        var workbook = XLSX.read(data, {
+            type: 'binary'
+        });
+        var jsonData = "";
+        workbook.SheetNames.forEach(function (sheetName) {
+            // Here is your object
+            var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+            var json_object = JSON.stringify(XL_row_object);
+            jsonData += json_object
+        })
+        var exceldata = JSON.parse(jsonData);
+
+
+        // var res= new Object();
+        // res.exceldata=exceldata;
+        // res.map=map;
+        //
+        $.ajax({
+            url: "/Consumables/ReadExcel?createdby=" + $("#employeeid").val() + "&locationid=" + $("#locationid").val(),
+            type: 'POST',
+            data: { map: JSON.stringify(map), exceldata: JSON.stringify(exceldata) },
+            dataType: 'json',
+            async: false,
+            success: function (data) {
+                alert("Data uploaded successfully.")
+                window.location.reload()
+            },
+            error: function (data) {
+                alert(data.responseJSON)
+                return false;
+            }
+        });
+    };
+
+
+
+    function getJsonData() {
+        var file = document.getElementById('ITAssetfile');
+        // var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.xls|.xlsx)$/;
+        // if (regex.test(file.value.toLowerCase())) {
+        if (typeof (FileReader) != "undefined") {
+            var reader = new FileReader();
+            //For Browsers other than IE.
+            if (reader.readAsBinaryString) {
+                reader.onload = function (e) {
+                    return ProcessExcel(e.target.result);
+                };
+                reader.readAsBinaryString(file.files[0]);
+            } else {
+                //For IE Browser.
+                reader.onload = function (e) {
+                    var data = "";
+                    var bytes = new Uint8Array(e.target.result);
+                    for (var i = 0; i < bytes.byteLength; i++) {
+                        data += String.fromCharCode(bytes[i]);
+                    }
+                    return ProcessExcel(data);
+                };
+                reader.readAsArrayBuffer(file.files[0]);
+            }
+        } else {
+            alert("This browser does not support HTML5.");
+        }
+        // } else {
+        //     alert("Please upload a valid Excel file.");
+        // }
+    };
+
+
+    function getHeaders(evt) {
+        $("#divMap").empty()
+        var files = evt.target.files;
+        var reader = new FileReader();
+        reader.readAsBinaryString(files[0]);
+        reader.onload = function (e) {
+            var data = e.target.result;
+            var workbook = XLSX.read(data, {
+                type: 'binary'
+            });
+            const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+            const column = [];
+
+            for (let z in worksheet) {
+
+                if (z.toString().length == 2 && z.toString()[1] == 1) {
+                    column.push(worksheet[z].v);
+                }
+            }
+
+            // 								
+
+            for (let s in column) {
+                var html = ' <div  class="form-group row "><label for="ddlMap' + s + '" class="col-md-3 col-form-label ">' + column[s] + '</label>'
+                html += ' <div class="col-md-9"><select data-column="' + column[s] + '" name="ddlMap' + s + '" id="ddlMap' + s + '" class="custom-select ddlMap ">'
+                html += ' <option value="">--select-- </option>'
+                html += ' <option value="IDconsumableMaster">Asset ID</option>'
+                html += ' <option value="Description">Description</option>'
+                html += ' <option value="ThresholdQnty">Threshold Quantity</option>'
+                html += ' <option value="ReOrderQuantity">Reorder Stock Quantity</option>'
+               
+                html += '  </select></div></div>'
+                $("#divMap").append(html)
+            }
+
+        };
+        reader.onerror = function (ex) {
+            console.log(ex);
+        };
+    }
+
+
+    function __getMapdata() {
+
+        var obj = new Object();
+        $(".ddlMap").each(function () {
+            if ($(this).val() != 0 && $(this).val() != undefined) {
+                obj[$(this).val()] = $(this).attr('data-column')
+            }
+        });
+
+        return obj;
+    };
+
+    $("#btn").click(function () {
+        var file = document.getElementById('ITAssetfile');
+        if (file.value == "") {
+            alert('Please upload file.')
+            return;
+        }
+        if ($("#divMap select").length == 0) {
+            alert('Invalid data in excel sheet')
+            return false;
+        }
+        if ($("#divMap select option[value='IDconsumableMaster']:selected").length == 0) {
+            alert('Please map Asset ID from dropdown')
+            return false;
+        }
+        if ($("#divMap select option[value='Description']:selected").length == 0) {
+            alert('Please map Description No from dropdown')
+            return false;
+        }
+        if ($("#divMap select option[value='ThresholdQnty']:selected").length == 0) {
+            alert('Please map Threshold Quantity from dropdown')
+            return false;
+        }
+       
+        if ($("#divMap select option[value='ReOrderQuantity']:selected").length == 0) {
+            alert('Please map Reorder Stock Quantity from dropdown')
+          return false;
+        }
+      
+        getJsonData();
+        // $(this).parents(".modal").modal('hide');
+    });
+</script>
+
+{{end}}
