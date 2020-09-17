@@ -24,7 +24,9 @@
                                 <select name="Role" required id="Role" class="form-control w-auto">
                                     <option value="">--select--</option>
                                     {{range .Data.Role}}
+                                    {{if ne .RoleName "Super Admin"}}
                                     <option value="{{.IDRoles}}">{{.RoleName}}</option>
+                                    {{end}}
                                     {{end}}
                                 </select>
                             </div>

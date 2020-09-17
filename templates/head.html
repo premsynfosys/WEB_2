@@ -93,11 +93,11 @@
                         WsData.UserID = parseInt(UserID)
                   WSConn.send(JSON.stringify(WsData))
             }
- 
+
             function jsondate(date) {
-                
+
                   if (date != null && date != "" && date != "0000-00-00 00:00:00" && date != "0001-01-01T00:00:00Z") {
-                      
+
                         var currentTime = new Date(date);
                         return moment(currentTime, customDateFormate).format(customDateFormate)
                         // var month = ("0" + (currentTime.getMonth()+ 1)).slice(-2);
@@ -112,9 +112,9 @@
             function jsondatetime(date) {
                   debugger;
                   if (date != null && date != "" && date != "0000-00-00 00:00:00" && date != "0001-01-01T00:00:00Z") {
-                     
-                         var currentTime = new Date(date);
-                         return moment(currentTime, customDateFormate+ " HH:mm").format(customDateFormate+" HH:mm")
+
+                        var currentTime = new Date(date);
+                        return moment(currentTime, customDateFormate + " HH:mm").format(customDateFormate + " HH:mm")
                         // var month = ("0" + (currentTime.getMonth()+ 1)).slice(-2);
                         // var day = ("0" + (currentTime.getDate() )).slice(-2);
                         // var year = currentTime.getFullYear();
@@ -296,7 +296,7 @@
                   UpdateNotifications()
             })
       </script> -->
-    
+
 </head>
 
 <body>
@@ -397,6 +397,7 @@
                         <div class="sidebar-content ">
                               <div class="nav-container">
                                     <nav id="main-menu-navigation" class="navigation-main">
+                                          {{if ne .User.RoleID 1}}
                                           <div class="nav-lavel">My Details</div>
                                           <div class="nav-item">
                                                 <a href="/MyDashBoard"><i class="ik ik-bar-chart-2"></i><span>My
@@ -409,10 +410,10 @@
                                                       <span>IT Asset Request</span></a>
                                           </div>
 
-                                          <div class="nav-item"> <a href="/MyITAssetRequestList"><i
-                                                            class="ik ik-monitor"></i><span>IT Asset
-                                                            Request
-                                                            List</span></a></div>
+                                          <div class="nav-item"> <a href="/MyITAssetRequestList">
+                                                      <i class="ik ik-monitor"></i>
+                                                      <span>IT Asset Request List</span></a>
+                                          </div>
 
                                           <div class="nav-item"> <a href="/NonITAssetRequest?LocID={{.User.LocationID}}"
                                                       class="menu-item"><i class="ik ik-arrow-up-right"></i><span>Non-IT
@@ -423,7 +424,8 @@
                                                             class="ik ik-monitor"></i><span>Non-ITAsset Request
                                                             List</span></a>
                                           </div>
-                                          {{if or (eq .User.RoleID 2) (eq .User.RoleID 1)   }}
+                                          {{end}}
+                                          {{if .Auth.DashBoard  }}
                                           <div class="nav-lavel">ADMIN MENU</div>
                                           <div class="nav-item">
                                                 <a href="/dashboard"><i
@@ -639,7 +641,8 @@
                                                 {{end}}
                                                 {{if .Auth.AddNonITAssetNames}}
                                                 <div class="submenu-content">
-                                                      <a href="/NonITAssetMasterAdd" class="menu-item"><span>Non-IT
+                                                      <a href="/NonITAssetMasterAdd" class="menu-item"><i
+                                                                  class="ik ik-monitor"></i><span>Non-IT
                                                                   Asset
                                                                   Names</span></a>
                                                 </div>

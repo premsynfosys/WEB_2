@@ -70,7 +70,7 @@
     })
 </script>
 <script>
-    debugger
+  
     $(".custom-file-input").on("change", function () {
 
         var fileName = $(this).val().split("\\").pop();
@@ -88,12 +88,14 @@
             type: 'binary'
         });
         var jsonData = "";
-        workbook.SheetNames.forEach(function (sheetName) {
+       // workbook.SheetNames.forEach(function (sheetName) {
             // Here is your object
-            var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+         
+            var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[workbook.SheetNames[0]]);
             var json_object = JSON.stringify(XL_row_object);
             jsonData += json_object
-        })
+          
+      //  })
         var exceldata = JSON.parse(jsonData);
 
        
@@ -121,6 +123,7 @@
 
 
     function getJsonData() {
+     
         var file = document.getElementById('ITAssetfile');
         // var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.xls|.xlsx)$/;
         // if (regex.test(file.value.toLowerCase())) {
@@ -163,6 +166,7 @@
             var workbook = XLSX.read(data, {
                 type: 'binary'
             });
+          
             const worksheet = workbook.Sheets[workbook.SheetNames[0]];
             const column = [];
 

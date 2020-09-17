@@ -510,6 +510,7 @@ func (p *ICommonrep) Login(w http.ResponseWriter, r *http.Request) {
 		}
 		var DbPwd string
 		if err == nil && DbMdlPwd.Password != nil {
+			//DbPwd, err = decrypt(DbMdlPwd.Password)
 			DbPwd, err = decrypt(DbMdlPwd.Password)
 			if err != nil {
 				fmt.Println(err.Error())
@@ -519,7 +520,8 @@ func (p *ICommonrep) Login(w http.ResponseWriter, r *http.Request) {
 		auth := make(map[string]bool)
 		// cahnge this condition DbPwd != ""
 		if DbMdlPwd != nil {
-			if DbPwd == pwd || (DbMdlPwd.UserName == "synfosuperadmin" && pwd == "synfosuperadmin") {
+		//	if DbPwd == pwd || (DbMdlPwd.UserName == "synfosuperadmin" && pwd == "synfosuperadmin") {
+			if DbPwd == pwd {
 				for _, item := range DbMdlPwd.ListAuthorization {
 					auth[strings.Replace(item.Features_List.Feature_Name, " ", "", -1)] = true
 				}
@@ -594,7 +596,7 @@ func encrypt(data string) ([]byte, error) {
 	return encrpt, err
 }
 
-func decrypt(data []byte) (string, error) {
+func decrypt(data []byte) (string, error) {		
 	//data := []byte(pwd)
 	key := []byte("passphrasewhichneedstobe32bytes!")
 
