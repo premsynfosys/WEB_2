@@ -106,6 +106,8 @@
             },
             error: function (data) {
                 alert(data.responseJSON)
+                $("#ITAssetfile").val('')
+                $("#divMap").empty()
                 return false;
             }
         });

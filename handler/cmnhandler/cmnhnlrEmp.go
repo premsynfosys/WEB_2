@@ -333,6 +333,15 @@ func (p *ICommonrep) EmployeeReadExcel(w http.ResponseWriter, r *http.Request) {
 			// }
 			mdl.CreatedBy, err = strconv.Atoi(r.URL.Query().Get("createdby"))
 			mdl.Location, err = strconv.Atoi(r.URL.Query().Get("locationid"))
+			RoleID, err := strconv.Atoi(item[resmaps["RoleID"]])
+			if err == nil {
+				usr := CmnModel.User{}
+				usr.RoleID = RoleID
+				usr.CreatedBy = usr.EmployeeID
+				usr.Status = "Activation Pending"
+				mdl.User = &usr
+			}
+
 			Listmdl = append(Listmdl, &mdl)
 		}
 		err = p.Irepo.Employees_Bulk_Insert(r.Context(), Listmdl)
@@ -520,7 +529,7 @@ func (p *ICommonrep) Login(w http.ResponseWriter, r *http.Request) {
 		auth := make(map[string]bool)
 		// cahnge this condition DbPwd != ""
 		if DbMdlPwd != nil {
-		//	if DbPwd == pwd || (DbMdlPwd.UserName == "synfosuperadmin" && pwd == "synfosuperadmin") {
+			//	if DbPwd == pwd || (DbMdlPwd.UserName == "synfosuperadmin" && pwd == "synfosuperadmin") {
 			if DbPwd == pwd {
 				for _, item := range DbMdlPwd.ListAuthorization {
 					auth[strings.Replace(item.Features_List.Feature_Name, " ", "", -1)] = true
@@ -596,7 +605,7 @@ func encrypt(data string) ([]byte, error) {
 	return encrpt, err
 }
 
-func decrypt(data []byte) (string, error) {		
+func decrypt(data []byte) (string, error) {
 	//data := []byte(pwd)
 	key := []byte("passphrasewhichneedstobe32bytes!")
 

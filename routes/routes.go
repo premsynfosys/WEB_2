@@ -101,6 +101,7 @@ func ITAssetsRoutings(r *mux.Router, hndl *itassethndlr.IITAsset) {
 
 //CommonRoutings ..
 func CommonRoutings(r *mux.Router, hndl *cmnhandler.ICommonrep) {
+	r.HandleFunc("/GetSearchDetails/{LocID}/{Name}", utils.AuthRequired(hndl.GetSearchDetails))
 	// hub := utils.NewHub()
 	// go hub.Run()
 	// r.HandleFunc("/echo", func(w http.ResponseWriter, r *http.Request) {

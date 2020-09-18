@@ -501,3 +501,10 @@ type RequisitionApproval struct {
 	NextApproverID         int       `json:"NextApproverID"`
 	NextGrade              int       `json:"NextGrade"`
 }
+
+
+type Search struct {
+	ID     int    `json:"ID"`
+	Name   string `json:"Name"`
+	Module string `json:"Module"`
+}

@@ -188,6 +188,44 @@
       </script>
       <script>
             $(document).ready(function () {
+                  $('#txt-search').on('search', function () {
+                        $("#txt-search-results").empty()
+                        $("#txt-search-results").append('<div class="dropdown-item">No results found</div>')
+                        if ($(this).val().trim() != "") {
+                              $("#txt-search-results").empty()
+                              var data = getdata('/GetSearchDetails/{{.User.LocationID}}/' + $(this).val().trim());
+                              if (data.length == 0) {
+                                    $("#txt-search-results").append('<div class="dropdown-item">No results found</div>')
+                                    return
+                              }
+                              var LstEmployees = data.filter(x => x.Module == "Employees")
+                              var LstITAssets = data.filter(x => x.Module == "ITAssets")
+                              var LstNonITAssets = data.filter(x => x.Module == "NonITAssets")
+                              var LstConsumables = data.filter(x => x.Module == "Consumables")
+                              $("#txt-search-results").append('<div class="dropdown-header">Employees</div>')
+                              LstEmployees.forEach(itm => {
+                                    $("#txt-search-results").append('<a class="dropdown-item" href="/employee/' + itm.ID + '/mode/view">' + itm.Name + '</a>')
+                              });
+                              $("#txt-search-results").append('<div class="dropdown-divider"></div>')
+                              $("#txt-search-results").append('<div class="dropdown-header">IT-Assets</div>')
+                              LstITAssets.forEach(itm => {
+                                    $("#txt-search-results").append('<a class="dropdown-item" href="/ITAssets/view/' + itm.ID + '">' + itm.Name + '</a>')
+                              });
+                              $("#txt-search-results").append('<div class="dropdown-divider"></div>')
+                              $("#txt-search-results").append('<div class="dropdown-header">Non-IT Assets</div>')
+                              LstNonITAssets.forEach(itm => {
+                                    $("#txt-search-results").append('<a class="dropdown-item" href="/NonITAsset/AssetID/' + itm.ID + '">' + itm.Name + '</a>')
+                              });
+                              $("#txt-search-results").append('<div class="dropdown-divider"></div>')
+                              $("#txt-search-results").append('<div class="dropdown-header">Consumables</div>')
+                              LstConsumables.forEach(itm => {
+                                    $("#txt-search-results").append('<a class="dropdown-item" href="/Consumables/ConsumableView/' + itm.ID + '">' + itm.Name + '</a>')
+                              });
+
+
+                        }
+
+                  });
                   $(document).on("keydown", ".mobile", function (evt) {
                         var charCode = (evt.which) ? evt.which : event.keyCode
                         if (charCode > 31 && (charCode < 48 || charCode > 57))
@@ -311,15 +349,28 @@
                               <div class="top-menu d-flex align-items-center">
                                     <button type="button"
                                           class="btn-icon mobile-nav-toggle d-lg-none"><span></span></button>
+                                    {{if .Auth.DashBoard  }}
                                     <div class="header-search">
                                           <div class="input-group">
                                                 <span class="input-group-addon search-close"><i
                                                             class="ik ik-x"></i></span>
-                                                <input type="text" class="form-control">
+                                                <div class="dropdown">
+                                                      <input id="txt-search" class="form-control dropdown-toggle "
+                                                            data-toggle="dropdown" type="search" placeholder="Search..."
+                                                            aria-label="Search" autocomplete="off"
+                                                            aria-expanded="false">
+                                                      <div class="dropdown-menu" aria-labelledby="txt-search"
+                                                            id="txt-search-results">
+                                                            <div class="dropdown-item">No results found</div>
+
+
+                                                      </div>
+                                                </div>
                                                 <span class="input-group-addon search-btn"><i
                                                             class="ik ik-search"></i></span>
                                           </div>
                                     </div>
+                                    {{end}}
                                     <button type="button" id="navbar-fullscreen" class="nav-link"><i
                                                 class="ik ik-maximize"></i></button>
                               </div>
@@ -385,7 +436,7 @@
                   <div class="app-sidebar colored">
                         <div class="sidebar-header">
                               <a class="header-brand" href="/MyDashBoard">
-                                    <div class="logo-img">
+                                    <div class="logo-img nav-toggle">
                                           <img src="/AppFiles/Images/Logo/AMS-color.png" width="80" height="auto"
                                                 class="header-brand-img" alt="AMS">
                                     </div>
@@ -656,6 +707,15 @@
                                                 {{end}}
                                           </div>
                                           {{end}}
+                                          <div class="nav-item">
+                                                <a href="/ResetPassword?empid={{.User.IDEmployees}}"><i
+                                                            class="ik ik-lock"></i><span>
+                                                            Change Password
+                                                      </span></a></div>
+                                          <div class="nav-item">
+                                                <a href="/logout"><i
+                                                            class="ik ik-power dropdown-icon"></i><span>LogOut</span></a>
+                                          </div>
                                     </nav>
                               </div>
                         </div>

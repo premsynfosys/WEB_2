@@ -1268,3 +1268,18 @@ func (m *APIRepo) GetRequisitionHistoryByReqID(ctx context.Context, ID int) ([]*
 	return data, nil
 
 }
+
+func (m *APIRepo) GetSearchDetails(ctx context.Context, LocID int,Name string) ([]*CmnModel.Search, error) {
+	url := fmt.Sprintf(m.APIConn+"/GetSearchDetails/%d/"+Name, LocID)
+	bytes, err := utils.GetRequest(url)
+	if err != nil {
+		return nil, err
+	}
+	data := []*CmnModel.Search{}
+	err = json.Unmarshal(bytes, &data)
+	if err != nil {
+		return nil, err
+	}
+	return data, nil
+
+}

@@ -95,4 +95,6 @@ type CmnRepIntrfc interface {
 	RequisitionReqForward(ctx context.Context, mdl CmnModel.RequisitionApproval) error 
 	RequisitionStatusChange(ID int, Status int) error
 	RequisitionStcokReceived(ctx context.Context, mdl CmnModel.Requisition_Requests) error 
+
+	GetSearchDetails(ctx context.Context, LocID int,Name string) ([]*CmnModel.Search, error)
 }

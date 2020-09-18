@@ -25,7 +25,7 @@ type Notificationss struct {
 //ICommonrep ..
 type ICommonrep struct {
 	Irepo CmnRep.CmnRepIntrfc
-} 
+}
 
 //NewCommonHandler ..
 func NewCommonHandler(api string) *ICommonrep {
@@ -47,8 +47,9 @@ func (p *ICommonrep) Dashboard(w http.ResponseWriter, r *http.Request) {
 	usr, Auth := utils.GetCookieUser(r)
 	in := CmnModel.AdminDashBoard{}
 	in.EmpID = usr.EmployeeID
-	if usr.RoleName=="Admin"{
-	in.LocID = usr.LocationID}
+	if usr.RoleName == "Admin" {
+		in.LocID = usr.LocationID
+	}
 
 	data, _ := p.Irepo.GetAdminDashBoard(r.Context(), in)
 
@@ -600,7 +601,6 @@ func (p *ICommonrep) UpdateIsMsngStcksRslvdMain(w http.ResponseWriter, r *http.R
 	}
 }
 
-
 func (p *ICommonrep) MultiApproval(w http.ResponseWriter, r *http.Request) {
 	usr, Auth := utils.GetCookieUser(r)
 	data, _ := p.Irepo.GetMultiLevelApproval(r.Context())
@@ -775,9 +775,9 @@ func (p *ICommonrep) PurchaseOrderDetails(w http.ResponseWriter, r *http.Request
 }
 
 func (p *ICommonrep) Error(w http.ResponseWriter, r *http.Request) {
-	
-		utils.ExecuteTemplate(w, r, "Error", nil)
-	
+
+	utils.ExecuteTemplate(w, r, "Error", nil)
+
 }
 
 func (p *ICommonrep) PurchaseOrders_RequestsInsert(w http.ResponseWriter, r *http.Request) {
@@ -1234,4 +1234,17 @@ func (p *ICommonrep) RequisitionHistoryDetails_Partial(w http.ResponseWriter, r 
 	}{
 		ReqID: IDs,
 	})
+}
+
+func (p *ICommonrep) GetSearchDetails(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	LocID := params["LocID"]
+	Name := params["Name"]
+	locid, _ := strconv.Atoi(LocID)
+	data, err := p.Irepo.GetSearchDetails(r.Context(), locid, Name)
+	if err == nil {
+		utils.RespondwithJSON(w, r, http.StatusOK, data)
+	} else {
+		utils.RespondwithJSON(w, r, http.StatusBadRequest, err.Error())
+	}
 }

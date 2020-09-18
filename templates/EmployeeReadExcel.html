@@ -30,6 +30,7 @@
                 <!-- <button type="button" id="btnLoc" class="col btn btn-info m-1">Location Details</button> -->
                 <button type="button" id="btnEdu" class="col btn btn-info m-1">Education Details</button>
                 <button type="button" id="btnDesg" class="col btn btn-info m-1">Designation Details</button>
+                <button type="button" id="btnRole" class="col btn btn-info m-1">Role</button>
             </div>
             <div class="col-md-6 fieldTable ">
                 <table class="table table-sm table-bordered w-auto">
@@ -78,7 +79,15 @@
                 $(".fieldTable tbody").append("<tr><td>" + el.IDDesignation + "</td><td>" + el.DesignationName + "</td></tr>")
             });
         })
-        $("#btnEdu").trigger("click")
+        $("#btnRole").click(function () {
+            $(".fieldTable tbody").empty()
+            var data = getdata('/GetRoles')
+            $.each(data, function (i, el) {
+                if(el.RoleName!="Super Admin")
+                $(".fieldTable tbody").append("<tr><td>" + el.IDRoles + "</td><td>" + el.RoleName + "</td></tr>")
+            });
+        })
+      $("#btnEdu").trigger("click")
     })
 </script>
 
@@ -121,6 +130,8 @@
             error: function (data) {
 
                 alert(data.responseJSON)
+                $("#Empfile").val('')
+                $("#divMap").empty()
                 return false;
             }
         });
@@ -208,6 +219,7 @@
                 html += ' <option value="ExperienceMonth">Experience in Month</option>'
                 html += ' <option value="DOJ">Date of Joining</option>'
                 html += ' <option value="Designation">Designation ID</option>'
+                html += ' <option value="RoleID">Role ID</option>'
                 html += ' </select></div></div>'
                 $("#divMap").append(html)
             }
