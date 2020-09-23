@@ -59,7 +59,7 @@
             "initComplete": function (settings, json) {
                 tbl.draw()
             },
-            
+
             ajax: {
                 "url": '/GetNonITAssetOprtnListByID/{{.Data}}',
                 "type": "GET",
@@ -103,12 +103,13 @@
                     "name": "Vendor",
                     'data': "NonITAssets_Oprtns.Vendor",
                     render: function (dt) {
+
                         return dt.Name + "</br>" + dt.Address + "</br>" + dt.Email + "</br>" + dt.Phone;
                     }
                 }, {
                     "name": "Comments",
                     'data': "NonITAssets_Oprtns.Comments"
-                },{
+                }, {
                     "name": "Date",
                     'data': "NonITAssets_Oprtns.Created_On",
                     render: function (dt) {
@@ -116,8 +117,15 @@
                     }
                 }, {
                     "name": "Action",
-                    'data': "NonITAssets_Oprtns.Status.StatusName"
-                } , {
+                    'data': "NonITAssets_Oprtns.Status",
+                    render: function (dt) {
+                        debugger;
+                        if (dt.StatusName != undefined)
+                            return dt.StatusName;
+                        else
+                            return ""
+                    }
+                }, {
                     "name": "ActionBy",
                     'data': "NonITAssets_Oprtns.CreatedByName"
                 }

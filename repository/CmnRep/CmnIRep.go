@@ -8,6 +8,7 @@ import (
 
 //CmnRepIntrfc explain method def...
 type CmnRepIntrfc interface {
+	ChangePassword(ctx context.Context, usr *CmnModel.User) error 
 	GetRequisitionHistoryByReqID(ctx context.Context, ID int) ([]*CmnModel.Requisition_Requests, error)
 	GetAuthorizationList_ByRole(ctx context.Context, RoleID int) ([]*CmnModel.Authorization, error)
 	GetFeatures_List(ctx context.Context) ([]*CmnModel.Features_List, error)

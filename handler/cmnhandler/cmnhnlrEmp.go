@@ -225,6 +225,7 @@ func (p *ICommonrep) GetUsersList(w http.ResponseWriter, r *http.Request) {
 func (p *ICommonrep) UserCreate(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 		empid, err := strconv.Atoi(r.URL.Query().Get("empid"))
+		token := r.URL.Query().Get("token")
 		emp, err := p.Irepo.GetEmployeeByID(r.Context(), empid)
 		if err != nil {
 			data := make(map[string]string)
@@ -245,7 +246,7 @@ func (p *ICommonrep) UserCreate(w http.ResponseWriter, r *http.Request) {
 			data["msg"] = "Activation Link Expired"
 			utils.ExecuteTemplate(w, r, "Error", data)
 		} else {
-
+			emp.User.ActivateToken = token
 			utils.ExecuteTemplate(w, r, "UserAdd", emp)
 		}
 	} else {
@@ -253,6 +254,7 @@ func (p *ICommonrep) UserCreate(w http.ResponseWriter, r *http.Request) {
 		mdlUser.UserName = r.FormValue("UserName")
 		mdlUser.IDUsers, _ = strconv.Atoi(r.FormValue("IDUsers"))
 		BytePwd, err := encrypt(r.FormValue("Password"))
+		mdlUser.ActivateToken = r.FormValue("ActivateToken")
 		if err != nil {
 			fmt.Println(err.Error())
 		}
@@ -397,6 +399,7 @@ func (p *ICommonrep) GetAuthorizationList_ByRole(w http.ResponseWriter, r *http.
 //ResetPassword ..
 func (p *ICommonrep) ResetPassword(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
+		token := r.URL.Query().Get("token")
 		empid, err := strconv.Atoi(r.URL.Query().Get("empid"))
 		emp, err := p.Irepo.GetEmployeeByID(r.Context(), empid)
 		if err != nil {
@@ -405,19 +408,52 @@ func (p *ICommonrep) ResetPassword(w http.ResponseWriter, r *http.Request) {
 			utils.ExecuteTemplate(w, r, "Error", data)
 			return
 		}
+		emp.User.ActivateToken = token
 		utils.ExecuteTemplate(w, r, "ResetPassword", emp)
 
-	} else {
+	}
+	if r.Method == "POST" {
 		mdlUser := CmnModel.User{}
 		mdlUser.UserName = r.FormValue("UserName")
 		mdlUser.IDUsers, _ = strconv.Atoi(r.FormValue("IDUsers"))
+		BytePwd, err := encrypt(r.FormValue("Password"))
+		mdlUser.ActivateToken = r.FormValue("ActivateToken")
+		if err != nil {
+			fmt.Println(err.Error())
+		}
+		mdlUser.Password = BytePwd
+		err = p.Irepo.UpdateUser(r.Context(), &mdlUser)
+
+		//http.Redirect(w, r, "/", 301)
+
+		if err != nil {
+			utils.ExecuteTemplate(w, r, "login", "Unable to change password")
+		} else {
+			utils.ExecuteTemplate(w, r, "login", nil)
+		}
+	}
+}
+
+//ChangePassword ..
+func (p *ICommonrep) ChangePassword(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "GET" {
+		utils.ExecuteTemplate(w, r, "ChangePassword", nil)
+	}
+	if r.Method == "POST" {
+		usr, _ := utils.GetCookieUser(r)
+		mdlUser := CmnModel.User{}
+		mdlUser.IDUsers = usr.IDUsers
 		BytePwd, err := encrypt(r.FormValue("Password"))
 		if err != nil {
 			fmt.Println(err.Error())
 		}
 		mdlUser.Password = BytePwd
-		_ = p.Irepo.UpdateUser(r.Context(), &mdlUser)
-		http.Redirect(w, r, "/", 301)
+		err = p.Irepo.ChangePassword(r.Context(), &mdlUser)
+		if err != nil {
+			utils.ExecuteTemplate(w, r, "login", "Unable to change password")
+		} else {
+			utils.ExecuteTemplate(w, r, "login", nil)
+		}
 	}
 }
 
@@ -557,16 +593,12 @@ func (p *ICommonrep) Login(w http.ResponseWriter, r *http.Request) {
 				http.Redirect(w, r, "/MyDashBoard", http.StatusMovedPermanently)
 
 			} else {
-				err := map[string]bool{
-					"err": true,
-				}
-				utils.ExecuteTemplate(w, r, "login", err)
+
+				utils.ExecuteTemplate(w, r, "login", "Please enter valid details")
 			}
 		} else {
-			err := map[string]bool{
-				"err": true,
-			}
-			utils.ExecuteTemplate(w, r, "login", err)
+
+			utils.ExecuteTemplate(w, r, "login", "Please enter valid details")
 		}
 
 	}

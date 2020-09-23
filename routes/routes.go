@@ -159,6 +159,7 @@ func CommonRoutings(r *mux.Router, hndl *cmnhandler.ICommonrep) {
 	r.HandleFunc("/logout", hndl.LogOut)
 	r.HandleFunc("/GetNotifications", utils.AuthRequired(hndl.GetNotifications))
 	r.HandleFunc("/dashboard", utils.AuthRequired(hndl.Dashboard))
+	r.HandleFunc("/ChangePassword", utils.AuthRequired(hndl.ChangePassword))
 	r.HandleFunc("/MyDashBoard", utils.AuthRequired(hndl.MyDashBoard))
 	r.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("./static"))))
 	r.PathPrefix("/AppFiles/").Handler(http.StripPrefix("/AppFiles/", http.FileServer(http.Dir("./AppFiles"))))

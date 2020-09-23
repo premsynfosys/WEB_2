@@ -146,6 +146,7 @@ type User struct {
 	ModifiedBy        int             `json:"ModifiedBy"`
 	CreatedBy         int             `json:"CreatedBy"`
 	CreatedOn         time.Time       `json:"CreatedOn"`
+	ActivateToken     string         `json:"ActivateToken"`
 }
 
 type ActivityLog struct {
@@ -501,7 +502,6 @@ type RequisitionApproval struct {
 	NextApproverID         int       `json:"NextApproverID"`
 	NextGrade              int       `json:"NextGrade"`
 }
-
 
 type Search struct {
 	ID     int    `json:"ID"`

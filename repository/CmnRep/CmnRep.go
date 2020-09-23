@@ -521,6 +521,18 @@ func (m *APIRepo) UpdateUser(ctx context.Context, usr *CmnModel.User) error {
 	return err
 
 }
+//ChangePassword ..
+func (m *APIRepo) ChangePassword(ctx context.Context, usr *CmnModel.User) error {
+	url := fmt.Sprintf(m.APIConn + "/ChangePassword")
+	j, err := json.Marshal(usr)
+	if err != nil {
+		return err
+	}
+	_, err = utils.PutRequest(url, j)
+
+	return err
+
+}
 
 // //GenerateUniqueID ..
 // func (m *APIRepo) GenerateUniqueID(ctx context.Context, modulename string) (int64, error) {

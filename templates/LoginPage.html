@@ -72,9 +72,9 @@
                                 <button class="btn btn-theme" type="submit">Sign In</button>
                             </div>
                         </form>
-                        {{if .err}}
+                        {{if .}}
                         <div class="alert alert-danger mt-10" role="alert">
-                            Please enter valid details.
+                            {{.}}
                         </div>
                         {{end}}
                     </div>
